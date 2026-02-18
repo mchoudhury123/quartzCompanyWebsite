@@ -1,0 +1,215 @@
+/* ============================================
+   ProductCard – The Quartz Company
+   ============================================ */
+
+.product-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Image wrapper ── */
+.product-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-cream);
+}
+
+/* Placeholder gradient (teal-to-gold) while image loads */
+.product-card__placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 100%);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.product-card__placeholder--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Product swatch image */
+.product-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.45s ease;
+  z-index: 0;
+}
+
+.product-card__image--loaded {
+  opacity: 1;
+}
+
+.product-card:hover .product-card__image--loaded {
+  transform: scale(1.06);
+}
+
+/* Hover image (kitchen scene) – hidden by default, revealed on hover */
+.product-card__image--hover {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.product-card:hover .product-card__image--hover-ready {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* ── Badges ── */
+.product-card__badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.product-card__fire {
+  font-size: 0.8rem;
+  margin-right: 0.15rem;
+}
+
+/* ── Card body ── */
+.product-card__body {
+  padding: 1.15rem 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Product name */
+.product-card__name {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.product-card__name a {
+  color: var(--color-dark);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.product-card__name a:hover {
+  color: var(--color-primary);
+}
+
+/* Subtitle */
+.product-card__subtitle {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+
+/* ── Star rating ── */
+.product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-card__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.05rem;
+}
+
+.product-card__star {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.product-card__star--filled {
+  color: var(--color-gold);
+}
+
+.product-card__star--empty {
+  color: var(--color-border);
+}
+
+.product-card__review-count {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-left: 0.1rem;
+}
+
+/* ── Price ── */
+.product-card__price {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.product-card__price-original {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  text-decoration: line-through;
+}
+
+.product-card__price-sale {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-sale);
+}
+
+.product-card__price-current {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+/* ── CTA button ── */
+.product-card__cta {
+  margin-top: auto;
+  text-align: center;
+  width: 100%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .product-card__body {
+    padding: 0.95rem 1rem 1.15rem;
+  }
+
+  .product-card__name {
+    font-size: 1.05rem;
+  }
+
+  .product-card__price-sale,
+  .product-card__price-current {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card__image-wrapper {
+    aspect-ratio: 3 / 2;
+  }
+}

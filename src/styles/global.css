@@ -1,0 +1,320 @@
+/* ============================================
+   The Quartz Company – Global Styles
+   Brand Palette:
+     Primary:       #3B3B3B (Charcoal)
+     Accent Green:  #6B8F71 (Sage)
+     Gold Accent:   #C5A47E
+     Dark:          #1A1A1A
+     Warm Cream:    #F8F6F3
+     White:         #FFFFFF
+   Fonts:
+     Headings: 'Playfair Display', serif
+     Body:     'Inter', sans-serif
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #3B3B3B;
+  --color-primary-light: #6B8F71;
+  --color-primary-dark: #252525;
+  --color-gold: #C5A47E;
+  --color-gold-light: #D4BA9A;
+  --color-dark: #1A1A1A;
+  --color-cream: #F8F6F3;
+  --color-white: #FFFFFF;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-border: #E0DCD7;
+  --color-success: #2E7D32;
+  --color-error: #C62828;
+  --color-sale: #B71C1C;
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --max-width: 1280px;
+  --header-height: 80px;
+  --transition: 0.3s ease;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-dark);
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3.25rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 2.2vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+
+p { margin-bottom: 1rem; }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--color-primary-light); }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+  border: none;
+  outline: none;
+}
+
+ul { list-style: none; }
+
+/* Utility classes */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: 5rem 0;
+}
+
+.section--cream {
+  background: var(--color-cream);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+.btn--primary:hover {
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--gold {
+  background: var(--color-gold);
+  color: var(--color-white);
+}
+.btn--gold:hover {
+  background: #B8956D;
+  color: var(--color-white);
+  transform: translateY(-1px);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+.btn--outline:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn--white {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+.btn--white:hover {
+  background: var(--color-cream);
+  color: var(--color-primary);
+}
+
+.btn--sm {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+}
+
+.btn--lg {
+  padding: 1rem 2.5rem;
+  font-size: 1.05rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge--sale {
+  background: var(--color-sale);
+  color: var(--color-white);
+}
+
+.badge--new {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.badge--popular {
+  background: var(--color-gold);
+  color: var(--color-white);
+}
+
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--color-gold);
+}
+
+.star-rating span {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  margin-left: 0.35rem;
+}
+
+/* Grid system */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1024px) {
+  .grid--4 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .grid--3, .grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .grid--2 { grid-template-columns: 1fr; }
+  .section { padding: 3.5rem 0; }
+}
+
+@media (max-width: 480px) {
+  .grid--3, .grid--4 { grid-template-columns: 1fr; }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Accessible focus styles */
+:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-cream); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 4px;
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "all",
+    "name": "All Colours",
+    "description": "Explore our complete range of premium quartz worktop surfaces."
+  },
+  {
+    "slug": "veined",
+    "name": "Veined Collection",
+    "description": "Dramatic veining patterns inspired by natural marble and stone for a statement kitchen."
+  },
+  {
+    "slug": "plain",
+    "name": "Plain & Speckled",
+    "description": "Clean, uniform surfaces and subtle speckled textures for a modern, understated look."
+  },
+  {
+    "slug": "concrete",
+    "name": "Concrete Effect",
+    "description": "Industrial-inspired surfaces that capture the raw beauty of polished concrete."
+  }
+]

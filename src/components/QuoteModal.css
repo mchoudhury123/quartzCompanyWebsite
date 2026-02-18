@@ -1,0 +1,675 @@
+/* ============================================
+   QuoteModal – The Quartz Company
+   ============================================ */
+
+/* ── Overlay ── */
+.quote-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: qmFadeIn 0.25s ease;
+}
+
+@keyframes qmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Modal container ── */
+.quote-modal {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: qmSlideUp 0.35s ease;
+  overflow: hidden;
+}
+
+@keyframes qmSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Close button ── */
+.quote-modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-cream);
+  color: var(--color-text);
+  font-size: 1.15rem;
+  transition: all var(--transition);
+}
+
+.quote-modal__close:hover {
+  background: var(--color-border);
+  color: var(--color-dark);
+}
+
+/* ============================================
+   Progress Indicator
+   ============================================ */
+.quote-modal__progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem 2rem 1.25rem;
+  gap: 0;
+}
+
+.quote-modal__progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-modal__progress-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: var(--color-cream);
+  color: var(--color-text-light);
+  border: 2px solid var(--color-border);
+  transition: all var(--transition);
+}
+
+.quote-modal__progress-circle--current {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(59, 59, 59, 0.15);
+}
+
+.quote-modal__progress-circle--completed {
+  background: var(--color-gold);
+  color: var(--color-white);
+  border-color: var(--color-gold);
+}
+
+.quote-modal__progress-circle--completed svg {
+  stroke-width: 3;
+}
+
+.quote-modal__progress-line {
+  flex: 1;
+  height: 3px;
+  min-width: 60px;
+  background: var(--color-border);
+  transition: background var(--transition);
+}
+
+.quote-modal__progress-line--active {
+  background: var(--color-gold);
+}
+
+.quote-modal__progress-label {
+  font-size: 0.72rem;
+  color: var(--color-text-light);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.quote-modal__progress-label--current {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ============================================
+   Step Content Area
+   ============================================ */
+.quote-modal__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 2rem 1rem;
+}
+
+/* Step enter animation */
+.quote-modal__step--enter {
+  animation: qmStepIn 0.3s ease;
+}
+
+@keyframes qmStepIn {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.quote-modal__heading {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-dark);
+  margin-bottom: 0.4rem;
+}
+
+.quote-modal__intro {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* ── Honeypot (hidden) ── */
+.quote-modal__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================
+   Form Elements
+   ============================================ */
+.quote-modal__field {
+  margin-bottom: 1rem;
+}
+
+.quote-modal__field--half {
+  flex: 1;
+  min-width: 0;
+}
+
+.quote-modal__field--callback {
+  animation: qmStepIn 0.3s ease;
+}
+
+.quote-modal__label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 0.35rem;
+}
+
+.quote-modal__required {
+  color: var(--color-error);
+}
+
+.quote-modal__input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.quote-modal__input:focus {
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(59, 59, 59, 0.1);
+  outline: none;
+}
+
+.quote-modal__input--error {
+  border-color: var(--color-error);
+}
+
+.quote-modal__input--error:focus {
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+}
+
+select.quote-modal__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1.4 0L6 4.6 10.6 0 12 1.4l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.5rem;
+}
+
+.quote-modal__textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.quote-modal__field-error {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-error);
+  margin-top: 0.25rem;
+}
+
+/* ── Rows ── */
+.quote-modal__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.quote-modal__row--thirds {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.quote-modal__row--thirds .quote-modal__field {
+  flex: 1;
+}
+
+/* ── Fieldset ── */
+.quote-modal__fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.quote-modal__legend {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 0.6rem;
+}
+
+/* ── Selected product display ── */
+.quote-modal__selected-product {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--color-cream);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+}
+
+.quote-modal__selected-product-swatch {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.quote-modal__selected-product div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.quote-modal__selected-product strong {
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.quote-modal__selected-product-info {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+.quote-modal__selected-product-price {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ============================================
+   Drag & Drop Zone
+   ============================================ */
+.quote-modal__dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--color-cream);
+}
+
+.quote-modal__dropzone:hover,
+.quote-modal__dropzone--active {
+  border-color: var(--color-primary-light);
+  background: rgba(59, 59, 59, 0.04);
+}
+
+.quote-modal__dropzone--has-file {
+  border-style: solid;
+  border-color: var(--color-success);
+  background: rgba(46, 125, 50, 0.04);
+}
+
+.quote-modal__file-input {
+  display: none;
+}
+
+.quote-modal__dropzone-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-text-light);
+  font-size: 0.88rem;
+}
+
+.quote-modal__dropzone-icon {
+  font-size: 1.75rem;
+  color: var(--color-primary-light);
+  margin-bottom: 0.25rem;
+}
+
+.quote-modal__dropzone-icon--success {
+  color: var(--color-success);
+}
+
+.quote-modal__dropzone-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  opacity: 0.7;
+}
+
+.quote-modal__dropzone-uploaded {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+  font-size: 0.88rem;
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.quote-modal__dropzone-remove {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  transition: all var(--transition);
+}
+
+.quote-modal__dropzone-remove:hover {
+  background: var(--color-cream);
+  color: var(--color-error);
+}
+
+/* ============================================
+   Checkboxes (custom)
+   ============================================ */
+.quote-modal__checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.quote-modal__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  cursor: pointer;
+  line-height: 1.4;
+  user-select: none;
+}
+
+.quote-modal__checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.quote-modal__checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.quote-modal__checkbox:checked + .quote-modal__checkbox-custom {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.quote-modal__checkbox:checked + .quote-modal__checkbox-custom::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: solid var(--color-white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 2px;
+  left: 6px;
+}
+
+.quote-modal__checkbox:focus-visible + .quote-modal__checkbox-custom {
+  box-shadow: 0 0 0 3px rgba(59, 59, 59, 0.2);
+}
+
+/* ============================================
+   Step 3 – Confirmation
+   ============================================ */
+.quote-modal__confirmation {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.quote-modal__confirmation-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin: 0 auto 1rem;
+  animation: qmBounce 0.5s ease;
+}
+
+@keyframes qmBounce {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.quote-modal__confirmation-text {
+  color: var(--color-text);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.quote-modal__confirmation-text strong {
+  color: var(--color-primary);
+}
+
+/* Summary */
+.quote-modal__summary {
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+}
+
+.quote-modal__summary-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.quote-modal__summary-section {
+  margin-bottom: 1rem;
+}
+
+.quote-modal__summary-section:last-child {
+  margin-bottom: 0;
+}
+
+.quote-modal__summary-heading {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.quote-modal__summary-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 1rem;
+  font-size: 0.85rem;
+}
+
+.quote-modal__summary-list dt {
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.quote-modal__summary-list dd {
+  color: var(--color-dark);
+  margin: 0;
+}
+
+/* ============================================
+   Navigation Buttons
+   ============================================ */
+.quote-modal__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem 1.5rem;
+  gap: 1rem;
+}
+
+.quote-modal__btn-back {
+  gap: 0.3rem;
+}
+
+.quote-modal__btn-next {
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.quote-modal__btn-close {
+  margin-left: auto;
+}
+
+/* ============================================
+   Responsive – Mobile fullscreen
+   ============================================ */
+@media (max-width: 640px) {
+  .quote-modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .quote-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    animation: qmSlideUpMobile 0.3s ease;
+  }
+
+  @keyframes qmSlideUpMobile {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .quote-modal__content {
+    padding: 0 1.25rem 1rem;
+  }
+
+  .quote-modal__progress {
+    padding: 1.25rem 1.25rem 1rem;
+  }
+
+  .quote-modal__progress-line {
+    min-width: 30px;
+  }
+
+  .quote-modal__progress-label {
+    font-size: 0.65rem;
+  }
+
+  .quote-modal__nav {
+    padding: 0.75rem 1.25rem 1.25rem;
+  }
+
+  .quote-modal__row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .quote-modal__row--thirds {
+    flex-direction: row;
+  }
+
+  .quote-modal__heading {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .quote-modal__progress-label {
+    display: none;
+  }
+
+  .quote-modal__row--thirds {
+    flex-direction: column;
+    gap: 0;
+  }
+}

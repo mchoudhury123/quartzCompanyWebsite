@@ -1,0 +1,574 @@
+[
+  {
+    "id": 1,
+    "slug": "arctic-frost",
+    "name": "Arctic Frost",
+    "category": "quartz",
+    "collection": "Polar Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 295,
+    "originalPrice": 450,
+    "onSale": true,
+    "discount": 35,
+    "rating": 4.8,
+    "reviewCount": 142,
+    "popular": true,
+    "new": false,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A pristine white surface threaded with delicate silver veining, evoking the serenity of a frost-covered landscape.",
+    "description": "Arctic Frost captures the quiet elegance of a winter morning. Its luminous white base is interlaced with soft silver and pale grey veins that meander naturally across the surface, creating a sense of depth without overwhelming the eye. Perfect for bright, contemporary kitchens where light and space are paramount, this surface transforms everyday cooking into an experience surrounded by understated luxury. Each slab is engineered for consistency, meaning the beauty you see in our showroom is precisely what graces your home.",
+    "features": [
+      "Authentic natural appearance",
+      "Customisable edge profiles",
+      "Scratch & stain resistant",
+      "Easy daily maintenance",
+      "NSF certified hygienic"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1566041510394-cf7c8fe21800?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1566041510394-cf7c8fe21800?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 2,
+    "slug": "calacatta-gold",
+    "name": "Calacatta Gold",
+    "category": "quartz",
+    "collection": "Heritage Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 385,
+    "originalPrice": 520,
+    "onSale": true,
+    "discount": 26,
+    "rating": 4.9,
+    "reviewCount": 238,
+    "popular": true,
+    "new": false,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Bold golden veins dance across a warm white canvas, inspired by the world's most coveted Italian marble.",
+    "description": "Our Calacatta Gold pays homage to one of nature's most prized stones without the porosity and maintenance concerns of genuine marble. Warm golden and taupe veins sweep dramatically through a creamy white background, giving every kitchen island and countertop a gallery-worthy presence. The engineered composition ensures that the bold veining you fall in love with at first sight remains consistent slab after slab—no colour-matching headaches, no natural stone lottery.",
+    "features": [
+      "Dramatic veining pattern",
+      "Heat resistant up to 150°C",
+      "Non-porous surface",
+      "UV stable colouring",
+      "Lifetime manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "94% Natural Quartz, 6% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1690049098415-29f96fca22c0?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1722605090433-41d1183a792d?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1690049098415-29f96fca22c0?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 3,
+    "slug": "midnight-obsidian",
+    "name": "Midnight Obsidian",
+    "category": "quartz",
+    "collection": "Noir Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 320,
+    "originalPrice": 440,
+    "onSale": true,
+    "discount": 27,
+    "rating": 4.7,
+    "reviewCount": 96,
+    "popular": false,
+    "new": true,
+    "colorTone": "black",
+    "patternType": "speckled",
+    "brand": "The Quartz Company",
+    "shortDesc": "A deep, commanding black surface with subtle metallic flecks that shimmer under kitchen lighting.",
+    "description": "Midnight Obsidian is for those who dare to go dark. This deeply saturated black surface conceals fine metallic particles that catch the light at every angle, lending a theatrical quality to kitchen islands and bar tops. Despite its dramatic appearance, the surface is remarkably practical—its dark tone disguises everyday marks while the non-porous finish repels stains and bacteria. Pair it with brushed brass taps and warm timber cabinetry for a kitchen that feels both moody and inviting.",
+    "features": [
+      "Rich, deep colour saturation",
+      "Metallic particle detail",
+      "Fingerprint resistant finish",
+      "Impact resistant core",
+      "10-year stain warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1699982758974-0703b87f052d?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1699982758974-0703b87f052d?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 4,
+    "slug": "sahara-dune",
+    "name": "Sahara Dune",
+    "category": "quartz",
+    "collection": "Earth Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 275,
+    "originalPrice": 390,
+    "onSale": true,
+    "discount": 30,
+    "rating": 4.6,
+    "reviewCount": 87,
+    "popular": false,
+    "new": false,
+    "colorTone": "beige",
+    "patternType": "fine-grain",
+    "brand": "The Quartz Company",
+    "shortDesc": "Warm sandy tones with a gentle granular texture that brings organic warmth to any kitchen space.",
+    "description": "Inspired by the timeless beauty of wind-sculpted desert landscapes, Sahara Dune combines warm beige and soft caramel tones in a fine-grained pattern that feels effortlessly organic. It is a supremely versatile choice: equally at home in a rustic farmhouse kitchen as it is in a sleek urban apartment. The gentle colour variation within the surface adds visual interest without competing with your cabinetry or splashback choices.",
+    "features": [
+      "Warm, neutral palette",
+      "Versatile design pairing",
+      "Chip resistant surface",
+      "Seamless joint capability",
+      "Food-safe certified"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Honed",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1600350115264-f98b1516121e?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1757262798639-fb6a5d2a752a?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1600350115264-f98b1516121e?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 5,
+    "slug": "storm-grey",
+    "name": "Storm Grey",
+    "category": "quartz",
+    "collection": "Urban Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 310,
+    "originalPrice": 430,
+    "onSale": true,
+    "discount": 28,
+    "rating": 4.8,
+    "reviewCount": 164,
+    "popular": true,
+    "new": false,
+    "colorTone": "grey",
+    "patternType": "concrete",
+    "brand": "The Quartz Company",
+    "shortDesc": "A sophisticated mid-grey surface with a cement-like texture, perfect for industrial and contemporary kitchens.",
+    "description": "Storm Grey channels the raw beauty of polished concrete without its practical shortcomings. The surface carries a sophisticated mid-grey tone with subtle tonal shifts that mimic weathered stone, giving it a tactile, lived-in quality that architects and interior designers adore. Unlike real concrete, it won't crack, stain or require periodic sealing—just wipe and enjoy. It's become one of our fastest-growing choices for handleless kitchens and open-plan living spaces.",
+    "features": [
+      "Industrial aesthetic",
+      "Concrete-effect texture",
+      "Zero porosity",
+      "Thermal shock resistant",
+      "25-year surface warranty"
+    ],
+    "specifications": {
+      "material": "90% Natural Quartz, 10% Polymer Resin & Pigment",
+      "finish": "Honed Matte",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1762087483790-048ea2d83b4a?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1762087483790-048ea2d83b4a?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 6,
+    "slug": "carrara-mist",
+    "name": "Carrara Mist",
+    "category": "quartz",
+    "collection": "Heritage Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 345,
+    "originalPrice": 475,
+    "onSale": true,
+    "discount": 27,
+    "rating": 4.7,
+    "reviewCount": 201,
+    "popular": true,
+    "new": false,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Soft grey veining drifts through a bright white base, capturing the timeless appeal of Italian Carrara marble.",
+    "description": "Carrara Mist translates the world's most beloved marble aesthetic into a surface that thrives in busy family kitchens. Wispy grey veins float across a luminous white backdrop, creating movement and character that never feels busy or overdone. Where natural Carrara can etch from lemon juice and stain from red wine, our engineered alternative laughs in the face of spills—just wipe clean and carry on.",
+    "features": [
+      "Classic marble aesthetic",
+      "Consistent veining",
+      "Acid & etch resistant",
+      "Low maintenance",
+      "Greenguard Gold certified"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1525468568166-6f2cd17c7ec9?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1671197244266-73129c97c096?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1525468568166-6f2cd17c7ec9?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 7,
+    "slug": "venetian-grey",
+    "name": "Venetian Grey",
+    "category": "quartz",
+    "collection": "Urban Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 305,
+    "originalPrice": null,
+    "onSale": false,
+    "discount": 0,
+    "rating": 4.5,
+    "reviewCount": 62,
+    "popular": false,
+    "new": false,
+    "colorTone": "grey",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Warm grey backdrop with sweeping white veins, blending contemporary style with classic grace.",
+    "description": "Venetian Grey occupies the sweet spot between modern minimalism and classical elegance. A warm mid-grey base is traversed by broad, sweeping white veins that evoke the grandeur of Venetian palazzo floors. It is a particularly strong choice for large kitchen islands where the veining can unfold to full dramatic effect, and it pairs beautifully with both matt and gloss cabinetry.",
+    "features": [
+      "Warm grey tone",
+      "Bold veining character",
+      "Bookmatching available",
+      "Impact resistant",
+      "15-year warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1585749864755-f1adb4ec8e29?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1585749864755-f1adb4ec8e29?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 8,
+    "slug": "emerald-coast",
+    "name": "Emerald Coast",
+    "category": "quartz",
+    "collection": "Colour Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 340,
+    "originalPrice": 460,
+    "onSale": true,
+    "discount": 26,
+    "rating": 4.6,
+    "reviewCount": 45,
+    "popular": false,
+    "new": true,
+    "colorTone": "green",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A rich emerald green surface with subtle veining, bringing nature's most luxurious colour indoors.",
+    "description": "For the design-confident homeowner, Emerald Coast makes a bold and beautiful statement. Its deep green tone channels the lush richness of malachite and tropical foliage, while understated veining prevents the surface from feeling flat. It pairs strikingly with brass hardware, dark timber, and white cabinetry—a combination that interior magazines return to season after season.",
+    "features": [
+      "Bold statement colour",
+      "Nature-inspired palette",
+      "UV colour stability",
+      "Seamless joint technology",
+      "Stain proof guarantee"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "12–18 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1532644440111-bc94f97955c1?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1622372738946-62e02505feb3?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1532644440111-bc94f97955c1?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 9,
+    "slug": "alpine-white",
+    "name": "Alpine White",
+    "category": "quartz",
+    "collection": "Polar Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 245,
+    "originalPrice": 350,
+    "onSale": true,
+    "discount": 30,
+    "rating": 4.5,
+    "reviewCount": 312,
+    "popular": true,
+    "new": false,
+    "colorTone": "white",
+    "patternType": "plain",
+    "brand": "The Quartz Company",
+    "shortDesc": "A clean, pure white surface with fine particles—our best-selling entry into engineered quartz.",
+    "description": "Alpine White is the workhorse of our collection: a clean, bright white surface with a fine, uniform particle structure that maximises light reflection and makes even compact kitchens feel spacious. It is our most popular colour for good reason—it complements every cabinetry style, every splashback tile, and every interior mood. With its accessible price point and bombproof durability, it's the perfect introduction to engineered quartz.",
+    "features": [
+      "Bright, clean white",
+      "Uniform particle structure",
+      "Budget-friendly option",
+      "Highly durable",
+      "Easy to clean"
+    ],
+    "specifications": {
+      "material": "94% Natural Quartz, 6% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "7–12 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1704530953106-9cdd4342dd36?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1704530953106-9cdd4342dd36?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 10,
+    "slug": "bianco-portofino",
+    "name": "Bianco Portofino",
+    "category": "printed-quartz",
+    "collection": "Printed Signature Series",
+    "material": "Full Body Printed Quartz",
+    "pricePerSqm": 425,
+    "originalPrice": 575,
+    "onSale": true,
+    "discount": 26,
+    "rating": 4.9,
+    "reviewCount": 78,
+    "popular": true,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Striking white surface with bold through-body veining visible on every edge — our flagship printed quartz.",
+    "description": "Bianco Portofino represents the pinnacle of printed quartz technology. Unlike conventional engineered quartz, the dramatic grey and gold veining runs through the full thickness of the slab, meaning every mitre joint, waterfall edge and cut-out reveals the same breathtaking pattern. The result is a surface that looks and feels indistinguishable from the finest Italian marble, yet offers all the practical benefits of engineered quartz — zero porosity, no sealing, and effortless maintenance.",
+    "features": [
+      "Full body through-pattern",
+      "Visible veining on all edges",
+      "Ultra-realistic marble effect",
+      "Non-porous & hygienic",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin (Full Body Print)",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~48 kg/m² (20mm)",
+      "leadTime": "12–18 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1566041510394-cf7c8fe21800?w=800&h=600&fit=crop&auto=format&q=80&crop=top",
+      "https://images.unsplash.com/photo-1758315417321-83eb30a39710?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1566041510394-cf7c8fe21800?w=600&h=450&fit=crop&auto=format&q=80&crop=top"
+  },
+  {
+    "id": 11,
+    "slug": "nero-marquina",
+    "name": "Nero Marquina",
+    "category": "printed-quartz",
+    "collection": "Printed Signature Series",
+    "material": "Full Body Printed Quartz",
+    "pricePerSqm": 445,
+    "originalPrice": 595,
+    "onSale": true,
+    "discount": 25,
+    "rating": 4.8,
+    "reviewCount": 54,
+    "popular": false,
+    "new": true,
+    "colorTone": "black",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Deep black base with crisp white veining running through the full body — drama meets sophistication.",
+    "description": "Nero Marquina captures the timeless allure of one of Spain's most prized natural stones. A rich, jet-black base is traversed by clean white veins that flow through the entire slab thickness, creating seamless continuity on waterfall edges and mitred returns. This full body printed quartz is engineered for those who want maximum visual impact without the fragility and maintenance demands of natural black marble. It is a designer's dream for statement islands and luxury kitchen spaces.",
+    "features": [
+      "Through-body white veining",
+      "High-contrast drama",
+      "Seamless edge continuity",
+      "Scratch & stain resistant",
+      "UV stable pigments"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin (Full Body Print)",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~48 kg/m² (20mm)",
+      "leadTime": "12–18 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1747696766706-5485b39bf358?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1747696766706-5485b39bf358?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 12,
+    "slug": "travertino-gold",
+    "name": "Travertino Gold",
+    "category": "printed-quartz",
+    "collection": "Printed Signature Series",
+    "material": "Full Body Printed Quartz",
+    "pricePerSqm": 410,
+    "originalPrice": 550,
+    "onSale": true,
+    "discount": 25,
+    "rating": 4.7,
+    "reviewCount": 41,
+    "popular": false,
+    "new": true,
+    "colorTone": "beige",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "Warm golden travertine tones with organic veining that flows through every edge and surface.",
+    "description": "Travertino Gold brings the warmth of Mediterranean travertine into the modern kitchen. Soft gold and honey-toned veins ripple through a creamy beige base, and because the pattern is printed through the full body of the slab, the beauty is visible from every angle — top surface, edges, and cut-outs alike. It pairs beautifully with natural timber, warm metallic hardware and cream or olive cabinetry, creating kitchens that feel bathed in sunlight.",
+    "features": [
+      "Full body warm veining",
+      "Travertine-inspired design",
+      "Edge pattern continuity",
+      "Food-safe & non-porous",
+      "Thermal shock resistant"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin (Full Body Print)",
+      "finish": "Honed",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~48 kg/m² (20mm)",
+      "leadTime": "12–18 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1635791569715-a96ee5dd39e7?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1635791569715-a96ee5dd39e7?w=600&h=450&fit=crop&auto=format&q=80"
+  },
+  {
+    "id": 13,
+    "slug": "statuario-classico",
+    "name": "Statuario Classico",
+    "category": "printed-quartz",
+    "collection": "Printed Signature Series",
+    "material": "Full Body Printed Quartz",
+    "pricePerSqm": 465,
+    "originalPrice": 620,
+    "onSale": true,
+    "discount": 25,
+    "rating": 4.9,
+    "reviewCount": 67,
+    "popular": true,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "The ultimate marble-look quartz — bold Statuario veining printed through the full slab thickness.",
+    "description": "Statuario Classico is our most luxurious full body printed quartz, inspired by the legendary Statuario marble quarried in Carrara, Italy. Thick, sweeping grey veins cascade across a luminous white canvas, and because the design penetrates the entire depth of the slab, every waterfall edge and mitred joint displays the same magnificent pattern. This is the surface for homeowners who accept nothing less than perfection — all the grandeur of natural Statuario, with none of the upkeep.",
+    "features": [
+      "Premium Statuario veining",
+      "Full depth pattern printing",
+      "Bookmatching available",
+      "Zero porosity",
+      "Lifetime structural warranty"
+    ],
+    "specifications": {
+      "material": "94% Natural Quartz, 6% Polymer Resin (Full Body Print)",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~48 kg/m² (20mm)",
+      "leadTime": "14–20 working days"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1694378061011-45b5ef2e3fcb?w=800&h=600&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&auto=format&q=80"
+    ],
+    "swatch": "https://images.unsplash.com/photo-1694378061011-45b5ef2e3fcb?w=600&h=450&fit=crop&auto=format&q=80"
+  }
+]

@@ -1,0 +1,260 @@
+/* ===== 404 Not Found Page Styles ===== */
+
+.notfound-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F8F6F3;
+  overflow: hidden;
+}
+
+/* Stone Texture Background Pattern */
+.notfound-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background:
+    /* Fine grain layer */
+    radial-gradient(
+      ellipse at 20% 30%,
+      rgba(197, 164, 126, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 70%,
+      rgba(59, 59, 59, 0.04) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(197, 164, 126, 0.03) 0%,
+      transparent 70%
+    ),
+    /* Subtle veining lines */
+    linear-gradient(
+      155deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(197, 164, 126, 0.04) 40.5%,
+      rgba(197, 164, 126, 0.04) 41%,
+      transparent 41.5%,
+      transparent 100%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 0%,
+      transparent 60%,
+      rgba(26, 26, 26, 0.025) 60.3%,
+      rgba(26, 26, 26, 0.025) 60.8%,
+      transparent 61.1%,
+      transparent 100%
+    ),
+    linear-gradient(
+      170deg,
+      transparent 0%,
+      transparent 75%,
+      rgba(197, 164, 126, 0.035) 75.3%,
+      rgba(197, 164, 126, 0.035) 75.7%,
+      transparent 76%,
+      transparent 100%
+    ),
+    /* Noise-like texture */
+    repeating-conic-gradient(
+      rgba(197, 164, 126, 0.015) 0%,
+      transparent 0.8%,
+      transparent 1.2%,
+      rgba(26, 26, 26, 0.01) 2%
+    ),
+    /* Base gradient */
+    linear-gradient(
+      180deg,
+      #F8F6F3 0%,
+      #f3f0ec 50%,
+      #F8F6F3 100%
+    );
+}
+
+/* Container */
+.notfound-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+/* Content */
+.notfound-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* 404 Number */
+.notfound-code {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 10rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #C5A47E;
+  letter-spacing: -4px;
+  margin-bottom: 8px;
+  background: linear-gradient(
+    180deg,
+    #C5A47E 0%,
+    #d4b896 40%,
+    #b8946a 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  user-select: none;
+}
+
+/* Heading */
+.notfound-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 16px 0;
+  letter-spacing: 0.3px;
+}
+
+/* Description Text */
+.notfound-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #5a5a6a;
+  margin: 0 0 40px 0;
+  max-width: 420px;
+}
+
+/* Action Buttons */
+.notfound-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 180px;
+}
+
+/* Primary Button - Teal */
+.notfound-btn-primary {
+  background: #3B3B3B;
+  color: #FFFFFF;
+  border: 2px solid #3B3B3B;
+}
+
+.notfound-btn-primary:hover {
+  background: #252525;
+  border-color: #252525;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 59, 59, 0.25);
+}
+
+.notfound-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 59, 59, 0.2);
+}
+
+/* Outline Button */
+.notfound-btn-outline {
+  background: transparent;
+  color: #3B3B3B;
+  border: 2px solid #3B3B3B;
+}
+
+.notfound-btn-outline:hover {
+  background: #3B3B3B;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 59, 59, 0.15);
+}
+
+.notfound-btn-outline:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 59, 59, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notfound-code {
+    font-size: 7rem;
+    letter-spacing: -2px;
+  }
+
+  .notfound-heading {
+    font-size: 1.8rem;
+  }
+
+  .notfound-text {
+    font-size: 1rem;
+    margin-bottom: 32px;
+  }
+
+  .notfound-btn {
+    padding: 12px 28px;
+    font-size: 0.9rem;
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notfound-container {
+    padding: 32px 20px;
+  }
+
+  .notfound-code {
+    font-size: 5.5rem;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  .notfound-heading {
+    font-size: 1.5rem;
+  }
+
+  .notfound-text {
+    font-size: 0.93rem;
+    margin-bottom: 28px;
+  }
+
+  .notfound-actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .notfound-btn {
+    width: 100%;
+    min-width: unset;
+    padding: 14px 24px;
+  }
+}

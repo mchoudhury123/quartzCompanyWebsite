@@ -1,0 +1,267 @@
+/* ============================================
+   MaterialPage – The Quartz Company
+   ============================================ */
+
+/* ── Hero ── */
+.material-hero {
+  color: var(--color-white);
+  padding: 6rem 0 5rem;
+  text-align: center;
+}
+
+.material-hero--quartz {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+}
+
+.material-hero--printed-quartz {
+  background: linear-gradient(135deg, #1a1a1a 0%, #c5a47e 100%);
+}
+
+.material-hero__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--color-white);
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+
+.material-hero__subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+/* ── Introduction ── */
+.material-intro {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.material-intro__heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  color: var(--color-dark);
+  margin-bottom: 1.5rem;
+}
+
+.material-intro__text {
+  font-size: 1.05rem;
+  color: var(--color-text);
+  line-height: 1.85;
+  margin-bottom: 0;
+}
+
+/* ── Benefits Grid ── */
+.material-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.material-benefit-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.material-benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.material-benefit-card__number {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.material-benefit-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--color-dark);
+  margin-bottom: 0.75rem;
+}
+
+.material-benefit-card__desc {
+  font-size: 0.88rem;
+  color: var(--color-text-light);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* ── Product Range ── */
+.material-products-grid {
+  margin-bottom: 2.5rem;
+}
+
+.material-range-cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.material-range-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.material-range-empty p {
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+.material-range-empty a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ── FAQ ── */
+.material-faq {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.material-faq__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.material-faq__item:first-child {
+  border-top: 1px solid var(--color-border);
+}
+
+.material-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.25rem 0;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  cursor: pointer;
+  text-align: left;
+  gap: 1rem;
+  transition: color var(--transition);
+}
+
+.material-faq__question:hover {
+  color: var(--color-primary);
+}
+
+.material-faq__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: background var(--transition), color var(--transition);
+  border: 1px solid var(--color-border);
+}
+
+.material-faq__item--open .material-faq__icon {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.material-faq__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.material-faq__item--open .material-faq__answer {
+  max-height: 300px;
+  padding-bottom: 1.25rem;
+}
+
+.material-faq__answer p {
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ── CTA ── */
+.material-cta-section {
+  background: var(--color-white);
+}
+
+.material-cta {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.material-cta h2 {
+  font-family: var(--font-heading);
+  margin-bottom: 0.75rem;
+}
+
+.material-cta p {
+  color: var(--color-text-light);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  line-height: 1.65;
+}
+
+.material-cta__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .material-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .material-hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .material-benefits-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .material-benefit-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .material-cta__buttons {
+    flex-direction: column;
+  }
+
+  .material-cta__buttons .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .material-hero__title {
+    font-size: 1.75rem;
+  }
+}

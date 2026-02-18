@@ -1,0 +1,629 @@
+/* ============================================
+   QuotePage – The Quartz Company
+   ============================================ */
+
+/* ── Hero ── */
+.quote-page__hero {
+  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+  color: var(--color-white);
+  text-align: center;
+  padding: 5rem 1.5rem 4.5rem;
+}
+
+.quote-page__hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--color-white);
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+
+.quote-page__hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-gold-light);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* ── Section Headers ── */
+.quote-page__section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.quote-page__step-number {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1;
+  margin-top: 0.15rem;
+}
+
+.quote-page__section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--color-dark);
+  margin-bottom: 0.35rem;
+}
+
+.quote-page__section-desc {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ── Errors ── */
+.quote-page__error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.quote-page__error--section {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  background: rgba(198, 40, 40, 0.06);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Max Selection Warning ── */
+.quote-page__max-warning {
+  background: var(--color-dark);
+  color: var(--color-white);
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* ── Swatch Grid ── */
+.quote-page__swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.quote-page__swatch-tile {
+  position: relative;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-white);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+  text-align: left;
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+.quote-page__swatch-tile:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.quote-page__swatch-tile--selected {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.25);
+}
+
+.quote-page__swatch-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.quote-page__swatch-info {
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.quote-page__swatch-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--color-dark);
+  line-height: 1.3;
+}
+
+.quote-page__swatch-material {
+  font-size: 0.76rem;
+  color: var(--color-text-light);
+}
+
+.quote-page__swatch-check {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.quote-page__swatch-tile--selected .quote-page__swatch-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Sample Toggle ── */
+.quote-page__sample-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.quote-page__sample-question {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+}
+
+.quote-page__sample-toggle {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.quote-page__toggle-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.quote-page__toggle-btn:hover {
+  border-color: var(--color-gold);
+}
+
+.quote-page__toggle-btn--active {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-white);
+}
+
+/* ── Plan Cards ── */
+.quote-page__plan-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.quote-page__plan-card {
+  padding: 2rem 1.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--color-white);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quote-page__plan-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.quote-page__plan-card--active {
+  border-color: var(--color-gold);
+  background: var(--color-cream);
+  box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.2);
+}
+
+.quote-page__plan-card-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.quote-page__plan-card-fi-icon {
+  font-size: 2rem;
+  color: var(--color-text-light);
+}
+
+.quote-page__plan-card--active .quote-page__plan-card-fi-icon {
+  color: var(--color-gold);
+}
+
+.quote-page__plan-card-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-dark);
+}
+
+.quote-page__plan-card-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  line-height: 1.5;
+}
+
+/* ── Dimensions Sub-form ── */
+.quote-page__dimensions {
+  margin-top: 1.5rem;
+  max-width: 700px;
+}
+
+.quote-page__run-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.quote-page__run-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  min-width: 50px;
+  padding-bottom: 0.35rem;
+}
+
+.quote-page__run-field {
+  flex: 1;
+}
+
+.quote-page__run-field-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-bottom: 0.35rem;
+}
+
+.quote-page__run-remove {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition), background var(--transition);
+  margin-bottom: 0.1rem;
+}
+
+.quote-page__run-remove:hover {
+  color: var(--color-error);
+  background: rgba(198, 40, 40, 0.08);
+}
+
+.quote-page__add-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color var(--transition);
+}
+
+.quote-page__add-run:hover {
+  color: var(--color-primary);
+}
+
+/* ── Upload / Dropzone ── */
+.quote-page__upload {
+  margin-top: 1.5rem;
+  max-width: 500px;
+}
+
+.quote-page__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.quote-page__dropzone:hover,
+.quote-page__dropzone--over {
+  border-color: var(--color-gold);
+  background: rgba(197, 164, 126, 0.05);
+}
+
+.quote-page__dropzone--uploaded {
+  border-style: solid;
+  border-color: var(--color-success);
+  background: rgba(46, 125, 50, 0.04);
+}
+
+.quote-page__file-input {
+  display: none;
+}
+
+.quote-page__dropzone-icon {
+  font-size: 2rem;
+  color: var(--color-text-light);
+}
+
+.quote-page__dropzone-icon--done {
+  color: var(--color-success);
+}
+
+.quote-page__dropzone-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.quote-page__dropzone-filename {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-dark);
+}
+
+.quote-page__dropzone-hint {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+}
+
+/* ── Details Form ── */
+.quote-page__details-form {
+  max-width: 640px;
+}
+
+.quote-page__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.quote-page__group {
+  margin-bottom: 1.5rem;
+}
+
+.quote-page__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 0.5rem;
+}
+
+.quote-page__required {
+  color: var(--color-error);
+}
+
+.quote-page__input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.quote-page__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 59, 59, 0.1);
+}
+
+.quote-page__input--error {
+  border-color: var(--color-error);
+}
+
+.quote-page__input--error:focus {
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+}
+
+.quote-page__helper {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  line-height: 1.45;
+}
+
+/* ── Honeypot ── */
+.quote-page__hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ── Privacy Notice ── */
+.quote-page__privacy {
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+
+.quote-page__privacy a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ── Submit Button ── */
+.quote-page__submit {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+}
+
+/* ── Confirmation ── */
+.quote-page__confirmation {
+  padding: 4rem 0;
+}
+
+.quote-page__confirmation-inner {
+  text-align: center;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.quote-page__confirmation-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+  animation: qpBounce 0.5s ease;
+}
+
+.quote-page__confirmation-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  color: var(--color-dark);
+  margin-bottom: 1rem;
+}
+
+.quote-page__confirmation-text {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  line-height: 1.65;
+  margin-bottom: 0.75rem;
+}
+
+.quote-page__confirmation-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* ── Animations ── */
+@keyframes qpBounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .quote-page__hero {
+    padding: 3.5rem 1.25rem 3rem;
+  }
+
+  .quote-page__plan-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-page__run-row {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .quote-page__run-label {
+    width: 100%;
+  }
+
+  .quote-page__run-field {
+    min-width: 0;
+  }
+
+  .quote-page__submit {
+    max-width: 100%;
+  }
+
+  .quote-page__confirmation-actions {
+    flex-direction: column;
+  }
+
+  .quote-page__confirmation-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-page__swatch-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .quote-page__row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .quote-page__section-header {
+    gap: 0.75rem;
+  }
+
+  .quote-page__step-number {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    font-size: 1rem;
+  }
+
+  .quote-page__hero-title {
+    font-size: 1.75rem;
+  }
+}

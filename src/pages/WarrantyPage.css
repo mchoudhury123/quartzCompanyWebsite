@@ -1,0 +1,436 @@
+/* ============================================
+   Warranty Page
+   ============================================ */
+
+/* Hero */
+.war-hero {
+  position: relative;
+  background: var(--color-dark);
+  padding: 7rem 0 5rem;
+  overflow: hidden;
+}
+
+.war-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+  opacity: 0.95;
+}
+
+.war-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.war-hero__badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: rgba(197, 164, 126, 0.2);
+  color: var(--color-gold);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 2px;
+  margin-bottom: 1.25rem;
+}
+
+.war-hero__title {
+  color: var(--color-white);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.war-hero__subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Warranty Cards */
+.war-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.war-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition);
+}
+
+.war-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.war-card__header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem 2rem;
+  background: var(--color-primary);
+}
+
+.war-card__header--installation {
+  background: var(--color-dark);
+}
+
+.war-card__years {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.war-card__years-label {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.15rem;
+}
+
+.war-card__title {
+  color: var(--color-white);
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.war-card__body {
+  padding: 2rem;
+}
+
+.war-card__description {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.war-card__section {
+  margin-bottom: 1.5rem;
+}
+
+.war-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.war-card__section-title {
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid;
+}
+
+.war-card__section-title--covered {
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.war-card__section-title--not-covered {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.war-card__list {
+  list-style: none;
+}
+
+.war-card__list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.war-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.war-card__list--covered li::before {
+  background: var(--color-success);
+}
+
+.war-card__list--not-covered li::before {
+  background: var(--color-error);
+  opacity: 0.5;
+}
+
+/* Claims */
+.war-claims__steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.war-claim-step {
+  text-align: center;
+  position: relative;
+}
+
+.war-claim-step::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: -1rem;
+  width: calc(2rem);
+  height: 2px;
+  background: var(--color-border);
+}
+
+.war-claim-step:last-child::after {
+  display: none;
+}
+
+.war-claim-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-white);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.war-claim-step__title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.war-claim-step__desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+/* Certifications */
+.war-certs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.war-cert {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  transition: transform var(--transition);
+}
+
+.war-cert:hover {
+  transform: translateY(-3px);
+}
+
+.war-cert__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-white);
+  margin-bottom: 1rem;
+}
+
+.war-cert__logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.war-cert__name {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.war-cert__desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-light);
+  margin-bottom: 0;
+}
+
+/* Download */
+.war-download__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 3rem;
+  box-shadow: var(--shadow-sm);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.war-download__heading {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.war-download__text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  max-width: 480px;
+  margin-bottom: 0;
+}
+
+.war-download__actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* CTA */
+.war-cta {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+}
+
+.war-cta__inner {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.war-cta__heading {
+  color: var(--color-white);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.war-cta__text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.war-cta__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.war-cta__actions .btn--outline {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+.war-cta__actions .btn--outline:hover {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .war-claims__steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .war-claim-step::after {
+    display: none;
+  }
+
+  .war-certs__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .war-hero {
+    padding: 5rem 0 3.5rem;
+  }
+
+  .war-cards__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .war-card__header {
+    padding: 1.5rem;
+  }
+
+  .war-card__body {
+    padding: 1.5rem;
+  }
+
+  .war-card__years {
+    font-size: 2.75rem;
+  }
+
+  .war-download__card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .war-download__text {
+    max-width: 100%;
+  }
+
+  .war-download__actions {
+    width: 100%;
+  }
+
+  .war-download__actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .war-claims__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .war-certs__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .war-cta__actions {
+    flex-direction: column;
+  }
+}
