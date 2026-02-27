@@ -43,17 +43,16 @@ const CookiesPage = () => {
   return (
     <div className="cookies-page">
       <section className="cookies-hero">
-        <div className="cookies-hero-overlay" />
-        <div className="cookies-hero-content">
-          <h1>Cookie Policy</h1>
-          <p className="cookies-updated">Last updated: March 2025</p>
+        <div className="cookies-hero__content">
+          <h1 className="cookies-hero__title">Cookie Policy</h1>
+          <p className="cookies-hero__date">Last updated: March 2025</p>
         </div>
       </section>
 
-      <div className="legal-content">
-        <nav className="table-of-contents">
-          <h2>Contents</h2>
-          <ol>
+      <div className="cookies-body">
+        <nav className="cookies-body__toc">
+          <h2 className="cookies-body__toc-title">Contents</h2>
+          <ol className="cookies-body__toc-list">
             <li>
               <a href="#what-are-cookies" onClick={(e) => handleAnchorClick(e, 'what-are-cookies')}>
                 What Are Cookies
@@ -82,8 +81,8 @@ const CookiesPage = () => {
           </ol>
         </nav>
 
-        <section id="what-are-cookies" className="legal-section">
-          <h2>1. What Are Cookies</h2>
+        <section id="what-are-cookies" className="cookies-section cookies-section--left">
+          <h2 className="cookies-section__heading">1. What Are Cookies</h2>
           <p>
             Cookies are small text files that are placed on your computer or mobile device when
             you visit a website. They are widely used to make websites work more efficiently, as
@@ -106,18 +105,18 @@ const CookiesPage = () => {
           </p>
         </section>
 
-        <section id="cookies-we-use" className="legal-section">
-          <h2>2. Cookies We Use</h2>
+        <section id="cookies-we-use" className="cookies-section cookies-section--right">
+          <h2 className="cookies-section__heading">2. Cookies We Use</h2>
           <p>
             We use the following categories of cookies on our website. The table below provides
             details of each cookie, its purpose, and its duration.
           </p>
 
-          <div className="cookie-category">
-            <div className="cookie-category-header cookie-essential">
-              <div className="cookie-category-info">
+          <div className="cookies-section__category">
+            <div className="cookies-section__category-header">
+              <div className="cookies-section__category-info">
                 <h3>Essential Cookies</h3>
-                <span className="cookie-badge cookie-badge-required">Always Active</span>
+                <span className="cookies-section__badge cookies-section__badge--required">Always Active</span>
               </div>
             </div>
             <p>
@@ -125,8 +124,8 @@ const CookiesPage = () => {
               switched off. They are usually set in response to actions made by you, such as
               setting your privacy preferences, logging in, or filling in forms.
             </p>
-            <div className="cookie-table-wrapper">
-              <table className="cookie-table">
+            <div className="cookies-section__table-wrap">
+              <table className="cookies-section__table">
                 <thead>
                   <tr>
                     <th>Cookie Name</th>
@@ -159,11 +158,11 @@ const CookiesPage = () => {
             </div>
           </div>
 
-          <div className="cookie-category">
-            <div className="cookie-category-header cookie-analytics">
-              <div className="cookie-category-info">
+          <div className="cookies-section__category">
+            <div className="cookies-section__category-header">
+              <div className="cookies-section__category-info">
                 <h3>Analytics Cookies</h3>
-                <span className="cookie-badge cookie-badge-optional">Can Be Disabled</span>
+                <span className="cookies-section__badge cookies-section__badge--optional">Can Be Disabled</span>
               </div>
             </div>
             <p>
@@ -171,8 +170,8 @@ const CookiesPage = () => {
               improve the performance of our website. They help us to know which pages are the
               most and least popular and see how visitors move around the site.
             </p>
-            <div className="cookie-table-wrapper">
-              <table className="cookie-table">
+            <div className="cookies-section__table-wrap">
+              <table className="cookies-section__table">
                 <thead>
                   <tr>
                     <th>Cookie Name</th>
@@ -211,11 +210,11 @@ const CookiesPage = () => {
             </div>
           </div>
 
-          <div className="cookie-category">
-            <div className="cookie-category-header cookie-marketing">
-              <div className="cookie-category-info">
+          <div className="cookies-section__category">
+            <div className="cookies-section__category-header">
+              <div className="cookies-section__category-info">
                 <h3>Marketing Cookies</h3>
-                <span className="cookie-badge cookie-badge-optional">Can Be Disabled</span>
+                <span className="cookies-section__badge cookies-section__badge--optional">Can Be Disabled</span>
               </div>
             </div>
             <p>
@@ -223,8 +222,8 @@ const CookiesPage = () => {
               your interests. They may also be used to limit the number of times you see an
               advertisement and measure the effectiveness of advertising campaigns.
             </p>
-            <div className="cookie-table-wrapper">
-              <table className="cookie-table">
+            <div className="cookies-section__table-wrap">
+              <table className="cookies-section__table">
                 <thead>
                   <tr>
                     <th>Cookie Name</th>
@@ -257,11 +256,11 @@ const CookiesPage = () => {
             </div>
           </div>
 
-          <div className="cookie-category">
-            <div className="cookie-category-header cookie-functional">
-              <div className="cookie-category-info">
+          <div className="cookies-section__category">
+            <div className="cookies-section__category-header">
+              <div className="cookies-section__category-info">
                 <h3>Functional Cookies</h3>
-                <span className="cookie-badge cookie-badge-optional">Can Be Disabled</span>
+                <span className="cookies-section__badge cookies-section__badge--optional">Can Be Disabled</span>
               </div>
             </div>
             <p>
@@ -269,8 +268,8 @@ const CookiesPage = () => {
               personalisation. They may be set by us or by third-party providers whose services
               we have added to our pages.
             </p>
-            <div className="cookie-table-wrapper">
-              <table className="cookie-table">
+            <div className="cookies-section__table-wrap">
+              <table className="cookies-section__table">
                 <thead>
                   <tr>
                     <th>Cookie Name</th>
@@ -304,37 +303,37 @@ const CookiesPage = () => {
           </div>
         </section>
 
-        <section id="manage-cookies" className="legal-section">
-          <h2>3. How to Manage Cookies</h2>
+        <section id="manage-cookies" className="cookies-section cookies-section--left">
+          <h2 className="cookies-section__heading">3. How to Manage Cookies</h2>
           <p>
             Most web browsers allow you to control cookies through their settings. You can
             usually find these settings in the "Options" or "Preferences" menu of your browser.
             Below are links to instructions for managing cookies in common browsers:
           </p>
 
-          <div className="browser-list">
-            <div className="browser-item">
+          <div className="cookies-section__browsers">
+            <div className="cookies-section__browser-item">
               <h3>Google Chrome</h3>
               <p>
                 Settings &gt; Privacy and Security &gt; Cookies and other site data. You can block
                 third-party cookies, clear cookies on exit, or block all cookies.
               </p>
             </div>
-            <div className="browser-item">
+            <div className="cookies-section__browser-item">
               <h3>Mozilla Firefox</h3>
               <p>
                 Settings &gt; Privacy &amp; Security &gt; Cookies and Site Data. Firefox offers
                 Standard, Strict, and Custom tracking protection levels.
               </p>
             </div>
-            <div className="browser-item">
+            <div className="cookies-section__browser-item">
               <h3>Safari</h3>
               <p>
                 Preferences &gt; Privacy &gt; Manage Website Data. Safari blocks cross-site
                 tracking cookies by default.
               </p>
             </div>
-            <div className="browser-item">
+            <div className="cookies-section__browser-item">
               <h3>Microsoft Edge</h3>
               <p>
                 Settings &gt; Cookies and site permissions &gt; Manage and delete cookies and
@@ -360,103 +359,103 @@ const CookiesPage = () => {
           </p>
         </section>
 
-        <section id="cookie-preferences" className="legal-section">
-          <h2>4. Your Cookie Preferences</h2>
+        <section id="cookie-preferences" className="cookies-section cookies-section--right">
+          <h2 className="cookies-section__heading">4. Your Cookie Preferences</h2>
           <p>
             Use the toggles below to manage your cookie preferences. Essential cookies cannot be
             disabled as they are required for the website to function properly.
           </p>
 
-          <div className="cookie-preferences-panel">
-            <div className="cookie-pref-row">
-              <div className="cookie-pref-info">
+          <div className="cookies-section__prefs-panel">
+            <div className="cookies-section__pref-row">
+              <div className="cookies-section__pref-info">
                 <h3>Essential Cookies</h3>
                 <p>Required for core website functionality. These cannot be disabled.</p>
               </div>
-              <div className="cookie-toggle-wrapper">
+              <div className="cookies-section__toggle-wrap">
                 <button
-                  className={`cookie-toggle cookie-toggle-active cookie-toggle-disabled`}
+                  className="cookies-section__toggle cookies-section__toggle--active cookies-section__toggle--disabled"
                   disabled
                   aria-label="Essential cookies - always active"
                 >
-                  <span className="cookie-toggle-slider" />
+                  <span className="cookies-section__toggle-slider" />
                 </button>
-                <span className="cookie-toggle-label">Always On</span>
+                <span className="cookies-section__toggle-label">Always On</span>
               </div>
             </div>
 
-            <div className="cookie-pref-row">
-              <div className="cookie-pref-info">
+            <div className="cookies-section__pref-row">
+              <div className="cookies-section__pref-info">
                 <h3>Analytics Cookies</h3>
                 <p>Help us understand how visitors interact with our website using Google Analytics.</p>
               </div>
-              <div className="cookie-toggle-wrapper">
+              <div className="cookies-section__toggle-wrap">
                 <button
-                  className={`cookie-toggle ${preferences.analytics ? 'cookie-toggle-active' : ''}`}
+                  className={`cookies-section__toggle ${preferences.analytics ? 'cookies-section__toggle--active' : ''}`}
                   onClick={() => handleToggle('analytics')}
                   aria-label={`Analytics cookies - ${preferences.analytics ? 'enabled' : 'disabled'}`}
                   role="switch"
                   aria-checked={preferences.analytics}
                 >
-                  <span className="cookie-toggle-slider" />
+                  <span className="cookies-section__toggle-slider" />
                 </button>
-                <span className="cookie-toggle-label">
+                <span className="cookies-section__toggle-label">
                   {preferences.analytics ? 'Enabled' : 'Disabled'}
                 </span>
               </div>
             </div>
 
-            <div className="cookie-pref-row">
-              <div className="cookie-pref-info">
+            <div className="cookies-section__pref-row">
+              <div className="cookies-section__pref-info">
                 <h3>Marketing Cookies</h3>
                 <p>Used for targeted advertising through platforms like Facebook Pixel.</p>
               </div>
-              <div className="cookie-toggle-wrapper">
+              <div className="cookies-section__toggle-wrap">
                 <button
-                  className={`cookie-toggle ${preferences.marketing ? 'cookie-toggle-active' : ''}`}
+                  className={`cookies-section__toggle ${preferences.marketing ? 'cookies-section__toggle--active' : ''}`}
                   onClick={() => handleToggle('marketing')}
                   aria-label={`Marketing cookies - ${preferences.marketing ? 'enabled' : 'disabled'}`}
                   role="switch"
                   aria-checked={preferences.marketing}
                 >
-                  <span className="cookie-toggle-slider" />
+                  <span className="cookies-section__toggle-slider" />
                 </button>
-                <span className="cookie-toggle-label">
+                <span className="cookies-section__toggle-label">
                   {preferences.marketing ? 'Enabled' : 'Disabled'}
                 </span>
               </div>
             </div>
 
-            <div className="cookie-pref-row">
-              <div className="cookie-pref-info">
+            <div className="cookies-section__pref-row">
+              <div className="cookies-section__pref-info">
                 <h3>Functional Cookies</h3>
                 <p>Enable enhanced functionality and personalisation such as remembering your preferences.</p>
               </div>
-              <div className="cookie-toggle-wrapper">
+              <div className="cookies-section__toggle-wrap">
                 <button
-                  className={`cookie-toggle ${preferences.functional ? 'cookie-toggle-active' : ''}`}
+                  className={`cookies-section__toggle ${preferences.functional ? 'cookies-section__toggle--active' : ''}`}
                   onClick={() => handleToggle('functional')}
                   aria-label={`Functional cookies - ${preferences.functional ? 'enabled' : 'disabled'}`}
                   role="switch"
                   aria-checked={preferences.functional}
                 >
-                  <span className="cookie-toggle-slider" />
+                  <span className="cookies-section__toggle-slider" />
                 </button>
-                <span className="cookie-toggle-label">
+                <span className="cookies-section__toggle-label">
                   {preferences.functional ? 'Enabled' : 'Disabled'}
                 </span>
               </div>
             </div>
 
-            <div className="cookie-pref-actions">
+            <div className="cookies-section__pref-actions">
               <button
-                className="cookie-save-btn"
+                className="cookies-section__save-btn"
                 onClick={handleSavePreferences}
               >
                 {saved ? 'Preferences Saved' : 'Save Preferences'}
               </button>
               {saved && (
-                <p className="cookie-save-confirmation">
+                <p className="cookies-section__save-confirm">
                   Your cookie preferences have been saved successfully.
                 </p>
               )}
@@ -464,13 +463,13 @@ const CookiesPage = () => {
           </div>
         </section>
 
-        <section id="cookies-contact" className="legal-section">
-          <h2>5. Contact Us</h2>
+        <section id="cookies-contact" className="cookies-section cookies-section--left">
+          <h2 className="cookies-section__heading">5. Contact Us</h2>
           <p>
             If you have any questions about our use of cookies or this Cookie Policy, please
             contact us:
           </p>
-          <div className="contact-details">
+          <div className="cookies-section__contact">
             <p><strong>The Quartz Company Ltd</strong></p>
             <p>Northampton</p>
             <p>Northamptonshire</p>
@@ -485,7 +484,7 @@ const CookiesPage = () => {
           </div>
           <p>
             For more information about how we handle your personal data, please see our{' '}
-            <Link to="/privacy" className="legal-link">Privacy Policy</Link>.
+            <Link to="/privacy">Privacy Policy</Link>.
           </p>
         </section>
       </div>

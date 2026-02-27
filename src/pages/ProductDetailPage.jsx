@@ -49,16 +49,18 @@ function ProductDetailPage() {
   const [zoomStyle, setZoomStyle] = useState({});
   const galleryRef = useRef(null);
 
-  /* ── Accordion state ── */
-  const [specsOpen, setSpecsOpen] = useState(false);
+  /* ── Tabbed interface state (Specifications / FAQs) ── */
+  const [activeTab, setActiveTab] = useState('specs');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
-  /* ── Related products ── */
+  /* ── Related products scroll ── */
+  const relatedScrollRef = useRef(null);
+
   const relatedProducts = useMemo(() => {
     if (!product) return [];
     return products
       .filter((p) => p.category === product.category && p.id !== product.id)
-      .slice(0, 4);
+      .slice(0, 8);
   }, [product]);
 
   /* ── FAQs ── */
@@ -80,7 +82,6 @@ function ProductDetailPage() {
     [images.length]
   );
 
-  /* Zoom on hover */
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -90,6 +91,14 @@ function ProductDetailPage() {
 
   const handleMouseLeave = () => {
     setZoomStyle({});
+  };
+
+  /* ── Related products scroll ── */
+  const scrollRelated = (dir) => {
+    if (relatedScrollRef.current) {
+      const amount = 320;
+      relatedScrollRef.current.scrollBy({ left: dir * amount, behavior: 'smooth' });
+    }
   };
 
   /* ── Category label for breadcrumb ── */
@@ -179,13 +188,12 @@ function ProductDetailPage() {
       </div>
 
       {/* ══════════════════════════════════════════
-          TOP SECTION – Two-column layout
+          TOP SECTION – Sticky gallery left, info scrolls right
          ══════════════════════════════════════════ */}
       <div className="container">
         <div className="pdp__top">
-          {/* ── Left: Image Gallery ── */}
+          {/* ── Left: Image Gallery (sticky) ── */}
           <div className="pdp__gallery" ref={galleryRef}>
-            {/* Main image */}
             <div
               className="pdp__main-image"
               onMouseMove={handleMouseMove}
@@ -201,7 +209,6 @@ function ProductDetailPage() {
                 <span className="pdp__image-label">{product.name}</span>
               </div>
 
-              {/* Prev / Next arrows */}
               {images.length > 1 && (
                 <>
                   <button
@@ -222,7 +229,6 @@ function ProductDetailPage() {
               )}
             </div>
 
-            {/* Thumbnails */}
             <div className="pdp__thumbnails">
               {images.map((img, i) => (
                 <button
@@ -237,7 +243,6 @@ function ProductDetailPage() {
               ))}
             </div>
 
-            {/* View Full Slab button */}
             <button
               className="pdp__view-slab-btn"
               onClick={() => setSlabModalOpen(true)}
@@ -246,7 +251,7 @@ function ProductDetailPage() {
             </button>
           </div>
 
-          {/* ── Right: Product Info ── */}
+          {/* ── Right: Product Info (scrolls) ── */}
           <div className="pdp__info">
             <h1 className="pdp__name">{product.name}</h1>
 
@@ -254,7 +259,6 @@ function ProductDetailPage() {
               {categoryLabel} Collection &mdash; {product.collection}
             </span>
 
-            {/* Rating */}
             <div className="pdp__rating">
               <span className="pdp__stars">{renderStars(product.rating)}</span>
               <span className="pdp__review-count">
@@ -262,7 +266,6 @@ function ProductDetailPage() {
               </span>
             </div>
 
-            {/* Price */}
             <div className="pdp__price-block">
               {product.onSale && product.originalPrice && (
                 <span className="pdp__price-original">
@@ -274,15 +277,12 @@ function ProductDetailPage() {
               </span>
             </div>
 
-            {/* Finance */}
             <p className="pdp__finance">
               or from <strong>{formatPrice(monthlyPrice)}/month</strong> with 0% finance
             </p>
 
-            {/* Short description */}
             <p className="pdp__short-desc">{product.shortDesc}</p>
 
-            {/* CTA */}
             <Link
               to={`/quote?product=${product.slug}`}
               className="btn btn--gold btn--lg pdp__cta"
@@ -290,7 +290,6 @@ function ProductDetailPage() {
               Get Prices &amp; Free Samples
             </Link>
 
-            {/* Social proof */}
             <div className="pdp__social-proof">
               <div className="pdp__proof-item">
                 <span className="pdp__proof-icon" aria-hidden="true">&#9878;</span>
@@ -314,116 +313,28 @@ function ProductDetailPage() {
       </div>
 
       {/* ══════════════════════════════════════════
-          WHY WE LOVE Section
+          WHY WE LOVE – Alternating horizontal strips
          ══════════════════════════════════════════ */}
       <div className="pdp__why-section section section--cream">
         <div className="container">
           <h2 className="section-title">Why We Love {product.name}</h2>
-          <div className="pdp__features-grid">
+          <div className="pdp__features-strips">
             {product.features.map((feature, i) => (
-              <div className="pdp__feature-card" key={i}>
-                <span className="pdp__feature-icon" aria-hidden="true">
-                  {FEATURE_ICONS[i % FEATURE_ICONS.length]}
-                </span>
-                <h4 className="pdp__feature-title">{feature}</h4>
-                <p className="pdp__feature-desc">
-                  {getFeatureDescription(feature)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════
-          SPECIFICATIONS Accordion
-         ══════════════════════════════════════════ */}
-      <div className="pdp__specs-section section">
-        <div className="container">
-          <button
-            className={`pdp__accordion-toggle${specsOpen ? ' pdp__accordion-toggle--open' : ''}`}
-            onClick={() => setSpecsOpen((prev) => !prev)}
-            aria-expanded={specsOpen}
-          >
-            <h2 className="pdp__accordion-title">Specifications</h2>
-            <span className="pdp__accordion-icon" aria-hidden="true">
-              {specsOpen ? '\u2212' : '\u002B'}
-            </span>
-          </button>
-
-          <div className={`pdp__accordion-body${specsOpen ? ' pdp__accordion-body--open' : ''}`}>
-            <table className="pdp__specs-table">
-              <tbody>
-                <tr>
-                  <th>Material</th>
-                  <td>{product.specifications.material}</td>
-                </tr>
-                <tr>
-                  <th>Finish</th>
-                  <td>{product.specifications.finish}</td>
-                </tr>
-                <tr>
-                  <th>Collection</th>
-                  <td>{product.collection}</td>
-                </tr>
-                <tr>
-                  <th>Thicknesses</th>
-                  <td>{product.specifications.thicknesses.join(', ')}</td>
-                </tr>
-                <tr>
-                  <th>Slab Size</th>
-                  <td>{product.specifications.slabSize}</td>
-                </tr>
-                <tr>
-                  <th>Weight</th>
-                  <td>{product.specifications.weight}</td>
-                </tr>
-                <tr>
-                  <th>Lead Time</th>
-                  <td>{product.specifications.leadTime}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="pdp__specs-links">
-              <Link to="/design-options" className="pdp__specs-link">
-                Design Options &rarr;
-              </Link>
-              <Link to="/measuring-guide" className="pdp__specs-link">
-                Measuring Guide &rarr;
-              </Link>
-              <Link to="/how-to-buy" className="pdp__specs-link">
-                How to Buy &rarr;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════
-          FAQ Accordion
-         ══════════════════════════════════════════ */}
-      <div className="pdp__faq-section section section--cream">
-        <div className="container">
-          <h2 className="section-title">Frequently Asked Questions</h2>
-          <div className="pdp__faq-list">
-            {faqs.map((faq, i) => (
               <div
-                className={`pdp__faq-item${openFaqIndex === i ? ' pdp__faq-item--open' : ''}`}
+                className={`pdp__feature-strip${i % 2 === 1 ? ' pdp__feature-strip--alt' : ''}`}
                 key={i}
               >
-                <button
-                  className="pdp__faq-question"
-                  onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)}
-                  aria-expanded={openFaqIndex === i}
-                >
-                  <span>{faq.q}</span>
-                  <span className="pdp__faq-icon" aria-hidden="true">
-                    {openFaqIndex === i ? '\u2212' : '\u002B'}
+                <div className="pdp__feature-strip-accent" />
+                <div className="pdp__feature-strip-content">
+                  <span className="pdp__feature-strip-icon" aria-hidden="true">
+                    {FEATURE_ICONS[i % FEATURE_ICONS.length]}
                   </span>
-                </button>
-                <div className={`pdp__faq-answer${openFaqIndex === i ? ' pdp__faq-answer--open' : ''}`}>
-                  <p>{faq.a}</p>
+                  <div>
+                    <h4 className="pdp__feature-strip-title">{feature}</h4>
+                    <p className="pdp__feature-strip-desc">
+                      {getFeatureDescription(feature)}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -432,18 +343,140 @@ function ProductDetailPage() {
       </div>
 
       {/* ══════════════════════════════════════════
-          RELATED PRODUCTS
+          TABBED INTERFACE – Specifications | FAQs
+         ══════════════════════════════════════════ */}
+      <div className="pdp__tabs-section section">
+        <div className="container">
+          <div className="pdp__tab-bar">
+            <button
+              className={`pdp__tab-btn${activeTab === 'specs' ? ' pdp__tab-btn--active' : ''}`}
+              onClick={() => setActiveTab('specs')}
+            >
+              Specifications
+            </button>
+            <button
+              className={`pdp__tab-btn${activeTab === 'faqs' ? ' pdp__tab-btn--active' : ''}`}
+              onClick={() => setActiveTab('faqs')}
+            >
+              FAQs
+            </button>
+          </div>
+
+          {/* Specs tab */}
+          {activeTab === 'specs' && (
+            <div className="pdp__tab-content">
+              <table className="pdp__specs-table">
+                <tbody>
+                  <tr>
+                    <th>Material</th>
+                    <td>{product.specifications.material}</td>
+                  </tr>
+                  <tr>
+                    <th>Finish</th>
+                    <td>{product.specifications.finish}</td>
+                  </tr>
+                  <tr>
+                    <th>Collection</th>
+                    <td>{product.collection}</td>
+                  </tr>
+                  <tr>
+                    <th>Thicknesses</th>
+                    <td>{product.specifications.thicknesses.join(', ')}</td>
+                  </tr>
+                  <tr>
+                    <th>Slab Size</th>
+                    <td>{product.specifications.slabSize}</td>
+                  </tr>
+                  <tr>
+                    <th>Weight</th>
+                    <td>{product.specifications.weight}</td>
+                  </tr>
+                  <tr>
+                    <th>Lead Time</th>
+                    <td>{product.specifications.leadTime}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div className="pdp__specs-links">
+                <Link to="/design-options" className="pdp__specs-link">
+                  Design Options &rarr;
+                </Link>
+                <Link to="/measuring-guide" className="pdp__specs-link">
+                  Measuring Guide &rarr;
+                </Link>
+                <Link to="/how-to-buy" className="pdp__specs-link">
+                  How to Buy &rarr;
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* FAQs tab */}
+          {activeTab === 'faqs' && (
+            <div className="pdp__tab-content">
+              <div className="pdp__faq-list">
+                {faqs.map((faq, i) => (
+                  <div
+                    className={`pdp__faq-item${openFaqIndex === i ? ' pdp__faq-item--open' : ''}`}
+                    key={i}
+                  >
+                    <button
+                      className="pdp__faq-question"
+                      onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)}
+                      aria-expanded={openFaqIndex === i}
+                    >
+                      <span>{faq.q}</span>
+                      <span className="pdp__faq-icon" aria-hidden="true">
+                        {openFaqIndex === i ? '\u2212' : '\u002B'}
+                      </span>
+                    </button>
+                    <div className={`pdp__faq-answer${openFaqIndex === i ? ' pdp__faq-answer--open' : ''}`}>
+                      <p>{faq.a}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          RELATED PRODUCTS – Horizontal scroll carousel
          ══════════════════════════════════════════ */}
       {relatedProducts.length > 0 && (
-        <div className="pdp__related section">
+        <div className="pdp__related section section--cream">
           <div className="container">
-            <h2 className="section-title">You Might Also Like</h2>
-            <p className="section-subtitle">
-              Explore more surfaces from the {categoryLabel} collection.
-            </p>
-            <div className="pdp__related-grid">
+            <div className="pdp__related-header">
+              <div>
+                <h2 className="section-title" style={{ marginBottom: 0 }}>You Might Also Like</h2>
+                <p className="section-subtitle" style={{ marginTop: '0.5rem' }}>
+                  Explore more surfaces from the {categoryLabel} collection.
+                </p>
+              </div>
+              <div className="pdp__related-nav">
+                <button
+                  className="pdp__related-arrow"
+                  onClick={() => scrollRelated(-1)}
+                  aria-label="Scroll left"
+                >
+                  &#8249;
+                </button>
+                <button
+                  className="pdp__related-arrow"
+                  onClick={() => scrollRelated(1)}
+                  aria-label="Scroll right"
+                >
+                  &#8250;
+                </button>
+              </div>
+            </div>
+            <div className="pdp__related-scroll" ref={relatedScrollRef}>
               {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <div className="pdp__related-card" key={p.id}>
+                  <ProductCard product={p} />
+                </div>
               ))}
             </div>
           </div>

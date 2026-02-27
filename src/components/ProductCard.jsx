@@ -74,7 +74,6 @@ function ProductCard({ product }) {
       );
     }
     if (hasHalf) {
-      // Show a full star for half (visually acceptable at this size)
       stars.push(
         <span key="half" className="product-card__star product-card__star--filled" aria-hidden="true">
           &#9733;
@@ -102,93 +101,116 @@ function ProductCard({ product }) {
 
   return (
     <article className="product-card" aria-label={`${name} worktop`}>
-      {/* Image container */}
-      <div className="product-card__image-wrapper" ref={imgRef}>
-        {/* Placeholder gradient shown until image loads */}
-        <div
-          className={`product-card__placeholder${imageLoaded ? ' product-card__placeholder--hidden' : ''}`}
-          aria-hidden="true"
-        />
-
-        {imageSrc && (
-          <img
-            src={imageSrc}
-            alt={`${name} swatch`}
-            className={`product-card__image${imageLoaded ? ' product-card__image--loaded' : ''}`}
-            loading="lazy"
-            onLoad={() => setImageLoaded(true)}
+      {/* Full-card clickable link */}
+      <Link to={`/product/${slug}`} className="product-card__link" aria-label={`View ${name}`}>
+        {/* Image container */}
+        <div className="product-card__image-wrapper" ref={imgRef}>
+          {/* Placeholder gradient shown until image loads */}
+          <div
+            className={`product-card__placeholder${imageLoaded ? ' product-card__placeholder--hidden' : ''}`}
+            aria-hidden="true"
           />
-        )}
 
-        {hoverSrc && (
-          <img
-            src={hoverSrc}
-            alt={`${name} in kitchen`}
-            className={`product-card__image product-card__image--hover${hoverLoaded ? ' product-card__image--hover-ready' : ''}`}
-            loading="lazy"
-            onLoad={() => setHoverLoaded(true)}
-          />
-        )}
-
-        {/* Badges */}
-        <div className="product-card__badges">
-          {onSale && discount > 0 && (
-            <span className="badge badge--sale">{discount}% Off</span>
+          {imageSrc && (
+            <img
+              src={imageSrc}
+              alt={`${name} swatch`}
+              className={`product-card__image${imageLoaded ? ' product-card__image--loaded' : ''}`}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+            />
           )}
-          {isNew && (
-            <span className="badge badge--new">New</span>
+
+          {hoverSrc && (
+            <img
+              src={hoverSrc}
+              alt={`${name} in kitchen`}
+              className={`product-card__image product-card__image--hover${hoverLoaded ? ' product-card__image--hover-ready' : ''}`}
+              loading="lazy"
+              onLoad={() => setHoverLoaded(true)}
+            />
           )}
-          {popular && !isNew && (
-            <span className="badge badge--popular">
-              <span className="product-card__fire" aria-hidden="true">&#128293;</span> Popular
-            </span>
-          )}
-        </div>
-      </div>
 
-      {/* Card body */}
-      <div className="product-card__body">
-        {/* Name */}
-        <h3 className="product-card__name">
-          <Link to={`/product/${slug}`}>{name}</Link>
-        </h3>
-
-        {/* Subtitle: material / collection */}
-        <p className="product-card__subtitle">
-          {material} &mdash; {collection}
-        </p>
-
-        {/* Rating */}
-        <div className="product-card__rating" aria-label={`Rated ${rating} out of 5 from ${reviewCount} reviews`}>
-          <span className="product-card__stars">
-            {renderStars(rating)}
-          </span>
-          <span className="product-card__review-count">({reviewCount})</span>
-        </div>
-
-        {/* Price */}
-        <div className="product-card__price">
-          {onSale && originalPrice ? (
-            <>
-              <span className="product-card__price-original">
-                From {formatPrice(originalPrice)} /m&sup2;
+          {/* Badges — top-right */}
+          <div className="product-card__badges">
+            {onSale && discount > 0 && (
+              <span className="badge badge--sale">{discount}% Off</span>
+            )}
+            {isNew && (
+              <span className="badge badge--new">New</span>
+            )}
+            {popular && !isNew && (
+              <span className="badge badge--popular">
+                <span className="product-card__fire" aria-hidden="true">&#128293;</span> Popular
               </span>
-              <span className="product-card__price-sale">
+            )}
+          </div>
+
+          {/* Hover overlay — slides up from bottom */}
+          <div className="product-card__overlay" aria-hidden="true">
+            <div className="product-card__overlay-price">
+              {onSale && originalPrice ? (
+                <>
+                  <span className="product-card__overlay-price-old">
+                    {formatPrice(originalPrice)} /m&sup2;
+                  </span>
+                  <span className="product-card__overlay-price-sale">
+                    {formatPrice(pricePerSqm)} /m&sup2;
+                  </span>
+                </>
+              ) : (
+                <span className="product-card__overlay-price-current">
+                  From {formatPrice(pricePerSqm)} /m&sup2;
+                </span>
+              )}
+            </div>
+            <div className="product-card__overlay-rating">
+              <span className="product-card__overlay-stars">
+                {renderStars(rating)}
+              </span>
+              <span className="product-card__overlay-reviews">({reviewCount})</span>
+            </div>
+            <span className="product-card__overlay-cta">Quick View</span>
+          </div>
+        </div>
+
+        {/* Card body */}
+        <div className="product-card__body">
+          {/* Name */}
+          <h3 className="product-card__name">{name}</h3>
+
+          {/* Subtitle: material / collection */}
+          <p className="product-card__subtitle">
+            {material} &mdash; {collection}
+          </p>
+
+          {/* Rating */}
+          <div className="product-card__rating" aria-label={`Rated ${rating} out of 5 from ${reviewCount} reviews`}>
+            <span className="product-card__stars">
+              {renderStars(rating)}
+            </span>
+            <span className="product-card__review-count">({reviewCount})</span>
+          </div>
+
+          {/* Price */}
+          <div className="product-card__price">
+            {onSale && originalPrice ? (
+              <>
+                <span className="product-card__price-original">
+                  From {formatPrice(originalPrice)} /m&sup2;
+                </span>
+                <span className="product-card__price-sale">
+                  From {formatPrice(pricePerSqm)} /m&sup2;
+                </span>
+              </>
+            ) : (
+              <span className="product-card__price-current">
                 From {formatPrice(pricePerSqm)} /m&sup2;
               </span>
-            </>
-          ) : (
-            <span className="product-card__price-current">
-              From {formatPrice(pricePerSqm)} /m&sup2;
-            </span>
-          )}
+            )}
+          </div>
         </div>
-
-        {/* CTA */}
-        <Link to={`/product/${slug}`} className="btn btn--outline btn--sm product-card__cta">
-          View Details
-        </Link>
-      </div>
+      </Link>
     </article>
   );
 }

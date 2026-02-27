@@ -207,36 +207,42 @@ export default function DesignOptionsPage() {
         </div>
       </section>
 
-      {/* Design Categories Grid */}
+      {/* Design Categories – Offset Grid */}
       <section className="do-categories section section--cream">
         <div className="container">
-          <div className="do-categories__grid">
-            {designCategories.map((cat) => (
-              <div key={cat.id} className="do-card" id={cat.id}>
-                <div className="do-card__header">
-                  <h2 className="do-card__title">{cat.title}</h2>
-                </div>
-                <div className="do-card__body">
-                  <p className="do-card__description">{cat.description}</p>
+          <div className="do-categories__list">
+            {designCategories.map((cat, index) => (
+              <div
+                key={cat.id}
+                className={`do-category ${index % 2 === 0 ? 'do-category--left' : 'do-category--right'}`}
+                id={cat.id}
+              >
+                <div className="do-card">
+                  <div className="do-card__header">
+                    <h2 className="do-card__title">{cat.title}</h2>
+                  </div>
+                  <div className="do-card__body">
+                    <p className="do-card__description">{cat.description}</p>
 
-                  <div className="do-card__options">
-                    {cat.options.map((option, idx) => (
-                      <div key={idx} className="do-option">
-                        {/* Diagram placeholder */}
-                        <div className="do-option__diagram">
-                          <div className="do-option__diagram-inner">
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                              <rect x="2" y="2" width="28" height="28" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                              <path d="M8 24L14 16L18 20L24 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                    <div className="do-card__options">
+                      {cat.options.map((option, idx) => (
+                        <div key={idx} className="do-option">
+                          {/* Diagram placeholder */}
+                          <div className="do-option__diagram">
+                            <div className="do-option__diagram-inner">
+                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <rect x="2" y="2" width="28" height="28" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                                <path d="M8 24L14 16L18 20L24 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </div>
+                          </div>
+                          <div className="do-option__info">
+                            <h4 className="do-option__name">{option.name}</h4>
+                            <p className="do-option__desc">{option.desc}</p>
                           </div>
                         </div>
-                        <div className="do-option__info">
-                          <h4 className="do-option__name">{option.name}</h4>
-                          <p className="do-option__desc">{option.desc}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -248,7 +254,7 @@ export default function DesignOptionsPage() {
       {/* Mid-page CTA */}
       <section className="do-mid-cta section">
         <div className="container">
-          <div className="do-mid-cta__inner">
+          <div className="do-mid-cta__card">
             <h2 className="do-mid-cta__heading">Not Sure Which Options to Choose?</h2>
             <p className="do-mid-cta__text">
               Our design team is here to help. We'll talk you through every option, show you
@@ -264,7 +270,7 @@ export default function DesignOptionsPage() {
       {/* Bottom CTA */}
       <section className="do-cta section">
         <div className="container">
-          <div className="do-cta__inner">
+          <div className="do-cta__card">
             <div className="do-cta__text-block">
               <h2 className="do-cta__heading">Ready to Design Your Dream Kitchen?</h2>
               <p className="do-cta__text">

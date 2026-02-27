@@ -1,5 +1,7 @@
 /* ============================================
-   ProductDetailPage – The Quartz Company
+   ProductDetailPage – The Quartz Company – Redesigned
+   Sticky gallery, alternating feature strips, tabbed interface,
+   horizontal scroll carousel for related products
    ============================================ */
 
 /* ── Breadcrumb Bar ── */
@@ -51,7 +53,7 @@
 }
 
 /* ══════════════════════════════════════════
-   TOP SECTION – Two-column layout
+   TOP SECTION – Sticky gallery left, info right
    ══════════════════════════════════════════ */
 .pdp__top {
   display: grid;
@@ -61,7 +63,7 @@
   align-items: start;
 }
 
-/* ── Gallery ── */
+/* ── Gallery (sticky) ── */
 .pdp__gallery {
   position: sticky;
   top: calc(var(--header-height, 80px) + 1.5rem);
@@ -96,7 +98,6 @@
   letter-spacing: 3px;
 }
 
-/* Gallery arrows */
 .pdp__gallery-arrow {
   position: absolute;
   top: 50%;
@@ -130,7 +131,6 @@
   right: 0.75rem;
 }
 
-/* Thumbnails */
 .pdp__thumbnails {
   display: flex;
   gap: 0.75rem;
@@ -156,7 +156,6 @@
   box-shadow: 0 0 0 2px rgba(13, 79, 79, 0.2);
 }
 
-/* View Full Slab button */
 .pdp__view-slab-btn {
   display: inline-flex;
   align-items: center;
@@ -201,7 +200,6 @@
   margin-bottom: 1rem;
 }
 
-/* Stars */
 .pdp__rating {
   display: flex;
   align-items: center;
@@ -231,7 +229,6 @@
   color: var(--color-text-light);
 }
 
-/* Price */
 .pdp__price-block {
   margin-bottom: 0.5rem;
 }
@@ -253,7 +250,6 @@
   line-height: 1.2;
 }
 
-/* Finance badge */
 .pdp__finance {
   font-size: 0.88rem;
   color: var(--color-text-light);
@@ -268,7 +264,6 @@
   color: var(--color-primary);
 }
 
-/* Short description */
 .pdp__short-desc {
   font-size: 0.95rem;
   color: var(--color-text);
@@ -276,14 +271,12 @@
   margin-bottom: 1.5rem;
 }
 
-/* CTA */
 .pdp__cta {
   width: 100%;
   margin-bottom: 1.75rem;
   font-size: 1.05rem;
 }
 
-/* Social proof row */
 .pdp__social-proof {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -306,104 +299,125 @@
 }
 
 /* ══════════════════════════════════════════
-   WHY WE LOVE – Feature Cards
+   WHY WE LOVE – Alternating Horizontal Strips
    ══════════════════════════════════════════ */
-.pdp__features-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.25rem;
+.pdp__features-strips {
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.pdp__feature-card {
+.pdp__feature-strip {
+  display: flex;
+  align-items: stretch;
   background: var(--color-white);
   border-radius: var(--radius-md);
-  padding: 1.5rem 1.25rem;
-  text-align: center;
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.pdp__feature-card:hover {
-  transform: translateY(-4px);
+.pdp__feature-strip:hover {
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.pdp__feature-icon {
-  display: block;
-  font-size: 1.75rem;
-  color: var(--color-primary);
-  margin-bottom: 0.75rem;
+.pdp__feature-strip-accent {
+  width: 5px;
+  flex-shrink: 0;
+  background: var(--color-primary);
 }
 
-.pdp__feature-title {
+.pdp__feature-strip--alt .pdp__feature-strip-accent {
+  order: 2;
+  background: var(--color-gold);
+}
+
+.pdp__feature-strip--alt {
+  flex-direction: row-reverse;
+}
+
+.pdp__feature-strip-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+}
+
+.pdp__feature-strip-icon {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.pdp__feature-strip--alt .pdp__feature-strip-icon {
+  color: var(--color-gold);
+}
+
+.pdp__feature-strip-title {
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--color-dark);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   line-height: 1.3;
 }
 
-.pdp__feature-desc {
-  font-size: 0.8rem;
+.pdp__feature-strip-desc {
+  font-size: 0.84rem;
   color: var(--color-text-light);
-  line-height: 1.5;
+  line-height: 1.55;
   margin-bottom: 0;
 }
 
 /* ══════════════════════════════════════════
-   SPECIFICATIONS – Accordion
+   TABBED INTERFACE – Specifications | FAQs
    ══════════════════════════════════════════ */
-.pdp__specs-section {
+.pdp__tabs-section {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
 }
 
-.pdp__accordion-toggle {
+.pdp__tab-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 1rem 0;
+  gap: 0;
+  border-bottom: 2px solid var(--color-border);
+  margin-bottom: 2rem;
+}
+
+.pdp__tab-btn {
+  padding: 0.85rem 2rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-light);
   background: none;
   border: none;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
   cursor: pointer;
-  transition: border-color var(--transition);
+  transition: all var(--transition);
 }
 
-.pdp__accordion-toggle:hover {
-  border-bottom-color: var(--color-primary);
-}
-
-.pdp__accordion-toggle--open {
-  border-bottom-color: var(--color-primary);
-}
-
-.pdp__accordion-title {
-  font-size: 1.35rem;
-  margin: 0;
-  pointer-events: none;
-}
-
-.pdp__accordion-icon {
-  font-size: 1.5rem;
+.pdp__tab-btn:hover {
   color: var(--color-primary);
-  font-weight: 300;
-  line-height: 1;
-  transition: transform var(--transition);
 }
 
-.pdp__accordion-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease;
+.pdp__tab-btn--active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
-.pdp__accordion-body--open {
-  max-height: 600px;
-  padding-top: 1.5rem;
+.pdp__tab-content {
+  animation: fadeTabIn 0.25s ease;
+}
+
+@keyframes fadeTabIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Specs table */
@@ -411,6 +425,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1.5rem;
+  max-width: 700px;
 }
 
 .pdp__specs-table tr {
@@ -436,7 +451,6 @@
   color: var(--color-text);
 }
 
-/* Spec links */
 .pdp__specs-links {
   display: flex;
   gap: 1.5rem;
@@ -454,12 +468,9 @@
   color: var(--color-gold);
 }
 
-/* ══════════════════════════════════════════
-   FAQ – Accordion
-   ══════════════════════════════════════════ */
+/* FAQ inside tab */
 .pdp__faq-list {
   max-width: 800px;
-  margin: 2rem auto 0;
 }
 
 .pdp__faq-item {
@@ -516,12 +527,58 @@
 }
 
 /* ══════════════════════════════════════════
-   RELATED PRODUCTS
+   RELATED PRODUCTS – Horizontal Scroll Carousel
    ══════════════════════════════════════════ */
-.pdp__related-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+.pdp__related-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.pdp__related-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pdp__related-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  font-size: 1.3rem;
+  color: var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.pdp__related-arrow:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.pdp__related-scroll {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+}
+
+.pdp__related-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pdp__related-card {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
 }
 
 /* ══════════════════════════════════════════
@@ -595,16 +652,12 @@
    ══════════════════════════════════════════ */
 
 @media (max-width: 1024px) {
-  .pdp__features-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .pdp__related-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .pdp__top {
     gap: 2rem;
+  }
+
+  .pdp__related-card {
+    flex: 0 0 260px;
   }
 }
 
@@ -619,17 +672,18 @@
     position: static;
   }
 
-  .pdp__features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .pdp__related-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .pdp__social-proof {
     grid-template-columns: 1fr 1fr;
     gap: 0.6rem;
+  }
+
+  .pdp__feature-strip,
+  .pdp__feature-strip--alt {
+    flex-direction: row;
+  }
+
+  .pdp__feature-strip--alt .pdp__feature-strip-accent {
+    order: 0;
   }
 
   .pdp__specs-table th {
@@ -648,36 +702,30 @@
   .pdp__price-sale {
     font-size: 1.5rem;
   }
+
+  .pdp__tab-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .pdp__related-card {
+    flex: 0 0 240px;
+  }
+
+  .pdp__related-nav {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
-  .pdp__features-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .pdp__feature-strip-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1.15rem;
   }
 
-  .pdp__feature-card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    text-align: left;
-    gap: 0 0.75rem;
-    padding: 1rem;
-  }
-
-  .pdp__feature-icon {
-    grid-row: 1 / 3;
-    align-self: center;
-    font-size: 1.5rem;
-    margin-bottom: 0;
-  }
-
-  .pdp__feature-title {
-    margin-bottom: 0.15rem;
-  }
-
-  .pdp__related-grid {
-    grid-template-columns: 1fr;
+  .pdp__feature-strip-icon {
+    margin-top: 0;
   }
 
   .pdp__social-proof {
@@ -735,5 +783,14 @@
   .pdp__slab-modal-content {
     width: 100%;
     aspect-ratio: 3 / 4;
+  }
+
+  .pdp__related-card {
+    flex: 0 0 220px;
+  }
+
+  .pdp__tab-btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.88rem;
   }
 }

@@ -1,12 +1,17 @@
 /* ============================================
-   How to Buy Page
+   How to Buy Page — Offset Grid Layout
    ============================================ */
 
-/* Hero */
+/* ----------------------------------------
+   Hero — shorter, left-aligned, gold accent
+   ---------------------------------------- */
 .htb-hero {
   position: relative;
   background: var(--color-dark);
-  padding: 7rem 0 5rem;
+  max-height: 40vh;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -20,9 +25,26 @@
 .htb-hero__content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  margin: 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Decorative gold geometric accent — rotated diamond */
+.htb-hero__content::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  width: 120px;
+  height: 120px;
+  background: transparent;
+  border: 3px solid var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .htb-hero__badge {
@@ -43,23 +65,37 @@
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   margin-bottom: 1rem;
   line-height: 1.2;
+  max-width: 600px;
 }
 
 .htb-hero__subtitle {
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 520px;
 }
 
-/* Intro */
-.htb-intro__content {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
+/* ----------------------------------------
+   Offset grid helpers
+   ---------------------------------------- */
+.htb-intro__block--left {
+  max-width: 65%;
+  margin-right: auto;
 }
 
+.htb-timeline__block--right {
+  max-width: 65%;
+  margin-left: auto;
+}
+
+.htb-summary__block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+/* ----------------------------------------
+   Intro — odd section (left-aligned)
+   ---------------------------------------- */
 .htb-intro__heading {
   margin-bottom: 1rem;
 }
@@ -70,13 +106,11 @@
   color: var(--color-text-light);
 }
 
-/* Timeline */
+/* ----------------------------------------
+   Timeline — even section (right-aligned)
+   ---------------------------------------- */
 .htb-timeline__track {
   position: relative;
-}
-
-.htb-timeline__connector {
-  display: none;
 }
 
 .htb-timeline__stages {
@@ -95,6 +129,7 @@
   padding-bottom: 2rem;
 }
 
+/* Vertical connector line between markers */
 .htb-stage::before {
   content: '';
   position: absolute;
@@ -246,7 +281,9 @@
   margin-bottom: 0;
 }
 
-/* Summary Stats Bar */
+/* ----------------------------------------
+   Summary Stats Bar — odd section (left)
+   ---------------------------------------- */
 .htb-summary {
   background: var(--color-dark);
 }
@@ -279,117 +316,79 @@
   letter-spacing: 0.5px;
 }
 
-/* CTA */
-.htb-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-}
-
-.htb-cta__inner {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+/* ----------------------------------------
+   CTA — bordered card, right-aligned
+   ---------------------------------------- */
+.htb-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: left;
 }
 
 .htb-cta__heading {
-  color: var(--color-white);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   margin-bottom: 1rem;
+  color: var(--color-dark);
 }
 
 .htb-cta__text {
-  color: rgba(255, 255, 255, 0.85);
   font-size: 1.05rem;
   line-height: 1.7;
+  color: var(--color-text-light);
   margin-bottom: 2rem;
 }
 
 .htb-cta__actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
-.htb-cta__actions .btn--outline {
-  border-color: var(--color-white);
-  color: var(--color-white);
-}
-
-.htb-cta__actions .btn--outline:hover {
-  background: var(--color-white);
-  color: var(--color-primary);
-}
-
-/* Desktop horizontal timeline */
-@media (min-width: 1025px) {
-  .htb-timeline__stages {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0;
-    position: relative;
+/* ----------------------------------------
+   Responsive — 1024px
+   ---------------------------------------- */
+@media (max-width: 1024px) {
+  .htb-intro__block--left,
+  .htb-timeline__block--right,
+  .htb-summary__block--left {
+    max-width: 80%;
   }
 
-  .htb-timeline__connector {
-    display: block;
-    position: absolute;
-    top: 35px;
-    left: 36px;
-    right: 36px;
-    height: 2px;
-    background: var(--color-border);
-    z-index: 1;
-  }
-
-  .htb-stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-bottom: 0;
-    gap: 0;
-  }
-
-  .htb-stage::before {
-    display: none;
-  }
-
-  .htb-stage__marker {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 1.25rem;
-    z-index: 2;
-  }
-
-  .htb-stage__summary {
-    padding-top: 0;
-  }
-
-  .htb-stage__title {
-    font-size: 1.1rem;
-  }
-
-  .htb-stage__description {
-    font-size: 0.9rem;
-  }
-
-  .htb-stage__panel {
-    grid-column: auto;
-    width: 100%;
-  }
-
-  .htb-stage__panel--open {
-    margin-top: 1rem;
-  }
-
-  .htb-stage__expect {
-    text-align: left;
+  .htb-hero__content::after {
+    width: 100px;
+    height: 100px;
+    right: 2%;
   }
 }
 
-/* Responsive */
+/* ----------------------------------------
+   Responsive — 768px
+   ---------------------------------------- */
 @media (max-width: 768px) {
   .htb-hero {
-    padding: 5rem 0 3.5rem;
+    min-height: 220px;
+  }
+
+  .htb-hero__content::after {
+    width: 80px;
+    height: 80px;
+    right: 0;
+    opacity: 0.2;
+  }
+
+  /* Collapse offset grid — everything full-width */
+  .htb-intro__block--left,
+  .htb-timeline__block--right,
+  .htb-summary__block--left {
+    max-width: 100%;
+  }
+
+  .htb-cta__card {
+    max-width: 100%;
+    margin-left: 0;
   }
 
   .htb-stage {
@@ -417,7 +416,14 @@
   }
 }
 
+/* ----------------------------------------
+   Responsive — 480px
+   ---------------------------------------- */
 @media (max-width: 480px) {
+  .htb-hero__content::after {
+    display: none;
+  }
+
   .htb-stage {
     grid-template-columns: 48px 1fr;
     gap: 0 0.75rem;
@@ -444,6 +450,10 @@
   .htb-summary__grid {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+
+  .htb-cta__card {
+    padding: 1.75rem;
   }
 
   .htb-cta__actions {

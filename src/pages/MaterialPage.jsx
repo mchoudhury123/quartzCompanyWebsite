@@ -149,56 +149,61 @@ export default function MaterialPage() {
     <div className="material-page">
       {/* ── Hero ── */}
       <section className={`material-hero material-hero--${type}`}>
-        <div className="container">
+        <div className="material-hero__accent" aria-hidden="true" />
+        <div className="container material-hero__inner">
           <h1 className="material-hero__title">{material.heroTitle}</h1>
           <p className="material-hero__subtitle">{material.heroSubtitle}</p>
         </div>
       </section>
 
-      {/* ── Introduction ── */}
+      {/* ── Introduction (odd = left-aligned) ── */}
       <section className="section material-intro-section">
         <div className="container">
-          <div className="material-intro">
-            <h2 className="material-intro__heading">
+          <div className="material-offset material-offset--left">
+            <h2 className="material-offset__heading">
               Why Choose {material.name}?
             </h2>
-            <p className="material-intro__text">{material.introduction}</p>
+            <p className="material-offset__text">{material.introduction}</p>
           </div>
         </div>
       </section>
 
-      {/* ── Key Benefits ── */}
+      {/* ── Key Benefits (even = right-aligned) ── */}
       <section className="section section--cream material-benefits-section">
         <div className="container">
-          <h2 className="section-title">Key Benefits</h2>
-          <p className="section-subtitle">
-            What makes {material.name.toLowerCase()} a premium choice for your kitchen
-          </p>
-          <div className="material-benefits-grid">
-            {material.benefits.map((benefit, index) => (
-              <div key={index} className="material-benefit-card">
-                <div className="material-benefit-card__number">
-                  {String(index + 1).padStart(2, '0')}
+          <div className="material-offset material-offset--right">
+            <h2 className="material-offset__heading">Key Benefits</h2>
+            <p className="material-offset__subtitle">
+              What makes {material.name.toLowerCase()} a premium choice for your kitchen
+            </p>
+            <div className="material-benefits-grid">
+              {material.benefits.map((benefit, index) => (
+                <div key={index} className="material-benefit-card">
+                  <div className="material-benefit-card__number">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <h3 className="material-benefit-card__title">
+                    {benefit.title}
+                  </h3>
+                  <p className="material-benefit-card__desc">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="material-benefit-card__title">
-                  {benefit.title}
-                </h3>
-                <p className="material-benefit-card__desc">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Product Range ── */}
+      {/* ── Product Range (odd = left-aligned) ── */}
       <section className="section material-range-section">
         <div className="container">
-          <h2 className="section-title">Our {material.name} Range</h2>
-          <p className="section-subtitle">
-            Explore our curated selection of {material.name.toLowerCase()} worktops
-          </p>
+          <div className="material-offset material-offset--left">
+            <h2 className="material-offset__heading">Our {material.name} Range</h2>
+            <p className="material-offset__subtitle">
+              Explore our curated selection of {material.name.toLowerCase()} worktops
+            </p>
+          </div>
           {filteredProducts.length > 0 ? (
             <div className="grid grid--3 material-products-grid">
               {filteredProducts.map((product) => (
@@ -222,55 +227,59 @@ export default function MaterialPage() {
         </div>
       </section>
 
-      {/* ── FAQ ── */}
+      {/* ── FAQ (even = right-aligned) ── */}
       <section className="section section--cream material-faq-section">
         <div className="container">
-          <h2 className="section-title">{material.name} FAQs</h2>
-          <p className="section-subtitle">
-            Common questions about {material.name.toLowerCase()} worktops
-          </p>
-          <div className="material-faq">
-            {material.faqs.map((item, index) => (
-              <div
-                key={index}
-                className={`material-faq__item${
-                  openFaq === index ? ' material-faq__item--open' : ''
-                }`}
-              >
-                <button
-                  className="material-faq__question"
-                  onClick={() => toggleFaq(index)}
-                  aria-expanded={openFaq === index}
+          <div className="material-offset material-offset--right">
+            <h2 className="material-offset__heading">{material.name} FAQs</h2>
+            <p className="material-offset__subtitle">
+              Common questions about {material.name.toLowerCase()} worktops
+            </p>
+            <div className="material-faq">
+              {material.faqs.map((item, index) => (
+                <div
+                  key={index}
+                  className={`material-faq__item${
+                    openFaq === index ? ' material-faq__item--open' : ''
+                  }`}
                 >
-                  <span>{item.question}</span>
-                  <span className="material-faq__icon" aria-hidden="true">
-                    {openFaq === index ? '\u2212' : '+'}
-                  </span>
-                </button>
-                <div className="material-faq__answer">
-                  <p>{item.answer}</p>
+                  <button
+                    className="material-faq__question"
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={openFaq === index}
+                  >
+                    <span>{item.question}</span>
+                    <span className="material-faq__icon" aria-hidden="true">
+                      {openFaq === index ? '\u2212' : '+'}
+                    </span>
+                  </button>
+                  <div className="material-faq__answer">
+                    <p>{item.answer}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── CTA (bordered card, right-aligned like AboutPage) ── */}
       <section className="section material-cta-section">
-        <div className="container material-cta">
-          <h2>Ready to Transform Your Kitchen?</h2>
-          <p>
-            Whether you know exactly what you want or need expert guidance, our
-            team is here to help you find the perfect {material.name.toLowerCase()} worktop.
-          </p>
-          <div className="material-cta__buttons">
-            <Link to={`/colours/${type}`} className="btn btn--outline btn--lg">
-              Explore the {material.name} Collection
-            </Link>
-            <Link to="/contact" className="btn btn--primary btn--lg">
-              Get a Free Quote
-            </Link>
+        <div className="container">
+          <div className="material-cta__card">
+            <h2 className="material-cta__heading">Ready to Transform Your Kitchen?</h2>
+            <p className="material-cta__text">
+              Whether you know exactly what you want or need expert guidance, our
+              team is here to help you find the perfect {material.name.toLowerCase()} worktop.
+            </p>
+            <div className="material-cta__buttons">
+              <Link to={`/colours/${type}`} className="btn btn--outline btn--lg">
+                Explore the {material.name} Collection
+              </Link>
+              <Link to="/contact" className="btn btn--gold btn--lg">
+                Get a Free Quote
+              </Link>
+            </div>
           </div>
         </div>
       </section>

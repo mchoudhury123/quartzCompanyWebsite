@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
-import { FaInstagram, FaFacebookF, FaPinterestP } from 'react-icons/fa';
-import { SiHouzz } from 'react-icons/si';
+import { FaInstagram, FaFacebookF } from 'react-icons/fa';
+import { SiTiktok } from 'react-icons/si';
 import './Footer.css';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [showFca, setShowFca] = useState(false);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -18,24 +19,21 @@ const Footer = () => {
     }
   };
 
-  const resourcesLinks = [
+  const browseLinks = [
     { label: 'Quartz Worktops', path: '/materials/quartz' },
     { label: 'Printed Quartz', path: '/materials/printed-quartz' },
+    { label: 'All Colours', path: '/colours' },
     { label: 'Measuring Guide', path: '/measuring-guide' },
     { label: 'How to Buy', path: '/how-to-buy' },
     { label: 'Design Options', path: '/design-options' },
     { label: 'Installation Coverage', path: '/installation-coverage' },
     { label: 'Warranty', path: '/warranty' },
     { label: 'Finance', path: '/finance' },
-  ];
-
-  const companyLinks = [
     { label: 'About', path: '/about' },
     { label: 'Showroom', path: '/showrooms' },
     { label: 'Careers', path: '/careers' },
     { label: 'Contact', path: '/contact' },
     { label: 'Inspiration', path: '/inspiration' },
-    { label: 'Our Story', path: '/our-story' },
   ];
 
   const legalLinks = [
@@ -46,48 +44,45 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: <FaInstagram />, href: 'https://instagram.com/thequartzcompany', label: 'Instagram' },
-    { icon: <FaFacebookF />, href: 'https://facebook.com/thequartzcompany', label: 'Facebook' },
-    { icon: <FaPinterestP />, href: 'https://pinterest.com/thequartzcompany', label: 'Pinterest' },
-    { icon: <SiHouzz />, href: 'https://houzz.com/thequartzcompany', label: 'Houzz' },
+    { icon: <FaInstagram />, href: 'https://www.instagram.com/thequartzcompanyuk/?hl=en', label: 'Instagram' },
+    { icon: <FaFacebookF />, href: 'https://www.facebook.com/profile.php?id=61587732770864', label: 'Facebook' },
+    { icon: <SiTiktok />, href: 'https://www.tiktok.com/@thequartzcompany', label: 'TikTok' },
   ];
 
   const trustBadges = [
-    { label: 'NSF Certified', icon: '✦' },
-    { label: 'Greenguard Gold', icon: '✦' },
-    { label: 'Made in Britain', icon: '✦' },
-    { label: '25 Year Warranty', icon: '✦' },
+    { label: 'NSF Certified' },
+    { label: 'Greenguard Gold' },
+    { label: 'Made in Britain' },
+    { label: '25 Year Warranty' },
   ];
 
   return (
     <footer className="footer">
-      {/* Newsletter Signup Section */}
-      <section className="footer-newsletter">
-        <div className="footer-newsletter-inner">
-          <div className="footer-newsletter-text">
-            <h3 className="footer-newsletter-heading">Stay Inspired</h3>
-            <p className="footer-newsletter-subtext">
-              Receive design ideas, exclusive offers and expert advice directly to your inbox.
-            </p>
-          </div>
-          <form className="footer-newsletter-form" onSubmit={handleSubscribe}>
-            <div className="footer-newsletter-input-group">
-              <FiMail className="footer-newsletter-icon" />
+      {/* Pre-Footer Newsletter Band */}
+      <section className="prefooter-newsletter">
+        <div className="prefooter-newsletter__inner">
+          <h3 className="prefooter-newsletter__heading">Stay Inspired</h3>
+          <p className="prefooter-newsletter__subtext">
+            Receive design ideas, exclusive offers and expert advice directly to your inbox.
+          </p>
+          <form className="prefooter-newsletter__form" onSubmit={handleSubscribe}>
+            <div className="prefooter-newsletter__input-group">
+              <FiMail className="prefooter-newsletter__icon" />
               <input
                 type="email"
-                className="footer-newsletter-input"
+                className="prefooter-newsletter__input"
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 aria-label="Email address for newsletter"
               />
-              <button type="submit" className="footer-newsletter-btn">
+              <button type="submit" className="prefooter-newsletter__btn">
                 {subscribed ? 'Subscribed!' : 'Subscribe'}
               </button>
             </div>
             {subscribed && (
-              <p className="footer-newsletter-success">
+              <p className="prefooter-newsletter__success">
                 Thank you for subscribing. Welcome to The Quartz Company.
               </p>
             )}
@@ -95,12 +90,12 @@ const Footer = () => {
         </div>
       </section>
 
-      {/* Main Footer */}
+      {/* Main Footer — 3 columns */}
       <div className="footer-main">
-        <div className="footer-main-inner">
+        <div className="footer-main__inner">
           <div className="footer-columns">
-            {/* Column 1: Brand */}
-            <div className="footer-column footer-column-brand">
+            {/* Column 1: Brand + Contact + Social */}
+            <div className="footer-column footer-column--brand">
               <Link to="/" className="footer-logo">
                 THE QUARTZ COMPANY
               </Link>
@@ -114,23 +109,40 @@ const Footer = () => {
                   <FiPhone className="footer-contact-icon" />
                   <span>0800 234 567</span>
                 </a>
-                <a href="mailto:hello@thequartzco.co.uk" className="footer-contact-item">
+                <a href="mailto:sales@thequartzcompany.co.uk" className="footer-contact-item">
                   <FiMail className="footer-contact-icon" />
-                  <span>hello@thequartzco.co.uk</span>
+                  <span>sales@thequartzcompany.co.uk</span>
                 </a>
                 <div className="footer-contact-item">
                   <FiMapPin className="footer-contact-icon" />
                   <span>Showroom in Northampton</span>
                 </div>
               </div>
+              <div className="footer-social">
+                <span className="footer-social__label">Follow Us</span>
+                <div className="footer-social__icons">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footer-social__btn"
+                      aria-label={`Follow us on ${social.label}`}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Column 2: Resources */}
+            {/* Column 2: Browse (Resources + Company merged) */}
             <div className="footer-column">
-              <h4 className="footer-column-heading">Resources</h4>
-              <ul className="footer-links">
-                {resourcesLinks.map((link) => (
-                  <li key={link.path}>
+              <h4 className="footer-column__heading">Browse</h4>
+              <ul className="footer-links footer-links--two-col">
+                {browseLinks.map((link) => (
+                  <li key={link.path + link.label}>
                     <Link to={link.path} className="footer-link">
                       {link.label}
                     </Link>
@@ -139,23 +151,9 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Column 3: Company */}
+            {/* Column 3: Legal + Trust Badges */}
             <div className="footer-column">
-              <h4 className="footer-column-heading">Company</h4>
-              <ul className="footer-links">
-                {companyLinks.map((link) => (
-                  <li key={link.path}>
-                    <Link to={link.path} className="footer-link">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Column 4: Legal */}
-            <div className="footer-column">
-              <h4 className="footer-column-heading">Legal</h4>
+              <h4 className="footer-column__heading">Legal</h4>
               <ul className="footer-links">
                 {legalLinks.map((link) => (
                   <li key={link.path}>
@@ -165,55 +163,45 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-
-          {/* Social Media Icons */}
-          <div className="footer-social">
-            <span className="footer-social-label">Follow Us</span>
-            <div className="footer-social-icons">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="footer-social-btn"
-                  aria-label={`Follow us on ${social.label}`}
-                >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="footer-trust-badges">
-            {trustBadges.map((badge) => (
-              <div key={badge.label} className="footer-trust-badge">
-                <span className="footer-trust-badge-icon">{badge.icon}</span>
-                <span className="footer-trust-badge-label">{badge.label}</span>
+              <div className="footer-trust-badges">
+                {trustBadges.map((badge) => (
+                  <span key={badge.label} className="footer-trust-pill">
+                    {badge.label}
+                  </span>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
       <div className="footer-bottom">
-        <div className="footer-bottom-inner">
+        <div className="footer-bottom__inner">
           <p className="footer-copyright">
             &copy; {new Date().getFullYear()} The Quartz Company Ltd. All rights reserved.
             Registered in England &amp; Wales. Company No. 12345678.
           </p>
-          <p className="footer-fca-disclaimer">
-            The Quartz Company Ltd is authorised and regulated by the Financial Conduct
-            Authority (FCA) for credit broking activities. FCA registration number:
-            123456. Finance is subject to status. Terms and conditions apply. The Quartz
-            Company Ltd acts as a credit broker, not a lender, and offers credit products
-            from a panel of lenders. Applicants must be 18 or over. Guarantee may be
-            required.
-          </p>
+          <div className="footer-fca">
+            <button
+              className="footer-fca__toggle"
+              onClick={() => setShowFca((prev) => !prev)}
+              aria-expanded={showFca}
+              type="button"
+            >
+              FCA Regulatory Information {showFca ? '−' : '+'}
+            </button>
+            <div className={`footer-fca__content${showFca ? ' footer-fca__content--open' : ''}`}>
+              <p>
+                The Quartz Company Ltd is authorised and regulated by the Financial Conduct
+                Authority (FCA) for credit broking activities. FCA registration number:
+                123456. Finance is subject to status. Terms and conditions apply. The Quartz
+                Company Ltd acts as a credit broker, not a lender, and offers credit products
+                from a panel of lenders. Applicants must be 18 or over. Guarantee may be
+                required.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

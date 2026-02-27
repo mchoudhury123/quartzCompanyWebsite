@@ -125,7 +125,7 @@ export default function MeasuringGuidePage() {
       {/* Introduction */}
       <section className="mg-intro section">
         <div className="container">
-          <div className="mg-intro__content">
+          <div className="mg-intro__block mg-intro__block--left">
             <h2 className="mg-intro__heading">Why Accurate Measurements Matter</h2>
             <p className="mg-intro__text">
               Stone worktops are precision-cut to your exact specifications. Unlike timber or laminate,
@@ -137,6 +137,8 @@ export default function MeasuringGuidePage() {
               the process step by step. And remember, we always carry out a professional laser-template
               visit before fabrication begins, so your measurements are verified by our experts.
             </p>
+          </div>
+          <div className="mg-intro__block mg-intro__block--right">
             <div className="mg-intro__tools">
               <h3 className="mg-intro__tools-title">What You Will Need</h3>
               <ul className="mg-intro__tools-list">
@@ -178,13 +180,13 @@ export default function MeasuringGuidePage() {
             <div
               key={step.id}
               id={`step-${step.id}`}
-              className="mg-step"
+              className={`mg-step ${step.id % 2 === 0 ? 'mg-step--even' : 'mg-step--odd'}`}
             >
               <div className="mg-step__header" onClick={() => toggleSection(step.id)}>
                 <div className="mg-step__number-circle">{step.id}</div>
                 <h2 className="mg-step__title">{step.title}</h2>
                 <span className={`mg-step__toggle ${activeSection === step.id ? 'mg-step__toggle--open' : ''}`}>
-                  {activeSection === step.id ? '−' : '+'}
+                  {activeSection === step.id ? '\u2212' : '+'}
                 </span>
               </div>
 
@@ -290,7 +292,7 @@ export default function MeasuringGuidePage() {
       {/* CTA Section */}
       <section className="mg-cta section">
         <div className="container">
-          <div className="mg-cta__inner">
+          <div className="mg-cta__card">
             <h2 className="mg-cta__heading">Prefer Us to Measure?</h2>
             <p className="mg-cta__text">
               If you'd rather leave the measuring to the professionals, we're happy to help.

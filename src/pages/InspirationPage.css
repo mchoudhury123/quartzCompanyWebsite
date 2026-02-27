@@ -1,44 +1,105 @@
 /* ============================================
-   InspirationPage – The Quartz Company
+   InspirationPage – The Quartz Company (Editorial)
    ============================================ */
 
-/* ── Hero ── */
+/* ── Hero (short, left-aligned, gold geometric accent) ── */
 .inspiration-hero {
+  position: relative;
   background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
   color: var(--color-white);
-  padding: 6rem 0 5rem;
-  text-align: center;
+  max-height: 40vh;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.inspiration-hero__body {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  max-width: 600px;
+  padding: 4rem 0 3.5rem;
 }
 
 .inspiration-hero__title {
   font-family: var(--font-heading);
   font-size: clamp(2.2rem, 5vw, 3.25rem);
+  font-weight: 700;
   color: var(--color-white);
   margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .inspiration-hero__subtitle {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2vw, 1.15rem);
   color: rgba(255, 255, 255, 0.8);
   max-width: 500px;
-  margin: 0 auto;
+  line-height: 1.6;
 }
 
-/* ── Layout ── */
-.inspiration-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 3rem;
-  align-items: start;
+/* Decorative gold geometric accent (CSS-only) */
+.inspiration-hero__accent {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%) rotate(15deg);
+  width: 220px;
+  height: 220px;
+  border: 3px solid var(--color-gold);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ── Filters ── */
+.inspiration-hero__accent::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 160px;
+  height: 160px;
+  border: 2px solid var(--color-gold-light);
+  transform: rotate(15deg);
+}
+
+.inspiration-hero__accent::after {
+  content: '';
+  position: absolute;
+  top: 55px;
+  left: 55px;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(
+    135deg,
+    rgba(197, 164, 126, 0.15) 0%,
+    rgba(212, 186, 154, 0.05) 100%
+  );
+  border: 1.5px solid var(--color-gold);
+  transform: rotate(-10deg);
+}
+
+/* ── Offset Grid Blocks ── */
+.inspiration-block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+.inspiration-block--right {
+  max-width: 65%;
+  margin-left: auto;
+}
+
+/* ── Filters Section ── */
+.inspiration-filters-section {
+  padding-bottom: 0;
+}
+
 .inspiration-filters {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-bottom: 2rem;
   flex-wrap: wrap;
 }
 
@@ -109,7 +170,7 @@
   opacity: 0.5;
 }
 
-/* ── Posts Grid ── */
+/* ── Articles Grid ── */
 .inspiration-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -199,9 +260,16 @@
   margin-bottom: 1.25rem;
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar (horizontal layout within offset block) ── */
+.inspiration-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
 .inspiration-sidebar__section {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .inspiration-sidebar__heading {
@@ -260,58 +328,105 @@
   margin-bottom: 1rem;
 }
 
-/* CTA Card */
-.inspiration-sidebar__cta-card {
-  background: var(--color-primary);
-  color: var(--color-white);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
+/* ── CTA Section (bordered card, right-aligned like AboutPage) ── */
+.inspiration-cta-section {
+  background: var(--color-white);
 }
 
-.inspiration-sidebar__cta-card h4 {
+.inspiration-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  text-align: left;
+}
+
+.inspiration-cta__heading {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
-  color: var(--color-white);
-  margin-bottom: 0.6rem;
-}
-
-.inspiration-sidebar__cta-card p {
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
   margin-bottom: 1rem;
+  color: var(--color-dark);
 }
 
-.inspiration-sidebar__cta-card .btn--primary {
-  background: var(--color-gold);
-  color: var(--color-white);
+.inspiration-cta__text {
+  font-size: 1.05rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin-bottom: 2rem;
 }
 
-.inspiration-sidebar__cta-card .btn--primary:hover {
-  background: var(--color-gold-light);
-}
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
 
-/* ── Responsive ── */
+/* ── 1024px ── */
 @media (max-width: 1024px) {
-  .inspiration-layout {
-    grid-template-columns: 1fr;
+  .inspiration-block--left,
+  .inspiration-block--right {
+    max-width: 80%;
   }
 
-  .inspiration-sidebar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    order: -1;
+  .inspiration-hero__accent {
+    width: 180px;
+    height: 180px;
+    right: 5%;
   }
 
-  .inspiration-sidebar__section {
-    margin-bottom: 0;
+  .inspiration-hero__accent::before {
+    width: 130px;
+    height: 130px;
+    top: 25px;
+    left: 25px;
+  }
+
+  .inspiration-hero__accent::after {
+    width: 80px;
+    height: 80px;
+    top: 45px;
+    left: 45px;
+  }
+
+  .inspiration-cta__card {
+    max-width: 480px;
   }
 }
 
+/* ── 768px ── */
 @media (max-width: 768px) {
   .inspiration-hero {
-    padding: 4.5rem 0 3.5rem;
+    min-height: 200px;
+  }
+
+  .inspiration-hero__body {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .inspiration-hero__accent {
+    width: 140px;
+    height: 140px;
+    right: 3%;
+    opacity: 0.2;
+  }
+
+  .inspiration-hero__accent::before {
+    width: 100px;
+    height: 100px;
+    top: 20px;
+    left: 20px;
+  }
+
+  .inspiration-hero__accent::after {
+    width: 60px;
+    height: 60px;
+    top: 35px;
+    left: 35px;
+  }
+
+  .inspiration-block--left,
+  .inspiration-block--right {
+    max-width: 100%;
   }
 
   .inspiration-filters {
@@ -333,5 +448,52 @@
 
   .inspiration-sidebar {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .inspiration-cta__card {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+/* ── 480px ── */
+@media (max-width: 480px) {
+  .inspiration-hero {
+    min-height: 180px;
+  }
+
+  .inspiration-hero__body {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .inspiration-hero__accent {
+    display: none;
+  }
+
+  .inspiration-filters-section {
+    padding-top: 2rem;
+  }
+
+  .inspiration-tab {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  .inspiration-card__body {
+    padding: 1rem;
+  }
+
+  .inspiration-card__title {
+    font-size: 1rem;
+  }
+
+  .inspiration-sidebar__story-card {
+    padding: 1.25rem;
+  }
+
+  .inspiration-cta__card {
+    padding: 2rem 1.5rem;
   }
 }

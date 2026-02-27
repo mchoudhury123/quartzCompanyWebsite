@@ -1,12 +1,17 @@
 /* ============================================
-   Design Options Page
+   Design Options Page – Offset Grid Layout
    ============================================ */
 
-/* Hero */
+/* ----------------------------------------
+   Hero – Short, left-aligned, gold accent
+   ---------------------------------------- */
 .do-hero {
   position: relative;
   background: var(--color-dark);
-  padding: 7rem 0 5rem;
+  max-height: 40vh;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -20,9 +25,25 @@
 .do-hero__content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Gold geometric diamond accent */
+.do-hero__content::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  width: 120px;
+  height: 120px;
+  background: transparent;
+  border: 2px solid var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .do-hero__badge {
@@ -43,21 +64,22 @@
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   margin-bottom: 1rem;
   line-height: 1.2;
+  max-width: 600px;
 }
 
 .do-hero__subtitle {
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 520px;
 }
 
-/* Intro */
+/* ----------------------------------------
+   Intro – Left-aligned (odd section)
+   ---------------------------------------- */
 .do-intro__content {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: 65%;
 }
 
 .do-intro__heading {
@@ -70,11 +92,26 @@
   color: var(--color-text-light);
 }
 
-/* Categories Grid */
-.do-categories__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+/* ----------------------------------------
+   Categories – Offset grid list
+   ---------------------------------------- */
+.do-categories__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Offset positioning wrappers */
+.do-category {
+  max-width: 65%;
+}
+
+.do-category--left {
+  margin-right: auto;
+}
+
+.do-category--right {
+  margin-left: auto;
 }
 
 /* Card */
@@ -173,15 +210,21 @@
   margin-bottom: 0;
 }
 
-/* Mid CTA */
+/* ----------------------------------------
+   Mid CTA – Bordered card, right-aligned
+   ---------------------------------------- */
 .do-mid-cta {
   background: var(--color-cream);
 }
 
-.do-mid-cta__inner {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
+.do-mid-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: left;
+  background: var(--color-white);
 }
 
 .do-mid-cta__heading {
@@ -195,15 +238,20 @@
   margin-bottom: 2rem;
 }
 
-/* Bottom CTA */
+/* ----------------------------------------
+   Bottom CTA – Bordered card, right-aligned
+   ---------------------------------------- */
 .do-cta {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-.do-cta__inner {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
+.do-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: left;
 }
 
 .do-cta__heading {
@@ -222,7 +270,6 @@
 .do-cta__actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
@@ -236,18 +283,52 @@
   color: var(--color-primary);
 }
 
-/* Responsive */
+/* ============================================
+   Responsive – 1024px
+   ============================================ */
 @media (max-width: 1024px) {
-  .do-categories__grid {
-    grid-template-columns: 1fr;
-    max-width: 700px;
-    margin: 0 auto;
+  .do-category {
+    max-width: 75%;
+  }
+
+  .do-hero__content::after {
+    width: 90px;
+    height: 90px;
+    right: 2%;
   }
 }
 
+/* ============================================
+   Responsive – 768px
+   ============================================ */
 @media (max-width: 768px) {
   .do-hero {
-    padding: 5rem 0 3.5rem;
+    max-height: none;
+    min-height: auto;
+  }
+
+  .do-hero__content {
+    padding-top: 5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .do-hero__content::after {
+    width: 70px;
+    height: 70px;
+    right: 0;
+    opacity: 0.2;
+  }
+
+  .do-intro__content {
+    max-width: 100%;
+  }
+
+  .do-category,
+  .do-category--left,
+  .do-category--right {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .do-card__body {
@@ -264,12 +345,33 @@
     height: auto;
     margin-bottom: 0.25rem;
   }
+
+  .do-mid-cta__card,
+  .do-cta__card {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
 
+/* ============================================
+   Responsive – 480px
+   ============================================ */
 @media (max-width: 480px) {
+  .do-hero__content::after {
+    display: none;
+  }
+
+  .do-hero__title {
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+
+  .do-mid-cta__card,
+  .do-cta__card {
+    padding: 1.75rem;
+  }
+
   .do-cta__actions {
     flex-direction: column;
-    align-items: center;
   }
 
   .do-cta__actions .btn {

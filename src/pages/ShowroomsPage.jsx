@@ -87,19 +87,22 @@ function ShowroomsPage() {
     <div className="showrooms-page">
       {/* ── Hero ── */}
       <section className="showrooms-hero">
+        <div className="showrooms-hero__accent" aria-hidden="true"></div>
         <div className="container">
-          <h1 className="showrooms-hero__title">Visit Our Showroom</h1>
-          <p className="showrooms-hero__subtitle">
-            See and touch our surfaces in person. Our experts are on hand to
-            help you find the perfect worktop for your project.
-          </p>
+          <div className="showrooms-hero__inner">
+            <h1 className="showrooms-hero__title">Visit Our Showroom</h1>
+            <p className="showrooms-hero__subtitle">
+              See and touch our surfaces in person. Our experts are on hand to
+              help you find the perfect worktop for your project.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* ── Showroom Cards ── */}
+      {/* ── Showroom Cards (odd section = left-aligned) ── */}
       <section className="showrooms-locations section">
         <div className="container">
-          <div className="showrooms-locations__grid">
+          <div className="showrooms-locations__block showrooms-locations__block--left">
             {showrooms.map((room) => (
               <article key={room.id} className="showroom-card">
                 <div className="showroom-card__image">
@@ -137,7 +140,7 @@ function ShowroomsPage() {
                     </div>
                   </div>
                   <div className="showroom-card__actions">
-                    <a href="#booking" className="btn btn--primary">
+                    <a href="#booking" className="btn btn--gold">
                       Book an Appointment
                     </a>
                     <a
@@ -156,10 +159,10 @@ function ShowroomsPage() {
         </div>
       </section>
 
-      {/* ── Booking Form ── */}
+      {/* ── Booking Form (even section = right-aligned) ── */}
       <section id="booking" className="showrooms-booking section section--cream">
         <div className="container">
-          <div className="showrooms-booking__grid">
+          <div className="showrooms-booking__block showrooms-booking__block--right">
             <div className="showrooms-booking__form-wrapper">
               <h2 className="showrooms-booking__heading">
                 Book a Showroom Appointment
@@ -180,7 +183,7 @@ function ShowroomsPage() {
                   </p>
                   <button
                     type="button"
-                    className="btn btn--primary"
+                    className="btn btn--gold"
                     onClick={() => setBookingSubmitted(false)}
                   >
                     Book Another Appointment
@@ -376,50 +379,50 @@ function ShowroomsPage() {
         </div>
       </section>
 
-      {/* ── Accessories on Display ── */}
+      {/* ── Accessories on Display (odd section = left-aligned) ── */}
       <section className="showrooms-accessories section">
         <div className="container">
-          <h2 className="section-title">Accessories on Display</h2>
-          <p className="section-subtitle">
-            Complete your kitchen project with our curated selection of taps,
-            sinks, splashbacks and finishing touches.
-          </p>
-          <div className="showrooms-accessories__grid">
-            {accessories.map((item) => (
-              <div key={item.name} className="showrooms-accessories__card">
-                <div className="showrooms-accessories__icon" aria-hidden="true">
-                  &#9670;
+          <div className="showrooms-accessories__block showrooms-accessories__block--left">
+            <h2 className="showrooms-accessories__title">Accessories on Display</h2>
+            <p className="showrooms-accessories__subtitle">
+              Complete your kitchen project with our curated selection of taps,
+              sinks, splashbacks and finishing touches.
+            </p>
+            <div className="showrooms-accessories__grid">
+              {accessories.map((item) => (
+                <div key={item.name} className="showrooms-accessories__card">
+                  <div className="showrooms-accessories__icon" aria-hidden="true">
+                    &#9670;
+                  </div>
+                  <h3 className="showrooms-accessories__name">{item.name}</h3>
+                  <p className="showrooms-accessories__desc">{item.description}</p>
                 </div>
-                <h3 className="showrooms-accessories__name">{item.name}</h3>
-                <p className="showrooms-accessories__desc">{item.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Can't Visit Info Box ── */}
+      {/* ── Can't Visit CTA (right-aligned bordered card) ── */}
       <section className="showrooms-remote section section--cream">
         <div className="container">
-          <div className="showrooms-remote__box">
-            <div className="showrooms-remote__content">
-              <h2 className="showrooms-remote__heading">
-                Can&rsquo;t Visit in Person?
-              </h2>
-              <p className="showrooms-remote__text">
-                No problem. We will post up to five free samples directly to
-                your door, anywhere in the UK, within 48 hours. You can also
-                arrange a video consultation with one of our designers from the
-                comfort of your home.
-              </p>
-              <div className="showrooms-remote__actions">
-                <Link to="/colours" className="btn btn--primary">
-                  Browse Colours &amp; Order Samples
-                </Link>
-                <Link to="/contact" className="btn btn--outline">
-                  Arrange a Video Call
-                </Link>
-              </div>
+          <div className="showrooms-remote__card">
+            <h2 className="showrooms-remote__heading">
+              Can&rsquo;t Visit in Person?
+            </h2>
+            <p className="showrooms-remote__text">
+              No problem. We will post up to five free samples directly to
+              your door, anywhere in the UK, within 48 hours. You can also
+              arrange a video consultation with one of our designers from the
+              comfort of your home.
+            </p>
+            <div className="showrooms-remote__actions">
+              <Link to="/colours" className="btn btn--gold">
+                Browse Colours &amp; Order Samples
+              </Link>
+              <Link to="/contact" className="btn btn--outline">
+                Arrange a Video Call
+              </Link>
             </div>
           </div>
         </div>

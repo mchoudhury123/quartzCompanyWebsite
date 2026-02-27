@@ -1,12 +1,15 @@
 /* ============================================
-   Installation Coverage Page
+   Installation Coverage Page – Redesigned Layout
    ============================================ */
 
-/* Hero */
+/* ---- Hero ---- */
 .cov-hero {
   position: relative;
   background: var(--color-dark);
-  padding: 7rem 0 5rem;
+  max-height: 40vh;
+  min-height: 280px;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
 }
 
@@ -20,9 +23,25 @@
 .cov-hero__content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+}
+
+/* Gold decorative diamond accent via ::after */
+.cov-hero__content::after {
+  content: '';
+  position: absolute;
+  top: 2.5rem;
+  right: 4rem;
+  width: 64px;
+  height: 64px;
+  background: var(--color-gold);
+  opacity: 0.18;
+  transform: rotate(45deg);
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 .cov-hero__badge {
@@ -49,15 +68,25 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 540px;
+  margin: 0;
 }
 
-/* Postcode Checker */
+/* ---- Offset Grid Helpers ---- */
+.cov-checker__block--left,
+.cov-regions__block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+.cov-map__block--right,
+.cov-info__block--right {
+  max-width: 65%;
+  margin-left: auto;
+}
+
+/* ---- Postcode Checker (odd / left) ---- */
 .cov-checker__card {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
   background: var(--color-cream);
   border-radius: var(--radius-lg);
   padding: 3rem;
@@ -81,7 +110,6 @@
   display: flex;
   gap: 0.75rem;
   max-width: 420px;
-  margin: 0 auto;
 }
 
 .cov-checker__input {
@@ -138,10 +166,16 @@
   margin-bottom: 0;
 }
 
-/* Map Placeholder */
-.cov-map__placeholder {
-  max-width: 900px;
-  margin: 0 auto;
+/* ---- Map Placeholder (even / right) ---- */
+.cov-map__heading {
+  margin-bottom: 0.75rem;
+}
+
+.cov-map__desc {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: 540px;
 }
 
 .cov-map__placeholder-inner {
@@ -197,13 +231,22 @@
   50% { transform: scale(1.2); opacity: 1; }
 }
 
-/* Regions */
+/* ---- Regions (odd / left) ---- */
+.cov-regions__heading {
+  margin-bottom: 0.75rem;
+}
+
+.cov-regions__desc {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: 540px;
+}
+
 .cov-regions__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 .cov-region {
@@ -333,10 +376,8 @@
   color: var(--color-primary);
 }
 
-/* Info Box / Lead Times Table */
+/* ---- Info Box / Lead Times Table (even / right) ---- */
 .cov-info__box {
-  max-width: 700px;
-  margin: 0 auto;
   background: var(--color-white);
   border-radius: var(--radius-lg);
   padding: 3rem;
@@ -344,12 +385,10 @@
 }
 
 .cov-info__heading {
-  text-align: center;
   margin-bottom: 1rem;
 }
 
 .cov-info__text {
-  text-align: center;
   font-size: 1rem;
   line-height: 1.7;
   color: var(--color-text-light);
@@ -387,25 +426,25 @@
   background: var(--color-cream);
 }
 
-/* CTA */
-.cov-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-}
-
-.cov-cta__inner {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+/* ---- CTA (bordered card, right-aligned) ---- */
+.cov-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  text-align: left;
+  background: var(--color-white);
 }
 
 .cov-cta__heading {
-  color: var(--color-white);
+  color: var(--color-dark);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   margin-bottom: 1rem;
 }
 
 .cov-cta__text {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-text-light);
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -414,24 +453,48 @@
 .cov-cta__actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
-.cov-cta__actions .btn--outline {
-  border-color: var(--color-white);
-  color: var(--color-white);
+/* ---- Responsive: 1024px ---- */
+@media (max-width: 1024px) {
+  .cov-checker__block--left,
+  .cov-regions__block--left {
+    max-width: 75%;
+  }
+
+  .cov-map__block--right,
+  .cov-info__block--right {
+    max-width: 75%;
+  }
+
+  .cov-hero__content::after {
+    right: 2rem;
+    width: 52px;
+    height: 52px;
+  }
 }
 
-.cov-cta__actions .btn--outline:hover {
-  background: var(--color-white);
-  color: var(--color-primary);
-}
-
-/* Responsive */
+/* ---- Responsive: 768px ---- */
 @media (max-width: 768px) {
   .cov-hero {
-    padding: 5rem 0 3.5rem;
+    min-height: 220px;
+  }
+
+  .cov-hero__content {
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .cov-hero__content::after {
+    display: none;
+  }
+
+  .cov-checker__block--left,
+  .cov-regions__block--left,
+  .cov-map__block--right,
+  .cov-info__block--right {
+    max-width: 100%;
   }
 
   .cov-checker__card {
@@ -442,10 +505,6 @@
     flex-direction: column;
   }
 
-  .cov-regions__grid {
-    grid-template-columns: 1fr;
-  }
-
   .cov-info__box {
     padding: 2rem;
   }
@@ -454,14 +513,29 @@
     min-height: 280px;
     padding: 3rem 1.5rem;
   }
+
+  .cov-cta__card {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
 
+/* ---- Responsive: 480px ---- */
 @media (max-width: 480px) {
+  .cov-hero__content {
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;
+  }
+
   .cov-region__cities {
     grid-template-columns: 1fr;
   }
 
   .cov-cta__actions {
     flex-direction: column;
+  }
+
+  .cov-cta__card {
+    padding: 2rem 1.5rem;
   }
 }

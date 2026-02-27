@@ -62,102 +62,113 @@ export default function InspirationPage() {
     <div className="inspiration-page">
       {/* ── Hero ── */}
       <section className="inspiration-hero">
+        <div className="inspiration-hero__accent" aria-hidden="true"></div>
         <div className="container">
-          <h1 className="inspiration-hero__title">Inspiration &amp; Ideas</h1>
-          <p className="inspiration-hero__subtitle">
-            Design tips, trend reports and real kitchen transformations
-          </p>
+          <div className="inspiration-hero__body">
+            <h1 className="inspiration-hero__title">Inspiration &amp; Ideas</h1>
+            <p className="inspiration-hero__subtitle">
+              Design tips, trend reports and real kitchen transformations
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* ── Content ── */}
-      <section className="section inspiration-content">
+      {/* ── Filters Section (odd = left-aligned) ── */}
+      <section className="section inspiration-filters-section">
         <div className="container">
-          <div className="inspiration-layout">
-            {/* ── Main Column ── */}
-            <div className="inspiration-main">
-              {/* Filters */}
-              <div className="inspiration-filters">
-                <div className="inspiration-tabs">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      className={`inspiration-tab${
-                        activeCategory === cat ? ' inspiration-tab--active' : ''
-                      }`}
-                      onClick={() => setActiveCategory(cat)}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-                <div className="inspiration-search">
-                  <input
-                    type="text"
-                    placeholder="Search articles..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="inspiration-search__input"
-                    aria-label="Search articles"
-                  />
-                  <span className="inspiration-search__icon" aria-hidden="true">
-                    &#128269;
-                  </span>
-                </div>
-              </div>
-
-              {/* Posts Grid */}
-              {filteredPosts.length > 0 ? (
-                <div className="inspiration-grid">
-                  {filteredPosts.map((post, index) => (
-                    <Link
-                      to={`/inspiration/${post.slug}`}
-                      key={post.id}
-                      className="inspiration-card"
-                    >
-                      <div
-                        className="inspiration-card__image"
-                        style={{
-                          background: gradients[index % gradients.length],
-                        }}
-                      >
-                        <span className="inspiration-card__category">
-                          {post.category}
-                        </span>
-                      </div>
-                      <div className="inspiration-card__body">
-                        <h3 className="inspiration-card__title">
-                          {post.title}
-                        </h3>
-                        <p className="inspiration-card__excerpt">
-                          {post.excerpt}
-                        </p>
-                        <div className="inspiration-card__meta">
-                          <span>{formatDate(post.date)}</span>
-                          <span className="inspiration-card__dot">&middot;</span>
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="inspiration-empty">
-                  <p>No articles found matching your search.</p>
+          <div className="inspiration-block inspiration-block--left">
+            <div className="inspiration-filters">
+              <div className="inspiration-tabs">
+                {categories.map((cat) => (
                   <button
-                    className="btn btn--outline btn--sm"
-                    onClick={() => {
-                      setActiveCategory('All');
-                      setSearchQuery('');
-                    }}
+                    key={cat}
+                    className={`inspiration-tab${
+                      activeCategory === cat ? ' inspiration-tab--active' : ''
+                    }`}
+                    onClick={() => setActiveCategory(cat)}
                   >
-                    Clear Filters
+                    {cat}
                   </button>
-                </div>
-              )}
+                ))}
+              </div>
+              <div className="inspiration-search">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="inspiration-search__input"
+                  aria-label="Search articles"
+                />
+                <span className="inspiration-search__icon" aria-hidden="true">
+                  &#128269;
+                </span>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* ── Sidebar ── */}
+      {/* ── Articles Section (even = right-aligned) ── */}
+      <section className="section section--cream inspiration-articles-section">
+        <div className="container">
+          <div className="inspiration-block inspiration-block--right">
+            {filteredPosts.length > 0 ? (
+              <div className="inspiration-grid">
+                {filteredPosts.map((post, index) => (
+                  <Link
+                    to={`/inspiration/${post.slug}`}
+                    key={post.id}
+                    className="inspiration-card"
+                  >
+                    <div
+                      className="inspiration-card__image"
+                      style={{
+                        background: gradients[index % gradients.length],
+                      }}
+                    >
+                      <span className="inspiration-card__category">
+                        {post.category}
+                      </span>
+                    </div>
+                    <div className="inspiration-card__body">
+                      <h3 className="inspiration-card__title">
+                        {post.title}
+                      </h3>
+                      <p className="inspiration-card__excerpt">
+                        {post.excerpt}
+                      </p>
+                      <div className="inspiration-card__meta">
+                        <span>{formatDate(post.date)}</span>
+                        <span className="inspiration-card__dot">&middot;</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="inspiration-empty">
+                <p>No articles found matching your search.</p>
+                <button
+                  className="btn btn--outline btn--sm"
+                  onClick={() => {
+                    setActiveCategory('All');
+                    setSearchQuery('');
+                  }}
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Sidebar Section (odd = left-aligned) ── */}
+      <section className="section inspiration-sidebar-section">
+        <div className="container">
+          <div className="inspiration-block inspiration-block--left">
             <aside className="inspiration-sidebar">
               {/* Popular Tags */}
               <div className="inspiration-sidebar__section">
@@ -188,21 +199,23 @@ export default function InspirationPage() {
                   </Link>
                 </div>
               </div>
-
-              {/* Consultation CTA */}
-              <div className="inspiration-sidebar__section">
-                <div className="inspiration-sidebar__cta-card">
-                  <h4>Need Help Choosing?</h4>
-                  <p>
-                    Book a free design consultation with our expert team. We
-                    will help you find the perfect worktop for your space.
-                  </p>
-                  <Link to="/contact" className="btn btn--primary btn--sm">
-                    Book a Consultation
-                  </Link>
-                </div>
-              </div>
             </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA Section (right-aligned bordered card) ── */}
+      <section className="section inspiration-cta-section">
+        <div className="container">
+          <div className="inspiration-cta__card">
+            <h2 className="inspiration-cta__heading">Need Help Choosing?</h2>
+            <p className="inspiration-cta__text">
+              Book a free design consultation with our expert team. We
+              will help you find the perfect worktop for your space.
+            </p>
+            <Link to="/contact" className="btn btn--gold btn--lg">
+              Book a Consultation
+            </Link>
           </div>
         </div>
       </section>

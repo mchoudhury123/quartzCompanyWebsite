@@ -1,5 +1,5 @@
 /* ============================================
-   SalePage – The Quartz Company
+   SalePage – The Quartz Company (Redesign)
    ============================================ */
 
 /* ── Hero ── */
@@ -7,7 +7,6 @@
   background: linear-gradient(135deg, #1A1A1A 0%, #2a0a0a 50%, #1A1A1A 100%);
   color: var(--color-white);
   padding: 6rem 0 5rem;
-  text-align: center;
   position: relative;
   overflow: hidden;
 }
@@ -23,6 +22,22 @@
   pointer-events: none;
 }
 
+/* Split-screen grid: left = text, right = countdown panel */
+.sale-hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  position: relative;
+}
+
+/* ── Hero Left (text side) ── */
+.sale-hero__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .sale-hero__badge {
   display: inline-block;
   padding: 0.4rem 1.5rem;
@@ -34,7 +49,6 @@
   letter-spacing: 1.5px;
   border-radius: 2px;
   margin-bottom: 1.5rem;
-  position: relative;
 }
 
 .sale-hero__title {
@@ -43,7 +57,6 @@
   color: var(--color-white);
   line-height: 1.15;
   margin-bottom: 1.25rem;
-  position: relative;
 }
 
 .sale-hero__highlight {
@@ -54,65 +67,103 @@
   font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.8);
   max-width: 560px;
-  margin: 0 auto 2rem;
   line-height: 1.65;
-  position: relative;
+}
+
+/* ── Hero Right (countdown panel) ── */
+.sale-hero__right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sale-hero__countdown {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.85rem 2rem;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 2.5rem 3rem;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(197, 164, 126, 0.4);
-  border-radius: var(--radius-sm);
-  position: relative;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  width: 100%;
+  max-width: 380px;
+  backdrop-filter: blur(6px);
 }
 
 .sale-hero__countdown-label {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-gold);
-  letter-spacing: 0.25px;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
-/* ── Offers Grid ── */
-.sale-offers-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  max-width: 960px;
+.sale-hero__countdown-date {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1.2;
+}
+
+.sale-hero__countdown-note {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.5;
+}
+
+/* ── Offers Section ── */
+.sale-offers__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 1060px;
   margin: 0 auto;
 }
 
-.sale-offer-card {
-  position: relative;
+/* Single horizontal offer strip */
+.sale-offer-strip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 2rem;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 2rem 1.75rem;
-  overflow: hidden;
+  padding: 1.5rem 2rem;
   transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
 }
 
-.sale-offer-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.sale-offer-card__accent {
+.sale-offer-strip::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
 }
 
-.sale-offer-card__badge {
+.sale-offer-strip:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Badge column (left) */
+.sale-offer-strip__badge-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sale-offer-strip__badge {
   display: inline-block;
-  padding: 0.3rem 0.85rem;
+  padding: 0.4rem 1rem;
   background: var(--color-sale);
   color: var(--color-white);
   font-size: 0.72rem;
@@ -120,57 +171,78 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-radius: 2px;
-  margin-bottom: 1rem;
+  white-space: nowrap;
 }
 
-.sale-offer-card__title {
+/* Body (center) */
+.sale-offer-strip__body {
+  min-width: 0;
+}
+
+.sale-offer-strip__title {
   font-family: var(--font-heading);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--color-dark);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
-.sale-offer-card__desc {
-  font-size: 0.9rem;
+.sale-offer-strip__desc {
+  font-size: 0.88rem;
   color: var(--color-text-light);
-  line-height: 1.65;
-  margin-bottom: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
 }
 
-.sale-offer-card__link {
+/* CTA column (right) */
+.sale-offer-strip__cta-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.sale-offer-strip__link {
   display: inline-block;
-  font-size: 0.9rem;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-primary);
-  transition: color var(--transition);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  transition: all var(--transition);
 }
 
-.sale-offer-card__link:hover {
-  color: var(--color-gold);
+.sale-offer-strip__link:hover {
+  color: var(--color-white);
+  background: var(--color-gold);
+  border-color: var(--color-gold);
 }
 
-/* ── Products Grid ── */
-.sale-products-grid {
-  margin-top: 0;
+/* ── Products Grid (2-column) ── */
+.sale-products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
 }
 
-/* ── CTA ── */
-.sale-cta-section {
+/* ── CTA Section ── */
+.sale-cta {
   background: var(--color-white);
 }
 
-.sale-cta {
+.sale-cta__inner {
   text-align: center;
   max-width: 600px;
   margin: 0 auto;
 }
 
-.sale-cta h2 {
+.sale-cta__inner h2 {
   font-family: var(--font-heading);
   margin-bottom: 0.75rem;
 }
 
-.sale-cta p {
+.sale-cta__inner p {
   color: var(--color-text-light);
   margin-bottom: 1.75rem;
   font-size: 1.05rem;
@@ -203,31 +275,95 @@
   margin-bottom: 0.4rem;
 }
 
-/* ── Responsive ── */
+/* ── Responsive: 768px ── */
 @media (max-width: 768px) {
   .sale-hero {
     padding: 4.5rem 0 3.5rem;
   }
 
-  .sale-offers-grid {
+  .sale-hero__grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
   }
 
-  .sale-offer-card {
-    padding: 1.5rem 1.25rem;
+  .sale-hero__left {
+    align-items: center;
+  }
+
+  .sale-hero__subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sale-hero__countdown {
+    max-width: 340px;
+    padding: 2rem 2.5rem;
+  }
+
+  /* Offer strips stack vertically */
+  .sale-offer-strip {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    text-align: left;
+  }
+
+  .sale-offer-strip__badge-col {
+    justify-content: flex-start;
+  }
+
+  .sale-offer-strip__cta-col {
+    justify-content: flex-start;
+  }
+
+  /* Products: 2 columns to 1 column */
+  .sale-products__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 
+/* ── Responsive: 480px ── */
 @media (max-width: 480px) {
+  .sale-hero {
+    padding: 3.5rem 0 2.5rem;
+  }
+
   .sale-hero__title {
     font-size: 1.75rem;
   }
 
+  .sale-hero__subtitle {
+    font-size: 1rem;
+  }
+
   .sale-hero__countdown {
-    padding: 0.65rem 1.25rem;
+    padding: 1.5rem 1.25rem;
+    max-width: 100%;
+  }
+
+  .sale-hero__countdown-date {
+    font-size: 1.4rem;
   }
 
   .sale-hero__countdown-label {
-    font-size: 0.88rem;
+    font-size: 0.78rem;
+  }
+
+  .sale-hero__countdown-note {
+    font-size: 0.8rem;
+  }
+
+  .sale-offer-strip {
+    padding: 1rem 1rem 1rem 1.25rem;
+  }
+
+  .sale-offer-strip__title {
+    font-size: 1.05rem;
+  }
+
+  .sale-offer-strip__desc {
+    font-size: 0.82rem;
   }
 }

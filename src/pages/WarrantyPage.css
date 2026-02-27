@@ -1,12 +1,15 @@
 /* ============================================
-   Warranty Page
+   Warranty Page — Redesigned Layout
    ============================================ */
 
-/* Hero */
+/* ---- Hero (short, left-aligned, gold diamond accent) ---- */
 .war-hero {
   position: relative;
   background: var(--color-dark);
-  padding: 7rem 0 5rem;
+  max-height: 40vh;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -20,9 +23,24 @@
 .war-hero__content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.war-hero__content::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  width: 120px;
+  height: 120px;
+  background: var(--color-gold);
+  opacity: 0.18;
+  transform: translate(0, -50%) rotate(45deg);
+  border-radius: 6px;
+  pointer-events: none;
 }
 
 .war-hero__badge {
@@ -49,17 +67,28 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 540px;
+  margin: 0;
 }
 
-/* Warranty Cards */
+/* ---- Offset grid helpers ---- */
+.war-cards__block--left,
+.war-certs__block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+.war-claims__block--right,
+.war-download__block--right {
+  max-width: 65%;
+  margin-left: auto;
+}
+
+/* ---- Warranty Cards (odd — left) ---- */
 .war-cards__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
 .war-card {
@@ -78,7 +107,7 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  padding: 2rem 2rem;
+  padding: 2rem;
   background: var(--color-primary);
 }
 
@@ -183,67 +212,75 @@
   opacity: 0.5;
 }
 
-/* Claims */
+/* ---- Claims (even — right) ---- */
+.war-claims__title {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.war-claims__subtitle {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  max-width: 540px;
+  margin-bottom: 2.5rem;
+}
+
 .war-claims__steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
 .war-claim-step {
-  text-align: center;
-  position: relative;
-}
-
-.war-claim-step::after {
-  content: '';
-  position: absolute;
-  top: 28px;
-  right: -1rem;
-  width: calc(2rem);
-  height: 2px;
-  background: var(--color-border);
-}
-
-.war-claim-step:last-child::after {
-  display: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
 }
 
 .war-claim-step__number {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--color-gold);
   color: var(--color-white);
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 1.25rem;
 }
 
 .war-claim-step__title {
   font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .war-claim-step__desc {
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--color-text-light);
+  margin-bottom: 0;
 }
 
-/* Certifications */
+/* ---- Certifications (odd — left) ---- */
+.war-certs__title {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.war-certs__subtitle {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  max-width: 540px;
+  margin-bottom: 2.5rem;
+}
+
 .war-certs__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .war-cert {
@@ -289,18 +326,16 @@
   margin-bottom: 0;
 }
 
-/* Download */
+/* ---- Download (even — right) ---- */
 .war-download__card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 3rem;
+  gap: 2.5rem;
   background: var(--color-white);
   border-radius: var(--radius-lg);
   padding: 2.5rem 3rem;
   box-shadow: var(--shadow-sm);
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 .war-download__heading {
@@ -312,7 +347,7 @@
   font-size: 0.95rem;
   line-height: 1.7;
   color: var(--color-text-light);
-  max-width: 480px;
+  max-width: 380px;
   margin-bottom: 0;
 }
 
@@ -323,25 +358,24 @@
   gap: 0.75rem;
 }
 
-/* CTA */
-.war-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-}
-
-.war-cta__inner {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+/* ---- CTA (bordered card, right-aligned) ---- */
+.war-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2.5rem;
+  text-align: left;
 }
 
 .war-cta__heading {
-  color: var(--color-white);
+  color: var(--color-dark);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   margin-bottom: 1rem;
 }
 
 .war-cta__text {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-text-light);
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -350,43 +384,64 @@
 .war-cta__actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
-.war-cta__actions .btn--outline {
-  border-color: var(--color-white);
-  color: var(--color-white);
-}
-
-.war-cta__actions .btn--outline:hover {
-  background: var(--color-white);
-  color: var(--color-primary);
-}
-
-/* Responsive */
+/* ============================================
+   Responsive — 1024px
+   ============================================ */
 @media (max-width: 1024px) {
-  .war-claims__steps {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+  .war-cards__block--left,
+  .war-certs__block--left {
+    max-width: 80%;
   }
 
-  .war-claim-step::after {
-    display: none;
+  .war-claims__block--right,
+  .war-download__block--right {
+    max-width: 80%;
+  }
+
+  .war-cards__grid {
+    grid-template-columns: 1fr;
   }
 
   .war-certs__grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .war-hero__content::after {
+    width: 100px;
+    height: 100px;
+    right: 2%;
+  }
 }
 
+/* ============================================
+   Responsive — 768px
+   ============================================ */
 @media (max-width: 768px) {
   .war-hero {
-    padding: 5rem 0 3.5rem;
+    min-height: 220px;
   }
 
-  .war-cards__grid {
-    grid-template-columns: 1fr;
+  .war-hero__content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .war-hero__content::after {
+    width: 80px;
+    height: 80px;
+    right: 1%;
+    opacity: 0.12;
+  }
+
+  /* Full-width on mobile */
+  .war-cards__block--left,
+  .war-certs__block--left,
+  .war-claims__block--right,
+  .war-download__block--right {
+    max-width: 100%;
   }
 
   .war-card__header {
@@ -399,6 +454,10 @@
 
   .war-card__years {
     font-size: 2.75rem;
+  }
+
+  .war-certs__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .war-download__card {
@@ -419,18 +478,36 @@
   .war-download__actions .btn {
     width: 100%;
   }
+
+  .war-cta__card {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
 
+/* ============================================
+   Responsive — 480px
+   ============================================ */
 @media (max-width: 480px) {
-  .war-claims__steps {
-    grid-template-columns: 1fr;
+  .war-hero__content::after {
+    display: none;
   }
 
   .war-certs__grid {
     grid-template-columns: 1fr;
   }
 
+  .war-claim-step {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
   .war-cta__actions {
     flex-direction: column;
+  }
+
+  .war-cta__card {
+    padding: 2rem 1.5rem;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { FiCheck, FiUploadCloud, FiX, FiPlus, FiCalendar } from 'react-icons/fi';
 import products from '../data/products.json';
@@ -14,6 +14,12 @@ const isValidUKPostcode = (pc) =>
 const MAX_COLOURS = 3;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED_TYPES = '.jpg,.jpeg,.png,.pdf';
+
+const STEPS = [
+  { number: 1, label: 'Choose Material', id: 'choose-material' },
+  { number: 2, label: 'Kitchen Plan', id: 'kitchen-plan' },
+  { number: 3, label: 'Your Details', id: 'your-details' },
+];
 
 export default function QuotePage() {
   const [searchParams] = useSearchParams();
@@ -52,10 +58,58 @@ export default function QuotePage() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
+  /* ── Active step tracking (IntersectionObserver) ── */
+  const [activeStep, setActiveStep] = useState(1);
+  const stepRefs = {
+    1: useRef(null),
+    2: useRef(null),
+    3: useRef(null),
+  };
+
+  useEffect(() => {
+    const sections = [
+      { ref: stepRefs[1], step: 1 },
+      { ref: stepRefs[2], step: 2 },
+      { ref: stepRefs[3], step: 3 },
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        /* Find the entry with the largest intersection ratio */
+        let bestEntry = null;
+        let bestRatio = 0;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
+            bestRatio = entry.intersectionRatio;
+            bestEntry = entry;
+          }
+        });
+
+        if (bestEntry) {
+          const match = sections.find(
+            (s) => s.ref.current === bestEntry.target
+          );
+          if (match) setActiveStep(match.step);
+        }
+      },
+      {
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: [0, 0.1, 0.25, 0.5],
+      }
+    );
+
+    sections.forEach(({ ref }) => {
+      if (ref.current) observer.observe(ref.current);
+    });
+
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /* Refs for scroll-to-error */
   const sectionRefs = {
-    products: useRef(null),
-    details: useRef(null),
+    products: stepRefs[1],
+    details: stepRefs[3],
   };
 
   /* ── Handlers: Step 1 ── */
@@ -176,6 +230,14 @@ export default function QuotePage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  /* ── Scroll to step on progress bar click ── */
+  const scrollToStep = (stepNumber) => {
+    const ref = stepRefs[stepNumber];
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   /* ── Confirmation View ── */
   if (submitted) {
     return (
@@ -239,6 +301,55 @@ export default function QuotePage() {
         </div>
       </section>
 
+      {/* ── Progress Bar ── */}
+      <nav className="quote-page__progress" aria-label="Quote form progress">
+        <div className="container">
+          <ol className="quote-page__progress-bar">
+            {STEPS.map((step, index) => {
+              const isActive = activeStep === step.number;
+              const isCompleted = activeStep > step.number;
+              return (
+                <li
+                  key={step.number}
+                  className={`quote-page__progress-step${
+                    isActive ? ' quote-page__progress-step--active' : ''
+                  }${isCompleted ? ' quote-page__progress-step--completed' : ''}`}
+                >
+                  {/* Connecting line before (not on first step) */}
+                  {index > 0 && (
+                    <span
+                      className={`quote-page__progress-line${
+                        activeStep >= step.number
+                          ? ' quote-page__progress-line--filled'
+                          : ''
+                      }`}
+                      aria-hidden="true"
+                    />
+                  )}
+
+                  <button
+                    type="button"
+                    className="quote-page__progress-btn"
+                    onClick={() => scrollToStep(step.number)}
+                    aria-current={isActive ? 'step' : undefined}
+                    aria-label={`Step ${step.number}: ${step.label}${
+                      isActive ? ' (current)' : ''
+                    }${isCompleted ? ' (completed)' : ''}`}
+                  >
+                    <span className="quote-page__progress-circle">
+                      {isCompleted ? <FiCheck /> : step.number}
+                    </span>
+                    <span className="quote-page__progress-label">
+                      {step.label}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </nav>
+
       <form className="quote-page__form" onSubmit={handleSubmit} noValidate>
         {/* ════════════════════════════════════════
             Step 1 – Choose Your Material
@@ -246,105 +357,107 @@ export default function QuotePage() {
         <section
           className="section quote-page__section"
           id="choose-material"
-          ref={sectionRefs.products}
+          ref={stepRefs[1]}
         >
           <div className="container">
-            <div className="quote-page__section-header">
-              <span className="quote-page__step-number">1</span>
-              <div>
-                <h2 className="quote-page__section-title">
-                  Choose Your Material
-                </h2>
-                <p className="quote-page__section-desc">
-                  Select up to three colours. Don&rsquo;t worry if you&rsquo;re
-                  undecided &mdash; you can change colours or request more
-                  samples later.
+            <div className="quote-page__card">
+              <div className="quote-page__section-header">
+                <span className="quote-page__step-number">1</span>
+                <div>
+                  <h2 className="quote-page__section-title">
+                    Choose Your Material
+                  </h2>
+                  <p className="quote-page__section-desc">
+                    Select up to three colours. Don&rsquo;t worry if you&rsquo;re
+                    undecided &mdash; you can change colours or request more
+                    samples later.
+                  </p>
+                </div>
+              </div>
+
+              {errors.products && (
+                <p className="quote-page__error quote-page__error--section" role="alert">
+                  {errors.products}
                 </p>
-              </div>
-            </div>
+              )}
 
-            {errors.products && (
-              <p className="quote-page__error quote-page__error--section" role="alert">
-                {errors.products}
-              </p>
-            )}
+              {selectionWarning && (
+                <div className="quote-page__max-warning" role="alert">
+                  Maximum {MAX_COLOURS} colours. Deselect one to choose another.
+                </div>
+              )}
 
-            {selectionWarning && (
-              <div className="quote-page__max-warning" role="alert">
-                Maximum {MAX_COLOURS} colours. Deselect one to choose another.
-              </div>
-            )}
-
-            {/* Swatch Grid */}
-            <div className="quote-page__swatch-grid">
-              {products.map((p) => {
-                const isSelected = selectedIds.includes(p.id);
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    className={`quote-page__swatch-tile${
-                      isSelected ? ' quote-page__swatch-tile--selected' : ''
-                    }`}
-                    onClick={() => toggleProduct(p.id)}
-                    aria-pressed={isSelected}
-                    aria-label={`${p.name} – ${p.material}${
-                      isSelected ? ' (selected)' : ''
-                    }`}
-                  >
-                    <img
-                      src={p.swatch}
-                      alt={p.name}
-                      className="quote-page__swatch-image"
-                      loading="lazy"
-                    />
-                    <div className="quote-page__swatch-info">
-                      <span className="quote-page__swatch-name">{p.name}</span>
-                      <span className="quote-page__swatch-material">
-                        {p.material}
-                      </span>
-                    </div>
-                    <span
-                      className="quote-page__swatch-check"
-                      aria-hidden="true"
+              {/* Swatch Grid */}
+              <div className="quote-page__swatch-grid">
+                {products.map((p) => {
+                  const isSelected = selectedIds.includes(p.id);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      className={`quote-page__swatch-tile${
+                        isSelected ? ' quote-page__swatch-tile--selected' : ''
+                      }`}
+                      onClick={() => toggleProduct(p.id)}
+                      aria-pressed={isSelected}
+                      aria-label={`${p.name} – ${p.material}${
+                        isSelected ? ' (selected)' : ''
+                      }`}
                     >
-                      <FiCheck />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                      <img
+                        src={p.swatch}
+                        alt={p.name}
+                        className="quote-page__swatch-image"
+                        loading="lazy"
+                      />
+                      <div className="quote-page__swatch-info">
+                        <span className="quote-page__swatch-name">{p.name}</span>
+                        <span className="quote-page__swatch-material">
+                          {p.material}
+                        </span>
+                      </div>
+                      <span
+                        className="quote-page__swatch-check"
+                        aria-hidden="true"
+                      >
+                        <FiCheck />
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-            {/* Sample Toggle */}
-            <div className="quote-page__sample-section">
-              <p className="quote-page__sample-question">
-                Would you like us to post free samples of your chosen colours?
-              </p>
-              <div className="quote-page__sample-toggle">
-                <button
-                  type="button"
-                  className={`quote-page__toggle-btn${
-                    wantSamples === true
-                      ? ' quote-page__toggle-btn--active'
-                      : ''
-                  }`}
-                  onClick={() => setWantSamples(true)}
-                  aria-pressed={wantSamples === true}
-                >
-                  Yes, send me samples
-                </button>
-                <button
-                  type="button"
-                  className={`quote-page__toggle-btn${
-                    wantSamples === false
-                      ? ' quote-page__toggle-btn--active'
-                      : ''
-                  }`}
-                  onClick={() => setWantSamples(false)}
-                  aria-pressed={wantSamples === false}
-                >
-                  No thanks
-                </button>
+              {/* Sample Toggle */}
+              <div className="quote-page__sample-section">
+                <p className="quote-page__sample-question">
+                  Would you like us to post free samples of your chosen colours?
+                </p>
+                <div className="quote-page__sample-toggle">
+                  <button
+                    type="button"
+                    className={`quote-page__toggle-btn${
+                      wantSamples === true
+                        ? ' quote-page__toggle-btn--active'
+                        : ''
+                    }`}
+                    onClick={() => setWantSamples(true)}
+                    aria-pressed={wantSamples === true}
+                  >
+                    Yes, send me samples
+                  </button>
+                  <button
+                    type="button"
+                    className={`quote-page__toggle-btn${
+                      wantSamples === false
+                        ? ' quote-page__toggle-btn--active'
+                        : ''
+                    }`}
+                    onClick={() => setWantSamples(false)}
+                    aria-pressed={wantSamples === false}
+                  >
+                    No thanks
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -356,193 +469,196 @@ export default function QuotePage() {
         <section
           className="section section--cream quote-page__section"
           id="kitchen-plan"
+          ref={stepRefs[2]}
         >
           <div className="container">
-            <div className="quote-page__section-header">
-              <span className="quote-page__step-number">2</span>
-              <div>
-                <h2 className="quote-page__section-title">
-                  Your Kitchen Plan
-                </h2>
-                <p className="quote-page__section-desc">
-                  Help us understand your kitchen layout. You can enter
-                  measurements manually or upload a plan. This step is optional
-                  &mdash; we can arrange a free template visit later.
-                </p>
-              </div>
-            </div>
-
-            {/* Mode Selection Cards */}
-            <div className="quote-page__plan-cards">
-              <button
-                type="button"
-                className={`quote-page__plan-card${
-                  planMode === 'dimensions'
-                    ? ' quote-page__plan-card--active'
-                    : ''
-                }`}
-                onClick={() =>
-                  setPlanMode(planMode === 'dimensions' ? null : 'dimensions')
-                }
-                aria-pressed={planMode === 'dimensions'}
-              >
-                <span className="quote-page__plan-card-icon" aria-hidden="true">
-                  &#x1F4D0;
-                </span>
-                <span className="quote-page__plan-card-title">
-                  Enter Dimensions
-                </span>
-                <span className="quote-page__plan-card-desc">
-                  Add the length and width for each worktop run
-                </span>
-              </button>
-
-              <button
-                type="button"
-                className={`quote-page__plan-card${
-                  planMode === 'upload' ? ' quote-page__plan-card--active' : ''
-                }`}
-                onClick={() =>
-                  setPlanMode(planMode === 'upload' ? null : 'upload')
-                }
-                aria-pressed={planMode === 'upload'}
-              >
-                <FiUploadCloud className="quote-page__plan-card-fi-icon" />
-                <span className="quote-page__plan-card-title">
-                  Upload Plan
-                </span>
-                <span className="quote-page__plan-card-desc">
-                  Upload a PDF or image of your kitchen layout
-                </span>
-              </button>
-            </div>
-
-            {/* Dimensions Sub-form */}
-            {planMode === 'dimensions' && (
-              <div className="quote-page__dimensions">
-                {worktopRuns.map((run, index) => (
-                  <div key={index} className="quote-page__run-row">
-                    <span className="quote-page__run-label">
-                      Run {index + 1}
-                    </span>
-                    <div className="quote-page__run-field">
-                      <label
-                        htmlFor={`run-length-${index}`}
-                        className="quote-page__run-field-label"
-                      >
-                        Length (mm)
-                      </label>
-                      <input
-                        id={`run-length-${index}`}
-                        type="number"
-                        className="quote-page__input"
-                        placeholder="e.g. 3000"
-                        value={run.length}
-                        onChange={(e) =>
-                          updateRun(index, 'length', e.target.value)
-                        }
-                        min="0"
-                      />
-                    </div>
-                    <div className="quote-page__run-field">
-                      <label
-                        htmlFor={`run-width-${index}`}
-                        className="quote-page__run-field-label"
-                      >
-                        Width (mm)
-                      </label>
-                      <input
-                        id={`run-width-${index}`}
-                        type="number"
-                        className="quote-page__input"
-                        placeholder="e.g. 600"
-                        value={run.width}
-                        onChange={(e) =>
-                          updateRun(index, 'width', e.target.value)
-                        }
-                        min="0"
-                      />
-                    </div>
-                    {worktopRuns.length > 1 && (
-                      <button
-                        type="button"
-                        className="quote-page__run-remove"
-                        onClick={() => removeRun(index)}
-                        aria-label={`Remove run ${index + 1}`}
-                      >
-                        <FiX />
-                      </button>
-                    )}
-                  </div>
-                ))}
-
-                {worktopRuns.length < 5 && (
-                  <button
-                    type="button"
-                    className="quote-page__add-run"
-                    onClick={addRun}
-                  >
-                    <FiPlus /> Add another worktop run
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* Upload Sub-form */}
-            {planMode === 'upload' && (
-              <div className="quote-page__upload">
-                <div
-                  className={`quote-page__dropzone${
-                    dragOver ? ' quote-page__dropzone--over' : ''
-                  }${uploadedFile ? ' quote-page__dropzone--uploaded' : ''}`}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragOver(true);
-                  }}
-                  onDragLeave={() => setDragOver(false)}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      fileInputRef.current?.click();
-                    }
-                  }}
-                  aria-label="Upload kitchen plan file"
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept={ACCEPTED_TYPES}
-                    className="quote-page__file-input"
-                    onChange={(e) => handleFileSelect(e.target.files[0])}
-                  />
-                  {uploadedFile ? (
-                    <>
-                      <FiCheck className="quote-page__dropzone-icon quote-page__dropzone-icon--done" />
-                      <span className="quote-page__dropzone-filename">
-                        {uploadedFile.name}
-                      </span>
-                      <span className="quote-page__dropzone-hint">
-                        Click or drop to replace
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <FiUploadCloud className="quote-page__dropzone-icon" />
-                      <span className="quote-page__dropzone-text">
-                        Drag &amp; drop your file here, or click to browse
-                      </span>
-                      <span className="quote-page__dropzone-hint">
-                        JPG, PNG or PDF &mdash; max 10 MB
-                      </span>
-                    </>
-                  )}
+            <div className="quote-page__card">
+              <div className="quote-page__section-header">
+                <span className="quote-page__step-number">2</span>
+                <div>
+                  <h2 className="quote-page__section-title">
+                    Your Kitchen Plan
+                  </h2>
+                  <p className="quote-page__section-desc">
+                    Help us understand your kitchen layout. You can enter
+                    measurements manually or upload a plan. This step is optional
+                    &mdash; we can arrange a free template visit later.
+                  </p>
                 </div>
               </div>
-            )}
+
+              {/* Mode Selection Cards */}
+              <div className="quote-page__plan-cards">
+                <button
+                  type="button"
+                  className={`quote-page__plan-card${
+                    planMode === 'dimensions'
+                      ? ' quote-page__plan-card--active'
+                      : ''
+                  }`}
+                  onClick={() =>
+                    setPlanMode(planMode === 'dimensions' ? null : 'dimensions')
+                  }
+                  aria-pressed={planMode === 'dimensions'}
+                >
+                  <span className="quote-page__plan-card-icon" aria-hidden="true">
+                    &#x1F4D0;
+                  </span>
+                  <span className="quote-page__plan-card-title">
+                    Enter Dimensions
+                  </span>
+                  <span className="quote-page__plan-card-desc">
+                    Add the length and width for each worktop run
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`quote-page__plan-card${
+                    planMode === 'upload' ? ' quote-page__plan-card--active' : ''
+                  }`}
+                  onClick={() =>
+                    setPlanMode(planMode === 'upload' ? null : 'upload')
+                  }
+                  aria-pressed={planMode === 'upload'}
+                >
+                  <FiUploadCloud className="quote-page__plan-card-fi-icon" />
+                  <span className="quote-page__plan-card-title">
+                    Upload Plan
+                  </span>
+                  <span className="quote-page__plan-card-desc">
+                    Upload a PDF or image of your kitchen layout
+                  </span>
+                </button>
+              </div>
+
+              {/* Dimensions Sub-form */}
+              {planMode === 'dimensions' && (
+                <div className="quote-page__dimensions">
+                  {worktopRuns.map((run, index) => (
+                    <div key={index} className="quote-page__run-row">
+                      <span className="quote-page__run-label">
+                        Run {index + 1}
+                      </span>
+                      <div className="quote-page__run-field">
+                        <label
+                          htmlFor={`run-length-${index}`}
+                          className="quote-page__run-field-label"
+                        >
+                          Length (mm)
+                        </label>
+                        <input
+                          id={`run-length-${index}`}
+                          type="number"
+                          className="quote-page__input"
+                          placeholder="e.g. 3000"
+                          value={run.length}
+                          onChange={(e) =>
+                            updateRun(index, 'length', e.target.value)
+                          }
+                          min="0"
+                        />
+                      </div>
+                      <div className="quote-page__run-field">
+                        <label
+                          htmlFor={`run-width-${index}`}
+                          className="quote-page__run-field-label"
+                        >
+                          Width (mm)
+                        </label>
+                        <input
+                          id={`run-width-${index}`}
+                          type="number"
+                          className="quote-page__input"
+                          placeholder="e.g. 600"
+                          value={run.width}
+                          onChange={(e) =>
+                            updateRun(index, 'width', e.target.value)
+                          }
+                          min="0"
+                        />
+                      </div>
+                      {worktopRuns.length > 1 && (
+                        <button
+                          type="button"
+                          className="quote-page__run-remove"
+                          onClick={() => removeRun(index)}
+                          aria-label={`Remove run ${index + 1}`}
+                        >
+                          <FiX />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {worktopRuns.length < 5 && (
+                    <button
+                      type="button"
+                      className="quote-page__add-run"
+                      onClick={addRun}
+                    >
+                      <FiPlus /> Add another worktop run
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Upload Sub-form */}
+              {planMode === 'upload' && (
+                <div className="quote-page__upload">
+                  <div
+                    className={`quote-page__dropzone${
+                      dragOver ? ' quote-page__dropzone--over' : ''
+                    }${uploadedFile ? ' quote-page__dropzone--uploaded' : ''}`}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setDragOver(true);
+                    }}
+                    onDragLeave={() => setDragOver(false)}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        fileInputRef.current?.click();
+                      }
+                    }}
+                    aria-label="Upload kitchen plan file"
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept={ACCEPTED_TYPES}
+                      className="quote-page__file-input"
+                      onChange={(e) => handleFileSelect(e.target.files[0])}
+                    />
+                    {uploadedFile ? (
+                      <>
+                        <FiCheck className="quote-page__dropzone-icon quote-page__dropzone-icon--done" />
+                        <span className="quote-page__dropzone-filename">
+                          {uploadedFile.name}
+                        </span>
+                        <span className="quote-page__dropzone-hint">
+                          Click or drop to replace
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <FiUploadCloud className="quote-page__dropzone-icon" />
+                        <span className="quote-page__dropzone-text">
+                          Drag &amp; drop your file here, or click to browse
+                        </span>
+                        <span className="quote-page__dropzone-hint">
+                          JPG, PNG or PDF &mdash; max 10 MB
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
@@ -552,187 +668,189 @@ export default function QuotePage() {
         <section
           className="section quote-page__section"
           id="your-details"
-          ref={sectionRefs.details}
+          ref={stepRefs[3]}
         >
           <div className="container">
-            <div className="quote-page__section-header">
-              <span className="quote-page__step-number">3</span>
-              <div>
-                <h2 className="quote-page__section-title">Your Details</h2>
-                <p className="quote-page__section-desc">
-                  We&rsquo;ll use these details to prepare and send your quote.
-                </p>
-              </div>
-            </div>
-
-            <div className="quote-page__details-form">
-              {/* First / Last Name */}
-              <div className="quote-page__row">
-                <div className="quote-page__group">
-                  <label htmlFor="qp-firstName" className="quote-page__label">
-                    First Name <span className="quote-page__required">*</span>
-                  </label>
-                  <input
-                    id="qp-firstName"
-                    name="firstName"
-                    type="text"
-                    className={`quote-page__input${
-                      errors.firstName ? ' quote-page__input--error' : ''
-                    }`}
-                    placeholder="First name"
-                    value={form.firstName}
-                    onChange={handleChange}
-                    autoComplete="given-name"
-                  />
-                  {errors.firstName && (
-                    <span className="quote-page__error">{errors.firstName}</span>
-                  )}
-                </div>
-                <div className="quote-page__group">
-                  <label htmlFor="qp-lastName" className="quote-page__label">
-                    Last Name <span className="quote-page__required">*</span>
-                  </label>
-                  <input
-                    id="qp-lastName"
-                    name="lastName"
-                    type="text"
-                    className={`quote-page__input${
-                      errors.lastName ? ' quote-page__input--error' : ''
-                    }`}
-                    placeholder="Last name"
-                    value={form.lastName}
-                    onChange={handleChange}
-                    autoComplete="family-name"
-                  />
-                  {errors.lastName && (
-                    <span className="quote-page__error">{errors.lastName}</span>
-                  )}
+            <div className="quote-page__card">
+              <div className="quote-page__section-header">
+                <span className="quote-page__step-number">3</span>
+                <div>
+                  <h2 className="quote-page__section-title">Your Details</h2>
+                  <p className="quote-page__section-desc">
+                    We&rsquo;ll use these details to prepare and send your quote.
+                  </p>
                 </div>
               </div>
 
-              {/* Email */}
-              <div className="quote-page__group">
-                <label htmlFor="qp-email" className="quote-page__label">
-                  Email Address <span className="quote-page__required">*</span>
-                </label>
-                <input
-                  id="qp-email"
-                  name="email"
-                  type="email"
-                  className={`quote-page__input${
-                    errors.email ? ' quote-page__input--error' : ''
-                  }`}
-                  placeholder="you@example.co.uk"
-                  value={form.email}
-                  onChange={handleChange}
-                  autoComplete="email"
-                />
-                {errors.email && (
-                  <span className="quote-page__error">{errors.email}</span>
-                )}
-              </div>
+              <div className="quote-page__details-form">
+                {/* First / Last Name */}
+                <div className="quote-page__row">
+                  <div className="quote-page__group">
+                    <label htmlFor="qp-firstName" className="quote-page__label">
+                      First Name <span className="quote-page__required">*</span>
+                    </label>
+                    <input
+                      id="qp-firstName"
+                      name="firstName"
+                      type="text"
+                      className={`quote-page__input${
+                        errors.firstName ? ' quote-page__input--error' : ''
+                      }`}
+                      placeholder="First name"
+                      value={form.firstName}
+                      onChange={handleChange}
+                      autoComplete="given-name"
+                    />
+                    {errors.firstName && (
+                      <span className="quote-page__error">{errors.firstName}</span>
+                    )}
+                  </div>
+                  <div className="quote-page__group">
+                    <label htmlFor="qp-lastName" className="quote-page__label">
+                      Last Name <span className="quote-page__required">*</span>
+                    </label>
+                    <input
+                      id="qp-lastName"
+                      name="lastName"
+                      type="text"
+                      className={`quote-page__input${
+                        errors.lastName ? ' quote-page__input--error' : ''
+                      }`}
+                      placeholder="Last name"
+                      value={form.lastName}
+                      onChange={handleChange}
+                      autoComplete="family-name"
+                    />
+                    {errors.lastName && (
+                      <span className="quote-page__error">{errors.lastName}</span>
+                    )}
+                  </div>
+                </div>
 
-              {/* Phone / Postcode */}
-              <div className="quote-page__row">
+                {/* Email */}
                 <div className="quote-page__group">
-                  <label htmlFor="qp-phone" className="quote-page__label">
-                    Phone <span className="quote-page__required">*</span>
+                  <label htmlFor="qp-email" className="quote-page__label">
+                    Email Address <span className="quote-page__required">*</span>
                   </label>
                   <input
-                    id="qp-phone"
-                    name="phone"
-                    type="tel"
+                    id="qp-email"
+                    name="email"
+                    type="email"
                     className={`quote-page__input${
-                      errors.phone ? ' quote-page__input--error' : ''
+                      errors.email ? ' quote-page__input--error' : ''
                     }`}
-                    placeholder="07700 123 456"
-                    value={form.phone}
+                    placeholder="you@example.co.uk"
+                    value={form.email}
                     onChange={handleChange}
-                    autoComplete="tel"
+                    autoComplete="email"
                   />
-                  {errors.phone && (
-                    <span className="quote-page__error">{errors.phone}</span>
+                  {errors.email && (
+                    <span className="quote-page__error">{errors.email}</span>
                   )}
                 </div>
+
+                {/* Phone / Postcode */}
+                <div className="quote-page__row">
+                  <div className="quote-page__group">
+                    <label htmlFor="qp-phone" className="quote-page__label">
+                      Phone <span className="quote-page__required">*</span>
+                    </label>
+                    <input
+                      id="qp-phone"
+                      name="phone"
+                      type="tel"
+                      className={`quote-page__input${
+                        errors.phone ? ' quote-page__input--error' : ''
+                      }`}
+                      placeholder="07700 123 456"
+                      value={form.phone}
+                      onChange={handleChange}
+                      autoComplete="tel"
+                    />
+                    {errors.phone && (
+                      <span className="quote-page__error">{errors.phone}</span>
+                    )}
+                  </div>
+                  <div className="quote-page__group">
+                    <label htmlFor="qp-postcode" className="quote-page__label">
+                      Postcode <span className="quote-page__required">*</span>
+                    </label>
+                    <input
+                      id="qp-postcode"
+                      name="postcode"
+                      type="text"
+                      className={`quote-page__input${
+                        errors.postcode ? ' quote-page__input--error' : ''
+                      }`}
+                      placeholder="SW1A 1AA"
+                      value={form.postcode}
+                      onChange={handleChange}
+                      autoComplete="postal-code"
+                    />
+                    {errors.postcode && (
+                      <span className="quote-page__error">{errors.postcode}</span>
+                    )}
+                    <span className="quote-page__helper">
+                      Required so we can calculate template, delivery and
+                      installation costs.
+                    </span>
+                  </div>
+                </div>
+
+                {/* Installation Date */}
                 <div className="quote-page__group">
-                  <label htmlFor="qp-postcode" className="quote-page__label">
-                    Postcode <span className="quote-page__required">*</span>
+                  <label htmlFor="qp-installDate" className="quote-page__label">
+                    Estimated Kitchen Installation Date{' '}
+                    <span className="quote-page__required">*</span>
                   </label>
                   <input
-                    id="qp-postcode"
-                    name="postcode"
-                    type="text"
+                    id="qp-installDate"
+                    name="installDate"
+                    type="date"
                     className={`quote-page__input${
-                      errors.postcode ? ' quote-page__input--error' : ''
+                      errors.installDate ? ' quote-page__input--error' : ''
                     }`}
-                    placeholder="SW1A 1AA"
-                    value={form.postcode}
+                    value={form.installDate}
                     onChange={handleChange}
-                    autoComplete="postal-code"
                   />
-                  {errors.postcode && (
-                    <span className="quote-page__error">{errors.postcode}</span>
+                  {errors.installDate && (
+                    <span className="quote-page__error">
+                      {errors.installDate}
+                    </span>
                   )}
                   <span className="quote-page__helper">
-                    Required so we can calculate template, delivery and
-                    installation costs.
+                    Please provide an estimated date for when your cabinetry will
+                    be installed. We schedule templating and installation after
+                    this date.
                   </span>
                 </div>
+
+                {/* Honeypot */}
+                <div className="quote-page__hp" aria-hidden="true">
+                  <label htmlFor="qp-company-website">Company Website</label>
+                  <input
+                    id="qp-company-website"
+                    type="text"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
+                {/* Privacy Notice */}
+                <p className="quote-page__privacy">
+                  The contact information you provide will be used to send you
+                  quotes, special offers and updates via email. You can
+                  unsubscribe at any time. See our{' '}
+                  <Link to="/privacy">Privacy Policy</Link> for details.
+                </p>
+
+                {/* Submit */}
+                <button type="submit" className="btn btn--gold btn--lg quote-page__submit">
+                  Submit Quote Request
+                </button>
               </div>
-
-              {/* Installation Date */}
-              <div className="quote-page__group">
-                <label htmlFor="qp-installDate" className="quote-page__label">
-                  Estimated Kitchen Installation Date{' '}
-                  <span className="quote-page__required">*</span>
-                </label>
-                <input
-                  id="qp-installDate"
-                  name="installDate"
-                  type="date"
-                  className={`quote-page__input${
-                    errors.installDate ? ' quote-page__input--error' : ''
-                  }`}
-                  value={form.installDate}
-                  onChange={handleChange}
-                />
-                {errors.installDate && (
-                  <span className="quote-page__error">
-                    {errors.installDate}
-                  </span>
-                )}
-                <span className="quote-page__helper">
-                  Please provide an estimated date for when your cabinetry will
-                  be installed. We schedule templating and installation after
-                  this date.
-                </span>
-              </div>
-
-              {/* Honeypot */}
-              <div className="quote-page__hp" aria-hidden="true">
-                <label htmlFor="qp-company-website">Company Website</label>
-                <input
-                  id="qp-company-website"
-                  type="text"
-                  value={honeypot}
-                  onChange={(e) => setHoneypot(e.target.value)}
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
-              </div>
-
-              {/* Privacy Notice */}
-              <p className="quote-page__privacy">
-                The contact information you provide will be used to send you
-                quotes, special offers and updates via email. You can
-                unsubscribe at any time. See our{' '}
-                <Link to="/privacy">Privacy Policy</Link> for details.
-              </p>
-
-              {/* Submit */}
-              <button type="submit" className="btn btn--gold btn--lg quote-page__submit">
-                Submit Quote Request
-              </button>
             </div>
           </div>
         </section>

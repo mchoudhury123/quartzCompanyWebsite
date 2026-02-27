@@ -107,10 +107,10 @@ export default function HowToBuyPage() {
         </div>
       </section>
 
-      {/* Intro */}
+      {/* Intro — odd section: left-aligned */}
       <section className="htb-intro section">
         <div className="container">
-          <div className="htb-intro__content">
+          <div className="htb-intro__block htb-intro__block--left">
             <h2 className="htb-intro__heading">A Simple, Transparent Process</h2>
             <p className="htb-intro__text">
               Buying stone worktops should be straightforward and enjoyable. We've refined our
@@ -121,90 +121,91 @@ export default function HowToBuyPage() {
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Timeline — even section: right-aligned */}
       <section className="htb-timeline section section--cream">
         <div className="container">
-          <div className="htb-timeline__track">
-            {/* Horizontal connector line (desktop) */}
-            <div className="htb-timeline__connector" aria-hidden="true" />
-
-            <div className="htb-timeline__stages">
-              {stages.map((stage) => (
-                <div
-                  key={stage.id}
-                  className={`htb-stage ${expandedStage === stage.id ? 'htb-stage--active' : ''}`}
-                >
-                  {/* Stage marker */}
-                  <button
-                    className="htb-stage__marker"
-                    onClick={() => toggleStage(stage.id)}
-                    aria-expanded={expandedStage === stage.id}
-                    aria-controls={`stage-panel-${stage.id}`}
-                    type="button"
-                  >
-                    <span className="htb-stage__number">{stage.id}</span>
-                  </button>
-
-                  <div className="htb-stage__summary">
-                    <h3
-                      className="htb-stage__title"
-                      onClick={() => toggleStage(stage.id)}
-                    >
-                      {stage.title}
-                    </h3>
-                    <p className="htb-stage__description">{stage.description}</p>
-                    <span className="htb-stage__timeframe">{stage.timeframe}</span>
-                  </div>
-
-                  {/* Expandable detail panel */}
+          <div className="htb-timeline__block htb-timeline__block--right">
+            <div className="htb-timeline__track">
+              <div className="htb-timeline__stages">
+                {stages.map((stage) => (
                   <div
-                    id={`stage-panel-${stage.id}`}
-                    className={`htb-stage__panel ${expandedStage === stage.id ? 'htb-stage__panel--open' : ''}`}
+                    key={stage.id}
+                    className={`htb-stage ${expandedStage === stage.id ? 'htb-stage--active' : ''}`}
                   >
-                    <div className="htb-stage__expect">
-                      <h4 className="htb-stage__expect-heading">What to Expect</h4>
-                      <ul className="htb-stage__expect-list">
-                        {stage.whatToExpect.map((item, idx) => (
-                          <li key={idx} className="htb-stage__expect-item">{item}</li>
-                        ))}
-                      </ul>
+                    {/* Stage marker */}
+                    <button
+                      className="htb-stage__marker"
+                      onClick={() => toggleStage(stage.id)}
+                      aria-expanded={expandedStage === stage.id}
+                      aria-controls={`stage-panel-${stage.id}`}
+                      type="button"
+                    >
+                      <span className="htb-stage__number">{stage.id}</span>
+                    </button>
+
+                    <div className="htb-stage__summary">
+                      <h3
+                        className="htb-stage__title"
+                        onClick={() => toggleStage(stage.id)}
+                      >
+                        {stage.title}
+                      </h3>
+                      <p className="htb-stage__description">{stage.description}</p>
+                      <span className="htb-stage__timeframe">{stage.timeframe}</span>
+                    </div>
+
+                    {/* Expandable detail panel */}
+                    <div
+                      id={`stage-panel-${stage.id}`}
+                      className={`htb-stage__panel ${expandedStage === stage.id ? 'htb-stage__panel--open' : ''}`}
+                    >
+                      <div className="htb-stage__expect">
+                        <h4 className="htb-stage__expect-heading">What to Expect</h4>
+                        <ul className="htb-stage__expect-list">
+                          {stage.whatToExpect.map((item, idx) => (
+                            <li key={idx} className="htb-stage__expect-item">{item}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Summary bar */}
+      {/* Summary bar — odd section: left-aligned */}
       <section className="htb-summary section">
         <div className="container">
-          <div className="htb-summary__grid">
-            <div className="htb-summary__card">
-              <span className="htb-summary__value">24hrs</span>
-              <span className="htb-summary__label">Quote turnaround</span>
-            </div>
-            <div className="htb-summary__card">
-              <span className="htb-summary__value">50%</span>
-              <span className="htb-summary__label">Deposit to order</span>
-            </div>
-            <div className="htb-summary__card">
-              <span className="htb-summary__value">7-10</span>
-              <span className="htb-summary__label">Working days fabrication</span>
-            </div>
-            <div className="htb-summary__card">
-              <span className="htb-summary__value">1 Day</span>
-              <span className="htb-summary__label">Typical installation</span>
+          <div className="htb-summary__block htb-summary__block--left">
+            <div className="htb-summary__grid">
+              <div className="htb-summary__card">
+                <span className="htb-summary__value">24hrs</span>
+                <span className="htb-summary__label">Quote turnaround</span>
+              </div>
+              <div className="htb-summary__card">
+                <span className="htb-summary__value">50%</span>
+                <span className="htb-summary__label">Deposit to order</span>
+              </div>
+              <div className="htb-summary__card">
+                <span className="htb-summary__value">7-10</span>
+                <span className="htb-summary__label">Working days fabrication</span>
+              </div>
+              <div className="htb-summary__card">
+                <span className="htb-summary__value">1 Day</span>
+                <span className="htb-summary__label">Typical installation</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA — bordered card, right-aligned */}
       <section className="htb-cta section">
         <div className="container">
-          <div className="htb-cta__inner">
+          <div className="htb-cta__card">
             <h2 className="htb-cta__heading">Ready to Start?</h2>
             <p className="htb-cta__text">
               Get your free, no-obligation quote today. Tell us about your project and we'll have

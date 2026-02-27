@@ -9,19 +9,23 @@ const NotFoundPage = () => {
 
   return (
     <div className="notfound-page">
-      <div className="notfound-texture" />
-      <div className="notfound-container">
-        <div className="notfound-content">
-          <span className="notfound-code">404</span>
-          <h1 className="notfound-heading">Page Not Found</h1>
-          <p className="notfound-text">
+      <section className="notfound-hero">
+        <div className="notfound-hero__content">
+          <span className="notfound-hero__code">404</span>
+          <h1 className="notfound-hero__title">Page Not Found</h1>
+        </div>
+      </section>
+
+      <div className="notfound-body">
+        <div className="notfound-body__inner">
+          <p className="notfound-body__text">
             The page you're looking for doesn't exist or has been moved.
           </p>
-          <div className="notfound-actions">
-            <Link to="/" className="notfound-btn notfound-btn-primary">
+          <div className="notfound-body__actions">
+            <Link to="/" className="notfound-body__btn notfound-body__btn--primary">
               Back to Home
             </Link>
-            <Link to="/colours" className="notfound-btn notfound-btn-outline">
+            <Link to="/colours" className="notfound-body__btn notfound-body__btn--outline">
               Browse Our Colours
             </Link>
           </div>

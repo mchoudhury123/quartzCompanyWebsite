@@ -1,13 +1,31 @@
 /* ============================================
    CareersPage – The Quartz Company
+   Redesigned: offset-grid layout
    ============================================ */
 
 /* ── Hero ── */
 .careers-hero {
+  position: relative;
   background: linear-gradient(135deg, var(--color-primary) 0%, #252525 100%);
   color: var(--color-white);
-  text-align: center;
   padding: 5rem 1.5rem 4.5rem;
+  max-height: 40vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.careers-hero::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  background: var(--color-gold);
+  opacity: 0.18;
+  transform: translateY(-50%) rotate(45deg);
+  pointer-events: none;
 }
 
 .careers-hero__title {
@@ -16,13 +34,44 @@
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: 0.75rem;
+  text-align: left;
 }
 
 .careers-hero__subtitle {
   font-size: clamp(1rem, 2vw, 1.2rem);
   color: var(--color-gold-light);
   max-width: 560px;
-  margin: 0 auto;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* ── Offset grid helpers ── */
+.careers-block {
+  max-width: 65%;
+}
+
+.careers-block--left {
+  margin-right: auto;
+}
+
+.careers-block--right {
+  margin-left: auto;
+}
+
+/* ── Section titles (left-aligned for offset layout) ── */
+.careers-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 0.75rem;
+}
+
+.careers-section-subtitle {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin-bottom: 3rem;
   line-height: 1.6;
 }
 
@@ -76,8 +125,6 @@
 
 /* ── Vacancies ── */
 .careers-vacancies__list {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -144,6 +191,45 @@
 
 .vacancy-card__apply-btn {
   flex-shrink: 0;
+}
+
+/* ── CTA Card (right-aligned bordered) ── */
+.careers-cta {
+  max-width: 520px;
+  margin-left: auto;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 2rem 2.25rem;
+  text-align: left;
+}
+
+.careers-cta__heading {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-dark);
+  margin-bottom: 0.75rem;
+}
+
+.careers-cta__text {
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.careers-cta__text:last-of-type {
+  margin-bottom: 0;
+}
+
+.careers-cta__link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.careers-cta__link:hover {
+  color: var(--color-gold);
 }
 
 /* ── Application Section ── */
@@ -360,7 +446,13 @@
 }
 
 /* ── Responsive ── */
+
+/* 1024px breakpoint */
 @media (max-width: 1024px) {
+  .careers-block {
+    max-width: 80%;
+  }
+
   .careers-benefits__grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -381,11 +473,34 @@
   .careers-apply__contact-info {
     margin-bottom: 0;
   }
+
+  .careers-hero::after {
+    width: 90px;
+    height: 90px;
+    right: 5%;
+  }
+
+  .careers-cta {
+    max-width: 100%;
+  }
 }
 
+/* 768px breakpoint */
 @media (max-width: 768px) {
   .careers-hero {
     padding: 3.5rem 1.25rem 3rem;
+    max-height: none;
+  }
+
+  .careers-hero::after {
+    width: 70px;
+    height: 70px;
+    right: 4%;
+    opacity: 0.12;
+  }
+
+  .careers-block {
+    max-width: 100%;
   }
 
   .careers-benefits__grid {
@@ -413,5 +528,41 @@
   .careers-apply__sidebar {
     grid-template-columns: 1fr;
     gap: 1.25rem;
+  }
+
+  .careers-cta {
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* 480px breakpoint */
+@media (max-width: 480px) {
+  .careers-hero {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .careers-hero::after {
+    display: none;
+  }
+
+  .careers-hero__title {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+
+  .careers-section-title {
+    font-size: clamp(1.4rem, 5vw, 1.75rem);
+  }
+
+  .vacancy-card {
+    padding: 1.25rem;
+  }
+
+  .careers-apply__form-wrapper {
+    padding: 1.5rem 1rem;
+  }
+
+  .careers-cta {
+    padding: 1.5rem;
   }
 }

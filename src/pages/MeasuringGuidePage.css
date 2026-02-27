@@ -1,12 +1,15 @@
 /* ============================================
-   Measuring Guide Page
+   Measuring Guide Page – Redesigned Layout
    ============================================ */
 
-/* Hero */
+/* Hero – shorter, left-aligned with gold geometric accent */
 .mg-hero {
   position: relative;
   background: var(--color-dark);
-  padding: 7rem 0 5rem;
+  padding: 5rem 0 3.5rem;
+  max-height: 40vh;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
 }
 
@@ -20,9 +23,23 @@
 .mg-hero__content {
   position: relative;
   z-index: 1;
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: none;
+  margin: 0;
+  padding-right: 40%;
+}
+
+.mg-hero__content::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  background: var(--color-gold);
+  opacity: 0.15;
+  transform: translate(0, -50%) rotate(45deg);
+  pointer-events: none;
 }
 
 .mg-hero__badge {
@@ -49,18 +66,28 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 540px;
+  margin: 0;
 }
 
-/* Introduction */
-.mg-intro__content {
-  max-width: 800px;
-  margin: 0 auto;
+/* Introduction – offset grid: text block left, tools block right */
+.mg-intro .container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.mg-intro__block--left {
+  max-width: 65%;
+}
+
+.mg-intro__block--right {
+  max-width: 65%;
+  margin-left: auto;
 }
 
 .mg-intro__heading {
-  text-align: center;
+  text-align: left;
   margin-bottom: 1.5rem;
 }
 
@@ -68,11 +95,11 @@
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--color-text);
-  text-align: center;
+  text-align: left;
 }
 
 .mg-intro__tools {
-  margin-top: 2.5rem;
+  margin-top: 0;
   background: var(--color-cream);
   border-radius: var(--radius-md);
   padding: 2rem 2.5rem;
@@ -157,13 +184,25 @@
   line-height: 1.3;
 }
 
-/* Steps */
+/* Steps – offset grid: odd left-aligned, even right-aligned */
 .mg-step {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   overflow: hidden;
   background: var(--color-white);
+}
+
+.mg-step--odd {
+  max-width: 65%;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.mg-step--even {
+  max-width: 65%;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .mg-step__header {
@@ -365,7 +404,7 @@
   max-width: 280px;
 }
 
-/* Reassurance Box */
+/* Reassurance Box – offset right */
 .mg-reassurance__box {
   display: flex;
   gap: 2rem;
@@ -374,8 +413,9 @@
   border-radius: var(--radius-lg);
   padding: 3rem;
   box-shadow: var(--shadow-md);
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 65%;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .mg-reassurance__icon {
@@ -399,7 +439,7 @@
   margin-bottom: 0;
 }
 
-/* Download */
+/* Download – offset left */
 .mg-download__card {
   display: flex;
   align-items: center;
@@ -408,6 +448,9 @@
   background: var(--color-dark);
   border-radius: var(--radius-lg);
   padding: 3rem;
+  max-width: 65%;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .mg-download__heading {
@@ -437,25 +480,29 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* CTA */
+/* CTA – bordered card, right-aligned */
 .mg-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: var(--color-white);
 }
 
-.mg-cta__inner {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+.mg-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  text-align: left;
 }
 
 .mg-cta__heading {
-  color: var(--color-white);
+  color: var(--color-dark);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   margin-bottom: 1rem;
 }
 
 .mg-cta__text {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-text-light);
   font-size: 1.05rem;
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -464,34 +511,81 @@
 .mg-cta__actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
 .mg-cta__actions .btn--outline {
-  border-color: var(--color-white);
-  color: var(--color-white);
-}
-
-.mg-cta__actions .btn--outline:hover {
-  background: var(--color-white);
+  border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
-/* Responsive */
+.mg-cta__actions .btn--outline:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ============================================
+   Responsive – 1024px
+   ============================================ */
 @media (max-width: 1024px) {
   .mg-nav__grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .mg-step--odd,
+  .mg-step--even {
+    max-width: 80%;
+  }
+
+  .mg-intro__block--left,
+  .mg-intro__block--right {
+    max-width: 80%;
+  }
+
+  .mg-reassurance__box {
+    max-width: 80%;
+  }
+
+  .mg-download__card {
+    max-width: 80%;
+  }
 }
 
+/* ============================================
+   Responsive – 768px
+   ============================================ */
 @media (max-width: 768px) {
   .mg-hero {
-    padding: 5rem 0 3.5rem;
+    padding: 4rem 0 2.5rem;
+    max-height: none;
+  }
+
+  .mg-hero__content {
+    padding-right: 1.5rem;
+  }
+
+  .mg-hero__content::after {
+    width: 80px;
+    height: 80px;
+    right: 0;
+    opacity: 0.1;
   }
 
   .mg-nav__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mg-intro__block--left,
+  .mg-intro__block--right {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .mg-step--odd,
+  .mg-step--even {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .mg-step__header {
@@ -512,6 +606,8 @@
     padding: 2rem;
     text-align: center;
     align-items: center;
+    max-width: 100%;
+    margin-left: 0;
   }
 
   .mg-download__card {
@@ -519,14 +615,32 @@
     text-align: center;
     gap: 2rem;
     padding: 2rem;
+    max-width: 100%;
+    margin-left: 0;
   }
 
   .mg-download__text {
     max-width: 100%;
   }
+
+  .mg-cta__card {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
 
+/* ============================================
+   Responsive – 480px
+   ============================================ */
 @media (max-width: 480px) {
+  .mg-hero {
+    padding: 3.5rem 0 2rem;
+  }
+
+  .mg-hero__content::after {
+    display: none;
+  }
+
   .mg-nav__grid {
     grid-template-columns: 1fr;
   }
@@ -544,6 +658,18 @@
 
   .mg-step__title {
     font-size: 1.1rem;
+  }
+
+  .mg-intro__tools {
+    padding: 1.5rem;
+  }
+
+  .mg-intro__tools-list {
+    grid-template-columns: 1fr;
+  }
+
+  .mg-cta__card {
+    padding: 1.75rem;
   }
 
   .mg-cta__actions {

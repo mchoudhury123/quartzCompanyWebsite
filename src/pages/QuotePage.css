@@ -26,6 +26,133 @@
   line-height: 1.65;
 }
 
+/* ── Progress Bar ── */
+.quote-page__progress {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.quote-page__progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quote-page__progress-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.quote-page__progress-step:first-child {
+  flex: 0 0 auto;
+}
+
+/* Connecting line between steps */
+.quote-page__progress-line {
+  display: block;
+  flex: 1;
+  height: 2px;
+  background: var(--color-border);
+  margin: 0 0.25rem;
+  transition: background var(--transition);
+  min-width: 40px;
+}
+
+.quote-page__progress-line--filled {
+  background: var(--color-gold);
+}
+
+/* Button wrapper for each step (circle + label) */
+.quote-page__progress-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: opacity var(--transition);
+}
+
+.quote-page__progress-btn:hover {
+  opacity: 0.8;
+}
+
+/* Step circle */
+.quote-page__progress-circle {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  background: var(--color-white);
+  color: var(--color-text-light);
+  border: 2px solid var(--color-border);
+  transition: background var(--transition), color var(--transition),
+    border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Active step circle */
+.quote-page__progress-step--active .quote-page__progress-circle {
+  background: var(--color-gold);
+  color: var(--color-white);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 4px rgba(197, 164, 126, 0.2);
+}
+
+/* Completed step circle */
+.quote-page__progress-step--completed .quote-page__progress-circle {
+  background: var(--color-gold);
+  color: var(--color-white);
+  border-color: var(--color-gold);
+}
+
+/* Step label text */
+.quote-page__progress-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+
+.quote-page__progress-step--active .quote-page__progress-label {
+  color: var(--color-dark);
+}
+
+.quote-page__progress-step--completed .quote-page__progress-label {
+  color: var(--color-gold);
+}
+
+/* ── Card Wrapper ── */
+.quote-page__card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem 2.5rem 2rem;
+}
+
 /* ── Section Headers ── */
 .quote-page__section-header {
   display: flex;
@@ -291,7 +418,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
   padding: 1rem 1.25rem;
-  background: var(--color-white);
+  background: var(--color-cream);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
 }
@@ -371,7 +498,7 @@
   padding: 2.5rem 1.5rem;
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-white);
+  background: var(--color-cream);
   cursor: pointer;
   text-align: center;
   transition: border-color var(--transition), background var(--transition);
@@ -565,10 +692,36 @@
   100% { transform: scale(1); }
 }
 
-/* ── Responsive ── */
+/* ── Responsive: 768px ── */
 @media (max-width: 768px) {
   .quote-page__hero {
     padding: 3.5rem 1.25rem 3rem;
+  }
+
+  /* Progress bar adjustments */
+  .quote-page__progress {
+    padding: 1rem 0;
+  }
+
+  .quote-page__progress-circle {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    font-size: 0.9rem;
+  }
+
+  .quote-page__progress-label {
+    font-size: 0.7rem;
+  }
+
+  .quote-page__progress-line {
+    min-width: 24px;
+  }
+
+  /* Card adjustments */
+  .quote-page__card {
+    padding: 2rem 1.5rem 1.5rem;
+    border-radius: var(--radius-md);
   }
 
   .quote-page__plan-cards {
@@ -601,6 +754,7 @@
   }
 }
 
+/* ── Responsive: 480px ── */
 @media (max-width: 480px) {
   .quote-page__swatch-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -625,5 +779,42 @@
 
   .quote-page__hero-title {
     font-size: 1.75rem;
+  }
+
+  /* Progress bar compact layout */
+  .quote-page__progress {
+    padding: 0.75rem 0;
+  }
+
+  .quote-page__progress-circle {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    font-size: 0.8rem;
+  }
+
+  .quote-page__progress-step--active .quote-page__progress-circle {
+    box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.2);
+  }
+
+  .quote-page__progress-label {
+    font-size: 0.65rem;
+  }
+
+  .quote-page__progress-line {
+    min-width: 16px;
+    margin: 0 0.15rem;
+  }
+
+  .quote-page__progress-btn {
+    gap: 0.35rem;
+    padding: 0.15rem 0.25rem;
+  }
+
+  /* Card adjustments for small screens */
+  .quote-page__card {
+    padding: 1.5rem 1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
   }
 }

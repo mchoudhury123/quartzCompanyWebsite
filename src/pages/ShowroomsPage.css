@@ -1,13 +1,22 @@
 /* ============================================
-   ShowroomsPage – The Quartz Company
+   ShowroomsPage – The Quartz Company (Editorial)
    ============================================ */
 
-/* ── Hero ── */
+/* ── Hero (short, left-aligned, gold geometric accent) ── */
 .showrooms-hero {
+  position: relative;
   background: linear-gradient(135deg, var(--color-primary) 0%, #252525 100%);
   color: var(--color-white);
-  text-align: center;
-  padding: 5rem 1.5rem 4.5rem;
+  padding: 4.5rem 1.5rem 4rem;
+  max-height: 40vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.showrooms-hero__inner {
+  max-width: 560px;
+  text-align: left;
 }
 
 .showrooms-hero__title {
@@ -16,23 +25,58 @@
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .showrooms-hero__subtitle {
   font-size: clamp(1rem, 2vw, 1.2rem);
   color: var(--color-gold-light);
-  max-width: 580px;
-  margin: 0 auto;
+  max-width: 480px;
   line-height: 1.6;
 }
 
-/* ── Showroom Cards Grid ── */
-.showrooms-locations__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+/* Decorative gold geometric accent (CSS-only) */
+.showrooms-hero__accent {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 220px;
+  height: 220px;
+  border: 2px solid var(--color-gold);
+  opacity: 0.18;
+  pointer-events: none;
 }
 
+.showrooms-hero__accent::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  right: -30px;
+  bottom: -30px;
+  border: 2px solid var(--color-gold);
+  opacity: 0.6;
+}
+
+.showrooms-hero__accent::after {
+  content: '';
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  right: -60px;
+  bottom: -60px;
+  border: 2px solid var(--color-gold);
+  opacity: 0.35;
+}
+
+/* ── Offset Grid: Left-aligned block ── */
+.showrooms-locations__block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+/* ── Showroom Card ── */
 .showroom-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
@@ -156,12 +200,10 @@
   color: var(--color-gold);
 }
 
-/* ── Booking Section ── */
-.showrooms-booking__grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 3rem;
-  align-items: start;
+/* ── Booking Section (even section = right-aligned offset) ── */
+.showrooms-booking__block--right {
+  max-width: 65%;
+  margin-left: auto;
 }
 
 .showrooms-booking__form-wrapper {
@@ -169,6 +211,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .showrooms-booking__heading {
@@ -280,10 +323,9 @@
   margin-bottom: 1.5rem;
 }
 
-/* What to Expect sidebar */
+/* What to Expect sidebar (stacks below form in offset layout) */
 .showrooms-booking__info {
-  position: sticky;
-  top: 120px;
+  /* No sticky in offset layout -- it flows naturally */
 }
 
 .showrooms-booking__info-heading {
@@ -317,7 +359,7 @@
   position: absolute;
   left: 0;
   top: 0.6rem;
-  color: var(--color-primary);
+  color: var(--color-gold);
   font-weight: 700;
   font-size: 0.9rem;
 }
@@ -332,10 +374,30 @@
   padding: 1.25rem;
 }
 
-/* ── Accessories Grid ── */
+/* ── Accessories (odd section = left-aligned offset) ── */
+.showrooms-accessories__block--left {
+  max-width: 65%;
+  margin-right: auto;
+}
+
+.showrooms-accessories__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--color-dark);
+  margin-bottom: 0.5rem;
+}
+
+.showrooms-accessories__subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 2rem;
+}
+
 .showrooms-accessories__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
@@ -380,15 +442,20 @@
   margin: 0;
 }
 
-/* ── Can't Visit Box ── */
-.showrooms-remote__box {
-  max-width: 740px;
-  margin: 0 auto;
-  text-align: center;
+/* ── Can't Visit CTA (right-aligned bordered card, like AboutPage) ── */
+.showrooms-remote__card {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  text-align: left;
 }
 
 .showrooms-remote__heading {
   font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
   color: var(--color-dark);
   margin-bottom: 1rem;
 }
@@ -403,38 +470,94 @@
 .showrooms-remote__actions {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-/* ── Responsive ── */
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
+
+/* ── 1024px ── */
 @media (max-width: 1024px) {
-  .showrooms-locations__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .showrooms-hero {
+    max-height: none;
+    padding: 4rem 1.5rem 3.5rem;
   }
 
-  .showrooms-accessories__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .showrooms-hero__accent {
+    width: 170px;
+    height: 170px;
+    right: 4%;
   }
 
-  .showrooms-booking__grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+  .showrooms-hero__accent::before {
+    top: 22px;
+    left: 22px;
+    right: -22px;
+    bottom: -22px;
   }
 
-  .showrooms-booking__info {
-    position: static;
+  .showrooms-hero__accent::after {
+    top: 44px;
+    left: 44px;
+    right: -44px;
+    bottom: -44px;
+  }
+
+  .showrooms-locations__block--left {
+    max-width: 75%;
+  }
+
+  .showrooms-booking__block--right {
+    max-width: 75%;
+  }
+
+  .showrooms-accessories__block--left {
+    max-width: 75%;
+  }
+
+  .showrooms-remote__card {
+    max-width: 480px;
   }
 }
 
+/* ── 768px ── */
 @media (max-width: 768px) {
   .showrooms-hero {
     padding: 3.5rem 1.25rem 3rem;
   }
 
-  .showrooms-locations__grid {
-    grid-template-columns: 1fr;
+  .showrooms-hero__accent {
+    width: 120px;
+    height: 120px;
+    right: 3%;
+    opacity: 0.12;
+  }
+
+  .showrooms-hero__accent::before {
+    top: 16px;
+    left: 16px;
+    right: -16px;
+    bottom: -16px;
+  }
+
+  .showrooms-hero__accent::after {
+    top: 32px;
+    left: 32px;
+    right: -32px;
+    bottom: -32px;
+  }
+
+  .showrooms-hero__inner {
+    max-width: 100%;
+  }
+
+  /* Offset blocks go full-width on tablet */
+  .showrooms-locations__block--left,
+  .showrooms-booking__block--right,
+  .showrooms-accessories__block--left {
+    max-width: 100%;
   }
 
   .showrooms-booking__form-wrapper {
@@ -450,7 +573,15 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* CTA goes full-width centered on mobile */
+  .showrooms-remote__card {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
   .showrooms-remote__actions {
+    justify-content: center;
     flex-direction: column;
   }
 
@@ -459,7 +590,20 @@
   }
 }
 
+/* ── 480px ── */
 @media (max-width: 480px) {
+  .showrooms-hero {
+    padding: 3rem 1rem 2.5rem;
+  }
+
+  .showrooms-hero__accent {
+    display: none;
+  }
+
+  .showrooms-hero__title {
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+  }
+
   .showrooms-accessories__grid {
     grid-template-columns: 1fr;
   }
@@ -468,5 +612,9 @@
     flex-direction: column;
     align-items: stretch;
     text-align: center;
+  }
+
+  .showrooms-remote__card {
+    padding: 2rem 1.5rem;
   }
 }

@@ -129,7 +129,7 @@ function CareersPage() {
 
   return (
     <div className="careers-page">
-      {/* ── Hero ── */}
+      {/* ── Hero (short, left-aligned, gold diamond accent) ── */}
       <section className="careers-hero">
         <div className="container">
           <h1 className="careers-hero__title">Join Our Team</h1>
@@ -140,14 +140,16 @@ function CareersPage() {
         </div>
       </section>
 
-      {/* ── Why Work With Us ── */}
-      <section className="careers-benefits section">
+      {/* ── Why Work With Us (odd section = content left) ── */}
+      <section className="section">
         <div className="container">
-          <h2 className="section-title">Why Work With Us</h2>
-          <p className="section-subtitle">
-            At The Quartz Company, you will join a team of passionate professionals
-            who take pride in creating exceptional surfaces.
-          </p>
+          <div className="careers-block careers-block--left">
+            <h2 className="careers-section-title">Why Work With Us</h2>
+            <p className="careers-section-subtitle">
+              At The Quartz Company, you will join a team of passionate professionals
+              who take pride in creating exceptional surfaces.
+            </p>
+          </div>
           <div className="careers-benefits__grid">
             {benefits.map((benefit) => (
               <div key={benefit.title} className="careers-benefits__card">
@@ -169,13 +171,15 @@ function CareersPage() {
         </div>
       </section>
 
-      {/* ── Current Vacancies ── */}
-      <section className="careers-vacancies section section--cream">
+      {/* ── Current Vacancies (even section = content right) ── */}
+      <section className="section section--cream">
         <div className="container">
-          <h2 className="section-title">Current Vacancies</h2>
-          <p className="section-subtitle">
-            Explore our open roles and find where you fit in.
-          </p>
+          <div className="careers-block careers-block--right">
+            <h2 className="careers-section-title">Current Vacancies</h2>
+            <p className="careers-section-subtitle">
+              Explore our open roles and find where you fit in.
+            </p>
+          </div>
           <div className="careers-vacancies__list">
             {vacancies.map((job) => (
               <article key={job.id} className="vacancy-card">
@@ -203,12 +207,15 @@ function CareersPage() {
         </div>
       </section>
 
-      {/* ── Application Form ── */}
-      <section id="apply" className="careers-apply section">
+      {/* ── Application Form (odd section = content left) ── */}
+      <section id="apply" className="section">
         <div className="container">
+          <div className="careers-block careers-block--left">
+            <h2 className="careers-section-title">Apply Now</h2>
+          </div>
           <div className="careers-apply__grid">
             <div className="careers-apply__form-wrapper">
-              <h2 className="careers-apply__heading">Apply Now</h2>
+              <h2 className="careers-apply__heading">Your Application</h2>
               {applicationSubmitted ? (
                 <div className="careers-apply__success">
                   <span
@@ -445,6 +452,25 @@ function CareersPage() {
                 </p>
               </div>
             </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA (right-aligned bordered card, even position) ── */}
+      <section className="section section--cream">
+        <div className="container">
+          <div className="careers-cta">
+            <h3 className="careers-cta__heading">Have Questions?</h3>
+            <p className="careers-cta__text">
+              Contact our HR team directly:
+            </p>
+            <p className="careers-cta__text">
+              <a className="careers-cta__link" href="mailto:careers@thequartzcompany.co.uk">
+                careers@thequartzcompany.co.uk
+              </a>
+              <br />
+              <a className="careers-cta__link" href="tel:08001234567">0800 123 4567</a> (ask for HR)
+            </p>
           </div>
         </div>
       </section>

@@ -11,24 +11,39 @@ const worktopsDropdown = [
   { label: "Plain & Speckled", path: "/colours/plain" },
 ];
 
-const navLinks = [
+const popularColours = [
+  { label: "Calacatta Gold", path: "/colours/veined" },
+  { label: "Statuario White", path: "/colours/veined" },
+  { label: "Concrete Grey", path: "/colours" },
+];
+
+const quickLinks = [
+  { label: "Measuring Guide", path: "/measuring-guide" },
+  { label: "How to Buy", path: "/how-to-buy" },
+  { label: "Design Options", path: "/design-options" },
+  { label: "Request Brochure", path: "/quote" },
+];
+
+const navLinksLeft = [
   { label: "Our Worktops", path: "/colours", hasDropdown: true },
   { label: "Design Options", path: "/design-options" },
   { label: "Inspiration", path: "/inspiration" },
-  { label: "Sale", path: "/sale" },
+];
+
+const navLinksRight = [
+  { label: "Sale", path: "/sale", isSale: true },
   { label: "About", path: "/about" },
   { label: "Contact", path: "/contact" },
 ];
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef(null);
-  const dropdownTimerRef = useRef(null);
+  const megaMenuRef = useRef(null);
+  const megaMenuTimerRef = useRef(null);
 
-  // Sticky header shadow on scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -37,18 +52,16 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
+      if (megaMenuRef.current && !megaMenuRef.current.contains(e.target)) {
+        setMegaMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -60,14 +73,14 @@ function Header() {
     };
   }, [mobileMenuOpen]);
 
-  const handleDropdownEnter = () => {
-    clearTimeout(dropdownTimerRef.current);
-    setDropdownOpen(true);
+  const handleMegaEnter = () => {
+    clearTimeout(megaMenuTimerRef.current);
+    setMegaMenuOpen(true);
   };
 
-  const handleDropdownLeave = () => {
-    dropdownTimerRef.current = setTimeout(() => {
-      setDropdownOpen(false);
+  const handleMegaLeave = () => {
+    megaMenuTimerRef.current = setTimeout(() => {
+      setMegaMenuOpen(false);
     }, 200);
   };
 
@@ -76,189 +89,184 @@ function Header() {
     setMobileDropdownOpen(false);
   };
 
-  return (
-    <header
-      className={`site-header${scrolled ? " site-header--scrolled" : ""}`}
-    >
-      {/* ── Announcement Bar ── */}
-      <div className="announcement-bar" role="banner">
-        <div className="announcement-bar__inner">
-          <p className="announcement-bar__text">
-            <span className="announcement-bar__highlight">Spring Sale</span>
-            {" — Up to 35% off all worktops. Free local delivery."}
-            <Link to="/sale" className="announcement-bar__link">
-              Shop&nbsp;Now
-            </Link>
-          </p>
-          <a href="tel:+441234567890" className="announcement-bar__phone">
-            <FiPhone aria-hidden="true" />
-            <span>01234 567 890</span>
-          </a>
+  const renderNavLink = (link, side) =>
+    link.hasDropdown ? (
+      <li
+        key={link.label}
+        className="split-nav__item split-nav__item--has-dropdown"
+        ref={megaMenuRef}
+        onMouseEnter={handleMegaEnter}
+        onMouseLeave={handleMegaLeave}
+        role="none"
+      >
+        <button
+          className="split-nav__link split-nav__link--dropdown-toggle"
+          aria-expanded={megaMenuOpen}
+          aria-haspopup="true"
+          onClick={() => setMegaMenuOpen((prev) => !prev)}
+          type="button"
+          role="menuitem"
+        >
+          {link.label}
+          <FiChevronDown
+            className={`split-nav__chevron${megaMenuOpen ? " split-nav__chevron--open" : ""}`}
+            aria-hidden="true"
+          />
+        </button>
+
+        {/* Mega Menu */}
+        <div className={`mega-menu${megaMenuOpen ? " mega-menu--open" : ""}`} role="menu" aria-label="Our Worktops submenu">
+          <div className="mega-menu__inner">
+            <div className="mega-menu__column">
+              <h4 className="mega-menu__heading">Worktop Types</h4>
+              <ul className="mega-menu__list">
+                {worktopsDropdown.map((sub) => (
+                  <li key={sub.label}>
+                    <Link to={sub.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
+                      {sub.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mega-menu__column">
+              <h4 className="mega-menu__heading">Popular Colours</h4>
+              <ul className="mega-menu__list">
+                {popularColours.map((item) => (
+                  <li key={item.label}>
+                    <Link to={item.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mega-menu__column">
+              <h4 className="mega-menu__heading">Quick Links</h4>
+              <ul className="mega-menu__list">
+                {quickLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link to={item.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
+      </li>
+    ) : (
+      <li key={link.label} className="split-nav__item" role="none">
+        <Link
+          to={link.path}
+          className={`split-nav__link${link.isSale ? " split-nav__link--sale" : ""}`}
+          role="menuitem"
+        >
+          {link.label}
+        </Link>
+      </li>
+    );
+
+  return (
+    <header className={`site-header${scrolled ? " site-header--scrolled" : ""}`}>
+      {/* Marquee Announcement Bar */}
+      <div className="ticker-bar" role="banner">
+        <div className="ticker-bar__track">
+          <span className="ticker-bar__content">
+            <span className="ticker-bar__highlight">Spring Sale</span>
+            {" — Up to 35% off all worktops. Free local delivery. "}
+            <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
+            <span className="ticker-bar__separator">|</span>
+            <span className="ticker-bar__highlight">Spring Sale</span>
+            {" — Up to 35% off all worktops. Free local delivery. "}
+            <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
+            <span className="ticker-bar__separator">|</span>
+          </span>
+          <span className="ticker-bar__content" aria-hidden="true">
+            <span className="ticker-bar__highlight">Spring Sale</span>
+            {" — Up to 35% off all worktops. Free local delivery. "}
+            <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
+            <span className="ticker-bar__separator">|</span>
+            <span className="ticker-bar__highlight">Spring Sale</span>
+            {" — Up to 35% off all worktops. Free local delivery. "}
+            <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
+            <span className="ticker-bar__separator">|</span>
+          </span>
+        </div>
+        <a href="tel:+441234567890" className="ticker-bar__phone">
+          <FiPhone aria-hidden="true" />
+          <span>01234 567 890</span>
+        </a>
       </div>
 
-      {/* ── Main Navigation ── */}
-      <nav
-        className="main-nav"
-        aria-label="Primary navigation"
-      >
-        <div className="main-nav__inner">
-          {/* Logo */}
-          <Link to="/" className="main-nav__logo" aria-label="The Quartz Company home">
-            <span className="main-nav__logo-text">THE QUARTZ COMPANY</span>
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <ul className="main-nav__links" role="menubar">
-            {navLinks.map((link) =>
-              link.hasDropdown ? (
-                <li
-                  key={link.label}
-                  className="main-nav__item main-nav__item--has-dropdown"
-                  ref={dropdownRef}
-                  onMouseEnter={handleDropdownEnter}
-                  onMouseLeave={handleDropdownLeave}
-                  role="none"
-                >
-                  <button
-                    className="main-nav__link main-nav__link--dropdown-toggle"
-                    aria-expanded={dropdownOpen}
-                    aria-haspopup="true"
-                    onClick={() => setDropdownOpen((prev) => !prev)}
-                    type="button"
-                    role="menuitem"
-                  >
-                    {link.label}
-                    <FiChevronDown
-                      className={`main-nav__chevron${
-                        dropdownOpen ? " main-nav__chevron--open" : ""
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </button>
-
-                  <ul
-                    className={`main-nav__dropdown${
-                      dropdownOpen ? " main-nav__dropdown--open" : ""
-                    }`}
-                    role="menu"
-                    aria-label="Our Worktops submenu"
-                  >
-                    {worktopsDropdown.map((sub) => (
-                      <li key={sub.label} role="none">
-                        <Link
-                          to={sub.path}
-                          className="main-nav__dropdown-link"
-                          role="menuitem"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {sub.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ) : (
-                <li key={link.label} className="main-nav__item" role="none">
-                  <Link
-                    to={link.path}
-                    className={`main-nav__link${
-                      link.label === "Sale" ? " main-nav__link--sale" : ""
-                    }`}
-                    role="menuitem"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              )
-            )}
+      {/* Centered-Logo Split Navigation */}
+      <nav className="split-nav" aria-label="Primary navigation">
+        <div className="split-nav__inner">
+          {/* Left nav links */}
+          <ul className="split-nav__links split-nav__links--left" role="menubar">
+            {navLinksLeft.map((link) => renderNavLink(link, "left"))}
           </ul>
 
-          {/* Right-side CTAs */}
-          <div className="main-nav__actions">
-            <Link
-              to="/quote"
-              className="btn btn--gold"
-              aria-label="Get a free quote and order samples"
-            >
-              Get Quote &amp; Samples
-            </Link>
-            <Link
-              to="/brochure"
-              className="btn btn--outline"
-              aria-label="Request a free brochure"
-            >
-              Request Brochure
+          {/* Centered Logo */}
+          <Link to="/" className="split-nav__logo" aria-label="The Quartz Company home">
+            <span className="split-nav__logo-text">THE QUARTZ COMPANY</span>
+          </Link>
+
+          {/* Right nav links */}
+          <ul className="split-nav__links split-nav__links--right" role="menubar">
+            {navLinksRight.map((link) => renderNavLink(link, "right"))}
+          </ul>
+
+          {/* Single CTA */}
+          <div className="split-nav__cta">
+            <Link to="/quote" className="btn btn--gold" aria-label="Get a free quote">
+              Get Quote
             </Link>
           </div>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Hamburger */}
           <button
             type="button"
-            className="main-nav__hamburger"
+            className="split-nav__hamburger"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
+            aria-controls="mobile-overlay"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
           >
-            {mobileMenuOpen ? (
-              <FiX aria-hidden="true" />
-            ) : (
-              <FiMenu aria-hidden="true" />
-            )}
+            {mobileMenuOpen ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
           </button>
         </div>
+      </nav>
 
-        {/* ── Mobile Menu Panel ── */}
-        <div
-          id="mobile-menu"
-          className={`mobile-menu${mobileMenuOpen ? " mobile-menu--open" : ""}`}
-          aria-hidden={!mobileMenuOpen}
-        >
-          <ul className="mobile-menu__links" role="menu">
-            {navLinks.map((link) =>
+      {/* Mobile Overlay */}
+      <div
+        id="mobile-overlay"
+        className={`mobile-overlay${mobileMenuOpen ? " mobile-overlay--open" : ""}`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="mobile-overlay__panel">
+          <ul className="mobile-overlay__links" role="menu">
+            {[...navLinksLeft, ...navLinksRight].map((link) =>
               link.hasDropdown ? (
-                <li
-                  key={link.label}
-                  className="mobile-menu__item mobile-menu__item--has-dropdown"
-                  role="none"
-                >
+                <li key={link.label} className="mobile-overlay__item" role="none">
                   <button
                     type="button"
-                    className="mobile-menu__link mobile-menu__link--dropdown-toggle"
+                    className="mobile-overlay__link mobile-overlay__link--toggle"
                     aria-expanded={mobileDropdownOpen}
-                    aria-haspopup="true"
                     onClick={() => setMobileDropdownOpen((prev) => !prev)}
                     role="menuitem"
                   >
                     {link.label}
                     <FiChevronDown
-                      className={`mobile-menu__chevron${
-                        mobileDropdownOpen
-                          ? " mobile-menu__chevron--open"
-                          : ""
-                      }`}
+                      className={`mobile-overlay__chevron${mobileDropdownOpen ? " mobile-overlay__chevron--open" : ""}`}
                       aria-hidden="true"
                     />
                   </button>
-
-                  <ul
-                    className={`mobile-menu__dropdown${
-                      mobileDropdownOpen
-                        ? " mobile-menu__dropdown--open"
-                        : ""
-                    }`}
-                    role="menu"
-                    aria-label="Our Worktops submenu"
-                  >
+                  <ul className={`mobile-overlay__dropdown${mobileDropdownOpen ? " mobile-overlay__dropdown--open" : ""}`} role="menu">
                     {worktopsDropdown.map((sub) => (
                       <li key={sub.label} role="none">
-                        <Link
-                          to={sub.path}
-                          className="mobile-menu__dropdown-link"
-                          role="menuitem"
-                          onClick={closeMobileMenu}
-                        >
+                        <Link to={sub.path} className="mobile-overlay__dropdown-link" role="menuitem" onClick={closeMobileMenu}>
                           {sub.label}
                         </Link>
                       </li>
@@ -266,12 +274,10 @@ function Header() {
                   </ul>
                 </li>
               ) : (
-                <li key={link.label} className="mobile-menu__item" role="none">
+                <li key={link.label} className="mobile-overlay__item" role="none">
                   <Link
                     to={link.path}
-                    className={`mobile-menu__link${
-                      link.label === "Sale" ? " mobile-menu__link--sale" : ""
-                    }`}
+                    className={`mobile-overlay__link${link.isSale ? " mobile-overlay__link--sale" : ""}`}
                     role="menuitem"
                     onClick={closeMobileMenu}
                   >
@@ -282,33 +288,17 @@ function Header() {
             )}
           </ul>
 
-          {/* Mobile CTA Buttons */}
-          <div className="mobile-menu__actions">
-            <Link
-              to="/quote"
-              className="btn btn--gold btn--full"
-              aria-label="Get a free quote and order samples"
-              onClick={closeMobileMenu}
-            >
-              Get Quote &amp; Samples
+          <div className="mobile-overlay__footer">
+            <Link to="/quote" className="btn btn--gold btn--full" onClick={closeMobileMenu}>
+              Get Quote
             </Link>
-            <Link
-              to="/brochure"
-              className="btn btn--outline btn--full"
-              aria-label="Request a free brochure"
-              onClick={closeMobileMenu}
-            >
-              Request Brochure
-            </Link>
+            <a href="tel:+441234567890" className="mobile-overlay__phone">
+              <FiPhone aria-hidden="true" />
+              <span>01234 567 890</span>
+            </a>
           </div>
-
-          {/* Mobile Phone Link */}
-          <a href="tel:+441234567890" className="mobile-menu__phone">
-            <FiPhone aria-hidden="true" />
-            <span>01234 567 890</span>
-          </a>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }

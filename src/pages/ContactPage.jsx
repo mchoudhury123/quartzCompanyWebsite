@@ -105,11 +105,84 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* ── Main Content ── */}
+      {/* ── Main Content: Inverted layout (dark sidebar left, form right) ── */}
       <section className="contact-main section">
         <div className="container">
           <div className="contact-main__grid">
-            {/* ── Left: Form ── */}
+            {/* ── Left: Contact Details (dark panel) ── */}
+            <aside className="contact-sidebar">
+              <h2 className="contact-sidebar__heading">Contact Details</h2>
+
+              <div className="contact-sidebar__block">
+                <h4 className="contact-sidebar__label">Phone</h4>
+                <a href="tel:08001234567" className="contact-sidebar__value contact-sidebar__link">
+                  0800 123 4567
+                </a>
+                <p className="contact-sidebar__note">
+                  Mon&ndash;Fri 8am&ndash;6pm, Sat 9am&ndash;4pm
+                </p>
+              </div>
+
+              <div className="contact-sidebar__block">
+                <h4 className="contact-sidebar__label">Email</h4>
+                <a href="mailto:sales@thequartzcompany.co.uk" className="contact-sidebar__value contact-sidebar__link">
+                  sales@thequartzcompany.co.uk
+                </a>
+                <p className="contact-sidebar__note">
+                  We aim to respond within 24 hours
+                </p>
+              </div>
+
+              <div className="contact-sidebar__block">
+                <h4 className="contact-sidebar__label">Address</h4>
+                <p className="contact-sidebar__value">
+                  The Quartz Company Ltd
+                  <br />
+                  Northampton
+                  <br />
+                  Northamptonshire
+                </p>
+              </div>
+
+              <div className="contact-sidebar__block contact-sidebar__block--last">
+                <h4 className="contact-sidebar__label">Follow Us</h4>
+                <div className="contact-sidebar__social">
+                  <a
+                    href="https://www.instagram.com/thequartzcompanyuk/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-sidebar__social-link"
+                    aria-label="Instagram"
+                  >
+                    Instagram
+                  </a>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61587732770864"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-sidebar__social-link"
+                    aria-label="Facebook"
+                  >
+                    Facebook
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@thequartzcompany"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-sidebar__social-link"
+                    aria-label="TikTok"
+                  >
+                    TikTok
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-sidebar__map">
+                <span>Map &mdash; The Quartz Company HQ</span>
+              </div>
+            </aside>
+
+            {/* ── Right: Form + inline FAQ ── */}
             <div className="contact-form-wrapper">
               <h2 className="contact-form__heading">Send Us a Message</h2>
               {submitted ? (
@@ -141,90 +214,89 @@ function ContactPage() {
                   onSubmit={handleSubmit}
                   noValidate
                 >
-                  {/* Name */}
-                  <div className="contact-form__group">
-                    <label htmlFor="contact-name" className="contact-form__label">
-                      Name <span className="contact-form__required">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="contact-name"
-                      name="name"
-                      className={`contact-form__input${errors.name ? ' contact-form__input--error' : ''}`}
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder="Your full name"
-                    />
-                    {errors.name && (
-                      <span className="contact-form__error">{errors.name}</span>
-                    )}
+                  <div className="contact-form__row">
+                    <div className="contact-form__group">
+                      <label htmlFor="contact-name" className="contact-form__label">
+                        Name <span className="contact-form__required">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="contact-name"
+                        name="name"
+                        className={`contact-form__input${errors.name ? ' contact-form__input--error' : ''}`}
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="Your full name"
+                      />
+                      {errors.name && (
+                        <span className="contact-form__error">{errors.name}</span>
+                      )}
+                    </div>
+
+                    <div className="contact-form__group">
+                      <label htmlFor="contact-email" className="contact-form__label">
+                        Email <span className="contact-form__required">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="contact-email"
+                        name="email"
+                        className={`contact-form__input${errors.email ? ' contact-form__input--error' : ''}`}
+                        value={form.email}
+                        onChange={handleChange}
+                        placeholder="you@example.co.uk"
+                      />
+                      {errors.email && (
+                        <span className="contact-form__error">{errors.email}</span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Email */}
-                  <div className="contact-form__group">
-                    <label htmlFor="contact-email" className="contact-form__label">
-                      Email <span className="contact-form__required">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="contact-email"
-                      name="email"
-                      className={`contact-form__input${errors.email ? ' contact-form__input--error' : ''}`}
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="you@example.co.uk"
-                    />
-                    {errors.email && (
-                      <span className="contact-form__error">{errors.email}</span>
-                    )}
+                  <div className="contact-form__row">
+                    <div className="contact-form__group">
+                      <label htmlFor="contact-phone" className="contact-form__label">
+                        Phone <span className="contact-form__required">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        id="contact-phone"
+                        name="phone"
+                        className={`contact-form__input${errors.phone ? ' contact-form__input--error' : ''}`}
+                        value={form.phone}
+                        onChange={handleChange}
+                        placeholder="07123 456 789"
+                      />
+                      {errors.phone && (
+                        <span className="contact-form__error">{errors.phone}</span>
+                      )}
+                    </div>
+
+                    <div className="contact-form__group">
+                      <label htmlFor="contact-subject" className="contact-form__label">
+                        Subject <span className="contact-form__required">*</span>
+                      </label>
+                      <select
+                        id="contact-subject"
+                        name="subject"
+                        className={`contact-form__select${errors.subject ? ' contact-form__select--error' : ''}`}
+                        value={form.subject}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select a subject</option>
+                        {subjectOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.subject && (
+                        <span className="contact-form__error">
+                          {errors.subject}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Phone */}
-                  <div className="contact-form__group">
-                    <label htmlFor="contact-phone" className="contact-form__label">
-                      Phone <span className="contact-form__required">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="contact-phone"
-                      name="phone"
-                      className={`contact-form__input${errors.phone ? ' contact-form__input--error' : ''}`}
-                      value={form.phone}
-                      onChange={handleChange}
-                      placeholder="07123 456 789"
-                    />
-                    {errors.phone && (
-                      <span className="contact-form__error">{errors.phone}</span>
-                    )}
-                  </div>
-
-                  {/* Subject */}
-                  <div className="contact-form__group">
-                    <label htmlFor="contact-subject" className="contact-form__label">
-                      Subject <span className="contact-form__required">*</span>
-                    </label>
-                    <select
-                      id="contact-subject"
-                      name="subject"
-                      className={`contact-form__select${errors.subject ? ' contact-form__select--error' : ''}`}
-                      value={form.subject}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select a subject</option>
-                      {subjectOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.subject && (
-                      <span className="contact-form__error">
-                        {errors.subject}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Message */}
                   <div className="contact-form__group">
                     <label htmlFor="contact-message" className="contact-form__label">
                       Message <span className="contact-form__required">*</span>
@@ -250,127 +322,35 @@ function ContactPage() {
                   </button>
                 </form>
               )}
+
+              {/* ── Inline FAQ (below form) ── */}
+              <div className="contact-inline-faq">
+                <h3 className="contact-inline-faq__heading">Frequently Asked Questions</h3>
+                <div className="contact-inline-faq__list">
+                  {faqs.map((faq, index) => (
+                    <div
+                      key={index}
+                      className={`contact-inline-faq__item${openFaq === index ? ' contact-inline-faq__item--open' : ''}`}
+                    >
+                      <button
+                        type="button"
+                        className="contact-inline-faq__question"
+                        onClick={() => toggleFaq(index)}
+                        aria-expanded={openFaq === index}
+                      >
+                        <span>{faq.question}</span>
+                        <span className="contact-inline-faq__toggle" aria-hidden="true">
+                          {openFaq === index ? '\u2212' : '+'}
+                        </span>
+                      </button>
+                      <div className="contact-inline-faq__answer">
+                        <p>{faq.answer}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-
-            {/* ── Right: Contact Details ── */}
-            <aside className="contact-details">
-              <h2 className="contact-details__heading">Contact Details</h2>
-
-              {/* Phone */}
-              <div className="contact-details__block">
-                <h4 className="contact-details__label">Phone</h4>
-                <a href="tel:08001234567" className="contact-details__value contact-details__link">
-                  0800 123 4567
-                </a>
-                <p className="contact-details__note">
-                  Mon&ndash;Fri 8am&ndash;6pm, Sat 9am&ndash;4pm
-                </p>
-              </div>
-
-              {/* Email */}
-              <div className="contact-details__block">
-                <h4 className="contact-details__label">Email</h4>
-                <a href="mailto:hello@thequartzcompany.co.uk" className="contact-details__value contact-details__link">
-                  hello@thequartzcompany.co.uk
-                </a>
-                <p className="contact-details__note">
-                  We aim to respond within 24 hours
-                </p>
-              </div>
-
-              {/* Address */}
-              <div className="contact-details__block">
-                <h4 className="contact-details__label">Address</h4>
-                <p className="contact-details__value">
-                  The Quartz Company Ltd
-                  <br />
-                  Northampton
-                  <br />
-                  Northamptonshire
-                </p>
-              </div>
-
-              {/* Social */}
-              <div className="contact-details__block">
-                <h4 className="contact-details__label">Follow Us</h4>
-                <div className="contact-details__social">
-                  <a
-                    href="https://instagram.com/thequartzcompany"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-details__social-link"
-                    aria-label="Instagram"
-                  >
-                    Instagram
-                  </a>
-                  <a
-                    href="https://facebook.com/thequartzcompany"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-details__social-link"
-                    aria-label="Facebook"
-                  >
-                    Facebook
-                  </a>
-                  <a
-                    href="https://pinterest.com/thequartzcompany"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-details__social-link"
-                    aria-label="Pinterest"
-                  >
-                    Pinterest
-                  </a>
-                  <a
-                    href="https://houzz.com/thequartzcompany"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-details__social-link"
-                    aria-label="Houzz"
-                  >
-                    Houzz
-                  </a>
-                </div>
-              </div>
-
-              {/* Map Placeholder */}
-              <div className="contact-details__map">
-                <span>Map &mdash; The Quartz Company HQ</span>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ Section ── */}
-      <section className="contact-faq section section--cream">
-        <div className="container">
-          <h2 className="section-title">Frequently Asked Questions</h2>
-          <p className="section-subtitle">
-            Before you contact us, you might find your answer here.
-          </p>
-          <div className="contact-faq__list">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className={`contact-faq__item${openFaq === index ? ' contact-faq__item--open' : ''}`}
-              >
-                <button
-                  type="button"
-                  className="contact-faq__question"
-                  onClick={() => toggleFaq(index)}
-                  aria-expanded={openFaq === index}
-                >
-                  <span>{faq.question}</span>
-                  <span className="contact-faq__toggle" aria-hidden="true">
-                    {openFaq === index ? '\u2212' : '+'}
-                  </span>
-                </button>
-                <div className="contact-faq__answer">
-                  <p>{faq.answer}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

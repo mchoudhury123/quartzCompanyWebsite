@@ -20,17 +20,16 @@ const PrivacyPage = () => {
   return (
     <div className="privacy-page">
       <section className="privacy-hero">
-        <div className="privacy-hero-overlay" />
-        <div className="privacy-hero-content">
-          <h1>Privacy Policy</h1>
-          <p className="privacy-updated">Last updated: March 2025</p>
+        <div className="privacy-hero__content">
+          <h1 className="privacy-hero__title">Privacy Policy</h1>
+          <p className="privacy-hero__date">Last updated: March 2025</p>
         </div>
       </section>
 
-      <div className="legal-content">
-        <nav className="table-of-contents">
-          <h2>Contents</h2>
-          <ol>
+      <div className="privacy-body">
+        <nav className="privacy-body__toc">
+          <h2 className="privacy-body__toc-title">Contents</h2>
+          <ol className="privacy-body__toc-list">
             <li>
               <a href="#introduction" onClick={(e) => handleAnchorClick(e, 'introduction')}>
                 Introduction
@@ -79,8 +78,8 @@ const PrivacyPage = () => {
           </ol>
         </nav>
 
-        <section id="introduction" className="legal-section">
-          <h2>1. Introduction</h2>
+        <section id="introduction" className="privacy-section privacy-section--left">
+          <h2 className="privacy-section__heading">1. Introduction</h2>
           <p>
             Welcome to the privacy policy of The Quartz Company Ltd ("we", "us", "our"), a company
             registered in England and Wales with its registered office
@@ -99,11 +98,11 @@ const PrivacyPage = () => {
           </p>
         </section>
 
-        <section id="information-we-collect" className="legal-section">
-          <h2>2. Information We Collect</h2>
+        <section id="information-we-collect" className="privacy-section privacy-section--right">
+          <h2 className="privacy-section__heading">2. Information We Collect</h2>
           <p>We may collect and process the following categories of personal data:</p>
 
-          <h3>2.1 Information You Provide to Us</h3>
+          <h3 className="privacy-section__subheading">2.1 Information You Provide to Us</h3>
           <ul>
             <li>
               <strong>Identity Data:</strong> Your full name, title, and any identification
@@ -128,7 +127,7 @@ const PrivacyPage = () => {
             </li>
           </ul>
 
-          <h3>2.2 Information We Collect Automatically</h3>
+          <h3 className="privacy-section__subheading">2.2 Information We Collect Automatically</h3>
           <ul>
             <li>
               <strong>Technical Data:</strong> Your internet protocol (IP) address, browser type
@@ -146,7 +145,7 @@ const PrivacyPage = () => {
             </li>
           </ul>
 
-          <h3>2.3 Information from Third Parties</h3>
+          <h3 className="privacy-section__subheading">2.3 Information from Third Parties</h3>
           <ul>
             <li>
               Credit reference agencies when you apply for finance options.
@@ -160,11 +159,11 @@ const PrivacyPage = () => {
           </ul>
         </section>
 
-        <section id="how-we-use" className="legal-section">
-          <h2>3. How We Use Your Information</h2>
+        <section id="how-we-use" className="privacy-section privacy-section--left">
+          <h2 className="privacy-section__heading">3. How We Use Your Information</h2>
           <p>We use the personal data we collect for the following purposes:</p>
 
-          <h3>3.1 Fulfilling Orders and Services</h3>
+          <h3 className="privacy-section__subheading">3.1 Fulfilling Orders and Services</h3>
           <ul>
             <li>Processing and managing your orders for kitchen worktops and related products.</li>
             <li>Arranging surveys, templating appointments, and installation visits.</li>
@@ -172,14 +171,14 @@ const PrivacyPage = () => {
             <li>Processing payments and issuing invoices or receipts.</li>
           </ul>
 
-          <h3>3.2 Providing Quotes and Consultations</h3>
+          <h3 className="privacy-section__subheading">3.2 Providing Quotes and Consultations</h3>
           <ul>
             <li>Responding to your enquiries and providing tailored quotations.</li>
             <li>Arranging consultations and site visits.</li>
             <li>Following up on quotes to assist your decision-making process.</li>
           </ul>
 
-          <h3>3.3 Marketing and Communications</h3>
+          <h3 className="privacy-section__subheading">3.3 Marketing and Communications</h3>
           <ul>
             <li>
               Sending you promotional materials about our products, services, and special offers
@@ -189,7 +188,7 @@ const PrivacyPage = () => {
             <li>Inviting you to participate in customer satisfaction surveys or product reviews.</li>
           </ul>
 
-          <h3>3.4 Business Operations</h3>
+          <h3 className="privacy-section__subheading">3.4 Business Operations</h3>
           <ul>
             <li>Improving our website, products, and services.</li>
             <li>Analysing usage patterns to enhance user experience.</li>
@@ -198,28 +197,28 @@ const PrivacyPage = () => {
           </ul>
         </section>
 
-        <section id="legal-basis" className="legal-section">
-          <h2>4. Legal Basis for Processing</h2>
+        <section id="legal-basis" className="privacy-section privacy-section--right">
+          <h2 className="privacy-section__heading">4. Legal Basis for Processing</h2>
           <p>
             We will only process your personal data where we have a lawful basis to do so. The
             legal bases we rely on include:
           </p>
 
-          <h3>4.1 Consent</h3>
+          <h3 className="privacy-section__subheading">4.1 Consent</h3>
           <p>
             Where you have given us clear consent to process your personal data for a specific
             purpose, such as receiving marketing communications. You may withdraw your consent at
             any time by contacting us or using the unsubscribe link in our emails.
           </p>
 
-          <h3>4.2 Performance of a Contract</h3>
+          <h3 className="privacy-section__subheading">4.2 Performance of a Contract</h3>
           <p>
             Where processing your data is necessary for the performance of a contract we have
             with you, or to take steps at your request before entering into a contract. This
             includes processing your order, arranging installation, and handling payments.
           </p>
 
-          <h3>4.3 Legitimate Interests</h3>
+          <h3 className="privacy-section__subheading">4.3 Legitimate Interests</h3>
           <p>
             Where processing is necessary for our legitimate interests (or those of a third
             party) and your interests and fundamental rights do not override those interests.
@@ -227,21 +226,21 @@ const PrivacyPage = () => {
             fraud.
           </p>
 
-          <h3>4.4 Legal Obligation</h3>
+          <h3 className="privacy-section__subheading">4.4 Legal Obligation</h3>
           <p>
             Where processing is necessary for us to comply with a legal obligation, such as
             maintaining financial records or responding to lawful requests from authorities.
           </p>
         </section>
 
-        <section id="data-sharing" className="legal-section">
-          <h2>5. Data Sharing</h2>
+        <section id="data-sharing" className="privacy-section privacy-section--left">
+          <h2 className="privacy-section__heading">5. Data Sharing</h2>
           <p>
             We may share your personal data with the following categories of third parties for the
             purposes outlined in this policy:
           </p>
 
-          <h3>5.1 Service Providers</h3>
+          <h3 className="privacy-section__subheading">5.1 Service Providers</h3>
           <ul>
             <li>
               <strong>Installation Partners:</strong> Approved fitters and installers who carry
@@ -261,23 +260,23 @@ const PrivacyPage = () => {
             </li>
           </ul>
 
-          <h3>5.2 Finance Partners</h3>
+          <h3 className="privacy-section__subheading">5.2 Finance Partners</h3>
           <p>
             If you apply for finance to fund your purchase, we will share relevant personal and
             financial data with our finance partners to process your application. This may include
             sharing data with credit reference agencies.
           </p>
 
-          <h3>5.3 Our Commitment</h3>
-          <p className="legal-highlight">
+          <h3 className="privacy-section__subheading">5.3 Our Commitment</h3>
+          <p className="privacy-section__highlight">
             We will never sell, rent, or trade your personal data to third parties for their
             marketing purposes. We require all third parties to respect the security of your
             personal data and to treat it in accordance with the law.
           </p>
         </section>
 
-        <section id="data-retention" className="legal-section">
-          <h2>6. Data Retention</h2>
+        <section id="data-retention" className="privacy-section privacy-section--right">
+          <h2 className="privacy-section__heading">6. Data Retention</h2>
           <p>
             We will only retain your personal data for as long as reasonably necessary to fulfil
             the purposes we collected it for. The retention periods we apply are as follows:
@@ -307,16 +306,16 @@ const PrivacyPage = () => {
           </ul>
         </section>
 
-        <section id="your-rights" className="legal-section">
-          <h2>7. Your Rights</h2>
+        <section id="your-rights" className="privacy-section privacy-section--left">
+          <h2 className="privacy-section__heading">7. Your Rights</h2>
           <p>
             Under UK data protection law, you have a number of rights in relation to your
             personal data. You may exercise any of these rights by contacting us using the
             details provided in Section 9 below.
           </p>
 
-          <div className="rights-grid">
-            <div className="right-item">
+          <div className="privacy-section__rights-grid">
+            <div className="privacy-section__right-item">
               <h3>Right of Access</h3>
               <p>
                 You have the right to request a copy of the personal data we hold about you. This
@@ -324,14 +323,14 @@ const PrivacyPage = () => {
                 of receiving your request.
               </p>
             </div>
-            <div className="right-item">
+            <div className="privacy-section__right-item">
               <h3>Right to Rectification</h3>
               <p>
                 You have the right to request that we correct any personal data that is inaccurate
                 or incomplete. We will make the necessary corrections promptly.
               </p>
             </div>
-            <div className="right-item">
+            <div className="privacy-section__right-item">
               <h3>Right to Erasure</h3>
               <p>
                 You have the right to request the deletion of your personal data in certain
@@ -339,7 +338,7 @@ const PrivacyPage = () => {
                 which it was collected.
               </p>
             </div>
-            <div className="right-item">
+            <div className="privacy-section__right-item">
               <h3>Right to Data Portability</h3>
               <p>
                 You have the right to request that we transfer your personal data to another
@@ -347,14 +346,14 @@ const PrivacyPage = () => {
                 machine-readable format.
               </p>
             </div>
-            <div className="right-item">
+            <div className="privacy-section__right-item">
               <h3>Right to Restrict Processing</h3>
               <p>
                 You have the right to request that we restrict the processing of your personal
                 data in certain circumstances, such as where you contest the accuracy of the data.
               </p>
             </div>
-            <div className="right-item">
+            <div className="privacy-section__right-item">
               <h3>Right to Object</h3>
               <p>
                 You have the right to object to the processing of your personal data where we are
@@ -375,8 +374,8 @@ const PrivacyPage = () => {
           </p>
         </section>
 
-        <section id="cookies" className="legal-section">
-          <h2>8. Cookies</h2>
+        <section id="cookies" className="privacy-section privacy-section--right">
+          <h2 className="privacy-section__heading">8. Cookies</h2>
           <p>
             Our website uses cookies and similar tracking technologies to distinguish you from
             other users. This helps us provide you with a good experience when you browse our
@@ -385,20 +384,20 @@ const PrivacyPage = () => {
           <p>
             For detailed information about the cookies we use, the purposes for which we use
             them, and how you can manage your cookie preferences, please see our{' '}
-            <Link to="/cookies" className="legal-link">
+            <Link to="/cookies">
               Cookie Policy
             </Link>.
           </p>
         </section>
 
-        <section id="contact-us" className="legal-section">
-          <h2>9. Contact Us</h2>
+        <section id="contact-us" className="privacy-section privacy-section--left">
+          <h2 className="privacy-section__heading">9. Contact Us</h2>
           <p>
             If you have any questions about this privacy policy, wish to exercise your data
             protection rights, or have a complaint about how we have handled your personal data,
             please contact our Data Protection Officer:
           </p>
-          <div className="contact-details">
+          <div className="privacy-section__contact">
             <p><strong>Data Protection Officer</strong></p>
             <p>The Quartz Company Ltd</p>
             <p>Northampton, Northamptonshire</p>

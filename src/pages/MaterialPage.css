@@ -1,12 +1,16 @@
 /* ============================================
-   MaterialPage – The Quartz Company
+   MaterialPage – The Quartz Company (Editorial)
    ============================================ */
 
-/* ── Hero ── */
+/* ── Hero (shorter, left-aligned, gold geometric accent) ── */
 .material-hero {
+  position: relative;
   color: var(--color-white);
-  padding: 6rem 0 5rem;
-  text-align: center;
+  max-height: 40vh;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .material-hero--quartz {
@@ -15,6 +19,48 @@
 
 .material-hero--printed-quartz {
   background: linear-gradient(135deg, #1a1a1a 0%, #c5a47e 100%);
+}
+
+/* Decorative gold geometric accent (CSS-only, no images) */
+.material-hero__accent {
+  position: absolute;
+  top: -30%;
+  right: -5%;
+  width: 420px;
+  height: 420px;
+  border: 2px solid var(--color-gold);
+  opacity: 0.18;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.material-hero__accent::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  border: 2px solid var(--color-gold-light);
+}
+
+.material-hero__accent::after {
+  content: '';
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  right: 80px;
+  bottom: 80px;
+  border: 2px solid var(--color-gold);
+  opacity: 0.6;
+}
+
+.material-hero__inner {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  padding: 4rem 0 3.5rem;
+  max-width: 640px;
 }
 
 .material-hero__title {
@@ -31,34 +77,49 @@
   font-style: italic;
 }
 
-/* ── Introduction ── */
-.material-intro {
-  max-width: 780px;
-  margin: 0 auto;
-  text-align: center;
+/* ── Offset Grid Pattern ── */
+.material-offset {
+  transition: none;
 }
 
-.material-intro__heading {
+.material-offset--left {
+  max-width: 65%;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.material-offset--right {
+  max-width: 65%;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.material-offset__heading {
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 3vw, 2.25rem);
   color: var(--color-dark);
   margin-bottom: 1.5rem;
 }
 
-.material-intro__text {
+.material-offset__text {
   font-size: 1.05rem;
   color: var(--color-text);
   line-height: 1.85;
   margin-bottom: 0;
 }
 
+.material-offset__subtitle {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
 /* ── Benefits Grid ── */
 .material-benefits-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  max-width: 1060px;
-  margin: 0 auto;
 }
 
 .material-benefit-card {
@@ -66,7 +127,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 2rem 1.5rem;
-  text-align: center;
+  text-align: left;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
@@ -104,13 +165,13 @@
 }
 
 .material-range-cta {
-  text-align: center;
+  text-align: left;
   margin-top: 2rem;
 }
 
 .material-range-empty {
-  text-align: center;
-  padding: 3rem 1rem;
+  text-align: left;
+  padding: 3rem 0;
 }
 
 .material-range-empty p {
@@ -125,8 +186,7 @@
 
 /* ── FAQ ── */
 .material-faq {
-  max-width: 720px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .material-faq__item {
@@ -199,47 +259,92 @@
   margin-bottom: 0;
 }
 
-/* ── CTA ── */
+/* ── CTA (bordered card, right-aligned like AboutPage) ── */
 .material-cta-section {
   background: var(--color-white);
 }
 
-.material-cta {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+.material-cta__card {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  text-align: left;
 }
 
-.material-cta h2 {
+.material-cta__heading {
   font-family: var(--font-heading);
-  margin-bottom: 0.75rem;
+  color: var(--color-dark);
+  margin-bottom: 1rem;
 }
 
-.material-cta p {
-  color: var(--color-text-light);
+.material-cta__text {
   font-size: 1.05rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
   margin-bottom: 2rem;
-  line-height: 1.65;
 }
 
 .material-cta__buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-/* ── Responsive ── */
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
+
+/* ── 1024px ── */
 @media (max-width: 1024px) {
+  .material-offset--left,
+  .material-offset--right {
+    max-width: 75%;
+  }
+
   .material-benefits-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .material-hero__accent {
+    width: 320px;
+    height: 320px;
+    top: -25%;
+    right: -8%;
+  }
+
+  .material-cta__card {
+    max-width: 480px;
+  }
 }
 
+/* ── 768px ── */
 @media (max-width: 768px) {
   .material-hero {
-    padding: 4.5rem 0 3.5rem;
+    max-height: none;
+    min-height: auto;
+  }
+
+  .material-hero__inner {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .material-hero__accent {
+    width: 240px;
+    height: 240px;
+    top: -20%;
+    right: -10%;
+    opacity: 0.12;
+  }
+
+  .material-offset--left,
+  .material-offset--right {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .material-benefits-grid {
@@ -251,8 +356,19 @@
     padding: 1.5rem 1.25rem;
   }
 
+  .material-range-cta {
+    text-align: center;
+  }
+
+  .material-cta__card {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
   .material-cta__buttons {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .material-cta__buttons .btn {
@@ -260,8 +376,29 @@
   }
 }
 
+/* ── 480px ── */
 @media (max-width: 480px) {
+  .material-hero__inner {
+    padding: 2.5rem 0 2rem;
+  }
+
   .material-hero__title {
     font-size: 1.75rem;
+  }
+
+  .material-hero__accent {
+    width: 180px;
+    height: 180px;
+    top: -15%;
+    right: -12%;
+    opacity: 0.1;
+  }
+
+  .material-offset__heading {
+    font-size: 1.4rem;
+  }
+
+  .material-cta__card {
+    padding: 2rem 1.5rem;
   }
 }

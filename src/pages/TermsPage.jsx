@@ -19,17 +19,16 @@ const TermsPage = () => {
   return (
     <div className="terms-page">
       <section className="terms-hero">
-        <div className="terms-hero-overlay" />
-        <div className="terms-hero-content">
-          <h1>Terms &amp; Conditions</h1>
-          <p className="terms-updated">Last updated: March 2025</p>
+        <div className="terms-hero__content">
+          <h1 className="terms-hero__title">Terms &amp; Conditions</h1>
+          <p className="terms-hero__date">Last updated: March 2025</p>
         </div>
       </section>
 
-      <div className="legal-content">
-        <nav className="table-of-contents">
-          <h2>Contents</h2>
-          <ol>
+      <div className="terms-body">
+        <nav className="terms-body__toc">
+          <h2 className="terms-body__toc-title">Contents</h2>
+          <ol className="terms-body__toc-list">
             <li>
               <a href="#definitions" onClick={(e) => handleAnchorClick(e, 'definitions')}>
                 Definitions
@@ -83,59 +82,59 @@ const TermsPage = () => {
           </ol>
         </nav>
 
-        <section id="definitions" className="legal-section">
-          <h2>1. Definitions</h2>
+        <section id="definitions" className="terms-section terms-section--left">
+          <h2 className="terms-section__heading">1. Definitions</h2>
           <p>In these Terms and Conditions, the following definitions apply:</p>
-          <div className="definitions-list">
-            <div className="definition-item">
+          <div className="terms-section__definitions">
+            <div className="terms-section__def-item">
               <strong>"Company", "we", "us", "our"</strong>
               <span>
                 means The Quartz Company Ltd, a company registered in England and Wales, with its
                 registered office in Northampton, Northamptonshire.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Customer", "you", "your"</strong>
               <span>
                 means the person, firm, or company who purchases or agrees to purchase Products
                 and/or Services from us.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Products"</strong>
               <span>
                 means the kitchen worktops, surfaces, splashbacks, upstands, and any other engineered
                 quartz products supplied by us.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Services"</strong>
               <span>
                 means any services provided by us, including surveying, templating, fabrication,
                 delivery, and installation.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Order"</strong>
               <span>
                 means any accepted order for Products and/or Services placed by you with us.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Quote"</strong>
               <span>
                 means an estimate of costs provided by us for the supply of Products and/or
                 Services, which shall remain valid for 30 days unless otherwise stated.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Template"</strong>
               <span>
                 means the precise measurement and templating of your kitchen or installation area,
                 undertaken by our approved templaters prior to fabrication.
               </span>
             </div>
-            <div className="definition-item">
+            <div className="terms-section__def-item">
               <strong>"Working Day"</strong>
               <span>
                 means any day other than a Saturday, Sunday, or public holiday in England and
@@ -145,10 +144,10 @@ const TermsPage = () => {
           </div>
         </section>
 
-        <section id="our-products" className="legal-section">
-          <h2>2. Our Products</h2>
+        <section id="our-products" className="terms-section terms-section--right">
+          <h2 className="terms-section__heading">2. Our Products</h2>
 
-          <h3>2.1 Product Descriptions</h3>
+          <h3 className="terms-section__subheading">2.1 Product Descriptions</h3>
           <p>
             All product descriptions, images, and samples provided on our website, in our
             showroom, or through other marketing materials are intended as a guide only. We make
@@ -174,7 +173,7 @@ const TermsPage = () => {
             </li>
           </ul>
 
-          <h3>2.2 Sample Policy</h3>
+          <h3 className="terms-section__subheading">2.2 Sample Policy</h3>
           <p>
             We strongly recommend that customers view and approve physical samples of their
             chosen material before placing an order. Sample pieces are available on request and
@@ -183,7 +182,7 @@ const TermsPage = () => {
             finished product.
           </p>
 
-          <h3>2.3 Material Suitability</h3>
+          <h3 className="terms-section__subheading">2.3 Material Suitability</h3>
           <p>
             Different quartz materials have different properties and care requirements.
             It is your responsibility to ensure that your chosen material is suitable for its
@@ -192,14 +191,14 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="ordering-process" className="legal-section">
-          <h2>3. Ordering Process</h2>
+        <section id="ordering-process" className="terms-section terms-section--left">
+          <h2 className="terms-section__heading">3. Ordering Process</h2>
           <p>The process for ordering Products and Services from us is as follows:</p>
 
-          <div className="process-steps">
-            <div className="process-step">
-              <div className="step-number">1</div>
-              <div className="step-content">
+          <div className="terms-section__steps">
+            <div className="terms-section__step">
+              <div className="terms-section__step-num">1</div>
+              <div className="terms-section__step-body">
                 <h3>Quote</h3>
                 <p>
                   You submit an enquiry via our website, telephone, or showroom visit. We will
@@ -209,9 +208,9 @@ const TermsPage = () => {
                 </p>
               </div>
             </div>
-            <div className="process-step">
-              <div className="step-number">2</div>
-              <div className="step-content">
+            <div className="terms-section__step">
+              <div className="terms-section__step-num">2</div>
+              <div className="terms-section__step-body">
                 <h3>Deposit &amp; Order Confirmation</h3>
                 <p>
                   To proceed with your order, a deposit of 50% of the quoted price is required.
@@ -221,9 +220,9 @@ const TermsPage = () => {
                 </p>
               </div>
             </div>
-            <div className="process-step">
-              <div className="step-number">3</div>
-              <div className="step-content">
+            <div className="terms-section__step">
+              <div className="terms-section__step-num">3</div>
+              <div className="terms-section__step-body">
                 <h3>Template</h3>
                 <p>
                   Our approved templater will visit your property to take precise laser
@@ -234,9 +233,9 @@ const TermsPage = () => {
                 </p>
               </div>
             </div>
-            <div className="process-step">
-              <div className="step-number">4</div>
-              <div className="step-content">
+            <div className="terms-section__step">
+              <div className="terms-section__step-num">4</div>
+              <div className="terms-section__step-body">
                 <h3>Fabrication</h3>
                 <p>
                   Following the template, your worktops will be precision-cut and fabricated in
@@ -245,9 +244,9 @@ const TermsPage = () => {
                 </p>
               </div>
             </div>
-            <div className="process-step">
-              <div className="step-number">5</div>
-              <div className="step-content">
+            <div className="terms-section__step">
+              <div className="terms-section__step-num">5</div>
+              <div className="terms-section__step-body">
                 <h3>Installation</h3>
                 <p>
                   Our experienced installation team will deliver and install your worktops at your
@@ -260,10 +259,10 @@ const TermsPage = () => {
           </div>
         </section>
 
-        <section id="pricing-payment" className="legal-section">
-          <h2>4. Pricing &amp; Payment</h2>
+        <section id="pricing-payment" className="terms-section terms-section--right">
+          <h2 className="terms-section__heading">4. Pricing &amp; Payment</h2>
 
-          <h3>4.1 Pricing</h3>
+          <h3 className="terms-section__subheading">4.1 Pricing</h3>
           <ul>
             <li>
               All prices quoted include VAT at the prevailing rate (currently 20%) unless
@@ -281,7 +280,7 @@ const TermsPage = () => {
             </li>
           </ul>
 
-          <h3>4.2 Deposit</h3>
+          <h3 className="terms-section__subheading">4.2 Deposit</h3>
           <p>
             A non-refundable deposit of 50% of the total order value is required to confirm your
             order. The deposit secures your chosen material and reserves your place in our
@@ -289,7 +288,7 @@ const TermsPage = () => {
             card.
           </p>
 
-          <h3>4.3 Balance Payment</h3>
+          <h3 className="terms-section__subheading">4.3 Balance Payment</h3>
           <p>
             The remaining 50% balance is due no later than 3 Working Days before the scheduled
             installation date. Installation will not proceed until full payment has been received.
@@ -297,7 +296,7 @@ const TermsPage = () => {
             rescheduled, subject to availability.
           </p>
 
-          <h3>4.4 Finance Options</h3>
+          <h3 className="terms-section__subheading">4.4 Finance Options</h3>
           <p>
             We may offer finance options through our approved finance partners. Finance is subject
             to status, terms, and conditions. Full details of available finance options will be
@@ -305,10 +304,10 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="delivery-installation" className="legal-section">
-          <h2>5. Delivery &amp; Installation</h2>
+        <section id="delivery-installation" className="terms-section terms-section--left">
+          <h2 className="terms-section__heading">5. Delivery &amp; Installation</h2>
 
-          <h3>5.1 Lead Times</h3>
+          <h3 className="terms-section__subheading">5.1 Lead Times</h3>
           <p>
             Typical lead times from deposit to installation are 2-4 weeks, depending on material
             availability and production schedule. We will provide you with an estimated
@@ -317,7 +316,7 @@ const TermsPage = () => {
             contract.
           </p>
 
-          <h3>5.2 Access Requirements</h3>
+          <h3 className="terms-section__subheading">5.2 Access Requirements</h3>
           <p>
             You must ensure that our installation team has adequate access to your property and
             the installation area. This includes:
@@ -341,7 +340,7 @@ const TermsPage = () => {
             </li>
           </ul>
 
-          <h3>5.3 Property Preparation</h3>
+          <h3 className="terms-section__subheading">5.3 Property Preparation</h3>
           <p>
             Before installation, the following must be in place:
           </p>
@@ -352,7 +351,7 @@ const TermsPage = () => {
             <li>The installation area should be clear of personal belongings, crockery, and food items.</li>
           </ul>
 
-          <h3>5.4 Additional Charges</h3>
+          <h3 className="terms-section__subheading">5.4 Additional Charges</h3>
           <p>
             If our installation team arrives and is unable to proceed due to the property not
             being adequately prepared, we reserve the right to charge a recall fee to cover
@@ -360,10 +359,10 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="cancellation-returns" className="legal-section">
-          <h2>6. Cancellation &amp; Returns</h2>
+        <section id="cancellation-returns" className="terms-section terms-section--right">
+          <h2 className="terms-section__heading">6. Cancellation &amp; Returns</h2>
 
-          <h3>6.1 Cooling-Off Period</h3>
+          <h3 className="terms-section__subheading">6.1 Cooling-Off Period</h3>
           <p>
             If you placed your order at a distance (online or by telephone) rather than in our
             showroom, you have a statutory right to cancel your order within 14 days of the date
@@ -371,8 +370,8 @@ const TermsPage = () => {
             Cancellation and Additional Charges) Regulations 2013.
           </p>
 
-          <h3>6.2 Bespoke Product Limitations</h3>
-          <p className="legal-highlight">
+          <h3 className="terms-section__subheading">6.2 Bespoke Product Limitations</h3>
+          <p className="terms-section__highlight">
             Please note that our Products are made to your specific measurements and
             specifications. Once fabrication has commenced (i.e., following the template), the
             Products are considered bespoke and the right to cancel under the cooling-off period
@@ -381,21 +380,21 @@ const TermsPage = () => {
             once fabrication begins.
           </p>
 
-          <h3>6.3 Cancellation Before Fabrication</h3>
+          <h3 className="terms-section__subheading">6.3 Cancellation Before Fabrication</h3>
           <p>
             If you cancel your order before fabrication has commenced but after the 14-day
             cooling-off period, we will refund your deposit less an administrative charge of 15%
             of the total order value to cover costs already incurred.
           </p>
 
-          <h3>6.4 Cancellation After Fabrication</h3>
+          <h3 className="terms-section__subheading">6.4 Cancellation After Fabrication</h3>
           <p>
             If you cancel your order after fabrication has commenced, no refund of the deposit
             will be given, as the Products will have been custom-made to your specifications and
             cannot be resold.
           </p>
 
-          <h3>6.5 Defective Products</h3>
+          <h3 className="terms-section__subheading">6.5 Defective Products</h3>
           <p>
             If you believe your Products are defective, please contact us within 48 hours of
             installation. We will inspect the Products and, where a genuine defect is confirmed,
@@ -403,10 +402,10 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="warranties" className="legal-section">
-          <h2>7. Warranties</h2>
+        <section id="warranties" className="terms-section terms-section--left">
+          <h2 className="terms-section__heading">7. Warranties</h2>
 
-          <h3>7.1 Material Warranty</h3>
+          <h3 className="terms-section__subheading">7.1 Material Warranty</h3>
           <p>
             Many of the materials we supply come with a manufacturer's warranty covering defects
             in the material itself. The duration and terms of the manufacturer's warranty vary
@@ -428,14 +427,14 @@ const TermsPage = () => {
             </li>
           </ul>
 
-          <h3>7.2 Installation Warranty</h3>
+          <h3 className="terms-section__subheading">7.2 Installation Warranty</h3>
           <p>
             We provide a 2-year warranty on our installation workmanship, commencing from the
             date of installation. This covers defects arising from faulty workmanship, including
             poor fitting, inadequate sealing, or structural failure caused by installation error.
           </p>
 
-          <h3>7.3 Warranty Exclusions</h3>
+          <h3 className="terms-section__subheading">7.3 Warranty Exclusions</h3>
           <p>Our warranties do not cover:</p>
           <ul>
             <li>Damage caused by misuse, neglect, or failure to follow care and maintenance guidelines.</li>
@@ -447,10 +446,10 @@ const TermsPage = () => {
           </ul>
         </section>
 
-        <section id="limitation-liability" className="legal-section">
-          <h2>8. Limitation of Liability</h2>
+        <section id="limitation-liability" className="terms-section terms-section--right">
+          <h2 className="terms-section__heading">8. Limitation of Liability</h2>
 
-          <h3>8.1 Our Liability</h3>
+          <h3 className="terms-section__subheading">8.1 Our Liability</h3>
           <p>
             Nothing in these Terms and Conditions shall exclude or limit our liability for:
           </p>
@@ -460,7 +459,7 @@ const TermsPage = () => {
             <li>Any matter for which it would be illegal for us to exclude or limit our liability.</li>
           </ul>
 
-          <h3>8.2 Limitation</h3>
+          <h3 className="terms-section__subheading">8.2 Limitation</h3>
           <p>
             Subject to Section 8.1, our total liability to you in respect of all losses arising
             under or in connection with the contract, whether in contract, tort (including
@@ -468,7 +467,7 @@ const TermsPage = () => {
             the total price paid by you under the contract.
           </p>
 
-          <h3>8.3 Indirect Losses</h3>
+          <h3 className="terms-section__subheading">8.3 Indirect Losses</h3>
           <p>
             We shall not be liable for any indirect, consequential, or special losses, including
             but not limited to loss of profit, loss of business, loss of goodwill, or loss of
@@ -476,8 +475,8 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="force-majeure" className="legal-section">
-          <h2>9. Force Majeure</h2>
+        <section id="force-majeure" className="terms-section terms-section--left">
+          <h2 className="terms-section__heading">9. Force Majeure</h2>
           <p>
             We shall not be liable for any delay or failure to perform our obligations under the
             contract if such delay or failure results from circumstances beyond our reasonable
@@ -500,8 +499,8 @@ const TermsPage = () => {
           </p>
         </section>
 
-        <section id="governing-law" className="legal-section">
-          <h2>10. Governing Law</h2>
+        <section id="governing-law" className="terms-section terms-section--right">
+          <h2 className="terms-section__heading">10. Governing Law</h2>
           <p>
             These Terms and Conditions, and any dispute or claim arising out of or in connection
             with them or their subject matter or formation (including non-contractual disputes or
@@ -522,7 +521,7 @@ const TermsPage = () => {
             validity and enforceability of the remaining provisions.
           </p>
 
-          <div className="terms-footer">
+          <div className="terms-section__footer">
             <p>
               <strong>The Quartz Company Ltd</strong><br />
               Northampton, Northamptonshire<br />

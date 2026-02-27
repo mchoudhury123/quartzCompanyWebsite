@@ -1,13 +1,43 @@
 /* ============================================
    FinancePage – The Quartz Company
+   Redesigned: offset-grid layout
    ============================================ */
 
 /* ── Hero ── */
 .finance-hero {
+  position: relative;
   background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
   color: var(--color-white);
-  padding: 6rem 0 5rem;
-  text-align: center;
+  padding: 4rem 0 3.5rem;
+  max-height: 40vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.finance-hero__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.finance-hero__inner::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  background: transparent;
+  border: 3px solid var(--color-gold);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.finance-hero__content {
+  max-width: 600px;
+  text-align: left;
 }
 
 .finance-hero__label {
@@ -35,8 +65,36 @@
   font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.85);
   max-width: 540px;
-  margin: 0 auto;
   line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ── Offset Grid System ── */
+.finance-offset {
+  max-width: 65%;
+}
+
+.finance-offset--left {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.finance-offset--right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.finance-offset__title {
+  font-family: var(--font-heading);
+  margin-bottom: 0.75rem;
+  color: var(--color-dark);
+}
+
+.finance-offset__subtitle {
+  color: var(--color-text-light);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 600px;
 }
 
 /* ── Steps ── */
@@ -47,10 +105,7 @@
 .finance-steps {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
   gap: 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
 }
 
 .finance-step {
@@ -104,7 +159,6 @@
 /* ── Representative Example Table ── */
 .finance-example-table-wrapper {
   max-width: 560px;
-  margin: 0 auto;
 }
 
 .finance-example-table {
@@ -150,7 +204,6 @@
 /* ── Calculator ── */
 .finance-calculator {
   max-width: 700px;
-  margin: 0 auto;
 }
 
 .finance-calculator__input-group {
@@ -270,7 +323,6 @@
 .finance-calculator__disclaimer {
   font-size: 0.82rem;
   color: var(--color-text-light);
-  text-align: center;
   line-height: 1.6;
 }
 
@@ -279,8 +331,6 @@
   display: flex;
   align-items: flex-start;
   gap: 2.5rem;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .finance-partner__logo {
@@ -314,8 +364,7 @@
 
 /* ── FAQ ── */
 .finance-faq {
-  max-width: 720px;
-  margin: 0 auto;
+  max-width: 100%;
 }
 
 .finance-faq__item {
@@ -388,9 +437,14 @@
 
 /* ── CTA ── */
 .finance-cta {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: 0;
+  text-align: left;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2.5rem;
+  background: var(--color-white);
 }
 
 .finance-cta h2 {
@@ -419,10 +473,45 @@
   margin: 0 auto;
 }
 
-/* ── Responsive ── */
+/* ============================================
+   Responsive – 1024px
+   ============================================ */
+@media (max-width: 1024px) {
+  .finance-offset {
+    max-width: 80%;
+  }
+
+  .finance-hero__inner::after {
+    width: 100px;
+    height: 100px;
+    right: 5%;
+  }
+}
+
+/* ============================================
+   Responsive – 768px
+   ============================================ */
 @media (max-width: 768px) {
   .finance-hero {
-    padding: 4.5rem 0 3.5rem;
+    max-height: none;
+    padding: 3.5rem 0 3rem;
+  }
+
+  .finance-hero__inner::after {
+    width: 80px;
+    height: 80px;
+    right: 2%;
+    opacity: 0.2;
+  }
+
+  .finance-offset {
+    max-width: 100%;
+  }
+
+  .finance-offset--left,
+  .finance-offset--right {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .finance-steps {
@@ -452,14 +541,30 @@
     padding: 0.85rem 1rem;
     font-size: 0.88rem;
   }
+
+  .finance-cta {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
 
+/* ============================================
+   Responsive – 480px
+   ============================================ */
 @media (max-width: 480px) {
   .finance-hero__title {
     font-size: 1.75rem;
   }
 
+  .finance-hero__inner::after {
+    display: none;
+  }
+
   .finance-calculator__input-wrapper {
     max-width: 100%;
+  }
+
+  .finance-cta {
+    padding: 1.75rem 1.5rem;
   }
 }

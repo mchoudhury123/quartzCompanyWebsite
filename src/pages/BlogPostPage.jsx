@@ -16,7 +16,7 @@ export default function BlogPostPage() {
 
   if (!post) {
     return (
-      <div className="blogpost-page">
+      <div className="blogpost">
         <section className="section">
           <div className="container" style={{ textAlign: 'center' }}>
             <h1>Article Not Found</h1>
@@ -46,67 +46,71 @@ export default function BlogPostPage() {
   };
 
   return (
-    <div className="blogpost-page">
-      {/* ── Breadcrumbs ── */}
-      <nav className="blogpost-breadcrumbs" aria-label="Breadcrumb">
-        <div className="container">
-          <ol className="blogpost-breadcrumbs__list">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/inspiration">Inspiration</Link>
-            </li>
-            <li aria-current="page">{post.title}</li>
-          </ol>
-        </div>
-      </nav>
-
-      {/* ── Hero Image ── */}
+    <div className="blogpost">
+      {/* ── Hero ── */}
       <section
-        className="blogpost-hero"
+        className="blogpost__hero"
         style={{
           background: gradients[postIndex % gradients.length],
         }}
       >
-        <div className="container blogpost-hero__inner">
-          <span className="blogpost-hero__category">{post.category}</span>
+        <div className="container blogpost__hero-inner">
+          <nav className="blogpost__breadcrumbs" aria-label="Breadcrumb">
+            <ol className="blogpost__breadcrumbs-list">
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/inspiration">Inspiration</Link>
+              </li>
+              <li aria-current="page">{post.title}</li>
+            </ol>
+          </nav>
+          <span className="blogpost__hero-category">{post.category}</span>
+          <h1 className="blogpost__hero-title">{post.title}</h1>
+          <div className="blogpost__hero-meta">
+            <span className="blogpost__hero-date">{formatDate(post.date)}</span>
+            <span className="blogpost__hero-dot">&middot;</span>
+            <span className="blogpost__hero-read">{post.readTime}</span>
+          </div>
         </div>
       </section>
 
-      {/* ── Article ── */}
-      <article className="section blogpost-article">
+      {/* ── Article Content (offset left — odd section) ── */}
+      <article className="section blogpost__article">
         <div className="container">
-          <div className="blogpost-article__wrapper">
-            {/* Metadata */}
-            <div className="blogpost-meta">
-              <span className="blogpost-meta__badge">{post.category}</span>
-              <span className="blogpost-meta__date">{formatDate(post.date)}</span>
-              <span className="blogpost-meta__dot">&middot;</span>
-              <span className="blogpost-meta__read">{post.readTime}</span>
+          <div className="blogpost__offset blogpost__offset--left">
+            <div className="blogpost__meta">
+              <span className="blogpost__meta-badge">{post.category}</span>
+              <span className="blogpost__meta-date">{formatDate(post.date)}</span>
+              <span className="blogpost__meta-dot">&middot;</span>
+              <span className="blogpost__meta-read">{post.readTime}</span>
             </div>
 
-            {/* Title */}
-            <h1 className="blogpost-title">{post.title}</h1>
-
-            {/* Content */}
-            <div className="blogpost-content">
+            <div className="blogpost__content">
               {paragraphs.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
             </div>
+          </div>
+        </div>
+      </article>
 
+      {/* ── Share + Author (offset right — even section) ── */}
+      <section className="section section--cream blogpost__engage">
+        <div className="container">
+          <div className="blogpost__offset blogpost__offset--right">
             {/* Share */}
-            <div className="blogpost-share">
-              <span className="blogpost-share__label">Share this article</span>
-              <div className="blogpost-share__icons">
+            <div className="blogpost__share">
+              <span className="blogpost__share-label">Share this article</span>
+              <div className="blogpost__share-icons">
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                     window.location.href
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="blogpost-share__icon"
+                  className="blogpost__share-icon"
                   aria-label="Share on Facebook"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -119,7 +123,7 @@ export default function BlogPostPage() {
                   )}&url=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="blogpost-share__icon"
+                  className="blogpost__share-icon"
                   aria-label="Share on Twitter"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -132,7 +136,7 @@ export default function BlogPostPage() {
                   )}&title=${encodeURIComponent(post.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="blogpost-share__icon"
+                  className="blogpost__share-icon"
                   aria-label="Share on LinkedIn"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -143,7 +147,7 @@ export default function BlogPostPage() {
                   href={`mailto:?subject=${encodeURIComponent(
                     post.title
                   )}&body=${encodeURIComponent(window.location.href)}`}
-                  className="blogpost-share__icon"
+                  className="blogpost__share-icon"
                   aria-label="Share via email"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -154,11 +158,11 @@ export default function BlogPostPage() {
             </div>
 
             {/* Author Box */}
-            <div className="blogpost-author">
-              <div className="blogpost-author__avatar">TQC</div>
-              <div className="blogpost-author__info">
-                <h4 className="blogpost-author__name">The Quartz Company Design Team</h4>
-                <p className="blogpost-author__bio">
+            <div className="blogpost__author">
+              <div className="blogpost__author-avatar">TQC</div>
+              <div className="blogpost__author-info">
+                <h4 className="blogpost__author-name">The Quartz Company Design Team</h4>
+                <p className="blogpost__author-bio">
                   Our design experts share insights from decades of experience in
                   premium kitchen worktops, helping you make informed choices for
                   your home.
@@ -167,25 +171,27 @@ export default function BlogPostPage() {
             </div>
           </div>
         </div>
-      </article>
+      </section>
 
-      {/* ── Related Posts ── */}
+      {/* ── Related Posts (offset left — odd section) ── */}
       {relatedPosts.length > 0 && (
-        <section className="section section--cream blogpost-related">
+        <section className="section blogpost__related">
           <div className="container">
-            <h2 className="section-title">You May Also Like</h2>
-            <p className="section-subtitle">
-              More inspiration from the The Quartz Company journal
-            </p>
-            <div className="blogpost-related__grid">
+            <div className="blogpost__offset blogpost__offset--left">
+              <h2 className="blogpost__related-title">You May Also Like</h2>
+              <p className="blogpost__related-subtitle">
+                More inspiration from the The Quartz Company journal
+              </p>
+            </div>
+            <div className="blogpost__related-grid">
               {relatedPosts.slice(0, 3).map((rPost, idx) => (
                 <Link
                   to={`/inspiration/${rPost.slug}`}
                   key={rPost.id}
-                  className="blogpost-related__card"
+                  className="blogpost__related-card"
                 >
                   <div
-                    className="blogpost-related__image"
+                    className="blogpost__related-image"
                     style={{
                       background:
                         gradients[
@@ -194,13 +200,13 @@ export default function BlogPostPage() {
                         ],
                     }}
                   >
-                    <span className="blogpost-related__category">
+                    <span className="blogpost__related-category">
                       {rPost.category}
                     </span>
                   </div>
-                  <div className="blogpost-related__body">
+                  <div className="blogpost__related-body">
                     <h3>{rPost.title}</h3>
-                    <span className="blogpost-related__meta">
+                    <span className="blogpost__related-meta">
                       {formatDate(rPost.date)} &middot; {rPost.readTime}
                     </span>
                   </div>
@@ -211,17 +217,19 @@ export default function BlogPostPage() {
         </section>
       )}
 
-      {/* ── CTA Banner ── */}
-      <section className="section blogpost-cta-section">
-        <div className="container blogpost-cta">
-          <h2>Inspired? Let&rsquo;s Bring Your Vision to Life</h2>
-          <p>
-            Get a free quote for your project and discover how The Quartz Company
-            can transform your kitchen.
-          </p>
-          <Link to="/contact" className="btn btn--primary btn--lg">
-            Get a Free Quote for Your Project
-          </Link>
+      {/* ── CTA Banner (bordered card, right-aligned) ── */}
+      <section className="section section--cream blogpost__cta-section">
+        <div className="container">
+          <div className="blogpost__cta">
+            <h2>Inspired? Let&rsquo;s Bring Your Vision to Life</h2>
+            <p>
+              Get a free quote for your project and discover how The Quartz Company
+              can transform your kitchen.
+            </p>
+            <Link to="/contact" className="btn btn--gold btn--lg">
+              Get a Free Quote for Your Project
+            </Link>
+          </div>
         </div>
       </section>
     </div>

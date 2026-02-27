@@ -5,8 +5,8 @@ import products from '../data/products.json';
 import categories from '../data/categories.json';
 import './CataloguePage.css';
 
-/* ── Promotional tiles that appear every 4th position ── */
-const PROMO_TILES = [
+/* ── Promotional banners that appear every 8th position ── */
+const PROMO_BANNERS = [
   {
     id: 'promo-1',
     headline: 'Free Design Consultation',
@@ -58,6 +58,9 @@ function CataloguePage() {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
 
+  /* Which filter dropdown is open (desktop top bar) */
+  const [openFilterPanel, setOpenFilterPanel] = useState(null);
+
   /* Sync URL param to local state */
   useEffect(() => {
     setActiveCategory(category || 'all');
@@ -81,6 +84,15 @@ function CataloguePage() {
     setter(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
   };
 
+  /* ── Remove a single active filter chip ── */
+  const removeChip = (type, value) => {
+    if (type === 'colour') setColourFilters((prev) => prev.filter((v) => v !== value));
+    if (type === 'pattern') setPatternFilters((prev) => prev.filter((v) => v !== value));
+    if (type === 'brand') setBrandFilters((prev) => prev.filter((v) => v !== value));
+    if (type === 'priceMin') setPriceMin('');
+    if (type === 'priceMax') setPriceMax('');
+  };
+
   /* ── Clear all filters ── */
   const clearFilters = () => {
     setColourFilters([]);
@@ -97,33 +109,35 @@ function CataloguePage() {
     priceMin !== '' ||
     priceMax !== '';
 
+  /* ── Build active chips ── */
+  const activeChips = useMemo(() => {
+    const chips = [];
+    colourFilters.forEach((v) => chips.push({ type: 'colour', value: v, label: v }));
+    patternFilters.forEach((v) => chips.push({ type: 'pattern', value: v, label: v }));
+    brandFilters.forEach((v) => chips.push({ type: 'brand', value: v, label: v }));
+    if (priceMin) chips.push({ type: 'priceMin', value: priceMin, label: `Min £${priceMin}` });
+    if (priceMax) chips.push({ type: 'priceMax', value: priceMax, label: `Max £${priceMax}` });
+    return chips;
+  }, [colourFilters, patternFilters, brandFilters, priceMin, priceMax]);
+
   /* ── Filtered + sorted products ── */
   const filteredProducts = useMemo(() => {
     let list = [...products];
 
-    /* Category */
     if (activeCategory !== 'all') {
       list = list.filter((p) => p.patternType === activeCategory);
     }
-
-    /* Colour tone */
     if (colourFilters.length > 0) {
       const lower = colourFilters.map((c) => c.toLowerCase());
       list = list.filter((p) => lower.includes(p.colorTone));
     }
-
-    /* Pattern type */
     if (patternFilters.length > 0) {
       const lower = patternFilters.map((pt) => pt.toLowerCase());
       list = list.filter((p) => lower.includes(p.patternType));
     }
-
-    /* Brand */
     if (brandFilters.length > 0) {
       list = list.filter((p) => brandFilters.includes(p.brand));
     }
-
-    /* Price range */
     if (priceMin !== '') {
       list = list.filter((p) => p.pricePerSqm >= Number(priceMin));
     }
@@ -131,7 +145,6 @@ function CataloguePage() {
       list = list.filter((p) => p.pricePerSqm <= Number(priceMax));
     }
 
-    /* Sort */
     switch (sortBy) {
       case 'price-asc':
         list.sort((a, b) => a.pricePerSqm - b.pricePerSqm);
@@ -154,7 +167,7 @@ function CataloguePage() {
     return list;
   }, [activeCategory, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
 
-  /* ── Build the grid with promo tiles injected every 4th slot ── */
+  /* ── Build grid with full-width promo banners every 8 products ── */
   const gridItems = useMemo(() => {
     const items = [];
     let promoIndex = 0;
@@ -162,9 +175,8 @@ function CataloguePage() {
     filteredProducts.forEach((product, i) => {
       items.push({ type: 'product', data: product, key: `product-${product.id}` });
 
-      /* After every 4th product, insert a promo tile */
-      if ((i + 1) % 4 === 0) {
-        const promo = PROMO_TILES[promoIndex % PROMO_TILES.length];
+      if ((i + 1) % 8 === 0) {
+        const promo = PROMO_BANNERS[promoIndex % PROMO_BANNERS.length];
         items.push({ type: 'promo', data: promo, key: promo.id + '-' + promoIndex });
         promoIndex++;
       }
@@ -179,6 +191,17 @@ function CataloguePage() {
   /* ── Breadcrumb label ── */
   const breadcrumbLabel = activeCategory !== 'all' ? activeCategoryObj.name : null;
 
+  /* ── Product counts per category ── */
+  const categoryCounts = useMemo(() => {
+    const counts = { all: products.length };
+    categories.forEach((cat) => {
+      if (cat.slug !== 'all') {
+        counts[cat.slug] = products.filter((p) => p.patternType === cat.slug).length;
+      }
+    });
+    return counts;
+  }, []);
+
   /* ── Lock body scroll when mobile filters open ── */
   useEffect(() => {
     if (mobileFiltersOpen) {
@@ -191,10 +214,20 @@ function CataloguePage() {
     };
   }, [mobileFiltersOpen]);
 
-  /* ── Filter sidebar JSX (shared between desktop and mobile) ── */
+  /* ── Close filter panel on outside click ── */
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (openFilterPanel && !e.target.closest('.cat-filter-bar__group')) {
+        setOpenFilterPanel(null);
+      }
+    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, [openFilterPanel]);
+
+  /* ── Filter sidebar JSX (mobile) ── */
   const renderFilterContent = () => (
     <div className="catalogue__filter-content">
-      {/* Colour Tone */}
       <div className="filter-group">
         <h4 className="filter-group__title">Colour Tone</h4>
         {COLOUR_TONES.map((tone) => (
@@ -210,7 +243,6 @@ function CataloguePage() {
         ))}
       </div>
 
-      {/* Pattern Type */}
       <div className="filter-group">
         <h4 className="filter-group__title">Pattern Type</h4>
         {PATTERN_TYPES.map((pattern) => (
@@ -226,7 +258,6 @@ function CataloguePage() {
         ))}
       </div>
 
-      {/* Price Range */}
       <div className="filter-group">
         <h4 className="filter-group__title">Price Range (/m&sup2;)</h4>
         <div className="filter-group__price-inputs">
@@ -250,7 +281,6 @@ function CataloguePage() {
         </div>
       </div>
 
-      {/* Brand */}
       <div className="filter-group">
         <h4 className="filter-group__title">Brand</h4>
         {BRANDS.map((brand) => (
@@ -266,7 +296,6 @@ function CataloguePage() {
         ))}
       </div>
 
-      {/* Clear */}
       {hasActiveFilters && (
         <button className="catalogue__clear-filters" onClick={clearFilters}>
           Clear Filters
@@ -277,7 +306,7 @@ function CataloguePage() {
 
   return (
     <section className="catalogue">
-      {/* ── Page Header ── */}
+      {/* ── Page Header (cream, not dark) ── */}
       <div className="catalogue__header">
         <div className="container">
           <nav className="catalogue__breadcrumbs" aria-label="Breadcrumb">
@@ -298,7 +327,7 @@ function CataloguePage() {
         </div>
       </div>
 
-      {/* ── Category Tabs ── */}
+      {/* ── Category Pills (horizontal chips with counts) ── */}
       <div className="catalogue__tabs-wrapper">
         <div className="container">
           <div className="catalogue__tabs" role="tablist">
@@ -307,122 +336,258 @@ function CataloguePage() {
                 key={cat.slug}
                 role="tab"
                 aria-selected={activeCategory === cat.slug}
-                className={`catalogue__tab${activeCategory === cat.slug ? ' catalogue__tab--active' : ''}`}
+                className={`catalogue__pill${activeCategory === cat.slug ? ' catalogue__pill--active' : ''}`}
                 onClick={() => handleCategoryChange(cat.slug)}
               >
                 {cat.slug === 'all' ? 'All' : cat.slug.charAt(0).toUpperCase() + cat.slug.slice(1)}
+                <span className="catalogue__pill-count">{categoryCounts[cat.slug] || 0}</span>
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── Main Content ── */}
-      <div className="container">
-        <div className="catalogue__layout">
-          {/* Desktop Filter Sidebar */}
-          <aside className="catalogue__sidebar" aria-label="Filters">
-            <h3 className="catalogue__sidebar-title">Filters</h3>
-            {renderFilterContent()}
-          </aside>
+      {/* ── Top Horizontal Filter Bar (desktop) ── */}
+      <div className="cat-filter-bar">
+        <div className="container">
+          <div className="cat-filter-bar__inner">
+            <div className="cat-filter-bar__groups">
+              {/* Colour filter */}
+              <div className="cat-filter-bar__group">
+                <button
+                  className={`cat-filter-bar__trigger${openFilterPanel === 'colour' ? ' cat-filter-bar__trigger--open' : ''}${colourFilters.length > 0 ? ' cat-filter-bar__trigger--has-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenFilterPanel(openFilterPanel === 'colour' ? null : 'colour');
+                  }}
+                >
+                  Colour {colourFilters.length > 0 && <span className="cat-filter-bar__badge">{colourFilters.length}</span>}
+                  <span className="cat-filter-bar__arrow">&#9662;</span>
+                </button>
+                {openFilterPanel === 'colour' && (
+                  <div className="cat-filter-bar__dropdown" onClick={(e) => e.stopPropagation()}>
+                    {COLOUR_TONES.map((tone) => (
+                      <label key={tone} className="cat-filter-bar__option">
+                        <input
+                          type="checkbox"
+                          checked={colourFilters.includes(tone)}
+                          onChange={() => toggle(colourFilters, setColourFilters, tone)}
+                        />
+                        <span className="cat-filter-bar__check" />
+                        {tone}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-          {/* Mobile filter overlay */}
-          {mobileFiltersOpen && (
-            <div className="catalogue__filter-overlay" onClick={() => setMobileFiltersOpen(false)} />
-          )}
+              {/* Pattern filter */}
+              <div className="cat-filter-bar__group">
+                <button
+                  className={`cat-filter-bar__trigger${openFilterPanel === 'pattern' ? ' cat-filter-bar__trigger--open' : ''}${patternFilters.length > 0 ? ' cat-filter-bar__trigger--has-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenFilterPanel(openFilterPanel === 'pattern' ? null : 'pattern');
+                  }}
+                >
+                  Pattern {patternFilters.length > 0 && <span className="cat-filter-bar__badge">{patternFilters.length}</span>}
+                  <span className="cat-filter-bar__arrow">&#9662;</span>
+                </button>
+                {openFilterPanel === 'pattern' && (
+                  <div className="cat-filter-bar__dropdown" onClick={(e) => e.stopPropagation()}>
+                    {PATTERN_TYPES.map((pattern) => (
+                      <label key={pattern} className="cat-filter-bar__option">
+                        <input
+                          type="checkbox"
+                          checked={patternFilters.includes(pattern)}
+                          onChange={() => toggle(patternFilters, setPatternFilters, pattern)}
+                        />
+                        <span className="cat-filter-bar__check" />
+                        {pattern}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-          {/* Mobile filter panel */}
-          <aside
-            className={`catalogue__mobile-filters${mobileFiltersOpen ? ' catalogue__mobile-filters--open' : ''}`}
-            aria-label="Filters"
-          >
-            <div className="catalogue__mobile-filters-header">
-              <h3>Filters</h3>
-              <button
-                className="catalogue__mobile-filters-close"
-                onClick={() => setMobileFiltersOpen(false)}
-                aria-label="Close filters"
-              >
-                &#10005;
-              </button>
+              {/* Price filter */}
+              <div className="cat-filter-bar__group">
+                <button
+                  className={`cat-filter-bar__trigger${openFilterPanel === 'price' ? ' cat-filter-bar__trigger--open' : ''}${priceMin || priceMax ? ' cat-filter-bar__trigger--has-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenFilterPanel(openFilterPanel === 'price' ? null : 'price');
+                  }}
+                >
+                  Price <span className="cat-filter-bar__arrow">&#9662;</span>
+                </button>
+                {openFilterPanel === 'price' && (
+                  <div className="cat-filter-bar__dropdown cat-filter-bar__dropdown--price" onClick={(e) => e.stopPropagation()}>
+                    <div className="cat-filter-bar__price-row">
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        value={priceMin}
+                        onChange={(e) => setPriceMin(e.target.value)}
+                        className="cat-filter-bar__price-input"
+                        min="0"
+                      />
+                      <span>&ndash;</span>
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        value={priceMax}
+                        onChange={(e) => setPriceMax(e.target.value)}
+                        className="cat-filter-bar__price-input"
+                        min="0"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Brand filter */}
+              <div className="cat-filter-bar__group">
+                <button
+                  className={`cat-filter-bar__trigger${openFilterPanel === 'brand' ? ' cat-filter-bar__trigger--open' : ''}${brandFilters.length > 0 ? ' cat-filter-bar__trigger--has-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenFilterPanel(openFilterPanel === 'brand' ? null : 'brand');
+                  }}
+                >
+                  Brand {brandFilters.length > 0 && <span className="cat-filter-bar__badge">{brandFilters.length}</span>}
+                  <span className="cat-filter-bar__arrow">&#9662;</span>
+                </button>
+                {openFilterPanel === 'brand' && (
+                  <div className="cat-filter-bar__dropdown" onClick={(e) => e.stopPropagation()}>
+                    {BRANDS.map((brand) => (
+                      <label key={brand} className="cat-filter-bar__option">
+                        <input
+                          type="checkbox"
+                          checked={brandFilters.includes(brand)}
+                          onChange={() => toggle(brandFilters, setBrandFilters, brand)}
+                        />
+                        <span className="cat-filter-bar__check" />
+                        {brand}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            {renderFilterContent()}
-          </aside>
 
-          {/* Products area */}
-          <div className="catalogue__content">
-            {/* Toolbar */}
-            <div className="catalogue__toolbar">
-              <button
-                className="catalogue__filter-toggle"
-                onClick={() => setMobileFiltersOpen(true)}
-                aria-label="Open filters"
-              >
-                <span className="catalogue__filter-icon">&#9776;</span> Filters
-                {hasActiveFilters && <span className="catalogue__filter-badge" />}
-              </button>
-
-              <p className="catalogue__count">
-                Showing <strong>{filteredProducts.length}</strong> of{' '}
-                <strong>{activeCategory === 'all' ? products.length : products.filter((p) => p.category === activeCategory).length}</strong>{' '}
-                products
-              </p>
-
-              <div className="catalogue__sort">
-                <label htmlFor="sort-select" className="catalogue__sort-label">
-                  Sort by
-                </label>
+            {/* Sort + count */}
+            <div className="cat-filter-bar__right">
+              <span className="cat-filter-bar__count">
+                {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+              </span>
+              <div className="cat-filter-bar__sort">
+                <label htmlFor="sort-select" className="cat-filter-bar__sort-label">Sort:</label>
                 <select
                   id="sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="catalogue__sort-select"
+                  className="cat-filter-bar__sort-select"
                 >
                   {SORT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
             </div>
-
-            {/* Product Grid */}
-            {filteredProducts.length === 0 ? (
-              <div className="catalogue__empty">
-                <p>No products match your current filters.</p>
-                <button className="btn btn--primary" onClick={clearFilters}>
-                  Clear Filters
-                </button>
-              </div>
-            ) : (
-              <div className="catalogue__grid">
-                {gridItems.map((item) => {
-                  if (item.type === 'promo') {
-                    return (
-                      <Link
-                        to={item.data.link}
-                        className={`promo-tile promo-tile--${item.data.variant}`}
-                        key={item.key}
-                      >
-                        <div className="promo-tile__content">
-                          <span className="promo-tile__icon" aria-hidden="true">
-                            {item.data.variant === 'teal' ? '\u2666' : '\u2605'}
-                          </span>
-                          <h3 className="promo-tile__headline">{item.data.headline}</h3>
-                          <span className="promo-tile__cta">
-                            {item.data.cta} &rarr;
-                          </span>
-                        </div>
-                      </Link>
-                    );
-                  }
-                  return <ProductCard key={item.key} product={item.data} />;
-                })}
-              </div>
-            )}
           </div>
+
+          {/* Active filter chips */}
+          {activeChips.length > 0 && (
+            <div className="cat-filter-bar__chips">
+              {activeChips.map((chip, i) => (
+                <button
+                  key={`${chip.type}-${chip.value}-${i}`}
+                  className="cat-filter-bar__chip"
+                  onClick={() => removeChip(chip.type, chip.value)}
+                >
+                  {chip.label} <span className="cat-filter-bar__chip-x">&times;</span>
+                </button>
+              ))}
+              <button className="cat-filter-bar__clear" onClick={clearFilters}>
+                Clear all
+              </button>
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* ── Mobile filter toggle (visible on small screens) ── */}
+      <div className="catalogue__mobile-bar container">
+        <button
+          className="catalogue__filter-toggle"
+          onClick={() => setMobileFiltersOpen(true)}
+          aria-label="Open filters"
+        >
+          <span className="catalogue__filter-icon">&#9776;</span> Filters
+          {hasActiveFilters && <span className="catalogue__filter-badge" />}
+        </button>
+        <span className="catalogue__mobile-count">
+          {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+
+      {/* Mobile filter overlay */}
+      {mobileFiltersOpen && (
+        <div className="catalogue__filter-overlay" onClick={() => setMobileFiltersOpen(false)} />
+      )}
+
+      {/* Mobile filter panel */}
+      <aside
+        className={`catalogue__mobile-filters${mobileFiltersOpen ? ' catalogue__mobile-filters--open' : ''}`}
+        aria-label="Filters"
+      >
+        <div className="catalogue__mobile-filters-header">
+          <h3>Filters</h3>
+          <button
+            className="catalogue__mobile-filters-close"
+            onClick={() => setMobileFiltersOpen(false)}
+            aria-label="Close filters"
+          >
+            &#10005;
+          </button>
+        </div>
+        {renderFilterContent()}
+      </aside>
+
+      {/* ── Product Grid (full-width 4 col) ── */}
+      <div className="container">
+        {filteredProducts.length === 0 ? (
+          <div className="catalogue__empty">
+            <p>No products match your current filters.</p>
+            <button className="btn btn--primary" onClick={clearFilters}>
+              Clear Filters
+            </button>
+          </div>
+        ) : (
+          <div className="catalogue__grid">
+            {gridItems.map((item) => {
+              if (item.type === 'promo') {
+                return (
+                  <Link
+                    to={item.data.link}
+                    className={`promo-banner promo-banner--${item.data.variant}`}
+                    key={item.key}
+                  >
+                    <span className="promo-banner__icon" aria-hidden="true">
+                      {item.data.variant === 'teal' ? '\u2666' : '\u2605'}
+                    </span>
+                    <h3 className="promo-banner__headline">{item.data.headline}</h3>
+                    <span className="promo-banner__cta">
+                      {item.data.cta} &rarr;
+                    </span>
+                  </Link>
+                );
+              }
+              return <ProductCard key={item.key} product={item.data} />;
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

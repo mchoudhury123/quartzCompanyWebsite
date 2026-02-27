@@ -51,38 +51,51 @@ export default function SalePage() {
       {/* ── Hero ── */}
       <section className="sale-hero">
         <div className="container">
-          <span className="sale-hero__badge">Limited Time</span>
-          <h1 className="sale-hero__title">
-            Spring Sale &mdash; Up to <span className="sale-hero__highlight">35% Off</span>
-          </h1>
-          <p className="sale-hero__subtitle">
-            Premium kitchen worktops at exceptional prices. Transform your kitchen for less this spring.
-          </p>
-          <div className="sale-hero__countdown">
-            <span className="sale-hero__countdown-label">Offer ends 30th April 2025</span>
+          <div className="sale-hero__grid">
+            <div className="sale-hero__left">
+              <span className="sale-hero__badge">Limited Time</span>
+              <h1 className="sale-hero__title">
+                Spring Sale &mdash; Up to <span className="sale-hero__highlight">35% Off</span>
+              </h1>
+              <p className="sale-hero__subtitle">
+                Premium kitchen worktops at exceptional prices. Transform your kitchen for less this spring.
+              </p>
+            </div>
+            <div className="sale-hero__right">
+              <div className="sale-hero__countdown">
+                <span className="sale-hero__countdown-label">Offer ends</span>
+                <span className="sale-hero__countdown-date">30th April 2025</span>
+                <span className="sale-hero__countdown-note">Don&rsquo;t miss out on these savings</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Current Offers ── */}
-      <section className="section sale-offers-section">
+      <section className="section sale-offers">
         <div className="container">
           <h2 className="section-title">Current Offers</h2>
           <p className="section-subtitle">
             Exclusive spring savings across our entire range
           </p>
-          <div className="sale-offers-grid">
+          <div className="sale-offers__list">
             {offers.map((offer) => (
-              <div key={offer.id} className="sale-offer-card">
-                <div className="sale-offer-card__accent" aria-hidden="true" />
-                <span className="sale-offer-card__badge">{offer.badge}</span>
-                <h3 className="sale-offer-card__title">{offer.title}</h3>
-                <p className="sale-offer-card__desc">{offer.description}</p>
-                {offer.link && (
-                  <Link to={offer.link} className="sale-offer-card__link">
-                    {offer.linkText} &rarr;
-                  </Link>
-                )}
+              <div key={offer.id} className="sale-offer-strip">
+                <div className="sale-offer-strip__badge-col">
+                  <span className="sale-offer-strip__badge">{offer.badge}</span>
+                </div>
+                <div className="sale-offer-strip__body">
+                  <h3 className="sale-offer-strip__title">{offer.title}</h3>
+                  <p className="sale-offer-strip__desc">{offer.description}</p>
+                </div>
+                <div className="sale-offer-strip__cta-col">
+                  {offer.link && (
+                    <Link to={offer.link} className="sale-offer-strip__link">
+                      {offer.linkText} &rarr;
+                    </Link>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -90,13 +103,13 @@ export default function SalePage() {
       </section>
 
       {/* ── Featured Sale Products ── */}
-      <section className="section section--cream sale-products-section">
+      <section className="section section--cream sale-products">
         <div className="container">
           <h2 className="section-title">Featured Sale Products</h2>
           <p className="section-subtitle">
             Hand-picked worktops at their lowest ever prices
           </p>
-          <div className="grid grid--3 sale-products-grid">
+          <div className="sale-products__grid">
             {saleProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -105,8 +118,8 @@ export default function SalePage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="section sale-cta-section">
-        <div className="container sale-cta">
+      <section className="section sale-cta">
+        <div className="container sale-cta__inner">
           <h2>Don&rsquo;t Miss Out</h2>
           <p>
             Our spring sale prices are available for a limited time only. Get a
