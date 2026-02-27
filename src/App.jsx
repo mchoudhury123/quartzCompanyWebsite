@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import PasswordGate from './components/PasswordGate';
 
 import HomePage from './pages/HomePage';
 import CataloguePage from './pages/CataloguePage';
@@ -28,7 +29,7 @@ import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
-    <>
+    <PasswordGate>
       <ScrollToTop />
       <Header />
       <main>
@@ -59,6 +60,6 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
-    </>
+    </PasswordGate>
   );
 }
