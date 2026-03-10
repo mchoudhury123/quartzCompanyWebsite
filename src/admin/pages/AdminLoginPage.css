@@ -1,0 +1,126 @@
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #252525 100%);
+  padding: 2rem;
+}
+
+.admin-login__card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.admin-login__header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #252540 100%);
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+}
+
+.admin-login__logo {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--color-gold, #c5a47e);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.admin-login__title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.35rem;
+}
+
+.admin-login__subtitle {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.admin-login__form {
+  padding: 2rem;
+}
+
+.admin-login__field {
+  margin-bottom: 1.25rem;
+}
+
+.admin-login__label {
+  display: block;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.4rem;
+}
+
+.admin-login__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  border: 1.5px solid #e2e4e9;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #1a1a2e;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-login__input:focus {
+  outline: none;
+  border-color: var(--color-gold, #c5a47e);
+  box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.15);
+  background: #ffffff;
+}
+
+.admin-login__input::placeholder {
+  color: #9ca3af;
+}
+
+.admin-login__error {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: #dc2626;
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.85rem;
+  background: #fef2f2;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}
+
+.admin-login__submit {
+  width: 100%;
+  padding: 0.85rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.admin-login__submit:hover {
+  background: #b08e66;
+}
+
+.admin-login__submit:active {
+  transform: scale(0.98);
+}
+
+.admin-login__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

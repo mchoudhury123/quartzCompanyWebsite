@@ -1,0 +1,119 @@
+.admin-page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: var(--admin-text-light);
+}
+
+.admin-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-dashboard__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.admin-dashboard__section-title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.admin-dashboard__view-all {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-gold, #c5a47e);
+  text-decoration: none;
+}
+
+.admin-dashboard__view-all:hover {
+  text-decoration: underline;
+}
+
+.admin-dashboard__empty {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--admin-shadow);
+}
+
+.admin-dashboard__empty p {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.92rem;
+  color: var(--admin-text-light);
+  margin: 0;
+}
+
+/* Shared admin table styles */
+.admin-table-wrap {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  box-shadow: var(--admin-shadow);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-text-light);
+  border-bottom: 1px solid var(--admin-border);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 0.85rem 1rem;
+  color: var(--admin-text);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.admin-table__link {
+  color: var(--admin-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-table__link:hover {
+  color: var(--color-gold, #c5a47e);
+}
+
+.admin-table__source {
+  color: var(--admin-text-light);
+  font-size: 0.82rem;
+}
+
+.admin-table__date {
+  color: var(--admin-text-light);
+  white-space: nowrap;
+  font-size: 0.82rem;
+}

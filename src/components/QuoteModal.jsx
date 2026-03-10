@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FiX, FiUploadCloud, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import products from '../data/products.json';
+import { supabase } from '../lib/supabase';
 import './QuoteModal.css';
 
 /**
@@ -159,7 +160,7 @@ function QuoteModal({ product = null, onClose }) {
   };
 
   /* ── Navigation ── */
-  const goNext = () => {
+  const goNext = async () => {
     if (step === 1 && !validateStep1()) return;
     if (step === 2 && !validateStep2()) return;
 
@@ -170,24 +171,27 @@ function QuoteModal({ product = null, onClose }) {
     }
 
     if (step === 2) {
-      // Simulate form submission
-      // In production you would POST to your API here
-      console.log('Quote request submitted:', {
-        product: selectedProduct?.name,
-        runLength,
-        depth,
-        thickness,
-        cutOuts: { hob: cutOutHob, sink: cutOutSink, tap: cutOutTap },
-        file: uploadedFile?.name || null,
-        comments,
-        fullName,
-        email,
-        phone,
-        postcode,
-        wantSamples,
-        wantCallback,
-        callbackTime: wantCallback ? callbackTime : null,
-      });
+      try {
+        await supabase.from('leads').insert({
+          full_name: fullName,
+          email,
+          phone,
+          postcode,
+          source: 'quote_modal',
+          product_name: selectedProduct?.name || null,
+          product_material: selectedProduct?.material || null,
+          run_length_mm: Number(runLength) || null,
+          depth_mm: Number(depth) || null,
+          thickness,
+          cut_outs: { hob: cutOutHob, sink: cutOutSink, tap: cutOutTap },
+          comments: comments || null,
+          want_samples: wantSamples,
+          want_callback: wantCallback,
+          callback_time: wantCallback ? callbackTime : null,
+        });
+      } catch (err) {
+        console.error('Failed to submit lead:', err);
+      }
     }
 
     setStep((prev) => Math.min(prev + 1, 3));

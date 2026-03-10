@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import './ContactPage.css';
 
 const subjectOptions = [
@@ -76,7 +77,7 @@ function ContactPage() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
@@ -84,6 +85,18 @@ function ContactPage() {
       return;
     }
     setErrors({});
+    try {
+      await supabase.from('leads').insert({
+        full_name: form.name,
+        email: form.email,
+        phone: form.phone,
+        source: 'contact_form',
+        subject: form.subject,
+        message: form.message,
+      });
+    } catch (err) {
+      console.error('Failed to submit contact lead:', err);
+    }
     setSubmitted(true);
     setForm(initialForm);
   };

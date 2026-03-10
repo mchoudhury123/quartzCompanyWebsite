@@ -1,0 +1,23 @@
+.stats-card {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  padding: 1.5rem;
+  box-shadow: var(--admin-shadow);
+  border-top: 3px solid var(--accent);
+}
+
+.stats-card__value {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.stats-card__label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  color: var(--admin-text-light);
+  font-weight: 500;
+}

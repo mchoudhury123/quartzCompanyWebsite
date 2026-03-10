@@ -1,0 +1,17 @@
+:root {
+  --admin-bg: #f4f5f7;
+  --admin-sidebar-bg: #1a1a2e;
+  --admin-sidebar-width: 240px;
+  --admin-sidebar-text: rgba(255, 255, 255, 0.7);
+  --admin-sidebar-text-active: #ffffff;
+  --admin-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --admin-sidebar-active-bg: rgba(197, 164, 126, 0.2);
+  --admin-topbar-height: 64px;
+  --admin-card-bg: #ffffff;
+  --admin-border: #e2e4e9;
+  --admin-text: #1a1a2e;
+  --admin-text-light: #6b7280;
+  --admin-radius: 8px;
+  --admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --admin-transition: 0.2s ease;
+}
