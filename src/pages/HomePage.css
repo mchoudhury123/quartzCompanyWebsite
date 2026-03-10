@@ -120,6 +120,11 @@
   font-size: 1.1rem;
 }
 
+/* Mobile scrolling trust bar — hidden on desktop */
+.hp-trust__track {
+  display: none;
+}
+
 /* ════════════════════════════════════════════
    2. FEATURED PRODUCTS — Horizontal Scroll
    (moved up from position 4)
@@ -760,6 +765,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes trust-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -774,7 +784,21 @@
   .hp-hero__content { max-width: 600px; text-align: center; margin: 0 auto; }
   .hp-hero__content .hp-hero__ctas { justify-content: center; }
 
-  .hp-trust { position: relative; bottom: 0; left: 0; transform: none; width: 100%; flex: 0 0 100%; border-radius: 0; box-shadow: var(--shadow-sm); }
+  .hp-trust { position: relative; bottom: 0; left: 0; transform: none; width: 100%; flex: 0 0 100%; border-radius: 0; box-shadow: var(--shadow-sm); overflow: hidden; }
+  .hp-trust__inner { display: none; }
+  .hp-trust__track {
+    display: flex;
+    white-space: nowrap;
+    animation: trust-scroll 18s linear infinite;
+    padding: 0.85rem 0;
+  }
+  .hp-trust__track-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+    flex-shrink: 0;
+  }
 
   .hp-featured { padding-top: 5rem; }
 
@@ -811,8 +835,6 @@
   .hp-hero__ctas { flex-direction: column; align-items: center; }
   .hp-hero__btn, .hp-hero__btn--outline { width: 100%; max-width: 320px; justify-content: center; }
 
-  .hp-trust__inner { gap: 0.75rem; flex-direction: column; align-items: center; padding: 1rem 1.5rem; }
-
   /* Comparison table: stack on mobile */
   .hp-compare__header { grid-template-columns: 1fr repeat(3, 1fr); }
   .hp-compare__row { grid-template-columns: 1fr repeat(3, 1fr); }
@@ -847,9 +869,6 @@
   .hp-hero__left { padding: 3rem 1rem 2.5rem; }
   .hp-hero__title { font-size: 1.65rem; }
   .hp-hero__subtitle { font-size: 0.95rem; }
-
-  .hp-trust__inner { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; }
-  .hp-trust__item { font-size: 0.8rem; }
 
   .hp-steps__number { width: 40px; height: 40px; font-size: 1rem; }
   .hp-steps__item { margin-bottom: 2rem; }

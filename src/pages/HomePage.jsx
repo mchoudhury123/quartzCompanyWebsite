@@ -159,6 +159,25 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+          {/* Mobile scrolling version */}
+          <div className="hp-trust__track">
+            <div className="hp-trust__track-content">
+              {trustItems.map((item, i) => (
+                <div className="hp-trust__item" key={i}>
+                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="hp-trust__text">{item.text}</span>
+                </div>
+              ))}
+            </div>
+            <div className="hp-trust__track-content" aria-hidden="true">
+              {trustItems.map((item, i) => (
+                <div className="hp-trust__item" key={`dup-${i}`}>
+                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="hp-trust__text">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
