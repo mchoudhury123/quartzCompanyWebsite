@@ -15,6 +15,7 @@
   position: relative;
   min-height: 90vh;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   background:
     radial-gradient(ellipse at 75% 60%, rgba(197, 164, 126, 0.15) 0%, transparent 55%),
@@ -773,7 +774,7 @@
   .hp-hero__content { max-width: 600px; text-align: center; margin: 0 auto; }
   .hp-hero__content .hp-hero__ctas { justify-content: center; }
 
-  .hp-trust { position: relative; bottom: 0; left: 0; transform: none; width: 100%; border-radius: 0; box-shadow: var(--shadow-sm); }
+  .hp-trust { position: relative; bottom: 0; left: 0; transform: none; width: 100%; flex: 0 0 100%; border-radius: 0; box-shadow: var(--shadow-sm); }
 
   .hp-featured { padding-top: 5rem; }
 

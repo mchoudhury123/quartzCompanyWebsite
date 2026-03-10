@@ -247,6 +247,11 @@ function Header() {
         onClick={closeMobileMenu}
       >
         <div className="mobile-overlay__panel" onClick={(e) => e.stopPropagation()}>
+          <div className="mobile-overlay__header">
+            <Link to="/" className="mobile-overlay__logo" onClick={closeMobileMenu} aria-label="The Quartz Company home">
+              <span className="mobile-overlay__logo-text">THE QUARTZ COMPANY</span>
+            </Link>
+          </div>
           <ul className="mobile-overlay__links" role="menu">
             {[...navLinksLeft, ...navLinksRight].map((link) =>
               link.hasDropdown ? (
