@@ -11,8 +11,13 @@ export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar__brand">
-        <span className="admin-sidebar__brand-text">THE QUARTZ CO.</span>
-        <span className="admin-sidebar__brand-sub">Sales CRM</span>
+        <div className="admin-sidebar__logo">
+          <span className="admin-sidebar__logo-q">Q</span>
+        </div>
+        <div className="admin-sidebar__brand-info">
+          <span className="admin-sidebar__brand-text">THE QUARTZ COMPANY</span>
+          <span className="admin-sidebar__brand-sub">Sales CRM</span>
+        </div>
       </div>
       <nav className="admin-sidebar__nav">
         {navItems.map((item) => (
