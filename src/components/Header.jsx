@@ -244,8 +244,9 @@ function Header() {
         id="mobile-overlay"
         className={`mobile-overlay${mobileMenuOpen ? " mobile-overlay--open" : ""}`}
         aria-hidden={!mobileMenuOpen}
+        onClick={closeMobileMenu}
       >
-        <div className="mobile-overlay__panel">
+        <div className="mobile-overlay__panel" onClick={(e) => e.stopPropagation()}>
           <ul className="mobile-overlay__links" role="menu">
             {[...navLinksLeft, ...navLinksRight].map((link) =>
               link.hasDropdown ? (

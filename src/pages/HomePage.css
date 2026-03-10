@@ -12,18 +12,30 @@
    1. SPLIT-SCREEN HERO
    ════════════════════════════════════════════ */
 .hp-hero {
-  display: grid;
-  grid-template-columns: 55fr 45fr;
-  min-height: 90vh;
   position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at 75% 60%, rgba(197, 164, 126, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 20%, rgba(107, 143, 113, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0a0a 0%, #141414 40%, #1e1e1e 70%, #252525 100%);
 }
 
 .hp-hero__left {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #252525 100%);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 6rem 4rem 6rem 3rem;
+  width: 55%;
+}
+
+.hp-hero__right {
+  display: none;
+}
+
+.hp-hero__visual {
+  display: none;
 }
 
 .hp-hero__content {
@@ -67,20 +79,6 @@
   background: var(--color-white);
   color: var(--color-primary);
   border-color: var(--color-white);
-}
-
-.hp-hero__right {
-  position: relative;
-  overflow: hidden;
-}
-
-.hp-hero__visual {
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(ellipse at 30% 70%, rgba(197, 164, 126, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 30%, rgba(107, 143, 113, 0.2) 0%, transparent 60%),
-    linear-gradient(160deg, #1a1a1a 0%, #2c2c2c 40%, #3b3b3b 100%);
 }
 
 /* ── Floating Trust Bar ── */
@@ -765,9 +763,8 @@
    RESPONSIVE — TABLET (1024px)
    ════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .hp-hero { grid-template-columns: 1fr; min-height: auto; }
-  .hp-hero__left { padding: 5rem 2rem 4rem; }
-  .hp-hero__right { min-height: 300px; }
+  .hp-hero { min-height: auto; }
+  .hp-hero__left { width: 100%; padding: 5rem 2rem 4rem; justify-content: center; }
   .hp-hero__content { max-width: 600px; text-align: center; margin: 0 auto; }
   .hp-hero__content .hp-hero__ctas { justify-content: center; }
 
@@ -804,7 +801,6 @@
    ════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .hp-hero__left { padding: 4rem 1.5rem 3rem; }
-  .hp-hero__right { min-height: 220px; }
   .hp-hero__title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
 
   .hp-hero__ctas { flex-direction: column; align-items: center; }
@@ -846,7 +842,6 @@
    ════════════════════════════════════════════ */
 @media (max-width: 480px) {
   .hp-hero__left { padding: 3rem 1rem 2.5rem; }
-  .hp-hero__right { min-height: 180px; }
   .hp-hero__title { font-size: 1.65rem; }
   .hp-hero__subtitle { font-size: 0.95rem; }
 
