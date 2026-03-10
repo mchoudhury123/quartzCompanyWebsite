@@ -1,30 +1,45 @@
 import { Link } from 'react-router-dom';
 import useDashboardStats from '../hooks/useDashboardStats';
-import StatsCard from '../components/StatsCard';
+import TaskCard from '../components/TaskCard';
 import StatusBadge from '../components/StatusBadge';
+import { FiFileText, FiMessageSquare, FiPackage, FiPhoneCall, FiRepeat, FiDollarSign, FiMail } from 'react-icons/fi';
 import './AdminDashboard.css';
 
+const taskCards = [
+  { key: 'newQuotes', label: 'New Quote Requests', icon: FiFileText, color: '#3b82f6', filter: 'new_quotes' },
+  { key: 'newEnquiries', label: 'New Enquiries', icon: FiMessageSquare, color: '#6366f1', filter: 'new_enquiries' },
+  { key: 'samples', label: 'Samples to Send', icon: FiPackage, color: '#f59e0b', filter: 'samples' },
+  { key: 'callbacks', label: 'Callbacks Requested', icon: FiPhoneCall, color: '#ef4444', filter: 'callbacks' },
+  { key: 'followUp', label: 'Follow Up Quotes', icon: FiRepeat, color: '#8b5cf6', filter: 'follow_up' },
+  { key: 'deposits', label: 'Deposits', icon: FiDollarSign, color: '#10b981', filter: 'deposits' },
+];
+
 export default function AdminDashboard() {
-  const { stats, recentLeads, loading } = useDashboardStats();
+  const { counts, recentLeads, loading } = useDashboardStats();
 
   if (loading) return <div className="admin-page-loading">Loading dashboard...</div>;
-
-  const cards = [
-    { label: 'Total Leads', value: stats.total, color: '#3b82f6' },
-    { label: 'New', value: stats.new, color: '#3b82f6' },
-    { label: 'Contacted', value: stats.contacted, color: '#f59e0b' },
-    { label: 'Quoted', value: stats.quoted, color: '#8b5cf6' },
-    { label: 'Won', value: stats.won, color: '#10b981' },
-  ];
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
     <div className="admin-dashboard">
-      <div className="admin-dashboard__stats">
-        {cards.map((c) => (
-          <StatsCard key={c.label} label={c.label} value={c.value} color={c.color} />
+      <div className="admin-dashboard__tasks">
+        {taskCards.map((card) => (
+          <TaskCard
+            key={card.key}
+            label={card.label}
+            count={counts[card.key]}
+            icon={card.icon}
+            color={card.color}
+            to={`/admin/leads?filter=${card.filter}`}
+          />
         ))}
+        <TaskCard
+          label="Emails"
+          icon={FiMail}
+          color="#c5a47e"
+          href="https://mail.zoho.eu"
+        />
       </div>
 
       <div className="admin-dashboard__recent">

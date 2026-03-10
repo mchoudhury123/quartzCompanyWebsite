@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 
 export default function useDashboardStats() {
-  const [stats, setStats] = useState({ total: 0, new: 0, contacted: 0, quoted: 0, won: 0, lost: 0 });
+  const [counts, setCounts] = useState({
+    newQuotes: 0,
+    newEnquiries: 0,
+    samples: 0,
+    callbacks: 0,
+    followUp: 0,
+    deposits: 0,
+  });
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -10,15 +17,22 @@ export default function useDashboardStats() {
     async function fetchStats() {
       const { data: leads, error } = await supabase
         .from('leads')
-        .select('id, status')
-        .order('created_at', { ascending: false });
+        .select('id, source, status, want_samples, want_callback');
 
       if (!error && leads) {
-        const counts = { total: leads.length, new: 0, contacted: 0, quoted: 0, won: 0, lost: 0 };
+        const c = { newQuotes: 0, newEnquiries: 0, samples: 0, callbacks: 0, followUp: 0, deposits: 0 };
+        const closedStatuses = ['won', 'lost'];
+
         leads.forEach((l) => {
-          if (counts[l.status] !== undefined) counts[l.status]++;
+          if (l.source === 'quote_modal' && l.status === 'new') c.newQuotes++;
+          if (l.source === 'contact_form' && l.status === 'new') c.newEnquiries++;
+          if (l.want_samples && !closedStatuses.includes(l.status)) c.samples++;
+          if (l.want_callback && !closedStatuses.includes(l.status)) c.callbacks++;
+          if (l.status === 'quoted') c.followUp++;
+          if (l.status === 'deposit') c.deposits++;
         });
-        setStats(counts);
+
+        setCounts(c);
       }
 
       const { data: recent } = await supabase
@@ -34,5 +48,5 @@ export default function useDashboardStats() {
     fetchStats();
   }, []);
 
-  return { stats, recentLeads, loading };
+  return { counts, recentLeads, loading };
 }

@@ -6,6 +6,7 @@ const statusConfig = {
   quoted: { label: 'Quoted', className: 'status-badge--quoted' },
   won: { label: 'Won', className: 'status-badge--won' },
   lost: { label: 'Lost', className: 'status-badge--lost' },
+  deposit: { label: 'Deposit', className: 'status-badge--deposit' },
 };
 
 export default function StatusBadge({ status }) {

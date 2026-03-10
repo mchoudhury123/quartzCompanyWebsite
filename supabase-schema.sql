@@ -11,7 +11,7 @@ create table if not exists public.leads (
   phone text,
   postcode text,
   source text not null check (source in ('quote_modal', 'contact_form')),
-  status text not null default 'new' check (status in ('new', 'contacted', 'quoted', 'won', 'lost')),
+  status text not null default 'new' check (status in ('new', 'contacted', 'quoted', 'won', 'lost', 'deposit')),
 
   -- Quote-specific fields
   product_name text,

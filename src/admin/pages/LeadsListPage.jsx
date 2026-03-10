@@ -1,13 +1,28 @@
-import { Link } from 'react-router-dom';
-import useLeads from '../hooks/useLeads';
+import { Link, useSearchParams } from 'react-router-dom';
+import useLeads, { PRESET_FILTERS } from '../hooks/useLeads';
 import StatusBadge from '../components/StatusBadge';
-import { FiSearch, FiChevronUp, FiChevronDown } from 'react-icons/fi';
+import { FiSearch, FiChevronUp, FiChevronDown, FiX } from 'react-icons/fi';
 import './LeadsListPage.css';
 
 export default function LeadsListPage() {
-  const { leads, loading, statusFilter, setStatusFilter, search, setSearch, sortField, sortAsc, toggleSort } = useLeads();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialFilter = searchParams.get('filter') || '';
+  const { leads, loading, statusFilter, setStatusFilter, presetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort } = useLeads(initialFilter);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  const handleClearPreset = () => {
+    clearPresetFilter();
+    setSearchParams({});
+  };
+
+  const handleStatusChange = (e) => {
+    if (presetFilter) {
+      clearPresetFilter();
+      setSearchParams({});
+    }
+    setStatusFilter(e.target.value);
+  };
 
   const SortIcon = ({ field }) => {
     if (sortField !== field) return null;
@@ -16,6 +31,15 @@ export default function LeadsListPage() {
 
   return (
     <div className="leads-list">
+      {presetFilter && PRESET_FILTERS[presetFilter] && (
+        <div className="leads-list__preset-banner">
+          <span>Showing: <strong>{PRESET_FILTERS[presetFilter].label}</strong></span>
+          <button className="leads-list__preset-clear" onClick={handleClearPreset}>
+            <FiX /> Clear filter
+          </button>
+        </div>
+      )}
+
       <div className="leads-list__toolbar">
         <div className="leads-list__search">
           <FiSearch className="leads-list__search-icon" />
@@ -29,13 +53,15 @@ export default function LeadsListPage() {
         </div>
         <select
           className="leads-list__filter"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          value={presetFilter ? 'all' : statusFilter}
+          onChange={handleStatusChange}
+          disabled={!!presetFilter}
         >
           <option value="all">All Statuses</option>
           <option value="new">New</option>
           <option value="contacted">Contacted</option>
           <option value="quoted">Quoted</option>
+          <option value="deposit">Deposit</option>
           <option value="won">Won</option>
           <option value="lost">Lost</option>
         </select>
@@ -45,7 +71,7 @@ export default function LeadsListPage() {
         <div className="admin-page-loading">Loading leads...</div>
       ) : leads.length === 0 ? (
         <div className="leads-list__empty">
-          <p>No leads found{statusFilter !== 'all' || search ? ' matching your filters' : ''}.</p>
+          <p>No leads found{statusFilter !== 'all' || presetFilter || search ? ' matching your filters' : ''}.</p>
         </div>
       ) : (
         <div className="admin-table-wrap">
