@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import useLeadDetail from '../hooks/useLeadDetail';
 import useTwilioDevice from '../hooks/useTwilioDevice';
 import ClientInfoPanel from '../components/ClientInfoPanel';
@@ -22,6 +22,8 @@ import './LeadDetailPage.css';
 export default function LeadDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const highlightId = searchParams.get('highlight') || null;
   const { lead, loading, updateStatus, updateLeadField } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
   const twilio = useTwilioDevice();
@@ -63,10 +65,10 @@ export default function LeadDetailPage() {
       case 'activity': return <ActivityTab leadId={id} />;
       case 'quotes': return <QuotesTab leadId={id} onCreateQuote={() => navigate(`/admin/leads/${id}/quote/new`)} />;
       case 'orders': return <OrdersTab leadId={id} />;
-      case 'samples': return <SamplesTab leadId={id} onCreateSample={() => setModal('sample')} />;
+      case 'samples': return <SamplesTab leadId={id} onCreateSample={() => setModal('sample')} highlightId={highlightId} />;
       case 'files': return <FilesTab leadId={id} onUploadFile={() => setModal('file')} />;
-      case 'calls': return <CallsTab leadId={id} />;
-      case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} />;
+      case 'calls': return <CallsTab leadId={id} highlightId={highlightId} />;
+      case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} highlightId={highlightId} />;
       default: return <ActivityTab leadId={id} />;
     }
   };

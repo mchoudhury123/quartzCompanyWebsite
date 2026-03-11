@@ -1,11 +1,19 @@
+import { useEffect, useRef } from 'react';
 import useSamples from '../../hooks/useSamples';
 import { FiPlus, FiPackage } from 'react-icons/fi';
 import './SamplesTab.css';
 
 const SAMPLE_STATUSES = ['requested', 'preparing', 'sent', 'delivered', 'returned'];
 
-export default function SamplesTab({ leadId, onCreateSample }) {
+export default function SamplesTab({ leadId, onCreateSample, highlightId }) {
   const { samples, loading, updateSampleStatus } = useSamples(leadId);
+  const highlightRef = useRef(null);
+
+  useEffect(() => {
+    if (highlightId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightId, loading]);
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric',
@@ -25,8 +33,14 @@ export default function SamplesTab({ leadId, onCreateSample }) {
         <p className="samples-tab__empty">No samples requested yet.</p>
       ) : (
         <div className="samples-tab__list">
-          {samples.map((s) => (
-            <div className="samples-tab__card" key={s.id}>
+          {samples.map((s) => {
+            const isHighlighted = highlightId === s.id;
+            return (
+            <div
+              className={`samples-tab__card${isHighlighted ? ' tab-item--highlight' : ''}`}
+              key={s.id}
+              ref={isHighlighted ? highlightRef : null}
+            >
               <div className="samples-tab__card-top">
                 <div className="samples-tab__card-left">
                   <FiPackage className="samples-tab__card-icon" />
@@ -60,7 +74,8 @@ export default function SamplesTab({ leadId, onCreateSample }) {
                 </select>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

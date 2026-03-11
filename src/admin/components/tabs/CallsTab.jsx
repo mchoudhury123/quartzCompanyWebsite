@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import useCalls from '../../hooks/useCalls';
 import { FiPhone, FiPhoneIncoming, FiPhoneOutgoing, FiPlay, FiPause } from 'react-icons/fi';
 import './CallsTab.css';
@@ -75,8 +75,15 @@ function RecordingPlayer({ url }) {
   );
 }
 
-export default function CallsTab({ leadId }) {
+export default function CallsTab({ leadId, highlightId }) {
   const { calls, loading } = useCalls(leadId);
+  const highlightRef = useRef(null);
+
+  useEffect(() => {
+    if (highlightId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightId, loading]);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -102,8 +109,13 @@ export default function CallsTab({ leadId }) {
         <div className="calls-tab__list">
           {calls.map((c) => {
             const DirIcon = c.direction === 'inbound' ? FiPhoneIncoming : FiPhoneOutgoing;
+            const isHighlighted = highlightId === c.id;
             return (
-              <div className="calls-tab__item" key={c.id}>
+              <div
+                className={`calls-tab__item${isHighlighted ? ' tab-item--highlight' : ''}`}
+                key={c.id}
+                ref={isHighlighted ? highlightRef : null}
+              >
                 <DirIcon className={`calls-tab__item-icon calls-tab__item-icon--${c.direction}`} />
                 <div className="calls-tab__item-info">
                   <div className="calls-tab__item-top">

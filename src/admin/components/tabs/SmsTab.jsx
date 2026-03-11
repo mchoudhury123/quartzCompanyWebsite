@@ -1,9 +1,17 @@
+import { useEffect, useRef } from 'react';
 import useSms from '../../hooks/useSms';
 import { FiMessageSquare, FiArrowUpRight, FiArrowDownLeft } from 'react-icons/fi';
 import './SmsTab.css';
 
-export default function SmsTab({ leadId, onSendSms }) {
+export default function SmsTab({ leadId, onSendSms, highlightId }) {
   const { messages, loading } = useSms(leadId);
+  const highlightRef = useRef(null);
+
+  useEffect(() => {
+    if (highlightId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightId, loading]);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -25,8 +33,13 @@ export default function SmsTab({ leadId, onSendSms }) {
         <div className="sms-tab__list">
           {messages.map((m) => {
             const DirIcon = m.direction === 'inbound' ? FiArrowDownLeft : FiArrowUpRight;
+            const isHighlighted = highlightId === m.id;
             return (
-              <div className="sms-tab__item" key={m.id}>
+              <div
+                className={`sms-tab__item${isHighlighted ? ' tab-item--highlight' : ''}`}
+                key={m.id}
+                ref={isHighlighted ? highlightRef : null}
+              >
                 <DirIcon className={`sms-tab__item-icon sms-tab__item-icon--${m.direction}`} />
                 <div className="sms-tab__item-info">
                   <div className="sms-tab__item-top">

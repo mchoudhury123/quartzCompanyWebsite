@@ -117,3 +117,33 @@
   color: var(--admin-text-light);
   font-weight: 500;
 }
+
+/* Clickable activity items */
+.activity-tab__item--clickable {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  margin-left: -0.5rem;
+  transition: background 0.15s;
+}
+
+.activity-tab__item--clickable:hover {
+  background: rgba(197, 164, 126, 0.08);
+}
+
+.activity-tab__item--clickable:hover .activity-tab__dot {
+  border-color: var(--color-gold, #c5a47e);
+  color: var(--color-gold, #c5a47e);
+}
+
+.activity-tab__link-icon {
+  display: inline-block;
+  margin-left: 0.3rem;
+  font-size: 0.7rem;
+  vertical-align: middle;
+  color: var(--admin-text-light);
+}
+
+.activity-tab__item--clickable:hover .activity-tab__link-icon {
+  color: var(--color-gold, #c5a47e);
+}
