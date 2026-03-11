@@ -16,39 +16,18 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { quoteId, quoteNumber, total, deposit, validUntil, leadId } = req.body || {};
+  const { quoteId, quoteNumber, total, deposit, validUntil, clientEmail, clientName } = req.body || {};
 
   if (!quoteId) {
     return res.status(400).json({ error: 'Missing quoteId' });
   }
 
+  if (!clientEmail) {
+    return res.status(200).json({ error: 'No client email provided' });
+  }
+
   try {
-    // 1. Get lead email from Supabase
-    const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-
-    let clientEmail = '';
-    let clientName = '';
-
-    if (supabaseUrl && supabaseKey && leadId) {
-      const leadRes = await fetch(`${supabaseUrl}/rest/v1/leads?id=eq.${leadId}&select=email,full_name`, {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-      });
-      const leads = await leadRes.json();
-      if (leads.length > 0) {
-        clientEmail = leads[0].email || '';
-        clientName = leads[0].full_name || '';
-      }
-    }
-
-    if (!clientEmail) {
-      return res.status(200).json({ error: 'No client email found for this lead' });
-    }
-
-    // 2. Refresh Zoho token
+    // 1. Refresh Zoho token
     const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
