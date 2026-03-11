@@ -332,8 +332,8 @@ export default function QuoteBuilderPage() {
           total: payload.total,
           deposit: payload.deposit_amount,
           validUntil: validUntilStr,
-          clientEmail: lead?.email || '',
-          clientName: lead?.full_name || '',
+          clientEmail: emailPreviewData.clientEmail,
+          clientName: emailPreviewData.clientName,
         }),
       });
       const result = await res.json();
