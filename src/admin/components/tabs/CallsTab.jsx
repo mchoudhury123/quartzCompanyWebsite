@@ -7,6 +7,9 @@ function RecordingPlayer({ url }) {
   const audioRef = useRef(null);
   const [playing, setPlaying] = useState(false);
 
+  // Proxy through our API to avoid Twilio auth prompts
+  const proxyUrl = `/api/twilio-recording?url=${encodeURIComponent(url)}`;
+
   const toggle = () => {
     if (!audioRef.current) return;
     if (playing) {
@@ -24,7 +27,7 @@ function RecordingPlayer({ url }) {
       </button>
       <audio
         ref={audioRef}
-        src={url}
+        src={proxyUrl}
         onEnded={() => setPlaying(false)}
         preload="none"
       />
