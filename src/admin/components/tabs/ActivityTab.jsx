@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import useActivities from '../../hooks/useActivities';
 import {
   FiRefreshCw, FiMessageSquare, FiFileText, FiPackage,
-  FiPhone, FiPaperclip, FiEdit, FiPlusCircle, FiArrowRight, FiExternalLink,
+  FiPhone, FiPaperclip, FiEdit, FiPlusCircle, FiArrowRight, FiExternalLink, FiMail,
 } from 'react-icons/fi';
 import './ActivityTab.css';
 
@@ -20,7 +20,7 @@ const ICON_MAP = {
   file_deleted: FiPaperclip,
   call_logged: FiPhone,
   sms_sent: FiMessageSquare,
-  email_sent: FiMessageSquare,
+  email_sent: FiMail,
   lead_created: FiPlusCircle,
   lead_updated: FiEdit,
 };
@@ -35,6 +35,7 @@ const LINK_MAP = {
   quote_created: { tab: 'quotes', idKey: 'quote_id' },
   quote_updated: { tab: 'quotes', idKey: 'quote_id' },
   file_uploaded: { tab: 'files', idKey: 'file_id' },
+  email_sent: { tab: 'emails', idKey: 'email_id' },
 };
 
 export default function ActivityTab({ leadId }) {

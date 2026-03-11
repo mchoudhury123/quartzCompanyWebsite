@@ -13,9 +13,11 @@ import SamplesTab from '../components/tabs/SamplesTab';
 import FilesTab from '../components/tabs/FilesTab';
 import CallsTab from '../components/tabs/CallsTab';
 import SmsTab from '../components/tabs/SmsTab';
+import EmailsTab from '../components/tabs/EmailsTab';
 import SampleCreateModal from '../components/modals/SampleCreateModal';
 import FileUploadModal from '../components/modals/FileUploadModal';
 import SmsModal from '../components/modals/SmsModal';
+import EmailModal from '../components/modals/EmailModal';
 import { FiArrowLeft } from 'react-icons/fi';
 import './LeadDetailPage.css';
 
@@ -41,6 +43,9 @@ export default function LeadDetailPage() {
     switch (key) {
       case 'sms':
         setModal('sms');
+        break;
+      case 'email':
+        setModal('email');
         break;
       case 'call':
         handleCallClick(lead?.phone);
@@ -69,6 +74,7 @@ export default function LeadDetailPage() {
       case 'files': return <FilesTab leadId={id} onUploadFile={() => setModal('file')} />;
       case 'calls': return <CallsTab leadId={id} highlightId={highlightId} />;
       case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} highlightId={highlightId} />;
+      case 'emails': return <EmailsTab leadId={id} onSendEmail={() => setModal('email')} highlightId={highlightId} />;
       default: return <ActivityTab leadId={id} />;
     }
   };
@@ -92,6 +98,7 @@ export default function LeadDetailPage() {
             onFieldUpdate={updateLeadField}
             onCallClick={handleCallClick}
             onSmsClick={() => setModal('sms')}
+            onEmailClick={() => setModal('email')}
           />
         </div>
         <div className="lead-detail__right">
@@ -115,6 +122,14 @@ export default function LeadDetailPage() {
         <SmsModal
           leadId={id}
           leadPhone={lead.phone}
+          leadName={lead.full_name}
+          onClose={() => setModal(null)}
+        />
+      )}
+      {modal === 'email' && (
+        <EmailModal
+          leadId={id}
+          leadEmail={lead.email}
           leadName={lead.full_name}
           onClose={() => setModal(null)}
         />

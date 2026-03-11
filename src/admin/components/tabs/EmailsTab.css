@@ -1,0 +1,138 @@
+.emails-tab__loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--admin-text-light, #6b7280);
+  font-size: 0.85rem;
+}
+
+.emails-tab__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.emails-tab__title {
+  margin: 0;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--admin-text, #1a1a1a);
+}
+
+.emails-tab__add {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  background: var(--color-gold, #c5a47e);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.emails-tab__add:hover {
+  background: #b8956e;
+}
+
+.emails-tab__empty {
+  text-align: center;
+  color: var(--admin-text-light, #6b7280);
+  font-size: 0.85rem;
+  padding: 2rem 0;
+}
+
+.emails-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.emails-tab__item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #e5e7eb);
+  border-radius: 10px;
+}
+
+.emails-tab__item-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  margin-top: 2px;
+}
+
+.emails-tab__item-icon--outbound {
+  color: var(--color-gold, #c5a47e);
+}
+
+.emails-tab__item-icon--inbound {
+  color: #3b82f6;
+}
+
+.emails-tab__item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.emails-tab__item-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.emails-tab__item-direction {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text, #1a1a1a);
+}
+
+.emails-tab__status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.emails-tab__status--sent {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.emails-tab__status--delivered {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.emails-tab__status--failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.emails-tab__item-subject {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text, #1a1a1a);
+}
+
+.emails-tab__item-body {
+  margin: 0 0 0.35rem;
+  font-size: 0.83rem;
+  color: var(--admin-text, #1a1a1a);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.emails-tab__item-meta {
+  font-size: 0.72rem;
+  color: var(--admin-text-light, #6b7280);
+}

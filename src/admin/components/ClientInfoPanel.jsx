@@ -40,7 +40,7 @@ function EditableField({ value, onSave, placeholder }) {
   );
 }
 
-export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, onCallClick, onSmsClick }) {
+export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, onCallClick, onSmsClick, onEmailClick }) {
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric',
   });
@@ -53,10 +53,10 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, o
       </div>
 
       <div className="client-info__actions">
-        {lead.email && (
-          <a href={`mailto:${lead.email}`} className="client-info__action-btn" title="Send email">
+        {lead.email && onEmailClick && (
+          <button className="client-info__action-btn" onClick={onEmailClick} title="Send email">
             <FiMail />
-          </a>
+          </button>
         )}
         {lead.phone && onCallClick && (
           <button className="client-info__action-btn client-info__action-btn--call" onClick={() => onCallClick(lead.phone)} title="Call via browser">
