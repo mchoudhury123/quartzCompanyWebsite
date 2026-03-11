@@ -3,15 +3,19 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import useLeads, { PRESET_FILTERS } from '../hooks/useLeads';
 import StatusBadge from '../components/StatusBadge';
 import AddClientModal from '../components/modals/AddClientModal';
-import { FiSearch, FiChevronUp, FiChevronDown, FiX, FiUserPlus } from 'react-icons/fi';
+import ModalShell from '../components/modals/ModalShell';
+import { FiSearch, FiChevronUp, FiChevronDown, FiX, FiUserPlus, FiTrash2 } from 'react-icons/fi';
 import './LeadsListPage.css';
 
 export default function LeadsListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const initialFilter = searchParams.get('filter') || '';
-  const { leads, loading, statusFilter, setStatusFilter, presetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort } = useLeads(initialFilter);
+  const { leads, loading, statusFilter, setStatusFilter, presetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort, deleteLead } = useLeads(initialFilter);
   const [showAddClient, setShowAddClient] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -26,6 +30,15 @@ export default function LeadsListPage() {
       setSearchParams({});
     }
     setStatusFilter(e.target.value);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget || deleteConfirm !== 'DELETE') return;
+    setDeleting(true);
+    await deleteLead(deleteTarget.id);
+    setDeleting(false);
+    setDeleteTarget(null);
+    setDeleteConfirm('');
   };
 
   const SortIcon = ({ field }) => {
@@ -95,6 +108,7 @@ export default function LeadsListPage() {
                 <th className="admin-table__sortable" onClick={() => toggleSort('created_at')}>
                   Date <SortIcon field="created_at" />
                 </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -112,6 +126,15 @@ export default function LeadsListPage() {
                     {lead.source === 'quote_modal' ? 'Quote' : lead.source === 'admin' ? 'Admin' : lead.source === 'quote_page' ? 'Quote' : 'Contact'}
                   </td>
                   <td className="admin-table__date">{formatDate(lead.created_at)}</td>
+                  <td>
+                    <button
+                      className="leads-list__delete-btn"
+                      onClick={() => setDeleteTarget(lead)}
+                      title="Delete client"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -124,6 +147,39 @@ export default function LeadsListPage() {
           onClose={() => setShowAddClient(false)}
           onCreated={(id) => navigate(`/admin/leads/${id}`)}
         />
+      )}
+
+      {deleteTarget && (
+        <ModalShell title="Delete Client" onClose={() => { setDeleteTarget(null); setDeleteConfirm(''); }}>
+          <p className="leads-list__delete-warning">
+            You are about to permanently delete <strong>{deleteTarget.full_name}</strong> and all their associated data (quotes, samples, calls, SMS, files, activity).
+          </p>
+          <p className="leads-list__delete-prompt">Type <strong>DELETE</strong> to confirm:</p>
+          <input
+            className="modal-field__input"
+            value={deleteConfirm}
+            onChange={(e) => setDeleteConfirm(e.target.value)}
+            placeholder="Type DELETE"
+            autoFocus
+          />
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="modal-actions__btn modal-actions__btn--cancel"
+              onClick={() => { setDeleteTarget(null); setDeleteConfirm(''); }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="leads-list__delete-confirm-btn"
+              disabled={deleteConfirm !== 'DELETE' || deleting}
+              onClick={handleDelete}
+            >
+              {deleting ? 'Deleting...' : 'Delete Client'}
+            </button>
+          </div>
+        </ModalShell>
       )}
     </div>
   );

@@ -139,5 +139,13 @@ export default function useLeads(initialFilter) {
     setPresetFilter('');
   };
 
-  return { leads, loading, statusFilter, setStatusFilter, presetFilter, setPresetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort };
+  const deleteLead = async (leadId) => {
+    const { error } = await supabase.from('leads').delete().eq('id', leadId);
+    if (!error) {
+      setLeads((prev) => prev.filter((l) => l.id !== leadId));
+    }
+    return { error };
+  };
+
+  return { leads, loading, statusFilter, setStatusFilter, presetFilter, setPresetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort, deleteLead };
 }

@@ -135,3 +135,62 @@
   margin-left: 0.25rem;
   font-size: 0.85rem;
 }
+
+/* Delete button in table row */
+.leads-list__delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--admin-text-light, #9ca3af);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.leads-list__delete-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Delete confirmation modal */
+.leads-list__delete-warning {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: var(--admin-text, #1f2937);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.leads-list__delete-prompt {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  color: var(--admin-text-light, #6b7280);
+  margin: 0 0 0.5rem;
+}
+
+.leads-list__delete-confirm-btn {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: #dc2626;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.leads-list__delete-confirm-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.leads-list__delete-confirm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
