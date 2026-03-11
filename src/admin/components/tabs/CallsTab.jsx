@@ -1,13 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import useCalls from '../../hooks/useCalls';
 import { FiPhone, FiPhoneIncoming, FiPhoneOutgoing, FiPlay, FiPause } from 'react-icons/fi';
 import './CallsTab.css';
 
+function formatTime(seconds) {
+  if (!seconds || isNaN(seconds)) return '0:00';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
 function RecordingPlayer({ url }) {
   const audioRef = useRef(null);
+  const progressRef = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
-  // Proxy through our API to avoid Twilio auth prompts
   const proxyUrl = `/api/twilio-recording?url=${encodeURIComponent(url)}`;
 
   const toggle = () => {
@@ -20,16 +30,46 @@ function RecordingPlayer({ url }) {
     setPlaying(!playing);
   };
 
+  const handleTimeUpdate = useCallback(() => {
+    if (audioRef.current) setCurrentTime(audioRef.current.currentTime);
+  }, []);
+
+  const handleLoadedMetadata = useCallback(() => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+      setLoaded(true);
+    }
+  }, []);
+
+  const handleSeek = (e) => {
+    if (!audioRef.current || !progressRef.current || !duration) return;
+    const rect = progressRef.current.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    audioRef.current.currentTime = pct * duration;
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
   return (
-    <div className="calls-tab__recording">
-      <button className="calls-tab__play-btn" onClick={toggle} title={playing ? 'Pause' : 'Play recording'}>
+    <div className="recording-player">
+      <button className="recording-player__btn" onClick={toggle} title={playing ? 'Pause' : 'Play recording'}>
         {playing ? <FiPause /> : <FiPlay />}
       </button>
+      <div className="recording-player__track" ref={progressRef} onClick={handleSeek}>
+        <div className="recording-player__progress" style={{ width: `${progress}%` }} />
+        <div className="recording-player__thumb" style={{ left: `${progress}%` }} />
+      </div>
+      <span className="recording-player__time">
+        {formatTime(currentTime)} / {loaded ? formatTime(duration) : '--:--'}
+      </span>
       <audio
         ref={audioRef}
         src={proxyUrl}
-        onEnded={() => setPlaying(false)}
-        preload="none"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={() => { setPlaying(false); setCurrentTime(0); }}
+        preload="metadata"
       />
     </div>
   );
