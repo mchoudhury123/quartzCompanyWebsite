@@ -9,9 +9,18 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method not allowed');
 
   const { TWILIO_PHONE_NUMBER } = process.env;
-  const toNumber = req.body.To || req.body.to;
+  let toNumber = req.body.To || req.body.to || '';
   const leadId = req.body.leadId || '';
   const callSid = req.body.CallSid || '';
+
+  // Normalize UK numbers: 07xxx → +447xxx
+  toNumber = toNumber.replace(/\s+/g, '');
+  if (toNumber.startsWith('0') && !toNumber.startsWith('+')) {
+    toNumber = '+44' + toNumber.slice(1);
+  }
+  if (toNumber && !toNumber.startsWith('+')) {
+    toNumber = '+' + toNumber;
+  }
 
   const response = new VoiceResponse();
 

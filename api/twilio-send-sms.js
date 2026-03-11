@@ -17,10 +17,19 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Twilio credentials not configured' });
   }
 
-  const { to, body } = req.body || {};
+  const { to: rawTo, body } = req.body || {};
 
-  if (!to || !body) {
+  if (!rawTo || !body) {
     return res.status(400).json({ error: 'Missing "to" or "body" field' });
+  }
+
+  // Normalize UK numbers: 07xxx → +447xxx
+  let to = rawTo.replace(/\s+/g, '');
+  if (to.startsWith('0') && !to.startsWith('+')) {
+    to = '+44' + to.slice(1);
+  }
+  if (!to.startsWith('+')) {
+    to = '+' + to;
   }
 
   try {
