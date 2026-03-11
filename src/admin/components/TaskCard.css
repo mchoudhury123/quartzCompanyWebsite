@@ -40,21 +40,21 @@
 
 .task-card__badge {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: -8px;
+  right: -8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 5px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #fff;
   background: #ef4444;
   border-radius: 100px;
-  border: 2px solid var(--admin-card-bg);
+  border: 2.5px solid var(--admin-card-bg);
 }
 
 .task-card__count {
