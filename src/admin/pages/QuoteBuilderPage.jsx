@@ -338,7 +338,7 @@ export default function QuoteBuilderPage() {
       });
       const result = await res.json();
       if (result.error) {
-        alert(`Email sending failed: ${result.error}`);
+        alert(`Email sending failed: ${result.error}${result.zohoResponse ? '\n\nZoho details: ' + result.zohoResponse : ''}`);
       }
     } catch (err) {
       alert(`Email sending failed: ${err.message}`);

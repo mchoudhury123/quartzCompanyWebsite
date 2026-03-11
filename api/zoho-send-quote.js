@@ -145,10 +145,16 @@ export default async function handler(req, res) {
 
     const sendData = await sendRes.json();
 
-    if (sendData.status?.code !== 200 && sendData.status?.code !== 201) {
+    // Zoho returns various response shapes — check for success
+    const isSuccess =
+      sendData.status?.code === 200 ||
+      sendData.status?.code === 201 ||
+      sendData.data?.messageId;
+
+    if (!isSuccess) {
       return res.status(200).json({
-        error: sendData.status?.description || 'Failed to send email',
-        details: sendData,
+        error: sendData.status?.description || sendData.message || 'Failed to send email',
+        zohoResponse: JSON.stringify(sendData),
       });
     }
 
