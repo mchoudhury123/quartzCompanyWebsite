@@ -51,6 +51,8 @@ export default async function handler(req, res) {
       : '';
     const fmtCurrency = (v) => `£${Number(v || 0).toFixed(2)}`;
 
+    const firstName = clientName ? clientName.split(' ')[0] : 'there';
+
     const htmlBody = `
 <!DOCTYPE html>
 <html>
@@ -63,50 +65,57 @@ export default async function handler(req, res) {
   <!-- Gold Header -->
   <tr>
     <td style="background:#c5a47e;padding:28px 32px;text-align:center;">
-      <h1 style="margin:0;font-family:Georgia,serif;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.06em;">THE QUARTZ COMPANY</h1>
+      <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:0.08em;">THE QUARTZ</h1>
+      <p style="margin:2px 0 0;font-family:Georgia,serif;font-size:12px;color:rgba(255,255,255,0.85);letter-spacing:0.2em;">COMPANY</p>
     </td>
   </tr>
 
   <!-- Body -->
   <tr>
     <td style="padding:32px;">
-      <p style="font-size:16px;color:#333;margin:0 0 20px;">Hi ${clientName || 'there'},</p>
-      <p style="font-size:15px;color:#555;margin:0 0 24px;line-height:1.5;">Your quote is ready to view. Please review the details below and secure your quote before it expires.</p>
+      <p style="font-size:16px;color:#333;margin:0 0 16px;">Hi ${firstName},</p>
 
-      <!-- Quote Details -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:8px;padding:20px;margin-bottom:24px;">
-        <tr><td style="padding:20px;">
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="font-size:13px;color:#888;padding:4px 0;">Quote</td>
-              <td style="font-size:13px;font-weight:700;color:#1a1a1a;text-align:right;padding:4px 0;">${quoteNumber || ''}</td>
-            </tr>
-            <tr>
-              <td style="font-size:13px;color:#888;padding:4px 0;">Total (inc. VAT)</td>
-              <td style="font-size:15px;font-weight:800;color:#c5a47e;text-align:right;padding:4px 0;">${fmtCurrency(total)}</td>
-            </tr>
-            <tr>
-              <td style="font-size:13px;color:#888;padding:4px 0;">Deposit Required</td>
-              <td style="font-size:14px;font-weight:700;color:#ef4444;text-align:right;padding:4px 0;">${fmtCurrency(deposit)}</td>
-            </tr>
-            ${fmtDate ? `<tr>
-              <td style="font-size:13px;color:#888;padding:4px 0;">Valid Until</td>
-              <td style="font-size:13px;font-weight:600;color:#1a1a1a;text-align:right;padding:4px 0;">${fmtDate}</td>
-            </tr>` : ''}
-          </table>
-        </td></tr>
-      </table>
+      <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.6;">I have completed your Quartz Company quote using the details you have provided. You can view this quote <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;">here</a>. Your quote expires <strong style="color:#c5a47e;text-decoration:underline;">${fmtDate}</strong>.</p>
+
+      <p style="font-size:14px;color:#555;margin:0 0 24px;line-height:1.6;">If you'd like to secure your quote before this date, all we need is a <strong>${fmtCurrency(deposit)} deposit</strong> (payable over the phone with me or using the link below).</p>
 
       <!-- CTA Button -->
       <table width="100%" cellpadding="0" cellspacing="0">
-        <tr><td align="center" style="padding:8px 0 24px;">
+        <tr><td align="center" style="padding:0 0 24px;">
           <a href="${viewUrl}" style="display:inline-block;padding:14px 36px;background:#c5a47e;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">
             View and secure your quote
           </a>
         </td></tr>
       </table>
 
-      <p style="font-size:12px;color:#aaa;text-align:center;margin:0;">If you have any questions, reply to this email or call us directly.</p>
+      <!-- Not quite ready -->
+      <p style="font-size:14px;font-weight:700;color:#333;margin:0 0 6px;">Not quite ready?</p>
+      <p style="font-size:13px;color:#555;margin:0 0 24px;line-height:1.6;">Not to worry, you can view your quote, update and compare colours and thicknesses on the <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;">customer portal</a>.</p>
+
+      <!-- Quote Details -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:8px;">
+        <tr><td style="padding:18px 20px;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="font-size:13px;color:#888;padding:5px 0;">Quote Reference</td>
+              <td style="font-size:13px;font-weight:700;color:#1a1a1a;text-align:right;padding:5px 0;">${quoteNumber || ''}</td>
+            </tr>
+            <tr>
+              <td style="font-size:13px;color:#888;padding:5px 0;">Total (inc. VAT)</td>
+              <td style="font-size:15px;font-weight:800;color:#c5a47e;text-align:right;padding:5px 0;">${fmtCurrency(total)}</td>
+            </tr>
+            <tr>
+              <td style="font-size:13px;color:#888;padding:5px 0;">Deposit Required</td>
+              <td style="font-size:14px;font-weight:700;color:#ef4444;text-align:right;padding:5px 0;">${fmtCurrency(deposit)}</td>
+            </tr>
+            <tr>
+              <td style="font-size:13px;color:#888;padding:5px 0;">Quote Expires</td>
+              <td style="font-size:13px;font-weight:600;color:#1a1a1a;text-align:right;padding:5px 0;">${fmtDate}</td>
+            </tr>
+          </table>
+        </td></tr>
+      </table>
+
     </td>
   </tr>
 
