@@ -1,5 +1,6 @@
 import { useAuth } from '../../context/AuthContext';
 import useDashboardStats from '../hooks/useDashboardStats';
+import useZohoUnread from '../hooks/useZohoUnread';
 import TaskCard from '../components/TaskCard';
 import {
   FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
@@ -30,6 +31,7 @@ const ROW_2 = [
 export default function AdminDashboard() {
   const { user } = useAuth();
   const { counts, loading } = useDashboardStats();
+  const zohoUnread = useZohoUnread(60000);
 
   if (loading) return <div className="admin-page-loading">Loading dashboard...</div>;
 
@@ -41,8 +43,8 @@ export default function AdminDashboard() {
         <TaskCard
           key={card.key}
           label={card.label}
-          count={counts[card.key]}
-          badge={counts[card.key] || undefined}
+          count=""
+          badge={zohoUnread || undefined}
           icon={card.icon}
           color={card.color}
           href="https://mail.zoho.eu"
