@@ -1,13 +1,17 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import useLeads, { PRESET_FILTERS } from '../hooks/useLeads';
 import StatusBadge from '../components/StatusBadge';
-import { FiSearch, FiChevronUp, FiChevronDown, FiX } from 'react-icons/fi';
+import AddClientModal from '../components/modals/AddClientModal';
+import { FiSearch, FiChevronUp, FiChevronDown, FiX, FiUserPlus } from 'react-icons/fi';
 import './LeadsListPage.css';
 
 export default function LeadsListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialFilter = searchParams.get('filter') || '';
   const { leads, loading, statusFilter, setStatusFilter, presetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort } = useLeads(initialFilter);
+  const [showAddClient, setShowAddClient] = useState(false);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -65,6 +69,9 @@ export default function LeadsListPage() {
           <option value="won">Won</option>
           <option value="lost">Lost</option>
         </select>
+        <button className="leads-list__add-btn" onClick={() => setShowAddClient(true)}>
+          <FiUserPlus /> Add Client
+        </button>
       </div>
 
       {loading ? (
@@ -101,13 +108,22 @@ export default function LeadsListPage() {
                   <td>{lead.email}</td>
                   <td>{lead.phone}</td>
                   <td><StatusBadge status={lead.status} /></td>
-                  <td className="admin-table__source">{lead.source === 'quote_modal' ? 'Quote' : 'Contact'}</td>
+                  <td className="admin-table__source">
+                    {lead.source === 'quote_modal' ? 'Quote' : lead.source === 'admin' ? 'Admin' : lead.source === 'quote_page' ? 'Quote' : 'Contact'}
+                  </td>
                   <td className="admin-table__date">{formatDate(lead.created_at)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      )}
+
+      {showAddClient && (
+        <AddClientModal
+          onClose={() => setShowAddClient(false)}
+          onCreated={(id) => navigate(`/admin/leads/${id}`)}
+        />
       )}
     </div>
   );

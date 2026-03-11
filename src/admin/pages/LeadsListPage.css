@@ -84,6 +84,27 @@
   cursor: pointer;
 }
 
+.leads-list__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.leads-list__add-btn:hover {
+  background: #b08e66;
+}
+
 .leads-list__empty {
   background: var(--admin-card-bg);
   border-radius: var(--admin-radius);
