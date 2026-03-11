@@ -1,5 +1,5 @@
 // Vercel Serverless Function — fetches unread email count from Zoho Mail
-// Env vars needed: ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN, ZOHO_ACCOUNT_ID
+// Env vars needed: ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN, ZOHO_ACCOUNT_ID, ZOHO_INBOX_FOLDER_ID
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,6 +8,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const { ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN, ZOHO_ACCOUNT_ID } = process.env;
+  const INBOX_FOLDER_ID = process.env.ZOHO_INBOX_FOLDER_ID || '7696391000000002014';
 
   if (!ZOHO_CLIENT_ID || !ZOHO_CLIENT_SECRET || !ZOHO_REFRESH_TOKEN || !ZOHO_ACCOUNT_ID) {
     return res.status(200).json({ unread: 0, error: 'Zoho credentials not configured' });
@@ -31,19 +32,14 @@ export default async function handler(req, res) {
       return res.status(200).json({ unread: 0, error: 'Token refresh failed' });
     }
 
-    // 2. Get inbox folder details (unread count)
-    const foldersRes = await fetch(
-      `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/folders`,
+    // 2. Fetch unread messages from inbox
+    const messagesRes = await fetch(
+      `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages/view?folderId=${INBOX_FOLDER_ID}&limit=50&status=unread`,
       { headers: { Authorization: `Zoho-oauthtoken ${tokenData.access_token}` } }
     );
-    const foldersData = await foldersRes.json();
+    const messagesData = await messagesRes.json();
 
-    // Find the Inbox folder
-    const inbox = foldersData?.data?.find(
-      (f) => f.folderName === 'Inbox' || f.folderType === 'Inbox'
-    );
-
-    const unread = inbox?.unreadCount ?? 0;
+    const unread = Array.isArray(messagesData?.data) ? messagesData.data.length : 0;
 
     return res.status(200).json({ unread });
   } catch (err) {
