@@ -14,7 +14,6 @@ import FilesTab from '../components/tabs/FilesTab';
 import CallsTab from '../components/tabs/CallsTab';
 import SmsTab from '../components/tabs/SmsTab';
 import SampleCreateModal from '../components/modals/SampleCreateModal';
-import CallLogModal from '../components/modals/CallLogModal';
 import FileUploadModal from '../components/modals/FileUploadModal';
 import SmsModal from '../components/modals/SmsModal';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -66,7 +65,7 @@ export default function LeadDetailPage() {
       case 'orders': return <OrdersTab leadId={id} />;
       case 'samples': return <SamplesTab leadId={id} onCreateSample={() => setModal('sample')} />;
       case 'files': return <FilesTab leadId={id} onUploadFile={() => setModal('file')} />;
-      case 'calls': return <CallsTab leadId={id} onLogCall={() => setModal('call')} />;
+      case 'calls': return <CallsTab leadId={id} />;
       case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} />;
       default: return <ActivityTab leadId={id} />;
     }
@@ -109,7 +108,6 @@ export default function LeadDetailPage() {
       </div>
 
       {modal === 'sample' && <SampleCreateModal leadId={id} onClose={() => setModal(null)} />}
-      {modal === 'call' && <CallLogModal leadId={id} onClose={() => setModal(null)} />}
       {modal === 'file' && <FileUploadModal leadId={id} onClose={() => setModal(null)} />}
       {modal === 'sms' && (
         <SmsModal

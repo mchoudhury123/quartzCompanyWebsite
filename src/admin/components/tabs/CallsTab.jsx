@@ -32,7 +32,7 @@ function RecordingPlayer({ url }) {
   );
 }
 
-export default function CallsTab({ leadId, onLogCall }) {
+export default function CallsTab({ leadId }) {
   const { calls, loading } = useCalls(leadId);
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
@@ -52,9 +52,6 @@ export default function CallsTab({ leadId, onLogCall }) {
     <div className="calls-tab">
       <div className="calls-tab__header">
         <h3 className="calls-tab__title">Calls ({calls.length})</h3>
-        <button className="calls-tab__add" onClick={onLogCall}>
-          <FiPhone /> Log Call
-        </button>
       </div>
       {calls.length === 0 ? (
         <p className="calls-tab__empty">No calls logged yet.</p>

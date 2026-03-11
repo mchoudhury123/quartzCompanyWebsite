@@ -16,7 +16,13 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send('Method not allowed');
 
   const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+
+  console.log('[dial-status] env check:', { hasUrl: !!SUPABASE_URL, hasKey: !!SUPABASE_SERVICE_ROLE_KEY });
+  console.log('[dial-status] body:', JSON.stringify(req.body));
+  console.log('[dial-status] query:', JSON.stringify(req.query));
+
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    console.error('[dial-status] Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
     res.setHeader('Content-Type', 'text/xml');
     return res.status(200).send('<Response/>');
   }
@@ -31,6 +37,8 @@ export default async function handler(req, res) {
 
   const outcome = TWILIO_TO_CRM_OUTCOME[dialCallStatus] || 'no_answer';
 
+  console.log('[dial-status] parsed:', { leadId, outcome, dialCallStatus, dialCallDuration, callSid, recordingUrl });
+
   try {
     if (leadId && leadId !== 'undefined' && leadId !== '') {
       const { data: callData, error: callError } = await supabase
@@ -40,7 +48,7 @@ export default async function handler(req, res) {
           direction: 'outbound',
           duration_seconds: dialCallDuration || null,
           outcome,
-          summary: `Twilio call — ${dialCallStatus}`,
+          summary: `Twilio call — ${outcome}`,
           called_by: 'Admin',
           twilio_call_sid: callSid,
           call_type: 'twilio',
@@ -49,8 +57,10 @@ export default async function handler(req, res) {
         .select()
         .single();
 
+      console.log('[dial-status] call insert:', { callData, callError: callError?.message });
+
       if (!callError && callData) {
-        await supabase.from('lead_activities').insert({
+        const { error: actError } = await supabase.from('lead_activities').insert({
           lead_id: leadId,
           activity_type: 'call_logged',
           title: `Outbound call — ${outcome}`,
@@ -58,10 +68,13 @@ export default async function handler(req, res) {
           metadata: { call_id: callData.id, direction: 'outbound', outcome, twilio_call_sid: callSid },
           author: 'Admin',
         });
+        console.log('[dial-status] activity insert:', { error: actError?.message });
       }
+    } else {
+      console.warn('[dial-status] skipped — no valid leadId:', leadId);
     }
   } catch (err) {
-    console.error('twilio-dial-status error:', err.message);
+    console.error('[dial-status] error:', err.message);
   }
 
   res.setHeader('Content-Type', 'text/xml');
