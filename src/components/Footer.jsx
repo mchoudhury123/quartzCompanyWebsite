@@ -105,9 +105,9 @@ const Footer = () => {
                 elegance.
               </p>
               <div className="footer-contact-details">
-                <a href="tel:+441234567890" className="footer-contact-item">
+                <a href="tel:+447414121706" className="footer-contact-item">
                   <FiPhone className="footer-contact-icon" />
-                  <span>0800 234 567</span>
+                  <span>07414 121 706</span>
                 </a>
                 <a href="mailto:sales@thequartzcompany.co.uk" className="footer-contact-item">
                   <FiMail className="footer-contact-icon" />

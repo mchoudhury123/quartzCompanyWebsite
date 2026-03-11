@@ -408,8 +408,8 @@ export default function HomePage() {
               <Link to="/quote" className="btn btn--gold btn--lg">
                 Get Free Quote
               </Link>
-              <a href="tel:08001234567" className="btn btn--lg hp-cta-banner__btn--outline">
-                Call Us: 0800 123 4567
+              <a href="tel:+447414121706" className="btn btn--lg hp-cta-banner__btn--outline">
+                Call Us: 07414 121 706
               </a>
             </div>
           </div>

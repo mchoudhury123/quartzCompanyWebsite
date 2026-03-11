@@ -21,7 +21,7 @@ const faqs = [
   {
     question: 'Do you offer free samples?',
     answer:
-      'Yes! We offer up to five free samples delivered to your door within 48 hours. You can request samples from any product page on our website or by calling our team on 0800 123 4567.',
+      'Yes! We offer up to five free samples delivered to your door within 48 hours. You can request samples from any product page on our website or by calling our team on 07414 121 706.',
   },
   {
     question: 'What areas do you cover for installation?',
@@ -128,8 +128,8 @@ function ContactPage() {
 
               <div className="contact-sidebar__block">
                 <h4 className="contact-sidebar__label">Phone</h4>
-                <a href="tel:08001234567" className="contact-sidebar__value contact-sidebar__link">
-                  0800 123 4567
+                <a href="tel:+447414121706" className="contact-sidebar__value contact-sidebar__link">
+                  07414 121 706
                 </a>
                 <p className="contact-sidebar__note">
                   Mon&ndash;Fri 8am&ndash;6pm, Sat 9am&ndash;4pm
@@ -211,7 +211,7 @@ function ContactPage() {
                     Thank you for getting in touch. A member of our team will
                     respond within 24 hours. If your enquiry is urgent, please
                     call us on{' '}
-                    <a href="tel:08001234567">0800 123 4567</a>.
+                    <a href="tel:+447414121706">07414 121 706</a>.
                   </p>
                   <button
                     type="button"

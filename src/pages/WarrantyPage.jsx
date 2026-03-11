@@ -6,7 +6,7 @@ const claimSteps = [
   {
     step: 1,
     title: 'Contact Us',
-    description: 'Call our support team on 0800 234 567 or email warranty@thequartzcompany.co.uk. Have your order number and installation date ready.',
+    description: 'Call our support team on 07414 121 706 or email warranty@thequartzcompany.co.uk. Have your order number and installation date ready.',
   },
   {
     step: 2,
