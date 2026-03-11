@@ -1,0 +1,129 @@
+.calls-tab__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calls-tab__title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.calls-tab__add {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.calls-tab__add:hover {
+  background: #b08e66;
+}
+
+.calls-tab__loading,
+.calls-tab__empty {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: var(--admin-text-light);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.calls-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.calls-tab__item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
+}
+
+.calls-tab__item-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  color: var(--admin-text-light);
+}
+
+.calls-tab__item-icon--inbound {
+  color: #16a34a;
+}
+
+.calls-tab__item-icon--outbound {
+  color: #2563eb;
+}
+
+.calls-tab__item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.calls-tab__item-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.calls-tab__item-direction {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.calls-tab__outcome {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.calls-tab__outcome--answered { background: #d1fae5; color: #065f46; }
+.calls-tab__outcome--no_answer { background: #fee2e2; color: #991b1b; }
+.calls-tab__outcome--voicemail { background: #fef3c7; color: #92400e; }
+.calls-tab__outcome--busy { background: #fee2e2; color: #991b1b; }
+.calls-tab__outcome--callback_requested { background: #dbeafe; color: #1e40af; }
+
+.calls-tab__item-duration {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.75rem;
+  color: var(--admin-text-light);
+}
+
+.calls-tab__item-summary {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.83rem;
+  color: var(--admin-text-light);
+  margin: 0.15rem 0 0.25rem;
+  line-height: 1.45;
+}
+
+.calls-tab__item-meta {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  color: var(--admin-text-light);
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
+import { logActivity } from '../utils/activityLogger';
 
 export default function useLeadDetail(id) {
   const [lead, setLead] = useState(null);
@@ -33,11 +34,35 @@ export default function useLeadDetail(id) {
   }, [fetchLead, fetchNotes]);
 
   const updateStatus = async (newStatus) => {
+    const oldStatus = lead?.status;
     const { error } = await supabase
       .from('leads')
       .update({ status: newStatus })
       .eq('id', id);
-    if (!error) setLead((prev) => ({ ...prev, status: newStatus }));
+    if (!error) {
+      setLead((prev) => ({ ...prev, status: newStatus }));
+      await logActivity(id, {
+        type: 'status_change',
+        title: `Status changed to ${newStatus}`,
+        metadata: { old_status: oldStatus, new_status: newStatus },
+      });
+    }
+    return { error };
+  };
+
+  const updateLeadField = async (field, value) => {
+    const { error } = await supabase
+      .from('leads')
+      .update({ [field]: value })
+      .eq('id', id);
+    if (!error) {
+      setLead((prev) => ({ ...prev, [field]: value }));
+      await logActivity(id, {
+        type: 'lead_updated',
+        title: `${field.replace(/_/g, ' ')} updated`,
+        metadata: { field, value },
+      });
+    }
     return { error };
   };
 
@@ -45,9 +70,16 @@ export default function useLeadDetail(id) {
     const { error } = await supabase
       .from('lead_notes')
       .insert({ lead_id: id, content, author: 'Admin' });
-    if (!error) await fetchNotes();
+    if (!error) {
+      await logActivity(id, {
+        type: 'note_added',
+        title: 'Note added',
+        description: content.length > 100 ? content.slice(0, 100) + '...' : content,
+      });
+      await fetchNotes();
+    }
     return { error };
   };
 
-  return { lead, notes, loading, updateStatus, addNote };
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, refetchLead: fetchLead };
 }

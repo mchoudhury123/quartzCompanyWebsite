@@ -1,0 +1,147 @@
+.quotes-tab__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.quotes-tab__title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.quotes-tab__add {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.quotes-tab__add:hover {
+  background: #b08e66;
+}
+
+.quotes-tab__loading,
+.quotes-tab__empty {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: var(--admin-text-light);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.quotes-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quotes-tab__card {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--admin-border);
+}
+
+.quotes-tab__card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.quotes-tab__card-number {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-gold, #c5a47e);
+  margin-right: 0.5rem;
+}
+
+.quotes-tab__card-title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.quotes-tab__card-desc {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  color: var(--admin-text-light);
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+.quotes-tab__card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.quotes-tab__card-total {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.quotes-tab__card-date {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  color: var(--admin-text-light);
+}
+
+.quotes-tab__card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.quotes-tab__action {
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--admin-text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.quotes-tab__action:hover {
+  border-color: var(--admin-text-light);
+}
+
+.quotes-tab__action--accept {
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.quotes-tab__action--accept:hover {
+  background: #f0fdf4;
+}
+
+.quotes-tab__action--reject {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.quotes-tab__action--reject:hover {
+  background: #fef2f2;
+}

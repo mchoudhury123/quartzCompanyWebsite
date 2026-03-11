@@ -1,0 +1,118 @@
+.files-tab__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.files-tab__title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.files-tab__add {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.files-tab__add:hover {
+  background: #b08e66;
+}
+
+.files-tab__loading,
+.files-tab__empty {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: var(--admin-text-light);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.files-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.files-tab__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
+}
+
+.files-tab__item-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--admin-text-light);
+}
+
+.files-tab__item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.files-tab__item-name {
+  display: block;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.files-tab__item-meta {
+  display: block;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  color: var(--admin-text-light);
+  text-transform: capitalize;
+}
+
+.files-tab__item-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.files-tab__item-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--admin-text-light);
+  font-size: 0.95rem;
+  transition: color 0.15s;
+}
+
+.files-tab__item-btn:hover {
+  color: var(--admin-text);
+}
+
+.files-tab__item-btn--delete:hover {
+  color: #dc2626;
+}
+
+.files-tab__item-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

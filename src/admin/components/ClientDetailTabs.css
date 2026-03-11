@@ -1,0 +1,45 @@
+.client-tabs {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.client-tabs__bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--admin-border);
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+}
+
+.client-tabs__tab {
+  padding: 0.65rem 1.1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.client-tabs__tab:hover {
+  color: var(--admin-text);
+}
+
+.client-tabs__tab--active {
+  color: var(--admin-text);
+  border-bottom-color: var(--color-gold, #c5a47e);
+}
+
+.client-tabs__content {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  box-shadow: var(--admin-shadow);
+  padding: 1.5rem;
+  min-height: 300px;
+}
