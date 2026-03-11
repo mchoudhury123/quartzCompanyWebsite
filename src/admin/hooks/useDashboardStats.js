@@ -80,7 +80,7 @@ export default function useDashboardStats() {
         }
 
         // New Quote Requests: new leads without the flag
-        if (l.source === 'quote_modal' && l.status === 'new' && !isFlagged) {
+        if ((l.source === 'quote_modal' || l.source === 'quote_page') && l.status === 'new' && !isFlagged) {
           c.newQuotes++;
         }
         if (l.source === 'contact_form' && l.status === 'new' && !isFlagged) {

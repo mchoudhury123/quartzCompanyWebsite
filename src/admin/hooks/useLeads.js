@@ -88,7 +88,7 @@ export default function useLeads(initialFilter) {
       if (presetFilter) {
         switch (presetFilter) {
           case 'new_quotes':
-            query = query.eq('source', 'quote_modal').eq('status', 'new');
+            query = query.in('source', ['quote_modal', 'quote_page']).eq('status', 'new');
             break;
           case 'new_quotes_self_serve':
             query = query.eq('source', 'contact_form').eq('status', 'new');
