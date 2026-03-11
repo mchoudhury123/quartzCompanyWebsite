@@ -8,6 +8,8 @@ import PieceEditor from '../components/quote-builder/PieceEditor';
 import ProductPicker from '../components/quote-builder/ProductPicker';
 import ReceiptPanel from '../components/quote-builder/ReceiptPanel';
 import QuotePDF from '../components/quote-builder/QuotePDF';
+import EmailPreviewModal from '../components/quote-builder/EmailPreviewModal';
+import useLeadDetail from '../hooks/useLeadDetail';
 import { FiArrowLeft } from 'react-icons/fi';
 import './QuoteBuilderPage.css';
 
@@ -20,6 +22,7 @@ export default function QuoteBuilderPage() {
   const { createQuote, updateQuote } = useQuotes(leadId);
   const { quote: existingQuote, loading: quoteLoading } = useQuoteDetail(quoteId);
   const pdfRef = useRef(null);
+  const { lead } = useLeadDetail(leadId);
 
   const isEditMode = !!quoteId;
 
@@ -30,6 +33,8 @@ export default function QuoteBuilderPage() {
   const [accessories, setAccessories] = useState([]);
   const [saving, setSaving] = useState(false);
   const [initialized, setInitialized] = useState(!isEditMode);
+  const [showEmailPreview, setShowEmailPreview] = useState(false);
+  const [emailPreviewData, setEmailPreviewData] = useState(null);
 
   // Load existing quote data in edit mode
   useEffect(() => {
@@ -285,15 +290,31 @@ export default function QuoteBuilderPage() {
     }
   };
 
-  // --- Send Email ---
-  const handleSendEmail = async () => {
-    if (saving) return;
-    setSaving(true);
-
+  // --- Send Email (opens preview first) ---
+  const handleSendEmail = () => {
+    if (saving || allItems.length === 0) return;
     const validUntil = new Date();
     validUntil.setDate(validUntil.getDate() + 2);
     const validUntilStr = validUntil.toISOString().split('T')[0];
+    const payload = buildPayload('sent', validUntilStr);
 
+    setEmailPreviewData({
+      clientName: lead?.full_name || '',
+      clientEmail: lead?.email || '',
+      quoteNumber: existingQuote?.quote_number || 'QC-2026-XXXX',
+      total: payload.total,
+      deposit: payload.deposit_amount,
+      validUntil: validUntilStr,
+    });
+    setShowEmailPreview(true);
+  };
+
+  // --- Confirm send (after preview) ---
+  const handleConfirmSendEmail = async () => {
+    if (saving) return;
+    setSaving(true);
+
+    const validUntilStr = emailPreviewData.validUntil;
     const { data, error } = await saveQuote('sent', validUntilStr);
     if (error) {
       setSaving(false);
@@ -323,6 +344,7 @@ export default function QuoteBuilderPage() {
     }
 
     setSaving(false);
+    setShowEmailPreview(false);
     navigate(`/admin/leads/${leadId}?tab=quotes`);
   };
 
@@ -411,6 +433,21 @@ export default function QuoteBuilderPage() {
 
       {/* Hidden PDF render target */}
       <QuotePDF ref={pdfRef} data={pdfData} />
+
+      {/* Email preview modal */}
+      {showEmailPreview && emailPreviewData && (
+        <EmailPreviewModal
+          clientName={emailPreviewData.clientName}
+          clientEmail={emailPreviewData.clientEmail}
+          quoteNumber={emailPreviewData.quoteNumber}
+          total={emailPreviewData.total}
+          deposit={emailPreviewData.deposit}
+          validUntil={emailPreviewData.validUntil}
+          onConfirm={handleConfirmSendEmail}
+          onCancel={() => setShowEmailPreview(false)}
+          sending={saving}
+        />
+      )}
     </div>
   );
 }
