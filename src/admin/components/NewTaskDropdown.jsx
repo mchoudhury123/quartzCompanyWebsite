@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiPlus, FiMessageSquare, FiPackage, FiFileText, FiPaperclip } from 'react-icons/fi';
+import { FiPlus, FiPhone, FiMessageSquare, FiPackage, FiFileText, FiPaperclip } from 'react-icons/fi';
 import './NewTaskDropdown.css';
 
 const TASKS = [
+  { key: 'call', label: 'Call Lead', icon: FiPhone },
   { key: 'sms', label: 'Send SMS', icon: FiMessageSquare },
   { key: 'sample', label: 'New Sample', icon: FiPackage },
   { key: 'quote', label: 'Create Quote', icon: FiFileText },

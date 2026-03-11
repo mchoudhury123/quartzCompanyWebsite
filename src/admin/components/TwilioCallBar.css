@@ -1,0 +1,97 @@
+.twilio-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.twilio-bar--connecting,
+.twilio-bar--ringing {
+  background: #f59e0b;
+}
+
+.twilio-bar--in-progress {
+  background: #16a34a;
+}
+
+.twilio-bar--disconnected {
+  background: #6b7280;
+}
+
+.twilio-bar__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.twilio-bar__icon {
+  font-size: 1rem;
+}
+
+.twilio-bar__pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: twilio-pulse 1s ease-in-out infinite;
+}
+
+@keyframes twilio-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.twilio-bar__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.twilio-bar__timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.twilio-bar__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: #fff;
+}
+
+.twilio-bar__btn--mute {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.twilio-bar__btn--mute:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.twilio-bar__btn--mute.twilio-bar__btn--active {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.twilio-bar__btn--hangup {
+  background: #ef4444;
+}
+
+.twilio-bar__btn--hangup:hover {
+  background: #dc2626;
+}

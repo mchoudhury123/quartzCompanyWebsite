@@ -22,63 +22,77 @@ export default function useDashboardStats() {
 
   useEffect(() => {
     async function fetchStats() {
-      const { data: leads, error } = await supabase
-        .from('leads')
-        .select('id, email, source, status, want_samples, want_callback');
+      // Fetch leads and all outbound calls in parallel
+      const [leadsRes, callsRes] = await Promise.all([
+        supabase.from('leads').select('id, email, source, status, want_samples, want_callback'),
+        supabase.from('lead_calls').select('lead_id, direction, outcome')
+          .eq('direction', 'outbound'),
+      ]);
 
-      if (!error && leads) {
-        // Count email occurrences to detect repeat customers
-        const emailCounts = {};
-        leads.forEach((l) => {
-          if (l.email) {
-            emailCounts[l.email] = (emailCounts[l.email] || 0) + 1;
+      const leads = leadsRes.data || [];
+      const allOutboundCalls = callsRes.data || [];
+
+      // Filter to unanswered calls (no_answer, voicemail, busy) in JS
+      const unansweredOutcomes = ['no_answer', 'voicemail', 'busy'];
+      const calls = allOutboundCalls.filter((c) => unansweredOutcomes.includes(c.outcome));
+
+      // Count unanswered outbound calls per lead
+      const missedCallCounts = {};
+      calls.forEach((c) => {
+        missedCallCounts[c.lead_id] = (missedCallCounts[c.lead_id] || 0) + 1;
+      });
+
+      // Set of lead IDs with 2+ unanswered outbound calls
+      const flaggedLeadIds = new Set(
+        Object.entries(missedCallCounts)
+          .filter(([, count]) => count >= 2)
+          .map(([id]) => id)
+      );
+
+      const c = {
+        newQuotes: 0,
+        repeatQuotes: 0,
+        newQuotesSelfServe: 0,
+        repeatQuotesSelfServe: 0,
+        emails: 0,
+        deposits: 0,
+        samples: 0,
+        followUp: 0,
+        appointments: 0,
+        proWelcome: 0,
+        chaseMeasurements: 0,
+        otherTasks: 0,
+        complianceTasks: 0,
+      };
+
+      const closedStatuses = ['won', 'lost'];
+
+      leads.forEach((l) => {
+        const isFlagged = flaggedLeadIds.has(l.id);
+
+        // 1+ Quote Requests: leads with 2+ unanswered outbound calls (not closed)
+        if (isFlagged && !closedStatuses.includes(l.status)) {
+          if (l.source === 'contact_form') {
+            c.repeatQuotesSelfServe++;
+          } else {
+            c.repeatQuotes++;
           }
-        });
+        }
 
-        const c = {
-          newQuotes: 0,
-          repeatQuotes: 0,
-          newQuotesSelfServe: 0,
-          repeatQuotesSelfServe: 0,
-          emails: 0,
-          deposits: 0,
-          samples: 0,
-          followUp: 0,
-          appointments: 0,
-          proWelcome: 0,
-          chaseMeasurements: 0,
-          otherTasks: 0,
-          complianceTasks: 0,
-        };
+        // New Quote Requests: new leads without the flag
+        if (l.source === 'quote_modal' && l.status === 'new' && !isFlagged) {
+          c.newQuotes++;
+        }
+        if (l.source === 'contact_form' && l.status === 'new' && !isFlagged) {
+          c.newQuotesSelfServe++;
+        }
 
-        const closedStatuses = ['won', 'lost'];
+        if (l.want_samples && !closedStatuses.includes(l.status)) c.samples++;
+        if (l.status === 'quoted') c.followUp++;
+        if (l.status === 'deposit') c.deposits++;
+      });
 
-        leads.forEach((l) => {
-          const isRepeat = l.email && emailCounts[l.email] > 1;
-
-          if (l.source === 'quote_modal' && l.status === 'new') {
-            if (isRepeat) {
-              c.repeatQuotes++;
-            } else {
-              c.newQuotes++;
-            }
-          }
-
-          if (l.source === 'contact_form' && l.status === 'new') {
-            if (isRepeat) {
-              c.repeatQuotesSelfServe++;
-            } else {
-              c.newQuotesSelfServe++;
-            }
-          }
-
-          if (l.want_samples && !closedStatuses.includes(l.status)) c.samples++;
-          if (l.status === 'quoted') c.followUp++;
-          if (l.status === 'deposit') c.deposits++;
-        });
-
-        setCounts(c);
-      }
+      setCounts(c);
 
       const { data: recent } = await supabase
         .from('leads')

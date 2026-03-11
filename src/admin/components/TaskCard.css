@@ -66,6 +66,10 @@
   min-height: 1.6rem;
 }
 
+.task-card__count--highlight {
+  color: #ef4444;
+}
+
 .task-card__label {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.8rem;

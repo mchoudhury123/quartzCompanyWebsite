@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import StatusBadge from './StatusBadge';
 import StatusSelect from './StatusSelect';
-import { FiMail, FiPhone, FiMapPin, FiEdit2, FiCheck, FiX } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMessageSquare, FiMapPin, FiEdit2, FiCheck, FiX } from 'react-icons/fi';
 import './ClientInfoPanel.css';
 
 function EditableField({ value, onSave, placeholder }) {
@@ -40,7 +40,7 @@ function EditableField({ value, onSave, placeholder }) {
   );
 }
 
-export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate }) {
+export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, onCallClick, onSmsClick }) {
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric',
   });
@@ -50,6 +50,24 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate })
       <div className="client-info__header">
         <h2 className="client-info__name">{lead.full_name}</h2>
         <StatusBadge status={lead.status} />
+      </div>
+
+      <div className="client-info__actions">
+        {lead.email && (
+          <a href={`mailto:${lead.email}`} className="client-info__action-btn" title="Send email">
+            <FiMail />
+          </a>
+        )}
+        {lead.phone && onCallClick && (
+          <button className="client-info__action-btn client-info__action-btn--call" onClick={() => onCallClick(lead.phone)} title="Call via browser">
+            <FiPhone />
+          </button>
+        )}
+        {lead.phone && onSmsClick && (
+          <button className="client-info__action-btn client-info__action-btn--sms" onClick={onSmsClick} title="Send SMS">
+            <FiMessageSquare />
+          </button>
+        )}
       </div>
 
       <div className="client-info__status-row">

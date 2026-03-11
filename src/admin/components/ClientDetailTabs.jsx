@@ -8,6 +8,7 @@ const TABS = [
   { key: 'samples', label: 'Samples' },
   { key: 'files', label: 'Files' },
   { key: 'calls', label: 'Calls' },
+  { key: 'sms', label: 'SMS' },
 ];
 
 export default function ClientDetailTabs({ children }) {
