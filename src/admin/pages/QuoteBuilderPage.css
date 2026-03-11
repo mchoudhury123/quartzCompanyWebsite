@@ -1,5 +1,5 @@
 .quote-builder {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -60,6 +60,7 @@
   border-radius: var(--admin-radius, 12px);
   box-shadow: var(--admin-shadow);
   padding: 1.5rem;
+  overflow-x: auto;
 }
 
 .quote-builder__right {

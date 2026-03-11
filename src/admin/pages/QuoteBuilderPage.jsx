@@ -11,14 +11,6 @@ import './QuoteBuilderPage.css';
 
 let pieceCounter = 0;
 
-function calcPieceTotal(piece, material, thickness) {
-  if (!material) return 0;
-  const priceKey = thickness === '30mm' ? 'price_30mm' : 'price_20mm';
-  const pricePerSqm = Number(material[priceKey]) || 0;
-  const areaSqm = ((piece.x_mm || 0) * (piece.y_mm || 0)) / 1_000_000;
-  return areaSqm * pricePerSqm;
-}
-
 export default function QuoteBuilderPage() {
   const { id: leadId } = useParams();
   const navigate = useNavigate();
@@ -33,6 +25,10 @@ export default function QuoteBuilderPage() {
   const [depositAmount, setDepositAmount] = useState(0);
   const [saving, setSaving] = useState(false);
 
+  const pricePerSqm = selectedMaterial
+    ? Number(selectedMaterial[thickness === '30mm' ? 'price_30mm' : 'price_20mm']) || 0
+    : 0;
+
   // --- Piece handlers ---
   const handleAddPiece = useCallback((pieceType) => {
     pieceCounter += 1;
@@ -46,6 +42,9 @@ export default function QuoteBuilderPage() {
         y_mm: 0,
         edge_type: 'none',
         edge_mm: 0,
+        discount: 0,
+        comments: '',
+        features: [],
       },
     ]);
   }, []);
@@ -60,7 +59,7 @@ export default function QuoteBuilderPage() {
     setPieces((prev) => prev.filter((p) => p.id !== pieceId));
   }, []);
 
-  // --- Accessory handlers (from ProductPicker) ---
+  // --- Accessory handlers ---
   const handleAddAccessory = useCallback((product) => {
     const priceKey = thickness === '30mm' ? 'price_30mm' : 'price_20mm';
     setAccessories((prev) => {
@@ -90,17 +89,22 @@ export default function QuoteBuilderPage() {
 
   // --- Compute all line items for receipt ---
   const allItems = useMemo(() => {
-    const pieceItems = pieces
-      .filter((p) => p.x_mm > 0 && p.y_mm > 0)
-      .map((p) => {
-        const total = calcPieceTotal(p, selectedMaterial, thickness);
-        return {
-          category: 'stones',
-          product_name: `${selectedMaterial?.name || 'Material'} — ${p.piece_type} ${p.description}`.trim(),
-          line_total: total,
-          piece_type: p.piece_type,
-        };
-      });
+    const pieceItems = pieces.map((p) => {
+      const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
+      const materialCost = areaSqm * pricePerSqm;
+      const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
+      const fullPrice = materialCost + featuresTotal;
+      const discount = p.discount || 0;
+      const sale = Math.max(0, fullPrice - discount);
+
+      return {
+        category: 'stones',
+        product_name: `${selectedMaterial?.name || 'Material'} — ${p.piece_type} ${p.description}`.trim(),
+        line_total: sale,
+        features_total: featuresTotal,
+        piece_type: p.piece_type,
+      };
+    });
 
     const accItems = accessories.map((a) => ({
       category: a.category,
@@ -109,7 +113,7 @@ export default function QuoteBuilderPage() {
     }));
 
     return [...pieceItems, ...accItems];
-  }, [pieces, accessories, selectedMaterial, thickness]);
+  }, [pieces, accessories, selectedMaterial, pricePerSqm]);
 
   // --- Save ---
   const handleSave = async (status = 'draft') => {
@@ -130,16 +134,26 @@ export default function QuoteBuilderPage() {
     const total = subtotal + vat;
 
     const storedItems = [
-      ...pieces.map((p) => ({
-        type: 'piece',
-        piece_type: p.piece_type,
-        description: p.description,
-        x_mm: p.x_mm,
-        y_mm: p.y_mm,
-        edge_type: p.edge_type,
-        edge_mm: p.edge_mm,
-        line_total: calcPieceTotal(p, selectedMaterial, thickness),
-      })),
+      ...pieces.map((p) => {
+        const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
+        const materialCost = areaSqm * pricePerSqm;
+        const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
+        return {
+          type: 'piece',
+          piece_type: p.piece_type,
+          description: p.description,
+          x_mm: p.x_mm,
+          y_mm: p.y_mm,
+          edge_type: p.edge_type,
+          edge_mm: p.edge_mm,
+          discount: p.discount || 0,
+          comments: p.comments || '',
+          features: p.features || [],
+          material_cost: materialCost,
+          features_total: featuresTotal,
+          line_total: Math.max(0, materialCost + featuresTotal - (p.discount || 0)),
+        };
+      }),
       ...accessories.map((a) => ({
         type: 'accessory',
         product_id: a.product_id,
@@ -198,7 +212,6 @@ export default function QuoteBuilderPage() {
 
       <div className="quote-builder__layout">
         <div className="quote-builder__left">
-          {/* Step 1: Select material + thickness */}
           <MaterialSelector
             products={products}
             selectedMaterial={selectedMaterial}
@@ -207,7 +220,6 @@ export default function QuoteBuilderPage() {
             onThicknessChange={setThickness}
           />
 
-          {/* Step 2: Add pieces with dimensions */}
           {selectedMaterial && (
             <PieceEditor
               activePieceType={activePieceType}
@@ -218,10 +230,10 @@ export default function QuoteBuilderPage() {
               onRemovePiece={handleRemovePiece}
               materialName={selectedMaterial.name}
               thickness={thickness}
+              pricePerSqm={pricePerSqm}
             />
           )}
 
-          {/* Step 3: Products & Accessories */}
           {selectedMaterial && (
             <ProductPicker
               products={accessoryProducts}

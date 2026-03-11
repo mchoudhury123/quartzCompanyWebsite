@@ -1,4 +1,5 @@
-import { FiPlus, FiTrash2 } from 'react-icons/fi';
+import { useState } from 'react';
+import { FiPlus, FiTrash2, FiEdit2, FiChevronUp } from 'react-icons/fi';
 import './PieceEditor.css';
 
 const PIECE_TYPES = [
@@ -18,6 +19,16 @@ const EDGE_TYPES = [
   { value: 'ogee', label: 'Ogee' },
 ];
 
+const FEATURES = [
+  { value: 'undermount_sink', label: 'Undermount Sink Cutout', price: 85 },
+  { value: 'belfast_sink', label: 'Belfast Sink Cutout', price: 95 },
+  { value: 'hob_cutout', label: 'Hob Cutout', price: 85 },
+  { value: 'tap_hole', label: 'Tap Hole', price: 25 },
+  { value: 'electric_socket', label: 'Electric Socket Cutout', price: 45 },
+  { value: 'pop_up_socket', label: 'Pop-up Socket Cutout', price: 55 },
+  { value: 'drainer_grooves', label: 'Drainer Grooves', price: 65 },
+];
+
 export default function PieceEditor({
   activePieceType,
   onPieceTypeChange,
@@ -27,9 +38,42 @@ export default function PieceEditor({
   onRemovePiece,
   materialName,
   thickness,
+  pricePerSqm,
 }) {
+  const [expandedId, setExpandedId] = useState(null);
+  const [featureSelect, setFeatureSelect] = useState('');
+
   const filtered = pieces.filter((p) => p.piece_type === activePieceType);
   const label = PIECE_TYPES.find((t) => t.key === activePieceType)?.label || activePieceType;
+
+  const calcPrice = (piece) => {
+    const areaSqm = ((piece.x_mm || 0) * (piece.y_mm || 0)) / 1_000_000;
+    return areaSqm * (pricePerSqm || 0);
+  };
+
+  const calcFeaturesTotal = (piece) => {
+    if (!piece.features || piece.features.length === 0) return 0;
+    return piece.features.reduce((sum, f) => sum + (f.price || 0), 0);
+  };
+
+  const handleAddFeature = (pieceId) => {
+    if (!featureSelect) return;
+    const feat = FEATURES.find((f) => f.value === featureSelect);
+    if (!feat) return;
+    const piece = pieces.find((p) => p.id === pieceId);
+    const existing = piece?.features || [];
+    if (existing.some((f) => f.value === feat.value)) return;
+    onUpdatePiece(pieceId, 'features', [...existing, { ...feat }]);
+    setFeatureSelect('');
+  };
+
+  const handleRemoveFeature = (pieceId, featureValue) => {
+    const piece = pieces.find((p) => p.id === pieceId);
+    const updated = (piece?.features || []).filter((f) => f.value !== featureValue);
+    onUpdatePiece(pieceId, 'features', updated);
+  };
+
+  const fmt = (n) => `£${Number(n).toFixed(2)}`;
 
   return (
     <div className="piece-editor">
@@ -50,71 +94,163 @@ export default function PieceEditor({
         })}
       </div>
 
-      {/* Material + thickness header */}
-      {materialName && (
-        <div className="piece-editor__header">
-          <span className="piece-editor__header-mat">{materialName}</span>
-          <span className="piece-editor__header-sep">·</span>
-          <span className="piece-editor__header-dim">X mm</span>
-          <span className="piece-editor__header-dim">Y mm</span>
-          <span className="piece-editor__header-dim piece-editor__header-dim--wide">Edge</span>
-          <span className="piece-editor__header-dim">Edge mm</span>
-        </div>
-      )}
+      {/* Grid header */}
+      <div className="piece-editor__grid-header">
+        <span></span>
+        <span>{materialName}</span>
+        <span></span>
+        <span>X mm</span>
+        <span>Y mm</span>
+        <span>Edge</span>
+        <span>Edge mm</span>
+        <span>Price</span>
+        <span>Discount</span>
+        <span>Sale</span>
+        <span></span>
+      </div>
 
       {/* Piece rows */}
       <div className="piece-editor__rows">
-        {filtered.map((piece, i) => (
-          <div key={piece.id} className="piece-editor__row">
-            <span className="piece-editor__row-num">({i + 1}) {label}</span>
-            <input
-              type="text"
-              placeholder="Desc"
-              value={piece.description}
-              onChange={(e) => onUpdatePiece(piece.id, 'description', e.target.value)}
-              className="piece-editor__input piece-editor__input--desc"
-            />
-            <input
-              type="number"
-              min="0"
-              placeholder="0"
-              value={piece.x_mm || ''}
-              onChange={(e) => onUpdatePiece(piece.id, 'x_mm', parseFloat(e.target.value) || 0)}
-              className="piece-editor__input piece-editor__input--dim"
-            />
-            <input
-              type="number"
-              min="0"
-              placeholder="0"
-              value={piece.y_mm || ''}
-              onChange={(e) => onUpdatePiece(piece.id, 'y_mm', parseFloat(e.target.value) || 0)}
-              className="piece-editor__input piece-editor__input--dim"
-            />
-            <select
-              value={piece.edge_type}
-              onChange={(e) => onUpdatePiece(piece.id, 'edge_type', e.target.value)}
-              className="piece-editor__input piece-editor__input--edge"
-            >
-              {EDGE_TYPES.map((e) => (
-                <option key={e.value} value={e.value}>{e.label}</option>
-              ))}
-            </select>
-            <input
-              type="number"
-              min="0"
-              placeholder="0"
-              value={piece.edge_mm || ''}
-              onChange={(e) => onUpdatePiece(piece.id, 'edge_mm', parseFloat(e.target.value) || 0)}
-              className="piece-editor__input piece-editor__input--dim"
-            />
-            <button
-              className="piece-editor__remove"
-              onClick={() => onRemovePiece(piece.id)}
-            >
-              <FiTrash2 />
-            </button>
-          </div>
-        ))}
+        {filtered.map((piece, i) => {
+          const price = calcPrice(piece);
+          const featuresTotal = calcFeaturesTotal(piece);
+          const fullPrice = price + featuresTotal;
+          const discount = piece.discount || 0;
+          const sale = Math.max(0, fullPrice - discount);
+          const isExpanded = expandedId === piece.id;
+
+          return (
+            <div key={piece.id} className="piece-editor__piece">
+              {/* Main row */}
+              <div className="piece-editor__grid-row">
+                <button
+                  className={`piece-editor__edit-btn ${isExpanded ? 'active' : ''}`}
+                  onClick={() => setExpandedId(isExpanded ? null : piece.id)}
+                  title="Edit details"
+                >
+                  {isExpanded ? <FiChevronUp /> : <FiEdit2 />}
+                </button>
+                <span className="piece-editor__row-label">({i + 1}) {label}</span>
+                <input
+                  type="text"
+                  placeholder="Desc"
+                  value={piece.description}
+                  onChange={(e) => onUpdatePiece(piece.id, 'description', e.target.value)}
+                  className="piece-editor__input"
+                />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={piece.x_mm || ''}
+                  onChange={(e) => onUpdatePiece(piece.id, 'x_mm', parseFloat(e.target.value) || 0)}
+                  className="piece-editor__input piece-editor__input--center"
+                />
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={piece.y_mm || ''}
+                  onChange={(e) => onUpdatePiece(piece.id, 'y_mm', parseFloat(e.target.value) || 0)}
+                  className="piece-editor__input piece-editor__input--center"
+                />
+                <select
+                  value={piece.edge_type}
+                  onChange={(e) => onUpdatePiece(piece.id, 'edge_type', e.target.value)}
+                  className="piece-editor__input"
+                >
+                  {EDGE_TYPES.map((e) => (
+                    <option key={e.value} value={e.value}>{e.label}</option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={piece.edge_mm || ''}
+                  onChange={(e) => onUpdatePiece(piece.id, 'edge_mm', parseFloat(e.target.value) || 0)}
+                  className="piece-editor__input piece-editor__input--center"
+                />
+                <span className="piece-editor__price">{fmt(fullPrice)}</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                  value={piece.discount || ''}
+                  onChange={(e) => onUpdatePiece(piece.id, 'discount', parseFloat(e.target.value) || 0)}
+                  className="piece-editor__input piece-editor__input--center piece-editor__input--discount"
+                />
+                <span className="piece-editor__sale">{fmt(sale)}</span>
+                <button
+                  className="piece-editor__remove"
+                  onClick={() => onRemovePiece(piece.id)}
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+
+              {/* Expanded detail row */}
+              {isExpanded && (
+                <div className="piece-editor__detail">
+                  <div className="piece-editor__detail-row">
+                    <label className="piece-editor__detail-label">Comments</label>
+                    <input
+                      type="text"
+                      placeholder="Notes about this piece..."
+                      value={piece.comments || ''}
+                      onChange={(e) => onUpdatePiece(piece.id, 'comments', e.target.value)}
+                      className="piece-editor__detail-input"
+                    />
+                  </div>
+                  <div className="piece-editor__detail-row">
+                    <label className="piece-editor__detail-label">Add Feature</label>
+                    <div className="piece-editor__feature-add">
+                      <select
+                        value={featureSelect}
+                        onChange={(e) => setFeatureSelect(e.target.value)}
+                        className="piece-editor__detail-select"
+                      >
+                        <option value="">Select feature...</option>
+                        {FEATURES.filter(
+                          (f) => !(piece.features || []).some((pf) => pf.value === f.value)
+                        ).map((f) => (
+                          <option key={f.value} value={f.value}>
+                            {f.label} — {fmt(f.price)}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        className="piece-editor__feature-add-btn"
+                        onClick={() => handleAddFeature(piece.id)}
+                        disabled={!featureSelect}
+                      >
+                        <FiPlus />
+                      </button>
+                    </div>
+                  </div>
+                  {/* Feature list */}
+                  {(piece.features || []).length > 0 && (
+                    <div className="piece-editor__features">
+                      {(piece.features || []).map((f) => (
+                        <div key={f.value} className="piece-editor__feature-item">
+                          <span className="piece-editor__feature-name">{f.label}</span>
+                          <span className="piece-editor__feature-price">{fmt(f.price)}</span>
+                          <button
+                            className="piece-editor__feature-remove"
+                            onClick={() => handleRemoveFeature(piece.id, f.value)}
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Add piece button */}
