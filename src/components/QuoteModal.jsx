@@ -172,7 +172,7 @@ function QuoteModal({ product = null, onClose }) {
 
     if (step === 2) {
       try {
-        await supabase.from('leads').insert({
+        const { data: leadData } = await supabase.from('leads').insert({
           full_name: fullName,
           email,
           phone,
@@ -188,7 +188,17 @@ function QuoteModal({ product = null, onClose }) {
           want_samples: wantSamples,
           want_callback: wantCallback,
           callback_time: wantCallback ? callbackTime : null,
-        });
+        }).select('id').single();
+
+        // Auto-create sample record if customer wants samples
+        if (wantSamples && leadData?.id && selectedProduct) {
+          await supabase.from('lead_samples').insert({
+            lead_id: leadData.id,
+            product_name: selectedProduct.name,
+            colour: selectedProduct.name,
+            material: selectedProduct.material || null,
+          });
+        }
       } catch (err) {
         console.error('Failed to submit lead:', err);
       }

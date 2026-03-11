@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { FiCheck, FiUploadCloud, FiX, FiPlus, FiCalendar } from 'react-icons/fi';
 import products from '../data/products.json';
+import { supabase } from '../lib/supabase';
 import './QuotePage.css';
 
 /* Validation helpers */
@@ -199,7 +200,7 @@ export default function QuotePage() {
   };
 
   /* ── Submission ── */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     /* Honeypot check */
@@ -210,22 +211,41 @@ export default function QuotePage() {
 
     if (!validate()) return;
 
-    const payload = {
-      selectedProducts: selectedIds.map((id) => {
-        const p = products.find((pr) => pr.id === id);
-        return { id: p.id, slug: p.slug, name: p.name, material: p.material };
-      }),
-      wantSamples,
-      kitchenPlan: {
-        mode: planMode,
-        dimensions: planMode === 'dimensions' ? worktopRuns : null,
-        fileName: planMode === 'upload' && uploadedFile ? uploadedFile.name : null,
-      },
-      contact: { ...form },
-    };
+    const selectedProducts = selectedIds.map((id) => {
+      const p = products.find((pr) => pr.id === id);
+      return { id: p.id, slug: p.slug, name: p.name, material: p.material };
+    });
 
-    /* TODO: POST /api/quotes with FormData (include uploadedFile if present) */
-    console.log('Quote request:', payload);
+    try {
+      const { data: leadData } = await supabase.from('leads').insert({
+        full_name: `${form.firstName} ${form.lastName}`.trim(),
+        email: form.email,
+        phone: form.phone,
+        postcode: form.postcode,
+        source: 'quote_page',
+        product_name: selectedProducts.map((p) => p.name).join(', '),
+        product_material: selectedProducts[0]?.material || null,
+        want_samples: wantSamples === true,
+        comments: planMode === 'dimensions'
+          ? `Worktop runs: ${worktopRuns.map((r, i) => `Run ${i + 1}: ${r.length}mm x ${r.width}mm`).join(', ')}`
+          : null,
+      }).select('id').single();
+
+      // Auto-create sample records for each selected product
+      if (wantSamples && leadData?.id && selectedProducts.length > 0) {
+        await supabase.from('lead_samples').insert(
+          selectedProducts.map((p) => ({
+            lead_id: leadData.id,
+            product_name: p.name,
+            colour: p.name,
+            material: p.material || null,
+          }))
+        );
+      }
+    } catch (err) {
+      console.error('Failed to submit quote:', err);
+    }
+
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
