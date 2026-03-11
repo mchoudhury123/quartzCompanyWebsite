@@ -95,7 +95,7 @@ export default function EmailPreviewModal({
             {/* Footer */}
             <div className="epm__email-footer">
               <p>The Quartz Company</p>
-              <p>info@thequartzcompany.co.uk</p>
+              <p>sales@thequartzcompany.co.uk</p>
             </div>
           </div>
         </div>

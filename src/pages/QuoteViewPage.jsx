@@ -189,7 +189,7 @@ export default function QuoteViewPage() {
               <a href="tel:+44000000000" className="qv__btn qv__btn--primary">
                 Contact to Pay
               </a>
-              <a href="mailto:info@thequartzcompany.co.uk" className="qv__btn qv__btn--secondary">
+              <a href="mailto:sales@thequartzcompany.co.uk" className="qv__btn qv__btn--secondary">
                 Email Us
               </a>
             </div>
@@ -201,7 +201,7 @@ export default function QuoteViewPage() {
         {/* Footer */}
         <div className="qv__footer">
           <p>The Quartz Company</p>
-          <p>info@thequartzcompany.co.uk</p>
+          <p>sales@thequartzcompany.co.uk</p>
         </div>
       </div>
     </div>

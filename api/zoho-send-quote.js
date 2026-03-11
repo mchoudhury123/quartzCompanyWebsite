@@ -114,7 +114,7 @@ export default async function handler(req, res) {
   <tr>
     <td style="background:#faf9f7;padding:20px 32px;text-align:center;border-top:1px solid #eee;">
       <p style="margin:0;font-size:12px;color:#999;">The Quartz Company</p>
-      <p style="margin:4px 0 0;font-size:11px;color:#bbb;">info@thequartzcompany.co.uk</p>
+      <p style="margin:4px 0 0;font-size:11px;color:#bbb;">sales@thequartzcompany.co.uk</p>
     </td>
   </tr>
 

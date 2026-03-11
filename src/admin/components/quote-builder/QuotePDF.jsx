@@ -163,7 +163,7 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
       {/* Footer */}
       <div className="qpdf__footer">
         <p>The Quartz Company</p>
-        <p>info@thequartzcompany.co.uk | www.thequartzcompany.co.uk</p>
+        <p>sales@thequartzcompany.co.uk | www.thequartzcompany.co.uk</p>
       </div>
     </div>
   );
