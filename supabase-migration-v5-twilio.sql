@@ -36,3 +36,6 @@ CREATE POLICY "Auth users can insert sms" ON public.lead_sms
 -- 5. Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_lead_sms_lead_id ON public.lead_sms(lead_id);
 CREATE INDEX IF NOT EXISTS idx_lead_sms_created_at ON public.lead_sms(created_at DESC);
+
+-- 6. Call recording URL column
+ALTER TABLE public.lead_calls ADD COLUMN IF NOT EXISTS recording_url text;

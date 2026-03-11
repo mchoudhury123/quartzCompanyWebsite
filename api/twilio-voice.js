@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     const dial = response.dial({
       callerId: TWILIO_PHONE_NUMBER,
       timeout: 30,
+      record: 'record-from-answer-dual',
       action: `/api/twilio-dial-status?leadId=${encodeURIComponent(leadId)}&callSid=${encodeURIComponent(callSid)}`,
       method: 'POST',
     });

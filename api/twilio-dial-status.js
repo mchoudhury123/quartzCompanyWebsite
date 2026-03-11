@@ -27,6 +27,7 @@ export default async function handler(req, res) {
   const dialCallDuration = parseInt(req.body.DialCallDuration || req.body.CallDuration || '0', 10);
   const callSid = req.query.callSid || req.body.CallSid || null;
   const leadId = req.query.leadId;
+  const recordingUrl = req.body.RecordingUrl || null;
 
   const outcome = TWILIO_TO_CRM_OUTCOME[dialCallStatus] || 'no_answer';
 
@@ -43,6 +44,7 @@ export default async function handler(req, res) {
           called_by: 'Admin',
           twilio_call_sid: callSid,
           call_type: 'twilio',
+          recording_url: recordingUrl,
         })
         .select()
         .single();

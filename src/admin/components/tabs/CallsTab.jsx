@@ -1,6 +1,36 @@
+import { useState, useRef } from 'react';
 import useCalls from '../../hooks/useCalls';
-import { FiPhone, FiPhoneIncoming, FiPhoneOutgoing } from 'react-icons/fi';
+import { FiPhone, FiPhoneIncoming, FiPhoneOutgoing, FiPlay, FiPause } from 'react-icons/fi';
 import './CallsTab.css';
+
+function RecordingPlayer({ url }) {
+  const audioRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setPlaying(!playing);
+  };
+
+  return (
+    <div className="calls-tab__recording">
+      <button className="calls-tab__play-btn" onClick={toggle} title={playing ? 'Pause' : 'Play recording'}>
+        {playing ? <FiPause /> : <FiPlay />}
+      </button>
+      <audio
+        ref={audioRef}
+        src={url}
+        onEnded={() => setPlaying(false)}
+        preload="none"
+      />
+    </div>
+  );
+}
 
 export default function CallsTab({ leadId, onLogCall }) {
   const { calls, loading } = useCalls(leadId);
@@ -48,6 +78,7 @@ export default function CallsTab({ leadId, onLogCall }) {
                     <span className="calls-tab__item-duration">{formatDuration(c.duration_seconds)}</span>
                   </div>
                   {c.summary && <p className="calls-tab__item-summary">{c.summary}</p>}
+                  {c.recording_url && <RecordingPlayer url={c.recording_url} />}
                   <span className="calls-tab__item-meta">
                     {c.called_by} · {formatDate(c.called_at)}
                   </span>
