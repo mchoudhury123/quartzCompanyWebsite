@@ -1,12 +1,10 @@
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import useDashboardStats from '../hooks/useDashboardStats';
 import TaskCard from '../components/TaskCard';
-import StatusBadge from '../components/StatusBadge';
 import {
   FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
   FiRepeat, FiCalendar, FiThumbsUp, FiMapPin, FiPhone,
-  FiClipboard, FiCheckSquare
+  FiClipboard
 } from 'react-icons/fi';
 import './AdminDashboard.css';
 
@@ -31,11 +29,10 @@ const ROW_2 = [
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-  const { counts, recentLeads, loading } = useDashboardStats();
+  const { counts, loading } = useDashboardStats();
 
   if (loading) return <div className="admin-page-loading">Loading dashboard...</div>;
 
-  const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const displayName = user?.email?.split('@')[0]?.replace(/[._]/g, ' ') || 'there';
 
   const renderCard = (card) => {
@@ -76,47 +73,6 @@ export default function AdminDashboard() {
       </div>
       <div className="admin-dashboard__tasks">
         {ROW_2.map(renderCard)}
-      </div>
-
-      <div className="admin-dashboard__recent">
-        <div className="admin-dashboard__section-header">
-          <h2 className="admin-dashboard__section-title">Recent Leads</h2>
-          <Link to="/admin/leads" className="admin-dashboard__view-all">View All</Link>
-        </div>
-        {recentLeads.length === 0 ? (
-          <div className="admin-dashboard__empty">
-            <p>No leads yet. Leads from the quote form and contact page will appear here.</p>
-          </div>
-        ) : (
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Source</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentLeads.map((lead) => (
-                  <tr key={lead.id}>
-                    <td>
-                      <Link to={`/admin/leads/${lead.id}`} className="admin-table__link">
-                        {lead.full_name}
-                      </Link>
-                    </td>
-                    <td>{lead.email}</td>
-                    <td><StatusBadge status={lead.status} /></td>
-                    <td className="admin-table__source">{lead.source === 'quote_modal' ? 'Quote' : 'Contact'}</td>
-                    <td className="admin-table__date">{formatDate(lead.created_at)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );

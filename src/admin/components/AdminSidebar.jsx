@@ -4,7 +4,7 @@ import './AdminSidebar.css';
 
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
-  { to: '/admin/leads', label: 'Leads', icon: FiUsers },
+  { to: '/admin/leads', label: 'Clients', icon: FiUsers },
 ];
 
 export default function AdminSidebar() {

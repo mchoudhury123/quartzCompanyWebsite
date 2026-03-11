@@ -28,54 +28,12 @@
 
 .admin-dashboard__tasks {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
-.admin-dashboard__section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.admin-dashboard__section-title {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--admin-text);
-  margin: 0;
-}
-
-.admin-dashboard__view-all {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-gold, #c5a47e);
-  text-decoration: none;
-}
-
-.admin-dashboard__view-all:hover {
-  text-decoration: underline;
-}
-
-.admin-dashboard__empty {
-  background: var(--admin-card-bg);
-  border-radius: var(--admin-radius);
-  padding: 3rem 2rem;
-  text-align: center;
-  box-shadow: var(--admin-shadow);
-}
-
-.admin-dashboard__empty p {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.92rem;
-  color: var(--admin-text-light);
-  margin: 0;
-}
-
-/* Shared admin table styles */
+/* Shared admin table styles (used by LeadsListPage) */
 .admin-table-wrap {
   background: var(--admin-card-bg);
   border-radius: var(--admin-radius);

@@ -5,7 +5,7 @@ import './AdminTopbar.css';
 
 const pageTitles = {
   '/admin/dashboard': 'Dashboard',
-  '/admin/leads': 'Leads',
+  '/admin/leads': 'Clients',
 };
 
 export default function AdminTopbar() {
@@ -14,7 +14,7 @@ export default function AdminTopbar() {
   const navigate = useNavigate();
 
   const title = pageTitles[location.pathname] ||
-    (location.pathname.startsWith('/admin/leads/') ? 'Lead Detail' : 'Admin');
+    (location.pathname.startsWith('/admin/leads/') ? 'Client Detail' : 'Admin');
 
   const handleSignOut = async () => {
     await signOut();

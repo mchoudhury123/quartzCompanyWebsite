@@ -9,14 +9,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  padding: 1.25rem 0.75rem 1rem;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem 1.25rem;
   background: var(--admin-card-bg);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: var(--admin-shadow);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  min-height: 130px;
+  min-height: 160px;
 }
 
 .task-card:hover {
@@ -29,12 +29,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   background: var(--card-bg);
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   flex-shrink: 0;
 }
 
@@ -59,16 +59,16 @@
 
 .task-card__count {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--admin-text);
   line-height: 1;
-  min-height: 1.4rem;
+  min-height: 1.6rem;
 }
 
 .task-card__label {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--admin-text-light);
   text-align: center;
