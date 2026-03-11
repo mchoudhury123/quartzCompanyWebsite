@@ -40,7 +40,7 @@ export default function useSms(leadId) {
         to_number: to,
         from_number: 'Twilio',
         twilio_message_sid: result.messageSid || null,
-        status: result.status || 'sent',
+        status: 'sent',
         sent_by: 'Admin',
       })
       .select()
