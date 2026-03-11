@@ -1,6 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import useQuotes from '../../hooks/useQuotes';
 import StatusBadge from '../StatusBadge';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiEdit2 } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -12,6 +13,7 @@ const QUOTE_STATUS_MAP = {
 };
 
 export default function QuotesTab({ leadId, onCreateQuote }) {
+  const navigate = useNavigate();
   const { quotes, loading, updateQuoteStatus } = useQuotes(leadId);
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-GB', {
@@ -50,7 +52,15 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
               </div>
               <div className="quotes-tab__card-actions">
                 {q.status === 'draft' && (
-                  <button className="quotes-tab__action" onClick={() => updateQuoteStatus(q.id, 'sent')}>Mark Sent</button>
+                  <>
+                    <button
+                      className="quotes-tab__action quotes-tab__action--edit"
+                      onClick={() => navigate(`/admin/leads/${leadId}/quote/${q.id}`)}
+                    >
+                      <FiEdit2 /> Edit
+                    </button>
+                    <button className="quotes-tab__action" onClick={() => updateQuoteStatus(q.id, 'sent')}>Mark Sent</button>
+                  </>
                 )}
                 {q.status === 'sent' && (
                   <>

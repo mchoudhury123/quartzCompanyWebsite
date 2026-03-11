@@ -1,21 +1,27 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useProducts from '../hooks/useProducts';
 import useQuotes from '../hooks/useQuotes';
+import useQuoteDetail from '../hooks/useQuoteDetail';
 import MaterialSelector from '../components/quote-builder/MaterialSelector';
 import PieceEditor from '../components/quote-builder/PieceEditor';
 import ProductPicker from '../components/quote-builder/ProductPicker';
 import ReceiptPanel from '../components/quote-builder/ReceiptPanel';
+import QuotePDF from '../components/quote-builder/QuotePDF';
 import { FiArrowLeft } from 'react-icons/fi';
 import './QuoteBuilderPage.css';
 
 let pieceCounter = 0;
 
 export default function QuoteBuilderPage() {
-  const { id: leadId } = useParams();
+  const { id: leadId, quoteId } = useParams();
   const navigate = useNavigate();
   const { products, loading: productsLoading } = useProducts();
-  const { createQuote } = useQuotes(leadId);
+  const { createQuote, updateQuote } = useQuotes(leadId);
+  const { quote: existingQuote, loading: quoteLoading } = useQuoteDetail(quoteId);
+  const pdfRef = useRef(null);
+
+  const isEditMode = !!quoteId;
 
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [thickness, setThickness] = useState('20mm');
@@ -23,6 +29,61 @@ export default function QuoteBuilderPage() {
   const [activePieceType, setActivePieceType] = useState('worktop');
   const [accessories, setAccessories] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [initialized, setInitialized] = useState(!isEditMode);
+
+  // Load existing quote data in edit mode
+  useEffect(() => {
+    if (!isEditMode || !existingQuote || !products.length || initialized) return;
+
+    // Restore thickness
+    if (existingQuote.selected_thickness) {
+      setThickness(existingQuote.selected_thickness);
+    }
+
+    // Restore material
+    const materialName = existingQuote.title?.split(' — ')[0];
+    if (materialName) {
+      const mat = products.find((p) => p.category === 'stones' && p.name === materialName);
+      if (mat) setSelectedMaterial(mat);
+    }
+
+    // Restore items from stored JSON
+    const items = existingQuote.items || [];
+    const restoredPieces = [];
+    const restoredAccessories = [];
+
+    items.forEach((item) => {
+      if (item.type === 'piece') {
+        pieceCounter += 1;
+        restoredPieces.push({
+          id: `piece-${pieceCounter}`,
+          piece_type: item.piece_type,
+          description: item.description || '',
+          x_mm: item.x_mm || 0,
+          y_mm: item.y_mm || 0,
+          edge_type: item.edge_type || 'none',
+          edge_mm: item.edge_mm || 0,
+          discount: item.discount || 0,
+          comments: item.comments || '',
+          features: item.features || [],
+        });
+      } else if (item.type === 'accessory') {
+        restoredAccessories.push({
+          product_id: item.product_id,
+          product_name: item.product_name,
+          category: item.category,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          unit: item.unit || 'each',
+          line_total: item.line_total,
+        });
+      }
+    });
+
+    setPieces(restoredPieces);
+    setAccessories(restoredAccessories);
+    setInitialized(true);
+  }, [isEditMode, existingQuote, products, initialized]);
 
   const pricePerSqm = selectedMaterial
     ? Number(selectedMaterial[thickness === '30mm' ? 'price_30mm' : 'price_20mm']) || 0
@@ -118,11 +179,8 @@ export default function QuoteBuilderPage() {
     return [...pieceItems, ...accItems];
   }, [pieces, accessories, selectedMaterial, pricePerSqm]);
 
-  // --- Save ---
-  const handleSave = async (status = 'draft') => {
-    if (saving) return;
-    setSaving(true);
-
+  // --- Build quote payload ---
+  const buildPayload = (status, validUntil = null) => {
     const materialsTotal = allItems
       .filter((i) => i.category === 'stones')
       .reduce((s, i) => s + i.line_total, 0);
@@ -135,6 +193,7 @@ export default function QuoteBuilderPage() {
     const subtotal = materialsTotal + processesTotal + productsTotal;
     const vat = subtotal * 0.2;
     const total = subtotal + vat;
+    const depositAmount = total * 0.2;
 
     const storedItems = [
       ...pieces.map((p) => {
@@ -168,28 +227,107 @@ export default function QuoteBuilderPage() {
       })),
     ];
 
-    const depositAmount = total * 0.2;
     const pieceCount = pieces.length;
-    const { error } = await createQuote({
+    return {
       title: `${selectedMaterial?.name || 'Quote'} — ${pieceCount} piece${pieceCount !== 1 ? 's' : ''}`,
       description: `${thickness} · ${pieces.map((p) => p.piece_type).join(', ')}`,
       items: storedItems,
       subtotal,
       vat,
       total,
-      validUntil: null,
-      depositAmount,
-      selectedThickness: thickness,
-    });
+      status,
+      valid_until: validUntil,
+      deposit_amount: depositAmount,
+      selected_thickness: thickness,
+    };
+  };
 
+  // --- Save or update ---
+  const saveQuote = async (status, validUntil = null) => {
+    const payload = buildPayload(status, validUntil);
+
+    if (isEditMode && quoteId) {
+      return updateQuote(quoteId, payload);
+    } else {
+      return createQuote({
+        title: payload.title,
+        description: payload.description,
+        items: payload.items,
+        subtotal: payload.subtotal,
+        vat: payload.vat,
+        total: payload.total,
+        validUntil: payload.valid_until,
+        depositAmount: payload.deposit_amount,
+        selectedThickness: payload.selected_thickness,
+      });
+    }
+  };
+
+  // --- Save Draft ---
+  const handleSaveDraft = async () => {
+    if (saving) return;
+    setSaving(true);
+    const { error } = await saveQuote('draft');
     setSaving(false);
     if (!error) {
       navigate(`/admin/leads/${leadId}?tab=quotes`);
     }
   };
 
-  if (productsLoading) {
-    return <div className="admin-page-loading">Loading products...</div>;
+  // --- Download PDF ---
+  const handleDownloadPDF = async () => {
+    if (saving) return;
+    setSaving(true);
+    const { data, error } = await saveQuote('sent');
+    setSaving(false);
+    if (!error && pdfRef.current) {
+      pdfRef.current.generate(data);
+    }
+  };
+
+  // --- Send Email ---
+  const handleSendEmail = async () => {
+    if (saving) return;
+    setSaving(true);
+
+    const validUntil = new Date();
+    validUntil.setDate(validUntil.getDate() + 2);
+    const validUntilStr = validUntil.toISOString().split('T')[0];
+
+    const { data, error } = await saveQuote('sent', validUntilStr);
+    if (error) {
+      setSaving(false);
+      return;
+    }
+
+    try {
+      const payload = buildPayload('sent', validUntilStr);
+      const res = await fetch('/api/zoho-send-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quoteId: data?.id || quoteId,
+          quoteNumber: data?.quote_number || existingQuote?.quote_number || '',
+          total: payload.total,
+          deposit: payload.deposit_amount,
+          validUntil: validUntilStr,
+          leadId,
+        }),
+      });
+      const result = await res.json();
+      if (result.error) {
+        alert(`Email sending failed: ${result.error}`);
+      }
+    } catch (err) {
+      alert(`Email sending failed: ${err.message}`);
+    }
+
+    setSaving(false);
+    navigate(`/admin/leads/${leadId}?tab=quotes`);
+  };
+
+  if (productsLoading || (isEditMode && quoteLoading)) {
+    return <div className="admin-page-loading">Loading...</div>;
   }
 
   const today = new Date().toLocaleDateString('en-GB', {
@@ -199,6 +337,16 @@ export default function QuoteBuilderPage() {
   });
 
   const accessoryProducts = products.filter((p) => p.category !== 'stones');
+
+  // Build PDF data
+  const pdfData = {
+    quoteNumber: existingQuote?.quote_number || 'Draft',
+    date: today,
+    materialName: selectedMaterial?.name || '',
+    thickness,
+    items: allItems,
+    allItems,
+  };
 
   return (
     <div className="quote-builder">
@@ -210,6 +358,9 @@ export default function QuoteBuilderPage() {
           <FiArrowLeft /> Back to Client
         </button>
         <div className="quote-builder__topbar-right">
+          {isEditMode && existingQuote?.quote_number && (
+            <span className="quote-builder__qnum">{existingQuote.quote_number}</span>
+          )}
           <span className="quote-builder__date">{today}</span>
         </div>
       </div>
@@ -250,12 +401,16 @@ export default function QuoteBuilderPage() {
         <div className="quote-builder__right">
           <ReceiptPanel
             items={allItems}
-            onSave={() => handleSave('draft')}
-            onSend={() => handleSave('sent')}
+            onSaveDraft={handleSaveDraft}
+            onDownloadPDF={handleDownloadPDF}
+            onSendEmail={handleSendEmail}
             saving={saving}
           />
         </div>
       </div>
+
+      {/* Hidden PDF render target */}
+      <QuotePDF ref={pdfRef} data={pdfData} />
     </div>
   );
 }

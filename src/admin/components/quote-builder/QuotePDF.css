@@ -1,0 +1,157 @@
+.qpdf {
+  width: 794px;
+  padding: 48px 40px;
+  background: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #1a1a1a;
+  box-sizing: border-box;
+}
+
+/* Header */
+.qpdf__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.qpdf__logo {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #c5a47e;
+}
+
+.qpdf__header-right {
+  text-align: right;
+}
+
+.qpdf__qnum {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.qpdf__date {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Divider */
+.qpdf__divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 12px 0;
+}
+
+/* Material banner */
+.qpdf__material {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.qpdf__material-label {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Table */
+.qpdf__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4px;
+}
+
+.qpdf__th {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  padding: 8px 6px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.qpdf__th--right {
+  text-align: right;
+}
+
+.qpdf__section {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #c5a47e;
+  padding: 10px 6px 4px;
+  background: #faf9f7;
+}
+
+.qpdf__cell {
+  font-size: 12px;
+  padding: 7px 6px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #333;
+}
+
+.qpdf__cell--right {
+  text-align: right;
+}
+
+.qpdf__cell--bold {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.qpdf__cell--discount {
+  color: #ef4444;
+}
+
+/* Totals */
+.qpdf__totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 320px;
+  margin-left: auto;
+}
+
+.qpdf__total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+}
+
+.qpdf__total-row--saved {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.qpdf__total-row--grand {
+  font-size: 16px;
+  font-weight: 800;
+  color: #c5a47e;
+  padding-top: 4px;
+}
+
+.qpdf__total-row--deposit {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+/* Footer */
+.qpdf__footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.qpdf__footer p {
+  margin: 2px 0;
+}

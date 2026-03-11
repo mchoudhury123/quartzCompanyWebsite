@@ -1,0 +1,299 @@
+.qv {
+  min-height: 100vh;
+  background: #f7f7f7;
+  font-family: 'Inter', Arial, sans-serif;
+  padding: 32px 16px;
+}
+
+.qv__loading {
+  text-align: center;
+  padding: 80px 0;
+  font-size: 1rem;
+  color: #888;
+}
+
+.qv__error {
+  text-align: center;
+  padding: 60px 0;
+  font-size: 1rem;
+  color: #888;
+}
+
+.qv__container {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+/* Header */
+.qv__header {
+  background: #c5a47e;
+  padding: 28px 32px;
+  text-align: center;
+}
+
+.qv__logo {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.06em;
+}
+
+/* Expired Banner */
+.qv__expired-banner {
+  background: #fef2f2;
+  border-bottom: 1px solid #fecaca;
+  padding: 12px 32px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #dc2626;
+  text-align: center;
+}
+
+/* Info */
+.qv__info {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.qv__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qv__info-label {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+.qv__info-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.qv__info-value--expired {
+  color: #dc2626;
+  text-decoration: line-through;
+}
+
+/* Items Table */
+.qv__items {
+  padding: 0 32px;
+}
+
+.qv__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.qv__th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  padding: 14px 6px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.qv__th--right {
+  text-align: right;
+}
+
+.qv__section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #c5a47e;
+  padding: 12px 6px 4px;
+  background: #faf9f7;
+}
+
+.qv__cell {
+  font-size: 0.82rem;
+  padding: 10px 6px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #333;
+}
+
+.qv__cell--right {
+  text-align: right;
+}
+
+.qv__cell--bold {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.qv__cell--discount {
+  color: #ef4444;
+}
+
+.qv__cell-dims {
+  font-size: 0.72rem;
+  color: #aaa;
+  margin-left: 4px;
+}
+
+.qv__cell-qty {
+  font-size: 0.72rem;
+  color: #888;
+}
+
+/* Totals */
+.qv__totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 32px;
+  border-top: 1px solid #e5e7eb;
+  max-width: 300px;
+  margin-left: auto;
+}
+
+.qv__total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.qv__total-row--grand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #c5a47e;
+  padding-top: 6px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 4px;
+}
+
+/* Deposit */
+.qv__deposit {
+  margin: 0 32px 24px;
+  padding: 24px;
+  background: #faf9f7;
+  border-radius: 12px;
+  border: 1px solid #f0ede8;
+}
+
+.qv__deposit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.qv__deposit-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.qv__deposit-amount {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ef4444;
+}
+
+.qv__deposit-note {
+  font-size: 0.82rem;
+  color: #888;
+  margin: 0 0 16px;
+}
+
+.qv__deposit-action {
+  display: flex;
+  gap: 10px;
+}
+
+.qv__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.qv__btn--primary {
+  background: #c5a47e;
+  color: #fff;
+}
+
+.qv__btn--primary:hover {
+  background: #b8956e;
+}
+
+.qv__btn--secondary {
+  background: #f3f4f6;
+  color: #333;
+}
+
+.qv__btn--secondary:hover {
+  background: #e5e7eb;
+}
+
+.qv__deposit-expired {
+  font-size: 0.85rem;
+  color: #dc2626;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Footer */
+.qv__footer {
+  padding: 20px 32px;
+  text-align: center;
+  border-top: 1px solid #f0f0f0;
+}
+
+.qv__footer p {
+  margin: 2px 0;
+  font-size: 0.75rem;
+  color: #bbb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .qv {
+    padding: 16px 8px;
+  }
+
+  .qv__info,
+  .qv__items,
+  .qv__totals {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .qv__deposit {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .qv__deposit-action {
+    flex-direction: column;
+  }
+
+  .qv__header {
+    padding: 20px 16px;
+  }
+}

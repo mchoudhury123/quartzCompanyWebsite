@@ -31,10 +31,14 @@ import AdminDashboard from './admin/pages/AdminDashboard';
 import LeadsListPage from './admin/pages/LeadsListPage';
 import LeadDetailPage from './admin/pages/LeadDetailPage';
 import QuoteBuilderPage from './admin/pages/QuoteBuilderPage';
+import QuoteViewPage from './pages/QuoteViewPage';
 
 export default function App() {
   return (
     <Routes>
+      {/* Public quote view (standalone, no layout wrapper) */}
+      <Route path="/quote/view/:quoteId" element={<QuoteViewPage />} />
+
       {/* Public site */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<HomePage />} />
@@ -70,6 +74,7 @@ export default function App() {
           <Route path="leads" element={<LeadsListPage />} />
           <Route path="leads/:id" element={<LeadDetailPage />} />
           <Route path="leads/:id/quote/new" element={<QuoteBuilderPage />} />
+          <Route path="leads/:id/quote/:quoteId" element={<QuoteBuilderPage />} />
         </Route>
       </Route>
     </Routes>

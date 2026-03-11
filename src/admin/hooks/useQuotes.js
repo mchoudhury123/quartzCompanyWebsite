@@ -51,6 +51,25 @@ export default function useQuotes(leadId) {
     return { data, error };
   };
 
+  const updateQuote = async (quoteId, updates) => {
+    const { data, error } = await supabase
+      .from('lead_quotes')
+      .update(updates)
+      .eq('id', quoteId)
+      .select()
+      .single();
+    if (!error) {
+      await logActivity(leadId, {
+        type: 'quote_updated',
+        title: `Quote updated`,
+        description: updates.title || '',
+        metadata: { quote_id: quoteId },
+      });
+      await fetch();
+    }
+    return { data, error };
+  };
+
   const updateQuoteStatus = async (quoteId, status) => {
     const { error } = await supabase
       .from('lead_quotes')
@@ -68,5 +87,5 @@ export default function useQuotes(leadId) {
     return { error };
   };
 
-  return { quotes, loading, createQuote, updateQuoteStatus, refetch: fetch };
+  return { quotes, loading, createQuote, updateQuote, updateQuoteStatus, refetch: fetch };
 }

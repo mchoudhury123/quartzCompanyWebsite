@@ -38,6 +38,13 @@
   gap: 1rem;
 }
 
+.quote-builder__qnum {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
 .quote-builder__date {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.85rem;

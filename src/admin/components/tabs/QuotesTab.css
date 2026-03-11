@@ -145,3 +145,15 @@
 .quotes-tab__action--reject:hover {
   background: #fef2f2;
 }
+
+.quotes-tab__action--edit {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-gold, #c5a47e);
+  border-color: var(--color-gold, #c5a47e);
+}
+
+.quotes-tab__action--edit:hover {
+  background: #fefce8;
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { FiSave, FiDownload, FiMail } from 'react-icons/fi';
 import './ReceiptPanel.css';
 
 function getCategoryLabel(cat) {
@@ -20,8 +21,9 @@ function getPricingGroup(cat) {
 
 export default function ReceiptPanel({
   items,
-  onSave,
-  onSend,
+  onSaveDraft,
+  onDownloadPDF,
+  onSendEmail,
   saving,
 }) {
   const [detailed, setDetailed] = useState(false);
@@ -161,20 +163,27 @@ export default function ReceiptPanel({
       </div>
 
       {/* Actions */}
-      <div className="rp__actions">
+      <div className="rp__actions-stack">
         <button
           className="rp__btn rp__btn--draft"
-          onClick={onSave}
+          onClick={onSaveDraft}
           disabled={saving}
         >
-          {saving ? 'Saving...' : 'Save Draft'}
+          <FiSave /> {saving ? 'Saving...' : 'Save Draft'}
         </button>
         <button
-          className="rp__btn rp__btn--send"
-          onClick={onSend}
+          className="rp__btn rp__btn--pdf"
+          onClick={onDownloadPDF}
           disabled={saving || items.length === 0}
         >
-          Send Quote
+          <FiDownload /> Download PDF
+        </button>
+        <button
+          className="rp__btn rp__btn--email"
+          onClick={onSendEmail}
+          disabled={saving || items.length === 0}
+        >
+          <FiMail /> Send Email
         </button>
       </div>
     </div>
