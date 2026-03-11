@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import useLeadDetail from '../hooks/useLeadDetail';
 import ClientInfoPanel from '../components/ClientInfoPanel';
 import ClientDetailTabs from '../components/ClientDetailTabs';
@@ -10,7 +10,6 @@ import OrdersTab from '../components/tabs/OrdersTab';
 import SamplesTab from '../components/tabs/SamplesTab';
 import FilesTab from '../components/tabs/FilesTab';
 import CallsTab from '../components/tabs/CallsTab';
-import QuoteCreateModal from '../components/modals/QuoteCreateModal';
 import SampleCreateModal from '../components/modals/SampleCreateModal';
 import CallLogModal from '../components/modals/CallLogModal';
 import FileUploadModal from '../components/modals/FileUploadModal';
@@ -19,6 +18,7 @@ import './LeadDetailPage.css';
 
 export default function LeadDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { lead, loading, updateStatus, updateLeadField } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
 
@@ -31,7 +31,7 @@ export default function LeadDetailPage() {
         setModal('sample');
         break;
       case 'quote':
-        setModal('quote');
+        navigate(`/admin/leads/${id}/quote/new`);
         break;
       case 'file':
         setModal('file');
@@ -45,7 +45,7 @@ export default function LeadDetailPage() {
   const renderTab = (activeTab) => {
     switch (activeTab) {
       case 'activity': return <ActivityTab leadId={id} />;
-      case 'quotes': return <QuotesTab leadId={id} onCreateQuote={() => setModal('quote')} />;
+      case 'quotes': return <QuotesTab leadId={id} onCreateQuote={() => navigate(`/admin/leads/${id}/quote/new`)} />;
       case 'orders': return <OrdersTab leadId={id} />;
       case 'samples': return <SamplesTab leadId={id} onCreateSample={() => setModal('sample')} />;
       case 'files': return <FilesTab leadId={id} onUploadFile={() => setModal('file')} />;
@@ -80,7 +80,6 @@ export default function LeadDetailPage() {
         </div>
       </div>
 
-      {modal === 'quote' && <QuoteCreateModal leadId={id} onClose={() => setModal(null)} />}
       {modal === 'sample' && <SampleCreateModal leadId={id} onClose={() => setModal(null)} />}
       {modal === 'call' && <CallLogModal leadId={id} onClose={() => setModal(null)} />}
       {modal === 'file' && <FileUploadModal leadId={id} onClose={() => setModal(null)} />}

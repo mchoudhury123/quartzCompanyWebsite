@@ -30,6 +30,7 @@ import AdminLoginPage from './admin/pages/AdminLoginPage';
 import AdminDashboard from './admin/pages/AdminDashboard';
 import LeadsListPage from './admin/pages/LeadsListPage';
 import LeadDetailPage from './admin/pages/LeadDetailPage';
+import QuoteBuilderPage from './admin/pages/QuoteBuilderPage';
 
 export default function App() {
   return (
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="leads" element={<LeadsListPage />} />
           <Route path="leads/:id" element={<LeadDetailPage />} />
+          <Route path="leads/:id/quote/new" element={<QuoteBuilderPage />} />
         </Route>
       </Route>
     </Routes>

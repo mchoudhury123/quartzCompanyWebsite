@@ -20,7 +20,7 @@ export default function useQuotes(leadId) {
 
   useEffect(() => { fetch(); }, [fetch]);
 
-  const createQuote = async ({ title, description, items, subtotal, vat, total, validUntil }) => {
+  const createQuote = async ({ title, description, items, subtotal, vat, total, validUntil, depositAmount, selectedThickness }) => {
     const quoteNumber = await generateQuoteNumber();
     const { data, error } = await supabase
       .from('lead_quotes')
@@ -34,6 +34,8 @@ export default function useQuotes(leadId) {
         vat,
         total,
         valid_until: validUntil,
+        deposit_amount: depositAmount || 0,
+        selected_thickness: selectedThickness || '20mm',
       })
       .select()
       .single();

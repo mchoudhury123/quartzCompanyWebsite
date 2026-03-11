@@ -1,0 +1,67 @@
+.product-picker {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+.product-picker__title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  margin: 0 0 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.product-picker__row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.product-picker__select {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text);
+  background: var(--admin-card-bg);
+  outline: none;
+  cursor: pointer;
+}
+
+.product-picker__select--wide {
+  flex: 2;
+}
+
+.product-picker__select:focus {
+  border-color: var(--color-gold, #c5a47e);
+}
+
+.product-picker__add {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-gold, #c5a47e);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.product-picker__add:hover:not(:disabled) {
+  background: #b8956e;
+}
+
+.product-picker__add:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
