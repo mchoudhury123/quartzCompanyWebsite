@@ -46,17 +46,19 @@ export default function useSms(leadId) {
       .select()
       .single();
 
-    if (!error) {
-      await logActivity(leadId, {
-        type: 'sms_sent',
-        title: 'SMS sent',
-        description: body.length > 100 ? body.slice(0, 100) + '...' : body,
-        metadata: { sms_id: data.id, to },
-      });
-      await fetchMessages();
+    if (error) {
+      return { error: error.message || 'Failed to save SMS to database' };
     }
 
-    return { data, error };
+    await logActivity(leadId, {
+      type: 'sms_sent',
+      title: 'SMS sent',
+      description: body.length > 100 ? body.slice(0, 100) + '...' : body,
+      metadata: { sms_id: data.id, to },
+    });
+    await fetchMessages();
+
+    return { data };
   };
 
   return { messages, loading, sendSms, refetch: fetchMessages };
