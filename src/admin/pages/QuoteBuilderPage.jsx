@@ -22,7 +22,6 @@ export default function QuoteBuilderPage() {
   const [pieces, setPieces] = useState([]);
   const [activePieceType, setActivePieceType] = useState('worktop');
   const [accessories, setAccessories] = useState([]);
-  const [depositAmount, setDepositAmount] = useState(0);
   const [saving, setSaving] = useState(false);
 
   const pricePerSqm = selectedMaterial
@@ -100,6 +99,8 @@ export default function QuoteBuilderPage() {
       return {
         category: 'stones',
         product_name: `${selectedMaterial?.name || 'Material'} — ${p.piece_type} ${p.description}`.trim(),
+        original_price: fullPrice,
+        discount,
         line_total: sale,
         features_total: featuresTotal,
         piece_type: p.piece_type,
@@ -109,6 +110,8 @@ export default function QuoteBuilderPage() {
     const accItems = accessories.map((a) => ({
       category: a.category,
       product_name: a.product_name,
+      original_price: a.line_total,
+      discount: 0,
       line_total: a.line_total,
     }));
 
@@ -165,6 +168,7 @@ export default function QuoteBuilderPage() {
       })),
     ];
 
+    const depositAmount = total * 0.2;
     const pieceCount = pieces.length;
     const { error } = await createQuote({
       title: `${selectedMaterial?.name || 'Quote'} — ${pieceCount} piece${pieceCount !== 1 ? 's' : ''}`,
@@ -246,8 +250,6 @@ export default function QuoteBuilderPage() {
         <div className="quote-builder__right">
           <ReceiptPanel
             items={allItems}
-            depositAmount={depositAmount}
-            onDepositChange={setDepositAmount}
             onSave={() => handleSave('draft')}
             onSend={() => handleSave('sent')}
             saving={saving}

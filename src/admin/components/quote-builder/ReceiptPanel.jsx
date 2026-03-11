@@ -1,117 +1,176 @@
 import { useMemo, useState } from 'react';
 import './ReceiptPanel.css';
 
-function getPricingCategory(category) {
-  if (category === 'stones') return 'materials';
-  if (category === 'processes') return 'processes';
+function getCategoryLabel(cat) {
+  if (cat === 'stones') return 'Materials';
+  if (cat === 'processes') return 'Processes';
+  if (cat === 'worktop') return 'Products';
+  if (cat === 'upstand') return 'Products';
+  if (cat === 'splashback') return 'Products';
+  if (cat === 'cladding') return 'Products';
+  if (cat === 'cill') return 'Products';
+  return 'Products';
+}
+
+function getPricingGroup(cat) {
+  if (cat === 'stones') return 'materials';
+  if (cat === 'processes') return 'processes';
   return 'products';
 }
 
 export default function ReceiptPanel({
   items,
-  depositAmount,
-  onDepositChange,
   onSave,
   onSend,
   saving,
 }) {
+  const [detailed, setDetailed] = useState(false);
   const [showVat, setShowVat] = useState(true);
 
   const totals = useMemo(() => {
-    const materials = items
-      .filter((i) => getPricingCategory(i.category) === 'materials')
-      .reduce((sum, i) => sum + i.line_total, 0);
-    const processes = items
-      .filter((i) => getPricingCategory(i.category) === 'processes')
-      .reduce((sum, i) => sum + i.line_total, 0);
-    const products = items
-      .filter((i) => getPricingCategory(i.category) === 'products')
-      .reduce((sum, i) => sum + i.line_total, 0);
+    const groups = { materials: { price: 0, discount: 0, sale: 0 }, processes: { price: 0, discount: 0, sale: 0 }, products: { price: 0, discount: 0, sale: 0 } };
 
-    const subtotal = materials + processes + products;
-    const vat = subtotal * 0.2;
-    const grandTotal = subtotal + vat;
+    items.forEach((i) => {
+      const g = getPricingGroup(i.category);
+      groups[g].price += i.original_price || 0;
+      groups[g].discount += i.discount || 0;
+      groups[g].sale += i.line_total || 0;
+    });
 
-    return { materials, processes, products, subtotal, vat, grandTotal };
+    const totalPrice = groups.materials.price + groups.processes.price + groups.products.price;
+    const totalDiscount = groups.materials.discount + groups.processes.discount + groups.products.discount;
+    const totalSale = groups.materials.sale + groups.processes.sale + groups.products.sale;
+    const vat = totalSale * 0.2;
+    const grandTotal = totalSale + vat;
+    const deposit = grandTotal * 0.2;
+
+    return { groups, totalPrice, totalDiscount, totalSale, vat, grandTotal, deposit };
   }, [items]);
 
   const fmt = (n) => `£${Number(n).toFixed(2)}`;
 
+  const renderLine = (label, price, discount, sale, bold) => (
+    <div className={`rp__row ${bold ? 'rp__row--bold' : ''}`}>
+      <span className="rp__row-label">{label}</span>
+      {detailed ? (
+        <>
+          <span className="rp__row-val">{fmt(price)}</span>
+          <span className="rp__row-val rp__row-val--discount">{fmt(discount)}</span>
+          <span className="rp__row-val rp__row-val--sale">{fmt(sale)}</span>
+        </>
+      ) : (
+        <span className="rp__row-val rp__row-val--sale">{fmt(sale)}</span>
+      )}
+    </div>
+  );
+
   return (
-    <div className="receipt-panel">
-      <div className="receipt-panel__header">
-        <h3 className="receipt-panel__title">Totals</h3>
-        <button
-          className={`receipt-panel__vat-toggle ${showVat ? 'active' : ''}`}
-          onClick={() => setShowVat(!showVat)}
-        >
-          {showVat ? 'Inc. VAT' : 'Exc. VAT'}
-        </button>
+    <div className={`receipt-panel ${detailed ? 'receipt-panel--detailed' : ''}`}>
+      {/* Header toggles */}
+      <div className="rp__header">
+        <h3 className="rp__title">Totals</h3>
+        <div className="rp__toggles">
+          <button
+            className={`rp__toggle ${detailed ? 'active' : ''}`}
+            onClick={() => setDetailed(!detailed)}
+          >
+            Detailed
+          </button>
+          <button
+            className={`rp__toggle ${showVat ? 'active' : ''}`}
+            onClick={() => setShowVat(!showVat)}
+          >
+            Inc. VAT
+          </button>
+        </div>
       </div>
 
-      <div className="receipt-panel__lines">
-        <div className="receipt-panel__line">
-          <span className="receipt-panel__line-label">Materials</span>
-          <span className="receipt-panel__line-value">{fmt(totals.materials)}</span>
+      {/* Column headers (detailed mode) */}
+      {detailed && (
+        <div className="rp__col-headers">
+          <span></span>
+          <span>Price</span>
+          <span>Discount</span>
+          <span>Sale</span>
         </div>
-        <div className="receipt-panel__line">
-          <span className="receipt-panel__line-label">Processes</span>
-          <span className="receipt-panel__line-value">{fmt(totals.processes)}</span>
-        </div>
-        <div className="receipt-panel__line">
-          <span className="receipt-panel__line-label">Products</span>
-          <span className="receipt-panel__line-value">{fmt(totals.products)}</span>
-        </div>
+      )}
 
-        <div className="receipt-panel__divider" />
+      <div className="rp__body">
+        {/* Category rows */}
+        {renderLine('Materials', totals.groups.materials.price, totals.groups.materials.discount, totals.groups.materials.sale)}
+        {renderLine('Processes', totals.groups.processes.price, totals.groups.processes.discount, totals.groups.processes.sale)}
+        {renderLine('Products', totals.groups.products.price, totals.groups.products.discount, totals.groups.products.sale)}
 
-        <div className="receipt-panel__line receipt-panel__line--bold">
-          <span className="receipt-panel__line-label">Total</span>
-          <span className="receipt-panel__line-value">{fmt(totals.subtotal)}</span>
-        </div>
+        {/* Detailed: show individual line items */}
+        {detailed && items.length > 0 && (
+          <>
+            <div className="rp__divider" />
+            <div className="rp__section-label">Breakdown</div>
+            {items.map((item, i) => (
+              <div key={i} className="rp__row rp__row--detail">
+                <span className="rp__row-label rp__row-label--detail">{item.product_name}</span>
+                <span className="rp__row-val">{fmt(item.original_price || 0)}</span>
+                <span className="rp__row-val rp__row-val--discount">{fmt(item.discount || 0)}</span>
+                <span className="rp__row-val rp__row-val--sale">{fmt(item.line_total || 0)}</span>
+              </div>
+            ))}
+          </>
+        )}
 
-        {showVat && (
-          <div className="receipt-panel__line">
-            <span className="receipt-panel__line-label">VAT @20%</span>
-            <span className="receipt-panel__line-value">{fmt(totals.vat)}</span>
+        <div className="rp__divider" />
+
+        {/* Total Saved */}
+        {totals.totalDiscount > 0 && (
+          <div className="rp__row rp__row--saved">
+            <span className="rp__row-label">Total Saved</span>
+            <span className="rp__row-val rp__row-val--saved">{fmt(totals.totalDiscount)}</span>
           </div>
         )}
 
-        <div className="receipt-panel__line receipt-panel__line--grand">
-          <span className="receipt-panel__line-label">Grand Total</span>
-          <span className="receipt-panel__line-value">
-            {showVat ? fmt(totals.grandTotal) : fmt(totals.subtotal)}
+        {/* Subtotal */}
+        <div className="rp__row rp__row--bold">
+          <span className="rp__row-label">Total</span>
+          <span className="rp__row-val rp__row-val--sale">{fmt(totals.totalSale)}</span>
+        </div>
+
+        {/* VAT */}
+        {showVat && (
+          <div className="rp__row">
+            <span className="rp__row-label">VAT Inc @20%</span>
+            <span className="rp__row-val rp__row-val--sale">{fmt(totals.vat)}</span>
+          </div>
+        )}
+
+        {/* Grand Total */}
+        <div className="rp__row rp__row--grand">
+          <span className="rp__row-label">Grand Total</span>
+          <span className="rp__row-val rp__row-val--grand">
+            {showVat ? fmt(totals.grandTotal) : fmt(totals.totalSale)}
           </span>
         </div>
 
-        <div className="receipt-panel__divider" />
+        <div className="rp__divider" />
 
-        <div className="receipt-panel__deposit">
-          <label className="receipt-panel__deposit-label">Deposit</label>
-          <div className="receipt-panel__deposit-input-wrap">
-            <span className="receipt-panel__deposit-prefix">£</span>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={depositAmount}
-              onChange={(e) => onDepositChange(parseFloat(e.target.value) || 0)}
-              className="receipt-panel__deposit-input"
-            />
-          </div>
+        {/* Deposit (auto 20%) */}
+        <div className="rp__row rp__row--deposit">
+          <span className="rp__row-label">Deposit Amount<br /><span className="rp__row-sub">20% of Grand Total</span></span>
+          <span className="rp__row-val rp__row-val--deposit">
+            {showVat ? fmt(totals.deposit) : fmt(totals.totalSale * 0.2)}
+          </span>
         </div>
       </div>
 
-      <div className="receipt-panel__actions">
+      {/* Actions */}
+      <div className="rp__actions">
         <button
-          className="receipt-panel__btn receipt-panel__btn--draft"
+          className="rp__btn rp__btn--draft"
           onClick={onSave}
           disabled={saving}
         >
           {saving ? 'Saving...' : 'Save Draft'}
         </button>
         <button
-          className="receipt-panel__btn receipt-panel__btn--send"
+          className="rp__btn rp__btn--send"
           onClick={onSend}
           disabled={saving || items.length === 0}
         >
