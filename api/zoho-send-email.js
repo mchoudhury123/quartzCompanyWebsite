@@ -36,7 +36,10 @@ export default async function handler(req, res) {
     const tokenData = await tokenRes.json();
 
     if (!tokenData.access_token) {
-      return res.status(200).json({ error: 'Token refresh failed' });
+      return res.status(200).json({
+        error: 'Token refresh failed',
+        detail: tokenData.error || tokenData.message || JSON.stringify(tokenData),
+      });
     }
 
     // 2. Convert plain text body to simple HTML
