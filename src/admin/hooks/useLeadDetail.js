@@ -67,19 +67,31 @@ export default function useLeadDetail(id) {
   };
 
   const addNote = async (content) => {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('lead_notes')
-      .insert({ lead_id: id, content, author: 'Admin' });
+      .insert({ lead_id: id, content, author: 'Admin' })
+      .select()
+      .single();
     if (!error) {
       await logActivity(id, {
         type: 'note_added',
         title: 'Note added',
         description: content.length > 100 ? content.slice(0, 100) + '...' : content,
+        metadata: { note_id: data.id },
       });
       await fetchNotes();
     }
     return { error };
   };
 
-  return { lead, notes, loading, updateStatus, updateLeadField, addNote, refetchLead: fetchLead };
+  const deleteNote = async (noteId) => {
+    const { error } = await supabase
+      .from('lead_notes')
+      .delete()
+      .eq('id', noteId);
+    if (!error) await fetchNotes();
+    return { error };
+  };
+
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, refetchLead: fetchLead };
 }

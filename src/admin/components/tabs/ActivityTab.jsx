@@ -36,6 +36,7 @@ const LINK_MAP = {
   quote_updated: { tab: 'quotes', idKey: 'quote_id' },
   file_uploaded: { tab: 'files', idKey: 'file_id' },
   email_sent: { tab: 'emails', idKey: 'email_id' },
+  note_added: { tab: 'notes', idKey: 'note_id' },
 };
 
 export default function ActivityTab({ leadId }) {

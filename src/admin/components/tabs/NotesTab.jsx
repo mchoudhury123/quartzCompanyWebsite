@@ -1,10 +1,17 @@
-import { useState } from 'react';
-import { FiEdit3 } from 'react-icons/fi';
+import { useState, useEffect, useRef } from 'react';
+import { FiEdit3, FiTrash2 } from 'react-icons/fi';
 import './NotesTab.css';
 
-export default function NotesTab({ notes, onAddNote }) {
+export default function NotesTab({ notes, onAddNote, onDeleteNote, highlightId }) {
   const [body, setBody] = useState('');
   const [saving, setSaving] = useState(false);
+  const highlightRef = useRef(null);
+
+  useEffect(() => {
+    if (highlightId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightId]);
 
   const handleAdd = async () => {
     if (!body.trim()) return;
@@ -12,6 +19,11 @@ export default function NotesTab({ notes, onAddNote }) {
     await onAddNote(body.trim());
     setBody('');
     setSaving(false);
+  };
+
+  const handleDelete = async (noteId) => {
+    if (!onDeleteNote) return;
+    await onDeleteNote(noteId);
   };
 
   const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
@@ -45,14 +57,30 @@ export default function NotesTab({ notes, onAddNote }) {
         <p className="notes-tab__empty">No notes yet. Add one above.</p>
       ) : (
         <div className="notes-tab__list">
-          {sorted.map((n) => (
-            <div className="notes-tab__item" key={n.id}>
-              <p className="notes-tab__item-body">{n.content}</p>
-              <span className="notes-tab__item-meta">
-                {n.author} &middot; {formatDate(n.created_at)}
-              </span>
-            </div>
-          ))}
+          {sorted.map((n) => {
+            const isHighlighted = highlightId === n.id;
+            return (
+              <div
+                className={`notes-tab__item${isHighlighted ? ' tab-item--highlight' : ''}`}
+                key={n.id}
+                ref={isHighlighted ? highlightRef : null}
+              >
+                <div className="notes-tab__item-content">
+                  <p className="notes-tab__item-body">{n.content}</p>
+                  <span className="notes-tab__item-meta">
+                    {n.author} &middot; {formatDate(n.created_at)}
+                  </span>
+                </div>
+                <button
+                  className="notes-tab__delete"
+                  onClick={() => handleDelete(n.id)}
+                  title="Delete note"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

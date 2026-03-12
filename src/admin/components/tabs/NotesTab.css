@@ -78,10 +78,18 @@
 }
 
 .notes-tab__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   padding: 0.85rem;
   background: var(--admin-card-bg, #fff);
   border: 1px solid var(--admin-border, #e5e7eb);
   border-radius: 10px;
+}
+
+.notes-tab__item-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .notes-tab__item-body {
@@ -95,4 +103,21 @@
 .notes-tab__item-meta {
   font-size: 0.72rem;
   color: var(--admin-text-light, #6b7280);
+}
+
+.notes-tab__delete {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--admin-text-light, #6b7280);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: color 0.15s, background 0.15s;
+}
+
+.notes-tab__delete:hover {
+  color: #dc2626;
+  background: #fef2f2;
 }

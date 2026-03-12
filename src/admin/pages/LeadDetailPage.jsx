@@ -27,7 +27,7 @@ export default function LeadDetailPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get('highlight') || null;
-  const { lead, notes, loading, updateStatus, updateLeadField, addNote } = useLeadDetail(id);
+  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
   const twilio = useTwilioDevice();
 
@@ -76,7 +76,7 @@ export default function LeadDetailPage() {
       case 'calls': return <CallsTab leadId={id} highlightId={highlightId} />;
       case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} highlightId={highlightId} />;
       case 'emails': return <EmailsTab leadId={id} onSendEmail={() => setModal('email')} highlightId={highlightId} />;
-      case 'notes': return <NotesTab notes={notes} onAddNote={addNote} />;
+      case 'notes': return <NotesTab notes={notes} onAddNote={addNote} onDeleteNote={deleteNote} highlightId={highlightId} />;
       default: return <ActivityTab leadId={id} />;
     }
   };
