@@ -226,6 +226,7 @@ export default function QuotePage() {
         product_name: selectedProducts.map((p) => p.name).join(', '),
         product_material: selectedProducts[0]?.material || null,
         want_samples: wantSamples === true,
+        pending_action: 'call_new',
         comments: planMode === 'dimensions'
           ? `Worktop runs: ${worktopRuns.map((r, i) => `Run ${i + 1}: ${r.length}mm x ${r.width}mm`).join(', ')}`
           : null,

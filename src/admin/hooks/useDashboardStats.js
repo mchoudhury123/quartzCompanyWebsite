@@ -24,7 +24,7 @@ export default function useDashboardStats() {
     async function fetchStats() {
       // Fetch leads and all outbound calls in parallel
       const [leadsRes, callsRes] = await Promise.all([
-        supabase.from('leads').select('id, email, source, status, want_samples, want_callback'),
+        supabase.from('leads').select('id, email, source, status, want_samples, want_callback, pending_action'),
         supabase.from('lead_calls').select('lead_id, direction, outcome')
           .eq('direction', 'outbound'),
       ]);
@@ -90,6 +90,7 @@ export default function useDashboardStats() {
         if (l.want_samples && !closedStatuses.includes(l.status)) c.samples++;
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
+        if (l.pending_action === 'chase_measurements') c.chaseMeasurements++;
       });
 
       setCounts(c);

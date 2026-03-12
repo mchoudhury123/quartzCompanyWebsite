@@ -93,6 +93,7 @@ function ContactPage() {
         source: 'contact_form',
         subject: form.subject,
         message: form.message,
+        pending_action: 'call_new',
       });
     } catch (err) {
       console.error('Failed to submit contact lead:', err);

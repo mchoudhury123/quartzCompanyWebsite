@@ -19,6 +19,8 @@ import SampleCreateModal from '../components/modals/SampleCreateModal';
 import FileUploadModal from '../components/modals/FileUploadModal';
 import SmsModal from '../components/modals/SmsModal';
 import EmailModal from '../components/modals/EmailModal';
+import ActionOutcomeModal from '../components/modals/ActionOutcomeModal';
+import ActionBar from '../components/ActionBar';
 import { FiArrowLeft } from 'react-icons/fi';
 import './LeadDetailPage.css';
 
@@ -27,7 +29,7 @@ export default function LeadDetailPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get('highlight') || null;
-  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote } = useLeadDetail(id);
+  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
   const twilio = useTwilioDevice();
 
@@ -104,6 +106,9 @@ export default function LeadDetailPage() {
           />
         </div>
         <div className="lead-detail__right">
+          {lead.pending_action && (
+            <ActionBar action={lead.pending_action} onComplete={() => setModal('action_outcome')} />
+          )}
           <TwilioCallBar
             callState={twilio.callState}
             callDuration={twilio.callDuration}
@@ -133,6 +138,13 @@ export default function LeadDetailPage() {
           leadId={id}
           leadEmail={lead.email}
           leadName={lead.full_name}
+          onClose={() => setModal(null)}
+        />
+      )}
+      {modal === 'action_outcome' && (
+        <ActionOutcomeModal
+          action={lead.pending_action}
+          onComplete={completeAction}
           onClose={() => setModal(null)}
         />
       )}

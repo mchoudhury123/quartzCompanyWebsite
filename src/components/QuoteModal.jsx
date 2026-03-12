@@ -188,6 +188,7 @@ function QuoteModal({ product = null, onClose }) {
           want_samples: wantSamples,
           want_callback: wantCallback,
           callback_time: wantCallback ? callbackTime : null,
+          pending_action: 'call_new',
         }).select('id').single();
 
         // Auto-create sample record if customer wants samples

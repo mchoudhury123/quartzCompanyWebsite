@@ -29,6 +29,7 @@ export default function AddClientModal({ onClose, onCreated }) {
         comments: form.comments.trim() || null,
         source: 'admin',
         status: 'new',
+        pending_action: 'call_new',
       })
       .select('id')
       .single();

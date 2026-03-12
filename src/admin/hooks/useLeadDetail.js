@@ -93,5 +93,97 @@ export default function useLeadDetail(id) {
     return { error };
   };
 
-  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, refetchLead: fetchLead };
+  const completeAction = async (outcomes) => {
+    const currentAction = lead?.pending_action;
+    if (!currentAction) return;
+
+    // Chase measurements flow
+    if (currentAction === 'chase_measurements') {
+      if (outcomes.gotMeasurements) {
+        await supabase.from('leads').update({ pending_action: null, status: 'contacted' }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: null, status: 'contacted' }));
+        await logActivity(id, { type: 'status_change', title: 'Measurements received — ready to quote', metadata: { old_action: 'chase_measurements' } });
+      }
+      // If no, keep chase_measurements — they'll try again later
+      return;
+    }
+
+    // Call flow (call_new / follow_up)
+    if (outcomes.answered) {
+      if (outcomes.canQuote) {
+        // Customer answered and admin can quote
+        await supabase.from('leads').update({ pending_action: null, status: 'contacted' }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: null, status: 'contacted' }));
+        await logActivity(id, { type: 'status_change', title: 'Customer contacted — ready to quote', metadata: { old_action: currentAction } });
+      } else {
+        // Customer answered but need measurements
+        await supabase.from('leads').update({ pending_action: 'chase_measurements' }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: 'chase_measurements' }));
+        await logActivity(id, { type: 'lead_updated', title: 'Need kitchen measurements — chase later', metadata: { old_action: currentAction, new_action: 'chase_measurements' } });
+      }
+    } else {
+      // Customer didn't answer
+      if (currentAction === 'call_new') {
+        // First attempt failed — schedule follow-up
+        await supabase.from('leads').update({ pending_action: 'follow_up' }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: 'follow_up' }));
+        await logActivity(id, { type: 'lead_updated', title: 'No answer — follow-up call scheduled', metadata: { old_action: 'call_new', new_action: 'follow_up' } });
+      } else {
+        // Second attempt failed — dead lead, auto-email
+        const firstName = lead?.full_name?.split(' ')[0] || 'there';
+        const emailBody = `Hi ${firstName},\n\nWe tried to contact you regarding your quote request but weren't able to reach you.\n\nIf you're still interested in a quartz worktop, please give us a call on 07414 121 706 or simply reply to this email and we'll get back to you.\n\nKind regards,\nThe Quartz Company`;
+
+        // Send auto-email if lead has an email address
+        if (lead?.email) {
+          try {
+            const res = await window.fetch('/api/zoho-send-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                to: lead.email,
+                subject: 'We tried to reach you — The Quartz Company',
+                body: emailBody,
+              }),
+            });
+            const result = await res.json();
+
+            // Log email in lead_emails table
+            const { data: emailData } = await supabase
+              .from('lead_emails')
+              .insert({
+                lead_id: id,
+                direction: 'outbound',
+                subject: 'We tried to reach you — The Quartz Company',
+                body: emailBody,
+                to_address: lead.email,
+                from_address: 'sales@thequartzcompany.co.uk',
+                zoho_message_id: result.messageId || null,
+                status: result.error ? 'failed' : 'sent',
+                sent_by: 'System',
+              })
+              .select()
+              .single();
+
+            if (emailData) {
+              await logActivity(id, {
+                type: 'email_sent',
+                title: 'Auto-email sent: unreachable customer',
+                description: 'Automated email sent after two failed contact attempts',
+                metadata: { email_id: emailData.id, to: lead.email },
+              });
+            }
+          } catch (err) {
+            console.error('Auto-email failed:', err);
+          }
+        }
+
+        // Mark as lost
+        await supabase.from('leads').update({ pending_action: null, status: 'lost' }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: null, status: 'lost' }));
+        await logActivity(id, { type: 'status_change', title: 'Marked as lost — customer unreachable after 2 attempts', metadata: { old_action: 'follow_up' } });
+      }
+    }
+  };
+
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, refetchLead: fetchLead };
 }

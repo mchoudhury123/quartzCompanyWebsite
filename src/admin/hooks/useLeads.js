@@ -102,9 +102,11 @@ export default function useLeads(initialFilter) {
           case 'deposits':
             query = query.eq('status', 'deposit');
             break;
+          case 'chase_measurements':
+            query = query.eq('pending_action', 'chase_measurements');
+            break;
           case 'appointments':
           case 'pro_welcome':
-          case 'chase_measurements':
           case 'other_tasks':
           case 'compliance_tasks':
             query = query.eq('status', '__none__');
