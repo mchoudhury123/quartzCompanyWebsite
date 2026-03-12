@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import useQuotes from '../../hooks/useQuotes';
 import StatusBadge from '../StatusBadge';
-import { FiPlus, FiEdit2 } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiEye } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -51,6 +51,14 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                 <span className="quotes-tab__card-date">Valid until: {formatDate(q.valid_until)}</span>
               </div>
               <div className="quotes-tab__card-actions">
+                <a
+                  className="quotes-tab__action quotes-tab__action--view"
+                  href={`/quote/view/${q.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FiEye /> View
+                </a>
                 {q.status === 'draft' && (
                   <>
                     <button

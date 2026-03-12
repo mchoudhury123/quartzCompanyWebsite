@@ -146,6 +146,19 @@
   background: #fef2f2;
 }
 
+.quotes-tab__action--view {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: #3b82f6;
+  border-color: #bfdbfe;
+}
+
+.quotes-tab__action--view:hover {
+  background: #eff6ff;
+}
+
 .quotes-tab__action--edit {
   display: flex;
   align-items: center;
