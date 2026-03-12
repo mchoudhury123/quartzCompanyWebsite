@@ -72,7 +72,7 @@ export default function ActionOutcomeModal({ action, onComplete, onClose }) {
         </div>
         {isFollowUp && (
           <p style={{ color: '#6b7280', fontSize: '0.78rem', marginTop: '0.75rem', lineHeight: 1.5 }}>
-            If they didn't answer again, the lead will be marked as lost and an email will be sent automatically.
+            If they didn't answer again, a follow-up email will be sent automatically and the lead will move to 1+ Quote Requests.
           </p>
         )}
       </ModalShell>

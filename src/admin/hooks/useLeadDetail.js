@@ -129,7 +129,8 @@ export default function useLeadDetail(id) {
         setLead((prev) => ({ ...prev, pending_action: 'follow_up' }));
         await logActivity(id, { type: 'lead_updated', title: 'No answer — follow-up call scheduled', metadata: { old_action: 'call_new', new_action: 'follow_up' } });
       } else {
-        // Second attempt failed — dead lead, auto-email
+        // Second attempt failed — send auto-email and clear action
+        // Lead stays in current status; 2+ unanswered calls place it in "1+ Quote Requests"
         const firstName = lead?.full_name?.split(' ')[0] || 'there';
         const emailBody = `Hi ${firstName},\n\nWe tried to contact you regarding your quote request but weren't able to reach you.\n\nIf you're still interested in a quartz worktop, please give us a call on 07414 121 706 or simply reply to this email and we'll get back to you.\n\nKind regards,\nThe Quartz Company`;
 
@@ -177,10 +178,10 @@ export default function useLeadDetail(id) {
           }
         }
 
-        // Mark as lost
-        await supabase.from('leads').update({ pending_action: null, status: 'lost' }).eq('id', id);
-        setLead((prev) => ({ ...prev, pending_action: null, status: 'lost' }));
-        await logActivity(id, { type: 'status_change', title: 'Marked as lost — customer unreachable after 2 attempts', metadata: { old_action: 'follow_up' } });
+        // Clear action — lead moves to "1+ Quote Requests" via unanswered call count
+        await supabase.from('leads').update({ pending_action: null }).eq('id', id);
+        setLead((prev) => ({ ...prev, pending_action: null }));
+        await logActivity(id, { type: 'lead_updated', title: 'No answer after 2 attempts — auto-email sent', metadata: { old_action: 'follow_up' } });
       }
     }
   };

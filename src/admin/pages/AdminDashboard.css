@@ -84,6 +84,14 @@
   color: var(--color-gold, #c5a47e);
 }
 
+.admin-table__link--action {
+  color: #dc2626;
+}
+
+.admin-table__link--action:hover {
+  color: #b91c1c;
+}
+
 .admin-table__source {
   color: var(--admin-text-light);
   font-size: 0.82rem;

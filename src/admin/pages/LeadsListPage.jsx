@@ -115,7 +115,7 @@ export default function LeadsListPage() {
               {leads.map((lead) => (
                 <tr key={lead.id}>
                   <td>
-                    <Link to={`/admin/leads/${lead.id}`} className="admin-table__link">
+                    <Link to={`/admin/leads/${lead.id}`} className={`admin-table__link${lead.pending_action ? ' admin-table__link--action' : ''}`}>
                       {lead.full_name}
                     </Link>
                   </td>
