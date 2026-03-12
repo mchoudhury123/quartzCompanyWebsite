@@ -218,7 +218,9 @@ export default function QuotePage() {
     });
 
     try {
-      const { data: leadData } = await supabase.from('leads').insert({
+      const leadId = crypto.randomUUID();
+      await supabase.from('leads').insert({
+        id: leadId,
         full_name: `${form.firstName} ${form.lastName}`.trim(),
         email: form.email,
         phone: form.phone,
@@ -231,13 +233,13 @@ export default function QuotePage() {
         comments: planMode === 'dimensions'
           ? `Worktop runs: ${worktopRuns.map((r, i) => `Run ${i + 1}: ${r.length}mm x ${r.width}mm`).join(', ')}`
           : null,
-      }).select('id').single();
+      });
 
       // Auto-create sample records for each selected product
-      if (wantSamples && leadData?.id && selectedProducts.length > 0) {
+      if (wantSamples && selectedProducts.length > 0) {
         await supabase.from('lead_samples').insert(
           selectedProducts.map((p) => ({
-            lead_id: leadData.id,
+            lead_id: leadId,
             product_name: p.name,
             colour: p.name,
             material: p.material || null,
@@ -246,25 +248,23 @@ export default function QuotePage() {
       }
 
       // Log enquiry summary in activity timeline
-      if (leadData?.id) {
-        const filledRuns = worktopRuns.filter((r) => r.length || r.width);
-        await logActivity(leadData.id, {
-          type: 'enquiry_received',
-          title: 'Enquiry received',
-          description: selectedProducts.map((p) => p.name).join(', '),
-          metadata: {
-            source: 'quote_page',
-            products: selectedProducts.map((p) => ({ name: p.name, material: p.material })),
-            want_samples: wantSamples === true,
-            kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
-              ? { worktop_runs: filledRuns }
-              : null,
-            install_date: form.installDate || null,
-            postcode: form.postcode,
-          },
-          author: 'Customer',
-        });
-      }
+      const filledRuns = worktopRuns.filter((r) => r.length || r.width);
+      await logActivity(leadId, {
+        type: 'enquiry_received',
+        title: 'Enquiry received',
+        description: selectedProducts.map((p) => p.name).join(', '),
+        metadata: {
+          source: 'quote_page',
+          products: selectedProducts.map((p) => ({ name: p.name, material: p.material })),
+          want_samples: wantSamples === true,
+          kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
+            ? { worktop_runs: filledRuns }
+            : null,
+          install_date: form.installDate || null,
+          postcode: form.postcode,
+        },
+        author: 'Customer',
+      });
     } catch (err) {
       console.error('Failed to submit quote:', err);
     }

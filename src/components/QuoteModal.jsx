@@ -173,7 +173,9 @@ function QuoteModal({ product = null, onClose }) {
 
     if (step === 2) {
       try {
-        const { data: leadData } = await supabase.from('leads').insert({
+        const leadId = crypto.randomUUID();
+        await supabase.from('leads').insert({
+          id: leadId,
           full_name: fullName,
           email,
           phone,
@@ -190,12 +192,12 @@ function QuoteModal({ product = null, onClose }) {
           want_callback: wantCallback,
           callback_time: wantCallback ? callbackTime : null,
           pending_action: 'call_new',
-        }).select('id').single();
+        });
 
         // Auto-create sample record if customer wants samples
-        if (wantSamples && leadData?.id && selectedProduct) {
+        if (wantSamples && selectedProduct) {
           await supabase.from('lead_samples').insert({
-            lead_id: leadData.id,
+            lead_id: leadId,
             product_name: selectedProduct.name,
             colour: selectedProduct.name,
             material: selectedProduct.material || null,
@@ -203,25 +205,23 @@ function QuoteModal({ product = null, onClose }) {
         }
 
         // Log enquiry summary in activity timeline
-        if (leadData?.id) {
-          await logActivity(leadData.id, {
-            type: 'enquiry_received',
-            title: 'Enquiry received',
-            description: selectedProduct?.name || 'Unknown product',
-            metadata: {
-              source: 'quote_modal',
-              products: [{ name: selectedProduct?.name, material: selectedProduct?.material }],
-              dimensions: { run_length_mm: Number(runLength), depth_mm: Number(depth), thickness },
-              cut_outs: { hob: cutOutHob, sink: cutOutSink, tap: cutOutTap },
-              want_samples: wantSamples,
-              want_callback: wantCallback,
-              callback_time: wantCallback ? callbackTime : null,
-              comments: comments || null,
-              postcode,
-            },
-            author: 'Customer',
-          });
-        }
+        await logActivity(leadId, {
+          type: 'enquiry_received',
+          title: 'Enquiry received',
+          description: selectedProduct?.name || 'Unknown product',
+          metadata: {
+            source: 'quote_modal',
+            products: [{ name: selectedProduct?.name, material: selectedProduct?.material }],
+            dimensions: { run_length_mm: Number(runLength), depth_mm: Number(depth), thickness },
+            cut_outs: { hob: cutOutHob, sink: cutOutSink, tap: cutOutTap },
+            want_samples: wantSamples,
+            want_callback: wantCallback,
+            callback_time: wantCallback ? callbackTime : null,
+            comments: comments || null,
+            postcode,
+          },
+          author: 'Customer',
+        });
       } catch (err) {
         console.error('Failed to submit lead:', err);
       }

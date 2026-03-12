@@ -87,7 +87,9 @@ function ContactPage() {
     }
     setErrors({});
     try {
-      const { data: leadData } = await supabase.from('leads').insert({
+      const leadId = crypto.randomUUID();
+      await supabase.from('leads').insert({
+        id: leadId,
         full_name: form.name,
         email: form.email,
         phone: form.phone,
@@ -95,21 +97,19 @@ function ContactPage() {
         subject: form.subject,
         message: form.message,
         pending_action: 'call_new',
-      }).select('id').single();
+      });
 
-      if (leadData?.id) {
-        await logActivity(leadData.id, {
-          type: 'enquiry_received',
-          title: 'Enquiry received',
-          description: `${form.subject}: ${form.message.length > 80 ? form.message.slice(0, 80) + '...' : form.message}`,
-          metadata: {
-            source: 'contact_form',
-            subject: form.subject,
-            message: form.message,
-          },
-          author: 'Customer',
-        });
-      }
+      await logActivity(leadId, {
+        type: 'enquiry_received',
+        title: 'Enquiry received',
+        description: `${form.subject}: ${form.message.length > 80 ? form.message.slice(0, 80) + '...' : form.message}`,
+        metadata: {
+          source: 'contact_form',
+          subject: form.subject,
+          message: form.message,
+        },
+        author: 'Customer',
+      });
     } catch (err) {
       console.error('Failed to submit contact lead:', err);
     }

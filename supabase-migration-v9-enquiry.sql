@@ -14,7 +14,7 @@ ALTER TABLE public.lead_activities ADD CONSTRAINT lead_activities_activity_type_
     'enquiry_received'
   ));
 
--- Also need to allow anonymous users to insert activities
+-- Allow anonymous users to insert activities
 -- (enquiry is logged from public-facing pages, not admin)
 DO $$
 BEGIN
@@ -25,5 +25,19 @@ BEGIN
   ) THEN
     CREATE POLICY "Anon users can insert activities"
       ON public.lead_activities FOR INSERT TO anon WITH CHECK (true);
+  END IF;
+END $$;
+
+-- Allow anonymous users to insert samples
+-- (sample auto-creation happens from public quote forms)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE tablename = 'lead_samples'
+    AND policyname = 'Anon users can insert samples'
+  ) THEN
+    CREATE POLICY "Anon users can insert samples"
+      ON public.lead_samples FOR INSERT TO anon WITH CHECK (true);
   END IF;
 END $$;
