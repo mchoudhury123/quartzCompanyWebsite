@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { FiCheck, FiUploadCloud, FiX, FiPlus, FiCalendar } from 'react-icons/fi';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
+import { logActivity } from '../admin/utils/activityLogger';
 import './QuotePage.css';
 
 /* Validation helpers */
@@ -242,6 +243,27 @@ export default function QuotePage() {
             material: p.material || null,
           }))
         );
+      }
+
+      // Log enquiry summary in activity timeline
+      if (leadData?.id) {
+        const filledRuns = worktopRuns.filter((r) => r.length || r.width);
+        await logActivity(leadData.id, {
+          type: 'enquiry_received',
+          title: 'Enquiry received',
+          description: selectedProducts.map((p) => p.name).join(', '),
+          metadata: {
+            source: 'quote_page',
+            products: selectedProducts.map((p) => ({ name: p.name, material: p.material })),
+            want_samples: wantSamples === true,
+            kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
+              ? { worktop_runs: filledRuns }
+              : null,
+            install_date: form.installDate || null,
+            postcode: form.postcode,
+          },
+          author: 'Customer',
+        });
       }
     } catch (err) {
       console.error('Failed to submit quote:', err);

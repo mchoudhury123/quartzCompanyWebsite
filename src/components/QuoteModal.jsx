@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FiX, FiUploadCloud, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
+import { logActivity } from '../admin/utils/activityLogger';
 import './QuoteModal.css';
 
 /**
@@ -198,6 +199,27 @@ function QuoteModal({ product = null, onClose }) {
             product_name: selectedProduct.name,
             colour: selectedProduct.name,
             material: selectedProduct.material || null,
+          });
+        }
+
+        // Log enquiry summary in activity timeline
+        if (leadData?.id) {
+          await logActivity(leadData.id, {
+            type: 'enquiry_received',
+            title: 'Enquiry received',
+            description: selectedProduct?.name || 'Unknown product',
+            metadata: {
+              source: 'quote_modal',
+              products: [{ name: selectedProduct?.name, material: selectedProduct?.material }],
+              dimensions: { run_length_mm: Number(runLength), depth_mm: Number(depth), thickness },
+              cut_outs: { hob: cutOutHob, sink: cutOutSink, tap: cutOutTap },
+              want_samples: wantSamples,
+              want_callback: wantCallback,
+              callback_time: wantCallback ? callbackTime : null,
+              comments: comments || null,
+              postcode,
+            },
+            author: 'Customer',
           });
         }
       } catch (err) {
