@@ -31,55 +31,6 @@ export default function useLeads(initialFilter) {
     async function fetchLeads() {
       setLoading(true);
 
-      const needsCallFilter = presetFilter === 'repeat_quotes' || presetFilter === 'repeat_quotes_self_serve';
-
-      if (needsCallFilter) {
-        // Fetch all non-closed leads + their outbound unanswered calls
-        const sourceFilter = presetFilter === 'repeat_quotes_self_serve' ? 'contact_form' : null;
-
-        let leadsQuery = supabase
-          .from('leads')
-          .select('*')
-          .not('status', 'in', '("won","lost")')
-          .order(sortField, { ascending: sortAsc });
-
-        if (sourceFilter) {
-          leadsQuery = leadsQuery.eq('source', sourceFilter);
-        } else {
-          // For repeat_quotes, exclude contact_form source
-          leadsQuery = leadsQuery.neq('source', 'contact_form');
-        }
-
-        if (search.trim()) {
-          leadsQuery = leadsQuery.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`);
-        }
-
-        const [leadsRes, callsRes] = await Promise.all([
-          leadsQuery,
-          supabase.from('lead_calls').select('lead_id, direction, outcome')
-            .eq('direction', 'outbound'),
-        ]);
-
-        const allLeads = leadsRes.data || [];
-        const allOutboundCalls = callsRes.data || [];
-
-        // Filter to unanswered outcomes in JS
-        const unansweredOutcomes = ['no_answer', 'voicemail', 'busy'];
-        const calls = allOutboundCalls.filter((c) => unansweredOutcomes.includes(c.outcome));
-
-        // Count unanswered outbound calls per lead
-        const missedCallCounts = {};
-        calls.forEach((c) => {
-          missedCallCounts[c.lead_id] = (missedCallCounts[c.lead_id] || 0) + 1;
-        });
-
-        // Filter to leads with 2+ unanswered outbound calls
-        const filtered = allLeads.filter((l) => (missedCallCounts[l.id] || 0) >= 2);
-        setLeads(filtered);
-        setLoading(false);
-        return;
-      }
-
       let query = supabase
         .from('leads')
         .select('*')
@@ -88,10 +39,18 @@ export default function useLeads(initialFilter) {
       if (presetFilter) {
         switch (presetFilter) {
           case 'new_quotes':
-            query = query.in('source', ['quote_modal', 'quote_page']).eq('status', 'new');
+            // New leads that still have a pending action (call_new or follow_up)
+            query = query.in('source', ['quote_modal', 'quote_page']).eq('status', 'new').not('pending_action', 'is', null);
             break;
           case 'new_quotes_self_serve':
-            query = query.eq('source', 'contact_form').eq('status', 'new');
+            query = query.eq('source', 'contact_form').eq('status', 'new').not('pending_action', 'is', null);
+            break;
+          case 'repeat_quotes':
+            // Leads where admin said "no answer" twice — status still 'new', pending_action cleared
+            query = query.neq('source', 'contact_form').eq('status', 'new').is('pending_action', null);
+            break;
+          case 'repeat_quotes_self_serve':
+            query = query.eq('source', 'contact_form').eq('status', 'new').is('pending_action', null);
             break;
           case 'samples':
             query = query.eq('want_samples', true).not('status', 'in', '("won","lost")');

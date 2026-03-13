@@ -22,32 +22,11 @@ export default function useDashboardStats() {
 
   useEffect(() => {
     async function fetchStats() {
-      // Fetch leads and all outbound calls in parallel
-      const [leadsRes, callsRes] = await Promise.all([
-        supabase.from('leads').select('id, email, source, status, want_samples, want_callback, pending_action'),
-        supabase.from('lead_calls').select('lead_id, direction, outcome')
-          .eq('direction', 'outbound'),
-      ]);
+      const { data: leads } = await supabase
+        .from('leads')
+        .select('id, email, source, status, want_samples, want_callback, pending_action');
 
-      const leads = leadsRes.data || [];
-      const allOutboundCalls = callsRes.data || [];
-
-      // Filter to unanswered calls (no_answer, voicemail, busy) in JS
-      const unansweredOutcomes = ['no_answer', 'voicemail', 'busy'];
-      const calls = allOutboundCalls.filter((c) => unansweredOutcomes.includes(c.outcome));
-
-      // Count unanswered outbound calls per lead
-      const missedCallCounts = {};
-      calls.forEach((c) => {
-        missedCallCounts[c.lead_id] = (missedCallCounts[c.lead_id] || 0) + 1;
-      });
-
-      // Set of lead IDs with 2+ unanswered outbound calls
-      const flaggedLeadIds = new Set(
-        Object.entries(missedCallCounts)
-          .filter(([, count]) => count >= 2)
-          .map(([id]) => id)
-      );
+      const allLeads = leads || [];
 
       const c = {
         newQuotes: 0,
@@ -67,11 +46,12 @@ export default function useDashboardStats() {
 
       const closedStatuses = ['won', 'lost'];
 
-      leads.forEach((l) => {
-        const isFlagged = flaggedLeadIds.has(l.id);
+      allLeads.forEach((l) => {
+        // 1+ Quote Requests: status is still 'new' but pending_action was cleared
+        // (admin said "no answer" twice via action bar)
+        const isRepeat = l.status === 'new' && !l.pending_action;
 
-        // 1+ Quote Requests: leads with 2+ unanswered outbound calls (not closed)
-        if (isFlagged && !closedStatuses.includes(l.status)) {
+        if (isRepeat && !closedStatuses.includes(l.status)) {
           if (l.source === 'contact_form') {
             c.repeatQuotesSelfServe++;
           } else {
@@ -79,11 +59,11 @@ export default function useDashboardStats() {
           }
         }
 
-        // New Quote Requests: new leads without the flag
-        if ((l.source === 'quote_modal' || l.source === 'quote_page') && l.status === 'new' && !isFlagged) {
+        // New Quote Requests: new leads that still have a pending action (call_new or follow_up)
+        if ((l.source === 'quote_modal' || l.source === 'quote_page') && l.status === 'new' && l.pending_action) {
           c.newQuotes++;
         }
-        if (l.source === 'contact_form' && l.status === 'new' && !isFlagged) {
+        if (l.source === 'contact_form' && l.status === 'new' && l.pending_action) {
           c.newQuotesSelfServe++;
         }
 

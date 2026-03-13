@@ -72,6 +72,12 @@ function EnquiryDetail({ metadata }) {
           </span>
         </div>
       )}
+      {m.kitchen_plan_uploaded && (
+        <div className="activity-tab__enquiry-row">
+          <span className="activity-tab__enquiry-label">Kitchen plan</span>
+          <span className="activity-tab__enquiry-value">Uploaded file{m.kitchen_plan_file ? `: ${m.kitchen_plan_file}` : ''}</span>
+        </div>
+      )}
       {m.cut_outs && (m.cut_outs.hob > 0 || m.cut_outs.sink > 0 || m.cut_outs.tap > 0) && (
         <div className="activity-tab__enquiry-row">
           <span className="activity-tab__enquiry-label">Cut-outs</span>

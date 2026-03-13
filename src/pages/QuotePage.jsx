@@ -247,6 +247,28 @@ export default function QuotePage() {
         );
       }
 
+      // Upload kitchen plan file if provided
+      let uploadedFileName = null;
+      if (planMode === 'upload' && uploadedFile) {
+        const storagePath = `${leadId}/${Date.now()}-${uploadedFile.name}`;
+        const { error: uploadErr } = await supabase.storage
+          .from('lead-files')
+          .upload(storagePath, uploadedFile);
+
+        if (!uploadErr) {
+          await supabase.from('lead_files').insert({
+            lead_id: leadId,
+            file_name: uploadedFile.name,
+            file_type: uploadedFile.type,
+            file_size: uploadedFile.size,
+            storage_path: storagePath,
+            category: 'plan',
+            uploaded_by: 'Customer',
+          });
+          uploadedFileName = uploadedFile.name;
+        }
+      }
+
       // Log enquiry summary in activity timeline
       const filledRuns = worktopRuns.filter((r) => r.length || r.width);
       await logActivity(leadId, {
@@ -260,6 +282,8 @@ export default function QuotePage() {
           kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
             ? { worktop_runs: filledRuns }
             : null,
+          kitchen_plan_uploaded: !!uploadedFileName,
+          kitchen_plan_file: uploadedFileName,
           install_date: form.installDate || null,
           postcode: form.postcode,
         },

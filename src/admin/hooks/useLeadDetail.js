@@ -109,6 +109,32 @@ export default function useLeadDetail(id) {
     }
 
     // Call flow (call_new / follow_up)
+    // Always log a call record so the "1+ Quote Requests" filter can count unanswered calls
+    const callOutcome = outcomes.answered ? 'answered' : 'no_answer';
+    const callSummary = outcomes.answered
+      ? (outcomes.canQuote ? 'Customer answered — ready to quote' : 'Customer answered — needs measurements')
+      : `No answer (${currentAction === 'call_new' ? '1st attempt' : '2nd attempt'})`;
+
+    const { data: callData } = await supabase
+      .from('lead_calls')
+      .insert({
+        lead_id: id,
+        direction: 'outbound',
+        outcome: callOutcome,
+        summary: callSummary,
+        called_by: 'Admin',
+      })
+      .select()
+      .single();
+
+    if (callData) {
+      await logActivity(id, {
+        type: 'call_logged',
+        title: callSummary,
+        metadata: { call_id: callData.id, outcome: callOutcome, action: currentAction },
+      });
+    }
+
     if (outcomes.answered) {
       if (outcomes.canQuote) {
         // Customer answered and admin can quote
@@ -137,7 +163,7 @@ export default function useLeadDetail(id) {
         // Send auto-email if lead has an email address
         if (lead?.email) {
           try {
-            const res = await window.fetch('/api/zoho-send-email', {
+            const res = await fetch('/api/zoho-send-email', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -146,7 +172,13 @@ export default function useLeadDetail(id) {
                 body: emailBody,
               }),
             });
-            const result = await res.json();
+
+            if (!res.ok) {
+              console.error('Auto-email HTTP error:', res.status);
+            }
+
+            const result = await res.json().catch(() => ({ error: 'Invalid response' }));
+            const emailStatus = result.error ? 'failed' : 'sent';
 
             // Log email in lead_emails table
             const { data: emailData } = await supabase
@@ -159,29 +191,34 @@ export default function useLeadDetail(id) {
                 to_address: lead.email,
                 from_address: 'sales@thequartzcompany.co.uk',
                 zoho_message_id: result.messageId || null,
-                status: result.error ? 'failed' : 'sent',
-                sent_by: 'System',
+                status: emailStatus,
               })
               .select()
               .single();
 
-            if (emailData) {
-              await logActivity(id, {
-                type: 'email_sent',
-                title: 'Auto-email sent: unreachable customer',
-                description: 'Automated email sent after two failed contact attempts',
-                metadata: { email_id: emailData.id, to: lead.email },
-              });
-            }
+            await logActivity(id, {
+              type: 'email_sent',
+              title: emailStatus === 'sent' ? 'Auto-email sent: unreachable customer' : 'Auto-email failed',
+              description: emailStatus === 'sent'
+                ? 'Automated email sent after two failed contact attempts'
+                : `Email failed: ${result.error}`,
+              metadata: { email_id: emailData?.id || null, to: lead.email, status: emailStatus },
+            });
           } catch (err) {
             console.error('Auto-email failed:', err);
+            await logActivity(id, {
+              type: 'email_sent',
+              title: 'Auto-email failed',
+              description: `Error: ${err.message}`,
+              metadata: { to: lead.email, status: 'failed' },
+            });
           }
         }
 
         // Clear action — lead moves to "1+ Quote Requests" via unanswered call count
         await supabase.from('leads').update({ pending_action: null }).eq('id', id);
         setLead((prev) => ({ ...prev, pending_action: null }));
-        await logActivity(id, { type: 'lead_updated', title: 'No answer after 2 attempts — auto-email sent', metadata: { old_action: 'follow_up' } });
+        await logActivity(id, { type: 'lead_updated', title: 'No answer after 2 attempts', metadata: { old_action: 'follow_up' } });
       }
     }
   };
