@@ -65,3 +65,28 @@
   background: #fef2f2;
   transform: scale(1.02);
 }
+
+.action-bar__btns {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.action-bar__btn--yes {
+  background: #fff;
+  color: #16a34a;
+}
+
+.action-bar__btn--yes:hover {
+  background: #f0fdf4;
+}
+
+.action-bar__btn--no {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+}
+
+.action-bar__btn--no:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

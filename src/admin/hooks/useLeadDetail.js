@@ -223,5 +223,18 @@ export default function useLeadDetail(id) {
     }
   };
 
-  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, refetchLead: fetchLead };
+  const retryCall = async (outcomes) => {
+    // Called from RetryBar when lead is in "1+ Quote Requests" (status=new, no pending_action)
+    if (outcomes.canQuote) {
+      await supabase.from('leads').update({ status: 'contacted' }).eq('id', id);
+      setLead((prev) => ({ ...prev, status: 'contacted' }));
+      await logActivity(id, { type: 'status_change', title: 'Customer contacted on retry — ready to quote', metadata: { old_status: 'new', new_status: 'contacted' } });
+    } else {
+      await supabase.from('leads').update({ pending_action: 'chase_measurements' }).eq('id', id);
+      setLead((prev) => ({ ...prev, pending_action: 'chase_measurements' }));
+      await logActivity(id, { type: 'lead_updated', title: 'Customer answered on retry — needs measurements', metadata: { new_action: 'chase_measurements' } });
+    }
+  };
+
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, retryCall, refetchLead: fetchLead };
 }
