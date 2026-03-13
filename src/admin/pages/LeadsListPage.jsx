@@ -79,8 +79,6 @@ export default function LeadsListPage() {
           <option value="contacted">Contacted</option>
           <option value="quoted">Quoted</option>
           <option value="deposit">Deposit</option>
-          <option value="won">Won</option>
-          <option value="lost">Lost</option>
         </select>
         <button className="leads-list__add-btn" onClick={() => setShowAddClient(true)}>
           <FiUserPlus /> Add Client

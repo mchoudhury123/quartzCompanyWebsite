@@ -53,7 +53,7 @@ export default function useLeads(initialFilter) {
             query = query.eq('source', 'contact_form').eq('status', 'new').is('pending_action', null);
             break;
           case 'samples':
-            query = query.eq('want_samples', true).not('status', 'in', '("won","lost")');
+            query = query.eq('want_samples', true);
             break;
           case 'follow_up':
             query = query.eq('status', 'quoted');

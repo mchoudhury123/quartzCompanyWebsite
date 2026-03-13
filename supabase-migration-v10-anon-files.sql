@@ -1,5 +1,5 @@
 -- ============================================================
--- The Quartz Company CRM — Migration V10: Allow anon file uploads
+-- The Quartz Company CRM — Migration V10: Anon file uploads + remove won/lost
 -- Run this in the Supabase SQL Editor
 -- ============================================================
 
@@ -32,3 +32,8 @@ BEGIN
       WITH CHECK (bucket_id = 'lead-files');
   END IF;
 END $$;
+
+-- Remove won/lost from the leads status CHECK constraint
+ALTER TABLE public.leads DROP CONSTRAINT IF EXISTS leads_status_check;
+ALTER TABLE public.leads ADD CONSTRAINT leads_status_check
+  CHECK (status IN ('new', 'contacted', 'quoted', 'deposit'));

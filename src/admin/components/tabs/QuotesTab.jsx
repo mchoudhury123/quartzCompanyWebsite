@@ -7,9 +7,9 @@ import './QuotesTab.css';
 const QUOTE_STATUS_MAP = {
   draft: 'new',
   sent: 'contacted',
-  accepted: 'won',
-  rejected: 'lost',
-  expired: 'lost',
+  accepted: 'accepted',
+  rejected: 'rejected',
+  expired: 'expired',
 };
 
 export default function QuotesTab({ leadId, onCreateQuote }) {

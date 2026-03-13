@@ -250,22 +250,32 @@ export default function QuotePage() {
       // Upload kitchen plan file if provided
       let uploadedFileName = null;
       if (planMode === 'upload' && uploadedFile) {
-        const storagePath = `${leadId}/${Date.now()}-${uploadedFile.name}`;
-        const { error: uploadErr } = await supabase.storage
-          .from('lead-files')
-          .upload(storagePath, uploadedFile);
+        try {
+          const storagePath = `${leadId}/${Date.now()}-${uploadedFile.name}`;
+          const { error: uploadErr } = await supabase.storage
+            .from('lead-files')
+            .upload(storagePath, uploadedFile);
 
-        if (!uploadErr) {
-          await supabase.from('lead_files').insert({
-            lead_id: leadId,
-            file_name: uploadedFile.name,
-            file_type: uploadedFile.type,
-            file_size: uploadedFile.size,
-            storage_path: storagePath,
-            category: 'plan',
-            uploaded_by: 'Customer',
-          });
-          uploadedFileName = uploadedFile.name;
+          if (uploadErr) {
+            console.error('Storage upload failed:', uploadErr);
+          } else {
+            const { error: fileRecordErr } = await supabase.from('lead_files').insert({
+              lead_id: leadId,
+              file_name: uploadedFile.name,
+              file_type: uploadedFile.type,
+              file_size: uploadedFile.size,
+              storage_path: storagePath,
+              category: 'plan',
+              uploaded_by: 'Customer',
+            });
+            if (fileRecordErr) {
+              console.error('File record insert failed:', fileRecordErr);
+            } else {
+              uploadedFileName = uploadedFile.name;
+            }
+          }
+        } catch (fileErr) {
+          console.error('File upload error:', fileErr);
         }
       }
 

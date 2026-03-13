@@ -1,6 +1,6 @@
 import './StatusSelect.css';
 
-const statuses = ['new', 'contacted', 'quoted', 'deposit', 'won', 'lost'];
+const statuses = ['new', 'contacted', 'quoted', 'deposit'];
 
 export default function StatusSelect({ value, onChange }) {
   return (

@@ -44,14 +44,12 @@ export default function useDashboardStats() {
         complianceTasks: 0,
       };
 
-      const closedStatuses = ['won', 'lost'];
-
       allLeads.forEach((l) => {
         // 1+ Quote Requests: status is still 'new' but pending_action was cleared
         // (admin said "no answer" twice via action bar)
         const isRepeat = l.status === 'new' && !l.pending_action;
 
-        if (isRepeat && !closedStatuses.includes(l.status)) {
+        if (isRepeat) {
           if (l.source === 'contact_form') {
             c.repeatQuotesSelfServe++;
           } else {
@@ -67,7 +65,7 @@ export default function useDashboardStats() {
           c.newQuotesSelfServe++;
         }
 
-        if (l.want_samples && !closedStatuses.includes(l.status)) c.samples++;
+        if (l.want_samples) c.samples++;
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
         if (l.pending_action === 'chase_measurements') c.chaseMeasurements++;
