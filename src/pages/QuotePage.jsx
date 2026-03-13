@@ -247,18 +247,12 @@ export default function QuotePage() {
         );
       }
 
-      // Upload kitchen plan file via server-side API (bypasses storage RLS)
+      // Upload kitchen plan file: get signed URL from API, then upload directly to storage
       let uploadedFileName = null;
       if (planMode === 'upload' && uploadedFile) {
         try {
-          const base64 = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(uploadedFile);
-          });
-
-          const res = await fetch('/api/upload-file', {
+          // Step 1: Get a signed upload URL from our API (also creates the file record)
+          const urlRes = await fetch('/api/upload-file', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -266,15 +260,25 @@ export default function QuotePage() {
               fileName: uploadedFile.name,
               fileType: uploadedFile.type,
               fileSize: uploadedFile.size,
-              fileBase64: base64,
             }),
           });
+          const urlResult = await urlRes.json();
 
-          const result = await res.json();
-          if (result.success) {
-            uploadedFileName = uploadedFile.name;
+          if (!urlResult.success) {
+            console.error('Failed to get upload URL:', urlResult.error);
           } else {
-            console.error('File upload failed:', result.error);
+            // Step 2: Upload file directly to Supabase storage using signed URL
+            const uploadRes = await fetch(urlResult.signedUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': uploadedFile.type },
+              body: uploadedFile,
+            });
+
+            if (uploadRes.ok) {
+              uploadedFileName = uploadedFile.name;
+            } else {
+              console.error('Direct upload failed:', uploadRes.status);
+            }
           }
         } catch (fileErr) {
           console.error('File upload error:', fileErr);
