@@ -247,32 +247,34 @@ export default function QuotePage() {
         );
       }
 
-      // Upload kitchen plan file if provided
+      // Upload kitchen plan file via server-side API (bypasses storage RLS)
       let uploadedFileName = null;
       if (planMode === 'upload' && uploadedFile) {
         try {
-          const storagePath = `${leadId}/${Date.now()}-${uploadedFile.name}`;
-          const { error: uploadErr } = await supabase.storage
-            .from('lead-files')
-            .upload(storagePath, uploadedFile);
+          const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(uploadedFile);
+          });
 
-          if (uploadErr) {
-            console.error('Storage upload failed:', uploadErr);
+          const res = await fetch('/api/upload-file', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              leadId,
+              fileName: uploadedFile.name,
+              fileType: uploadedFile.type,
+              fileSize: uploadedFile.size,
+              fileBase64: base64,
+            }),
+          });
+
+          const result = await res.json();
+          if (result.success) {
+            uploadedFileName = uploadedFile.name;
           } else {
-            const { error: fileRecordErr } = await supabase.from('lead_files').insert({
-              lead_id: leadId,
-              file_name: uploadedFile.name,
-              file_type: uploadedFile.type,
-              file_size: uploadedFile.size,
-              storage_path: storagePath,
-              category: 'plan',
-              uploaded_by: 'Customer',
-            });
-            if (fileRecordErr) {
-              console.error('File record insert failed:', fileRecordErr);
-            } else {
-              uploadedFileName = uploadedFile.name;
-            }
+            console.error('File upload failed:', result.error);
           }
         } catch (fileErr) {
           console.error('File upload error:', fileErr);
