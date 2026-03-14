@@ -65,11 +65,17 @@ export default function useDashboardStats() {
           c.newQuotesSelfServe++;
         }
 
-        if (l.want_samples) c.samples++;
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
         if (l.pending_action === 'chase_measurements') c.chaseMeasurements++;
       });
+
+      // Count samples with status 'preparing' (shown on CRM Samples page)
+      const { count: samplesCount } = await supabase
+        .from('lead_samples')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'preparing');
+      c.samples = samplesCount || 0;
 
       setCounts(c);
 

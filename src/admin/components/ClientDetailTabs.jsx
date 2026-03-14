@@ -13,7 +13,7 @@ const TABS = [
   { key: 'notes', label: 'Notes' },
 ];
 
-export default function ClientDetailTabs({ children }) {
+export default function ClientDetailTabs({ children, highlights = {} }) {
   const [params, setParams] = useSearchParams();
   const activeTab = params.get('tab') || 'activity';
 
@@ -27,7 +27,7 @@ export default function ClientDetailTabs({ children }) {
         {TABS.map((tab) => (
           <button
             key={tab.key}
-            className={`client-tabs__tab${activeTab === tab.key ? ' client-tabs__tab--active' : ''}`}
+            className={`client-tabs__tab${activeTab === tab.key ? ' client-tabs__tab--active' : ''}${highlights[tab.key] ? ' client-tabs__tab--has-content' : ''}`}
             onClick={() => switchTab(tab.key)}
           >
             {tab.label}

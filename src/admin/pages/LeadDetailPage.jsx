@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 import useLeadDetail from '../hooks/useLeadDetail';
 import useTwilioDevice from '../hooks/useTwilioDevice';
 import ClientInfoPanel from '../components/ClientInfoPanel';
@@ -32,7 +33,19 @@ export default function LeadDetailPage() {
   const highlightId = searchParams.get('highlight') || null;
   const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, retryCall } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
+  const [tabHighlights, setTabHighlights] = useState({});
   const twilio = useTwilioDevice();
+
+  useEffect(() => {
+    async function fetchTabCounts() {
+      const [{ count: sc }, { count: fc }] = await Promise.all([
+        supabase.from('lead_samples').select('*', { count: 'exact', head: true }).eq('lead_id', id),
+        supabase.from('lead_files').select('*', { count: 'exact', head: true }).eq('lead_id', id),
+      ]);
+      setTabHighlights({ samples: sc > 0, files: fc > 0 });
+    }
+    fetchTabCounts();
+  }, [id]);
 
   useEffect(() => {
     twilio.initDevice();
@@ -121,7 +134,7 @@ export default function LeadDetailPage() {
             onToggleMute={twilio.toggleMute}
             leadName={lead.full_name}
           />
-          <ClientDetailTabs>
+          <ClientDetailTabs highlights={tabHighlights}>
             {renderTab}
           </ClientDetailTabs>
         </div>

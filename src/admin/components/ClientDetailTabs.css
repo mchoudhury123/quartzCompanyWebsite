@@ -36,6 +36,14 @@
   border-bottom-color: var(--color-gold, #c5a47e);
 }
 
+.client-tabs__tab--has-content {
+  color: #c5a47e;
+}
+
+.client-tabs__tab--has-content.client-tabs__tab--active {
+  color: var(--admin-text);
+}
+
 .client-tabs__content {
   background: var(--admin-card-bg);
   border-radius: var(--admin-radius);

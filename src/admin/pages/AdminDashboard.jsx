@@ -16,7 +16,7 @@ const ROW_1 = [
   { key: 'repeatQuotesSelfServe', label: '1+ Quote\nRequests\nSelf Serve', icon: FiCopy, color: '#8b7fc7', filter: 'repeat_quotes_self_serve', highlightWhenActive: true },
   { key: 'emails', label: 'Emails', icon: FiMail, color: '#7c6dab', isEmail: true },
   { key: 'deposits', label: 'Deposits', icon: FiDollarSign, color: '#d4874e', filter: 'deposits' },
-  { key: 'samples', label: 'Samples', icon: FiPackage, color: '#5ba4a4', filter: 'samples' },
+  { key: 'samples', label: 'Samples', icon: FiPackage, color: '#5ba4a4', to: '/admin/samples' },
   { key: 'followUp', label: 'Follow Up\nQuotes', icon: FiRepeat, color: '#9e9e9e', filter: 'follow_up' },
 ];
 
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
         count={count}
         icon={card.icon}
         color={card.color}
-        to={`/admin/leads?filter=${card.filter}`}
+        to={card.to || `/admin/leads?filter=${card.filter}`}
         highlight={card.highlightWhenActive && count > 0}
       />
     );
