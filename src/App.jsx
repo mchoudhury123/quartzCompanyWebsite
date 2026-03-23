@@ -32,6 +32,7 @@ import LeadsListPage from './admin/pages/LeadsListPage';
 import LeadDetailPage from './admin/pages/LeadDetailPage';
 import QuoteBuilderPage from './admin/pages/QuoteBuilderPage';
 import SamplesPage from './admin/pages/SamplesPage';
+import AppointmentsPage from './admin/pages/AppointmentsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 
 export default function App() {
@@ -77,6 +78,7 @@ export default function App() {
           <Route path="leads/:id/quote/new" element={<QuoteBuilderPage />} />
           <Route path="leads/:id/quote/:quoteId" element={<QuoteBuilderPage />} />
           <Route path="samples" element={<SamplesPage />} />
+          <Route path="appointments" element={<AppointmentsPage />} />
         </Route>
       </Route>
     </Routes>

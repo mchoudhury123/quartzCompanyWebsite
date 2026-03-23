@@ -21,7 +21,7 @@ const ROW_1 = [
 ];
 
 const ROW_2 = [
-  { key: 'appointments', label: 'Appointments', icon: FiCalendar, color: '#8b3a3a', filter: 'appointments' },
+  { key: 'appointments', label: 'Appointments', icon: FiCalendar, color: '#8b3a3a', to: '/admin/appointments' },
   { key: 'proWelcome', label: 'Pro Welcome', icon: FiThumbsUp, color: '#d4748b', filter: 'pro_welcome' },
   { key: 'chaseMeasurements', label: 'Chase\nMeasurements', icon: FiMapPin, color: '#b93131', filter: 'chase_measurements' },
   { key: 'otherTasks', label: 'Other Tasks', icon: FiPhone, color: '#4a9e8e', filter: 'other_tasks' },

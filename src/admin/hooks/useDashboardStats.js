@@ -77,6 +77,15 @@ export default function useDashboardStats() {
         .eq('status', 'preparing');
       c.samples = samplesCount || 0;
 
+      // Count upcoming scheduled appointments
+      const todayStr = new Date().toISOString().split('T')[0];
+      const { count: apptCount } = await supabase
+        .from('appointments')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'scheduled')
+        .gte('date', todayStr);
+      c.appointments = apptCount || 0;
+
       setCounts(c);
 
       const { data: recent } = await supabase

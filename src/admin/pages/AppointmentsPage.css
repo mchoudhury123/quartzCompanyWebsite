@@ -1,0 +1,559 @@
+/* ── Appointments Page ── */
+
+.appt-page {
+  max-width: 1100px;
+}
+
+.appt-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.appt-page__title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.appt-page__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #fff;
+  background: #c5a47e;
+  border: none;
+  border-radius: var(--admin-radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.appt-page__add-btn:hover {
+  background: #b8935f;
+}
+
+/* ── Stats bar ── */
+
+.appt-stats {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.appt-stats__item {
+  flex: 1;
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 0.85rem 1rem;
+  text-align: center;
+  box-shadow: var(--admin-shadow);
+}
+
+.appt-stats__num {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.appt-stats__label {
+  font-size: 0.75rem;
+  color: var(--admin-text-light);
+  font-weight: 500;
+}
+
+.appt-stats__item--scheduled .appt-stats__num { color: #c5a47e; }
+.appt-stats__item--completed .appt-stats__num { color: #6b8f71; }
+.appt-stats__item--cancelled .appt-stats__num { color: #b93131; }
+
+/* ── Body layout ── */
+
+.appt-page__body {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .appt-page__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Calendar ── */
+
+.appt-calendar {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 1.25rem;
+  box-shadow: var(--admin-shadow);
+}
+
+.appt-calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.appt-calendar__nav-center {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.appt-calendar__month {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.appt-calendar__today-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #c5a47e;
+  background: none;
+  border: 1px solid #c5a47e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.appt-calendar__today-btn:hover {
+  background: #c5a47e;
+  color: #fff;
+}
+
+.appt-calendar__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--admin-text);
+  font-size: 1rem;
+  transition: all 0.15s;
+}
+
+.appt-calendar__nav-btn:hover {
+  background: var(--admin-bg);
+  border-color: var(--admin-text-light);
+}
+
+/* Grid */
+
+.appt-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.appt-calendar__day-header {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  padding: 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.appt-calendar__cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.12s;
+  padding: 2px;
+  min-height: 48px;
+}
+
+.appt-calendar__cell:hover {
+  background: rgba(197, 164, 126, 0.08);
+  border-color: rgba(197, 164, 126, 0.3);
+}
+
+.appt-calendar__cell--outside {
+  opacity: 0.3;
+}
+
+.appt-calendar__cell--today .appt-calendar__date-num {
+  background: #c5a47e;
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appt-calendar__cell--selected {
+  background: rgba(197, 164, 126, 0.12);
+  border-color: #c5a47e;
+}
+
+.appt-calendar__date-num {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  line-height: 1;
+}
+
+.appt-calendar__dot-row {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+}
+
+.appt-calendar__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c5a47e;
+}
+
+.appt-calendar__count-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  background: #c5a47e;
+  border-radius: 8px;
+  padding: 0 4px;
+  line-height: 1.4;
+}
+
+/* ── Side panel ── */
+
+.appt-panel {
+  min-height: 400px;
+}
+
+.appt-panel__placeholder {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--admin-text-light);
+  font-size: 0.88rem;
+  box-shadow: var(--admin-shadow);
+}
+
+/* ── Day view ── */
+
+.appt-day-view {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 1.25rem;
+  box-shadow: var(--admin-shadow);
+}
+
+.appt-day-view__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.appt-day-view__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.appt-day-view__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #c5a47e;
+  background: none;
+  border: 1px solid #c5a47e;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.appt-day-view__add:hover {
+  background: #c5a47e;
+  color: #fff;
+}
+
+.appt-day-view__empty {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--admin-text-light);
+  font-size: 0.85rem;
+}
+
+.appt-day-view__empty-btn {
+  margin-top: 0.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #fff;
+  background: #c5a47e;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.appt-day-view__empty-btn:hover {
+  background: #b8935f;
+}
+
+.appt-day-view__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Appointment card ── */
+
+.appt-card {
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 0.85rem 1rem;
+  border-left: 3px solid #c5a47e;
+  transition: border-color 0.15s;
+}
+
+.appt-card--completed { border-left-color: #6b8f71; }
+.appt-card--cancelled { border-left-color: #b93131; opacity: 0.6; }
+.appt-card--no_show { border-left-color: #d4874e; opacity: 0.7; }
+
+.appt-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.appt-card__time {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+}
+
+.appt-card__duration {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.appt-card__status-select {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.72rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 4px;
+  background: var(--admin-card-bg);
+  color: var(--admin-text);
+  cursor: pointer;
+}
+
+.appt-card__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0 0 0.35rem;
+}
+
+.appt-card__detail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--admin-text-light);
+  margin-bottom: 0.2rem;
+}
+
+.appt-card__detail svg {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.appt-card__notes {
+  font-size: 0.78rem;
+  color: var(--admin-text-light);
+  margin: 0.4rem 0 0;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.appt-card__delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #b93131;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.appt-card__delete:hover {
+  opacity: 1;
+}
+
+/* Status icons */
+.appt-status-icon { font-size: 0.85rem; }
+.appt-status-icon--scheduled { color: #c5a47e; }
+.appt-status-icon--completed { color: #6b8f71; }
+.appt-status-icon--cancelled { color: #b93131; }
+.appt-status-icon--no-show { color: #d4874e; }
+
+/* ── New appointment form ── */
+
+.appt-form {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 1.25rem;
+  box-shadow: var(--admin-shadow);
+}
+
+.appt-form__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.appt-form__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.appt-form__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--admin-text-light);
+  transition: all 0.15s;
+}
+
+.appt-form__close:hover {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+.appt-form__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  margin-bottom: 0.75rem;
+}
+
+.appt-form__input,
+.appt-form__textarea {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  background: var(--admin-card-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  transition: border-color 0.15s;
+}
+
+.appt-form__input:focus,
+.appt-form__textarea:focus {
+  outline: none;
+  border-color: #c5a47e;
+}
+
+.appt-form__textarea {
+  resize: vertical;
+}
+
+.appt-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.appt-form__submit {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #fff;
+  background: #c5a47e;
+  border: none;
+  border-radius: var(--admin-radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.appt-form__submit:hover {
+  background: #b8935f;
+}
+
+.appt-form__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .appt-stats {
+    flex-wrap: wrap;
+  }
+  .appt-stats__item {
+    flex: 1 1 45%;
+  }
+  .appt-form__row {
+    grid-template-columns: 1fr;
+  }
+}
