@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import useAppointments from '../hooks/useAppointments';
+import { supabase } from '../../lib/supabase';
 import {
   FiChevronLeft, FiChevronRight, FiPlus, FiClock, FiUser,
   FiPhone, FiMapPin, FiTrash2, FiCheck, FiX, FiAlertCircle,
@@ -12,6 +13,22 @@ const MONTHS = [
 ];
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const STATUS_OPTIONS = ['scheduled', 'completed', 'cancelled', 'no_show'];
+
+/* ── Appointment type presets with colours ── */
+const APPT_TYPES = [
+  { value: 'Showroom Visit', color: '#5b8fd4' },
+  { value: 'Home Appointment', color: '#c5a47e' },
+  { value: 'Template / Measure', color: '#8b7fc7' },
+  { value: 'Installation', color: '#6b8f71' },
+  { value: 'Follow Up Call', color: '#d4874e' },
+  { value: 'Consultation', color: '#d4748b' },
+  { value: 'Other', color: '#9e9e9e' },
+];
+
+function getTypeColor(title) {
+  const match = APPT_TYPES.find((t) => t.value === title);
+  return match ? match.color : '#9e9e9e';
+}
 
 function toDateStr(d) {
   const y = d.getFullYear();
@@ -33,8 +50,10 @@ export default function AppointmentsPage() {
   // Form state
   const [form, setForm] = useState({
     title: '',
+    customTitle: '',
     customer_name: '',
     customer_phone: '',
+    lead_id: null,
     date: '',
     time: '10:00',
     duration_minutes: 60,
@@ -42,17 +61,73 @@ export default function AppointmentsPage() {
     notes: '',
   });
 
+  // Client search state
+  const [clientQuery, setClientQuery] = useState('');
+  const [clientResults, setClientResults] = useState([]);
+  const [showClientDropdown, setShowClientDropdown] = useState(false);
+  const clientInputRef = useRef(null);
+  const clientDropdownRef = useRef(null);
+
   const resetForm = () => {
     setForm({
       title: '',
+      customTitle: '',
       customer_name: '',
       customer_phone: '',
+      lead_id: null,
       date: selectedDate || '',
       time: '10:00',
       duration_minutes: 60,
       location: '',
       notes: '',
     });
+    setClientQuery('');
+    setClientResults([]);
+  };
+
+  // Client autocomplete search
+  useEffect(() => {
+    if (clientQuery.length < 2) {
+      setClientResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      const { data } = await supabase
+        .from('leads')
+        .select('id, full_name, phone, email, address')
+        .ilike('full_name', `%${clientQuery}%`)
+        .limit(6);
+      setClientResults(data || []);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [clientQuery]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        clientDropdownRef.current &&
+        !clientDropdownRef.current.contains(e.target) &&
+        clientInputRef.current &&
+        !clientInputRef.current.contains(e.target)
+      ) {
+        setShowClientDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const selectClient = (lead) => {
+    setForm((prev) => ({
+      ...prev,
+      customer_name: lead.full_name,
+      customer_phone: lead.phone || '',
+      lead_id: lead.id,
+      location: lead.address || prev.location,
+    }));
+    setClientQuery(lead.full_name);
+    setShowClientDropdown(false);
   };
 
   // Group appointments by date
@@ -69,23 +144,18 @@ export default function AppointmentsPage() {
   const calendarDays = useMemo(() => {
     const firstDay = new Date(viewYear, viewMonth, 1);
     const lastDay = new Date(viewYear, viewMonth + 1, 0);
-    // Monday = 0 in our grid
     let startDow = firstDay.getDay() - 1;
     if (startDow < 0) startDow = 6;
 
     const days = [];
-    // Previous month padding
-    const prevMonth = new Date(viewYear, viewMonth, 0);
     for (let i = startDow - 1; i >= 0; i--) {
       const d = new Date(viewYear, viewMonth, -i);
       days.push({ date: d, str: toDateStr(d), inMonth: false });
     }
-    // Current month
     for (let i = 1; i <= lastDay.getDate(); i++) {
       const d = new Date(viewYear, viewMonth, i);
       days.push({ date: d, str: toDateStr(d), inMonth: true });
     }
-    // Next month padding to complete the grid
     const remaining = 7 - (days.length % 7);
     if (remaining < 7) {
       for (let i = 1; i <= remaining; i++) {
@@ -98,7 +168,6 @@ export default function AppointmentsPage() {
 
   const todayStr = toDateStr(today);
 
-  // Navigation
   const prevMonth = () => {
     if (viewMonth === 0) { setViewMonth(11); setViewYear(viewYear - 1); }
     else setViewMonth(viewMonth - 1);
@@ -124,18 +193,19 @@ export default function AppointmentsPage() {
     };
   }, [appointments, viewYear, viewMonth]);
 
-  // Selected day appointments
   const selectedAppts = selectedDate ? (apptsByDate[selectedDate] || []) : [];
 
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title || !form.date || !form.time) return;
+    const title = form.title === 'Other' ? form.customTitle : form.title;
+    if (!title || !form.date || !form.time) return;
     setSaving(true);
     await createAppointment({
-      title: form.title,
+      title,
       customer_name: form.customer_name || null,
       customer_phone: form.customer_phone || null,
+      lead_id: form.lead_id || null,
       date: form.date,
       time: form.time,
       duration_minutes: form.duration_minutes,
@@ -222,7 +292,7 @@ export default function AppointmentsPage() {
               <div className="appt-calendar__day-header" key={d}>{d}</div>
             ))}
             {calendarDays.map((day) => {
-              const count = (apptsByDate[day.str] || []).length;
+              const dayAppts = apptsByDate[day.str] || [];
               const isToday = day.str === todayStr;
               const isSelected = day.str === selectedDate;
               return (
@@ -237,13 +307,17 @@ export default function AppointmentsPage() {
                   onClick={() => handleDateClick(day.str)}
                 >
                   <span className="appt-calendar__date-num">{day.date.getDate()}</span>
-                  {count > 0 && (
+                  {dayAppts.length > 0 && (
                     <span className="appt-calendar__dot-row">
-                      {count <= 3
-                        ? Array.from({ length: count }).map((_, i) => (
-                            <span className="appt-calendar__dot" key={i} />
+                      {dayAppts.length <= 3
+                        ? dayAppts.map((a, i) => (
+                            <span
+                              className="appt-calendar__dot"
+                              key={i}
+                              style={{ background: getTypeColor(a.title) }}
+                            />
                           ))
-                        : <span className="appt-calendar__count-badge">{count}</span>
+                        : <span className="appt-calendar__count-badge">{dayAppts.length}</span>
                       }
                     </span>
                   )}
@@ -262,25 +336,80 @@ export default function AppointmentsPage() {
                 <button className="appt-form__close" onClick={() => setShowForm(false)}><FiX /></button>
               </div>
               <form onSubmit={handleSubmit}>
-                <label className="appt-form__label">
-                  Title *
-                  <input
-                    className="appt-form__input"
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    placeholder="e.g. Home survey, Showroom visit"
-                    required
-                  />
-                </label>
-                <label className="appt-form__label">
+                {/* Appointment type selector */}
+                <div className="appt-form__label">
+                  Type *
+                  <div className="appt-form__type-grid">
+                    {APPT_TYPES.map((type) => (
+                      <button
+                        key={type.value}
+                        type="button"
+                        className={`appt-form__type-btn${form.title === type.value ? ' appt-form__type-btn--active' : ''}`}
+                        style={{
+                          '--type-color': type.color,
+                          borderColor: form.title === type.value ? type.color : undefined,
+                          background: form.title === type.value ? type.color + '18' : undefined,
+                        }}
+                        onClick={() => setForm({ ...form, title: type.value, customTitle: '' })}
+                      >
+                        <span className="appt-form__type-dot" style={{ background: type.color }} />
+                        {type.value}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Custom title when "Other" selected */}
+                {form.title === 'Other' && (
+                  <label className="appt-form__label">
+                    Custom Title *
+                    <input
+                      className="appt-form__input"
+                      value={form.customTitle}
+                      onChange={(e) => setForm({ ...form, customTitle: e.target.value })}
+                      placeholder="Enter appointment title"
+                      required
+                    />
+                  </label>
+                )}
+
+                {/* Customer name with autocomplete */}
+                <div className="appt-form__label">
                   Customer Name
-                  <input
-                    className="appt-form__input"
-                    value={form.customer_name}
-                    onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
-                    placeholder="Customer name"
-                  />
-                </label>
+                  <div className="appt-form__autocomplete">
+                    <input
+                      ref={clientInputRef}
+                      className="appt-form__input"
+                      value={clientQuery}
+                      onChange={(e) => {
+                        setClientQuery(e.target.value);
+                        setForm({ ...form, customer_name: e.target.value, lead_id: null });
+                        setShowClientDropdown(true);
+                      }}
+                      onFocus={() => { if (clientResults.length > 0) setShowClientDropdown(true); }}
+                      placeholder="Start typing to search clients..."
+                      autoComplete="off"
+                    />
+                    {showClientDropdown && clientResults.length > 0 && (
+                      <div className="appt-form__client-dropdown" ref={clientDropdownRef}>
+                        {clientResults.map((lead) => (
+                          <button
+                            key={lead.id}
+                            type="button"
+                            className="appt-form__client-option"
+                            onClick={() => selectClient(lead)}
+                          >
+                            <span className="appt-form__client-name">{lead.full_name}</span>
+                            <span className="appt-form__client-sub">
+                              {lead.phone || lead.email || ''}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <label className="appt-form__label">
                   Phone
                   <input
@@ -347,7 +476,7 @@ export default function AppointmentsPage() {
                     rows={3}
                   />
                 </label>
-                <button className="appt-form__submit" type="submit" disabled={saving}>
+                <button className="appt-form__submit" type="submit" disabled={saving || (!form.title || (form.title === 'Other' && !form.customTitle))}>
                   {saving ? 'Saving...' : 'Book Appointment'}
                 </button>
               </form>
@@ -376,7 +505,11 @@ export default function AppointmentsPage() {
                   {selectedAppts
                     .sort((a, b) => a.time.localeCompare(b.time))
                     .map((a) => (
-                    <div className={`appt-card appt-card--${a.status}`} key={a.id}>
+                    <div
+                      className={`appt-card appt-card--${a.status}`}
+                      key={a.id}
+                      style={{ borderLeftColor: getTypeColor(a.title) }}
+                    >
                       <div className="appt-card__top">
                         <div className="appt-card__time">
                           {statusIcon(a.status)}
@@ -393,7 +526,11 @@ export default function AppointmentsPage() {
                           ))}
                         </select>
                       </div>
-                      <h4 className="appt-card__title">{a.title}</h4>
+                      <div className="appt-card__type-row">
+                        <span className="appt-card__type-badge" style={{ background: getTypeColor(a.title) }}>
+                          {a.title}
+                        </span>
+                      </div>
                       {a.customer_name && (
                         <div className="appt-card__detail"><FiUser /> {a.customer_name}</div>
                       )}
@@ -422,6 +559,17 @@ export default function AppointmentsPage() {
               <p>Select a date on the calendar to view or add appointments.</p>
             </div>
           )}
+
+          {/* Colour key */}
+          <div className="appt-key">
+            <h4 className="appt-key__title">Appointment Types</h4>
+            {APPT_TYPES.map((type) => (
+              <div className="appt-key__item" key={type.value}>
+                <span className="appt-key__dot" style={{ background: type.color }} />
+                <span className="appt-key__label">{type.value}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
