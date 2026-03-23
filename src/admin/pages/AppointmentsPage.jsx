@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import useAppointments from '../hooks/useAppointments';
 import { supabase } from '../../lib/supabase';
 import {
@@ -39,12 +40,15 @@ function toDateStr(d) {
 
 export default function AppointmentsPage() {
   const { appointments, loading, createAppointment, updateAppointment, deleteAppointment } = useAppointments();
+  const location = useLocation();
+  const prefill = location.state?.prefill || null;
 
   const today = new Date();
+  const todayStr = toDateStr(today);
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(prefill ? todayStr : null);
+  const [showForm, setShowForm] = useState(!!prefill);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState(null);
 
@@ -52,18 +56,18 @@ export default function AppointmentsPage() {
   const [form, setForm] = useState({
     title: '',
     customTitle: '',
-    customer_name: '',
-    customer_phone: '',
-    lead_id: null,
-    date: '',
+    customer_name: prefill?.customer_name || '',
+    customer_phone: prefill?.customer_phone || '',
+    lead_id: prefill?.lead_id || null,
+    date: prefill ? todayStr : '',
     time: '10:00',
     duration_minutes: 60,
-    location: '',
+    location: prefill?.location || '',
     notes: '',
   });
 
   // Client search state
-  const [clientQuery, setClientQuery] = useState('');
+  const [clientQuery, setClientQuery] = useState(prefill?.customer_name || '');
   const [clientResults, setClientResults] = useState([]);
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const clientInputRef = useRef(null);
@@ -166,8 +170,6 @@ export default function AppointmentsPage() {
     }
     return days;
   }, [viewYear, viewMonth]);
-
-  const todayStr = toDateStr(today);
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewMonth(11); setViewYear(viewYear - 1); }

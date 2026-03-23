@@ -76,6 +76,18 @@ export default function LeadDetailPage() {
       case 'file':
         setModal('file');
         break;
+      case 'appointment':
+        navigate('/admin/appointments', {
+          state: {
+            prefill: {
+              customer_name: lead?.full_name || '',
+              customer_phone: lead?.phone || '',
+              lead_id: lead?.id || null,
+              location: lead?.address || '',
+            },
+          },
+        });
+        break;
     }
   };
 
