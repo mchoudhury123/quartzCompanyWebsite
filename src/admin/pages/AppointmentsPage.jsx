@@ -46,6 +46,7 @@ export default function AppointmentsPage() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState(null);
 
   // Form state
   const [form, setForm] = useState({
@@ -200,8 +201,9 @@ export default function AppointmentsPage() {
     e.preventDefault();
     const title = form.title === 'Other' ? form.customTitle : form.title;
     if (!title || !form.date || !form.time) return;
+    setFormError(null);
     setSaving(true);
-    await createAppointment({
+    const { error } = await createAppointment({
       title,
       customer_name: form.customer_name || null,
       customer_phone: form.customer_phone || null,
@@ -213,6 +215,10 @@ export default function AppointmentsPage() {
       notes: form.notes || null,
     });
     setSaving(false);
+    if (error) {
+      setFormError(error.message || 'Failed to save. Have you run the appointments migration?');
+      return;
+    }
     setShowForm(false);
     resetForm();
   };
@@ -476,6 +482,7 @@ export default function AppointmentsPage() {
                     rows={3}
                   />
                 </label>
+                {formError && <p className="appt-form__error">{formError}</p>}
                 <button className="appt-form__submit" type="submit" disabled={saving || (!form.title || (form.title === 'Other' && !form.customTitle))}>
                   {saving ? 'Saving...' : 'Book Appointment'}
                 </button>
@@ -560,16 +567,17 @@ export default function AppointmentsPage() {
             </div>
           )}
 
-          {/* Colour key */}
-          <div className="appt-key">
-            <h4 className="appt-key__title">Appointment Types</h4>
-            {APPT_TYPES.map((type) => (
-              <div className="appt-key__item" key={type.value}>
-                <span className="appt-key__dot" style={{ background: type.color }} />
-                <span className="appt-key__label">{type.value}</span>
-              </div>
-            ))}
-          </div>
+        </div>
+
+        {/* Colour key */}
+        <div className="appt-key">
+          <h4 className="appt-key__title">Appointment Types</h4>
+          {APPT_TYPES.map((type) => (
+            <div className="appt-key__item" key={type.value}>
+              <span className="appt-key__dot" style={{ background: type.color }} />
+              <span className="appt-key__label">{type.value}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

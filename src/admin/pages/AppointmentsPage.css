@@ -1,7 +1,7 @@
 /* ── Appointments Page ── */
 
 .appt-page {
-  max-width: 1100px;
+  max-width: 1200px;
 }
 
 .appt-page__header {
@@ -76,9 +76,18 @@
 
 .appt-page__body {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 380px auto;
   gap: 1.25rem;
   align-items: start;
+}
+
+@media (max-width: 1050px) {
+  .appt-page__body {
+    grid-template-columns: 1fr 340px;
+  }
+  .appt-key {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 900px) {
@@ -550,6 +559,16 @@
   cursor: not-allowed;
 }
 
+.appt-form__error {
+  font-size: 0.8rem;
+  color: #b93131;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 0.5rem;
+}
+
 /* ── Appointment type selector ── */
 
 .appt-form__type-grid {
@@ -652,7 +671,9 @@
   border-radius: var(--admin-radius);
   padding: 1rem 1.25rem;
   box-shadow: var(--admin-shadow);
-  margin-top: 1rem;
+  position: sticky;
+  top: calc(var(--admin-topbar-height, 64px) + 1.5rem);
+  align-self: start;
 }
 
 .appt-key__title {

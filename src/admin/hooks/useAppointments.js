@@ -7,11 +7,12 @@ export default function useAppointments() {
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('appointments')
       .select('*, leads:lead_id(id, full_name, phone, email)')
       .order('date', { ascending: true })
       .order('time', { ascending: true });
+    if (error) console.error('Failed to fetch appointments:', error.message);
     setAppointments(data || []);
     setLoading(false);
   }, []);
