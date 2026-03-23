@@ -53,13 +53,16 @@ export default function useAllSamples() {
   }, {});
 
   // Split into preparing vs completed groups
+  // A lead only moves to "Completed" when ALL their samples are sent/delivered
   const preparingGroups = {};
   const completedGroups = {};
   Object.entries(grouped).forEach(([lid, group]) => {
-    const prep = group.samples.filter((s) => s.status === 'preparing');
-    const comp = group.samples.filter((s) => s.status === 'sent' || s.status === 'delivered');
-    if (prep.length > 0) preparingGroups[lid] = { lead: group.lead, samples: prep };
-    if (comp.length > 0) completedGroups[lid] = { lead: group.lead, samples: comp };
+    const allCompleted = group.samples.every((s) => s.status === 'sent' || s.status === 'delivered');
+    if (allCompleted) {
+      completedGroups[lid] = { lead: group.lead, samples: group.samples };
+    } else {
+      preparingGroups[lid] = { lead: group.lead, samples: group.samples };
+    }
   });
 
   return { samples, preparingGroups, completedGroups, loading, updateStatus, refetch: fetchAll };
