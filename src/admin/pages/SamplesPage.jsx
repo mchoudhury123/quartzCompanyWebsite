@@ -85,15 +85,7 @@ export default function SamplesPage() {
                   {s.colour && <span className="samples-page__sample-detail">{s.colour}{s.material ? ` \u00B7 ${s.material}` : ''}</span>}
                 </div>
               </div>
-              <select
-                className="samples-page__status-select"
-                value={s.status}
-                onChange={(e) => updateStatus(s.id, e.target.value, s.lead_id)}
-              >
-                {STATUS_OPTIONS.map((st) => (
-                  <option key={st} value={st}>{st.charAt(0).toUpperCase() + st.slice(1)}</option>
-                ))}
-              </select>
+              <StatusBadge status={s.status} label={s.status} />
             </div>
           ))}
         </div>
