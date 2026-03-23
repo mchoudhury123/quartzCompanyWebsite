@@ -269,6 +269,51 @@
   cursor: pointer;
 }
 
+/* ── Confirm all button ── */
+
+.samples-page__confirm-all {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--admin-shadow);
+  margin-bottom: 1.25rem;
+}
+
+.samples-page__confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: #fff;
+  background: #c5a47e;
+  border: none;
+  border-radius: var(--admin-radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.samples-page__confirm-btn:hover {
+  background: #b8935f;
+}
+
+.samples-page__confirm-btn--loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.samples-page__confirm-hint {
+  font-size: 0.78rem;
+  color: var(--admin-text-light);
+  margin: 0.6rem 0 0;
+  text-align: center;
+}
+
 /* ── Fabricator section ── */
 
 .samples-page__fabricator {

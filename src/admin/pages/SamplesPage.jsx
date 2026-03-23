@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import useAllSamples from '../hooks/useAllSamples';
 import StatusBadge from '../components/StatusBadge';
-import { FiArrowLeft, FiPackage, FiMessageCircle, FiPhone, FiMail, FiMapPin, FiUser } from 'react-icons/fi';
+import { FiArrowLeft, FiPackage, FiMessageCircle, FiPhone, FiMail, FiMapPin, FiUser, FiCheckCircle } from 'react-icons/fi';
 import './SamplesPage.css';
 
 const STATUS_OPTIONS = ['preparing', 'sent', 'delivered'];
 
 export default function SamplesPage() {
-  const { preparingGroups, completedGroups, loading, updateStatus } = useAllSamples();
+  const { preparingGroups, completedGroups, loading, updateStatus, confirmAll } = useAllSamples();
+  const [confirming, setConfirming] = useState(false);
   const [activeTab, setActiveTab] = useState('preparing');
   const [selectedLeadId, setSelectedLeadId] = useState(null);
   const [fabricatorNumber, setFabricatorNumber] = useState(
@@ -96,6 +97,27 @@ export default function SamplesPage() {
             </div>
           ))}
         </div>
+
+        {samples.some((s) => s.status === 'preparing') && (
+          <div className="samples-page__confirm-all">
+            <button
+              className={`samples-page__confirm-btn${confirming ? ' samples-page__confirm-btn--loading' : ''}`}
+              disabled={confirming}
+              onClick={async () => {
+                setConfirming(true);
+                await confirmAll(lead.id, lead, samples);
+                setConfirming(false);
+                setSelectedLeadId(null);
+              }}
+            >
+              <FiCheckCircle />
+              {confirming ? 'Processing...' : 'Confirm All Samples & Notify Customer'}
+            </button>
+            <p className="samples-page__confirm-hint">
+              Marks all samples as sent and emails the customer that their samples are on the way (3\u20135 days).
+            </p>
+          </div>
+        )}
 
         <div className="samples-page__fabricator">
           <h3 className="samples-page__section-title">Message Fabricator</h3>
