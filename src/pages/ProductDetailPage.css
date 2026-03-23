@@ -82,20 +82,9 @@
 .pdp__main-image-inner {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: cover;
   transition: transform 0.15s ease-out;
   will-change: transform;
-}
-
-.pdp__image-label {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  color: rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-  text-transform: uppercase;
-  letter-spacing: 3px;
 }
 
 .pdp__gallery-arrow {
@@ -145,6 +134,16 @@
   cursor: pointer;
   transition: all var(--transition);
   flex-shrink: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--color-cream);
+}
+
+.pdp__thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .pdp__thumb:hover {
@@ -615,13 +614,10 @@
   justify-content: center;
 }
 
-.pdp__slab-modal-label {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  color: rgba(0, 0, 0, 0.15);
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  pointer-events: none;
+.pdp__slab-modal-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .pdp__slab-modal-close {

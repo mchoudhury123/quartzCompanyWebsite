@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import products from '../data/products.json';
@@ -147,13 +147,13 @@ function ProductDetailPage() {
     return stars;
   };
 
-  /* ── Gradient placeholders for gallery images ── */
-  const placeholderGradients = [
-    'linear-gradient(135deg, #e8e4df 0%, #d5cec6 40%, #c9c0b5 60%, #e2ddd7 100%)',
-    'linear-gradient(135deg, #d5cec6 0%, #c2b8aa 40%, #b5a999 60%, #d5cec6 100%)',
-    'linear-gradient(135deg, #c9c0b5 0%, #b5a999 50%, #a89882 100%)',
-    'linear-gradient(135deg, #e2ddd7 0%, #d5cec6 35%, #c2b8aa 70%, #e8e4df 100%)',
-  ];
+  /* ── Image loading state ── */
+  const [mainImageLoaded, setMainImageLoaded] = useState(false);
+
+  /* Reset image loaded state when switching images */
+  useEffect(() => {
+    setMainImageLoaded(false);
+  }, [activeImageIndex]);
 
   /* ── 404 fallback ── */
   if (!product) {
@@ -199,15 +199,13 @@ function ProductDetailPage() {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
-              <div
-                className="pdp__main-image-inner"
-                style={{
-                  background: placeholderGradients[activeImageIndex % placeholderGradients.length],
-                  ...zoomStyle,
-                }}
-              >
-                <span className="pdp__image-label">{product.name}</span>
-              </div>
+              <img
+                src={images[activeImageIndex]}
+                alt={`${product.name} - image ${activeImageIndex + 1}`}
+                className={`pdp__main-image-inner${mainImageLoaded ? ' pdp__main-image-inner--loaded' : ''}`}
+                style={zoomStyle}
+                onLoad={() => setMainImageLoaded(true)}
+              />
 
               {images.length > 1 && (
                 <>
@@ -236,10 +234,9 @@ function ProductDetailPage() {
                   className={`pdp__thumb${i === activeImageIndex ? ' pdp__thumb--active' : ''}`}
                   onClick={() => setActiveImageIndex(i)}
                   aria-label={`View image ${i + 1}`}
-                  style={{
-                    background: placeholderGradients[i % placeholderGradients.length],
-                  }}
-                />
+                >
+                  <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="pdp__thumb-img" />
+                </button>
               ))}
             </div>
 
@@ -499,13 +496,12 @@ function ProductDetailPage() {
             >
               &#10005;
             </button>
-            <div
-              className="pdp__slab-modal-image"
-              style={{
-                background: placeholderGradients[activeImageIndex % placeholderGradients.length],
-              }}
-            >
-              <span className="pdp__slab-modal-label">{product.name} &mdash; Full Slab View</span>
+            <div className="pdp__slab-modal-image">
+              <img
+                src={product.fullSlabImage || images[images.length - 1]}
+                alt={`${product.name} \u2014 Full Slab View`}
+                className="pdp__slab-modal-img"
+              />
             </div>
           </div>
         </div>

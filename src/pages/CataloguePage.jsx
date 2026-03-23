@@ -31,8 +31,8 @@ const PROMO_BANNERS = [
 ];
 
 /* ── Filter constants ── */
-const COLOUR_TONES = ['White', 'Grey', 'Black', 'Beige', 'Cream', 'Green'];
-const PATTERN_TYPES = ['Veined', 'Speckled', 'Plain', 'Concrete', 'Fine-grain'];
+const COLOUR_TONES = ['White', 'Cream', 'Grey', 'Black'];
+const PATTERN_TYPES = ['Veined', 'Plain', 'Speckled'];
 const BRANDS = ['The Quartz Company'];
 
 const SORT_OPTIONS = [

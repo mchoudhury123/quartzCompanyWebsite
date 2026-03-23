@@ -11,12 +11,12 @@
   },
   {
     "slug": "plain",
-    "name": "Plain & Speckled",
-    "description": "Clean, uniform surfaces and subtle speckled textures for a modern, understated look."
+    "name": "Plain & Solid",
+    "description": "Clean, uniform surfaces for a modern, understated look."
   },
   {
-    "slug": "concrete",
-    "name": "Concrete Effect",
-    "description": "Industrial-inspired surfaces that capture the raw beauty of polished concrete."
+    "slug": "speckled",
+    "name": "Speckled",
+    "description": "Surfaces with fine mineral particles that add subtle sparkle and depth."
   }
 ]
