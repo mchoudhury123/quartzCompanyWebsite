@@ -27,7 +27,6 @@ const quickLinks = [
 const navLinksLeft = [
   { label: "Our Worktops", path: "/colours", hasDropdown: true },
   { label: "Design Options", path: "/design-options" },
-  { label: "Inspiration", path: "/inspiration" },
 ];
 
 const navLinksRight = [

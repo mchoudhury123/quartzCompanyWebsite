@@ -28,7 +28,6 @@ const Footer = () => {
     { label: 'Warranty', path: '/warranty' },
     { label: 'About', path: '/about' },
     { label: 'Contact', path: '/contact' },
-    { label: 'Inspiration', path: '/inspiration' },
   ];
 
   const legalLinks = [

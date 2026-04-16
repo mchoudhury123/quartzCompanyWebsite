@@ -7,8 +7,6 @@ import HomePage from './pages/HomePage';
 import CataloguePage from './pages/CataloguePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import MaterialPage from './pages/MaterialPage';
-import InspirationPage from './pages/InspirationPage';
-import BlogPostPage from './pages/BlogPostPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ShowroomsPage from './pages/ShowroomsPage';
@@ -47,8 +45,6 @@ export default function App() {
         <Route path="/colours/:category" element={<CataloguePage />} />
         <Route path="/product/:slug" element={<ProductDetailPage />} />
         <Route path="/materials/:type" element={<MaterialPage />} />
-        <Route path="/inspiration" element={<InspirationPage />} />
-        <Route path="/inspiration/:slug" element={<BlogPostPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/showrooms" element={<ShowroomsPage />} />

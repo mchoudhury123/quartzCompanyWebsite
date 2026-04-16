@@ -88,16 +88,6 @@ export default function HomePage() {
     { num: 4, title: 'Expert Installation', desc: 'Our craftspeople fit your worktop to perfection' },
   ];
 
-  /* ── Instagram gradients ── */
-  const instaGradients = [
-    'linear-gradient(135deg, #e8ddd3 0%, #c5a47e 100%)',
-    'linear-gradient(135deg, #2a2a2a 0%, #4a4a4a 100%)',
-    'linear-gradient(135deg, #f8f6f3 0%, #d5cdc4 100%)',
-    'linear-gradient(135deg, #3b3b3b 0%, #6b8f71 100%)',
-    'linear-gradient(135deg, #c5a47e 0%, #8b7355 100%)',
-    'linear-gradient(135deg, #333 0%, #1a1a1a 100%)',
-  ];
-
   /* ── Star rating helper ── */
   const renderStars = (count) => {
     const stars = [];
@@ -336,29 +326,8 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════
           7. INSTAGRAM MOSAIC
           ═══════════════════════════════════════ */}
-      <AnimatedSection className="section section--cream hp-insta" id="gallery">
-        <div className="container">
-          <h2 className="section-title">Get Inspired &mdash; @TheQuartzCompany</h2>
-          <div className="hp-insta__mosaic">
-            {instaGradients.map((gradient, i) => (
-              <Link
-                to="/inspiration"
-                className={`hp-insta__item ${i === 0 ? 'hp-insta__item--featured' : ''}`}
-                key={i}
-                aria-label={`Instagram inspiration ${i + 1}`}
-              >
-                <div className="hp-insta__image" style={{ background: gradient }} />
-                <div className="hp-insta__overlay">
-                  <span className="hp-insta__overlay-text">View on Instagram</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
-
       {/* ═══════════════════════════════════════
-          8. FAQ (two-column split)
+          7. FAQ (two-column split)
           ═══════════════════════════════════════ */}
       <AnimatedSection className="section hp-faq" id="faq">
         <div className="container">
