@@ -7,13 +7,13 @@ const values = [
     icon: '\u2726',
     title: 'Craftsmanship',
     description:
-      'We believe in doing things properly, never cutting corners. Every surface is templated, cut and polished by skilled hands using state-of-the-art machinery.',
+      'We believe in doing things properly, never cutting corners. Every surface is templated, cut and polished with the same care we would give our own homes.',
   },
   {
     icon: '\u2618',
     title: 'Sustainability',
     description:
-      'Responsibly sourced materials, minimal waste and carbon-offset delivery. We recycle 95% of our offcuts and use water-recirculation systems in our workshop.',
+      'Responsibly sourced materials and minimal waste. We work closely with fabricators who recycle their offcuts and run water-recirculation systems.',
   },
   {
     icon: '\u2691',
@@ -23,17 +23,40 @@ const values = [
   },
   {
     icon: '\u2764',
-    title: 'Community',
+    title: 'Personal Service',
     description:
-      'Supporting local apprenticeships and British manufacturing. We partner with colleges across the Midlands to train the next generation of stone craftspeople.',
+      'Every project is handled start to finish by a small, dedicated team. No call centres, no handoffs \u2014 just direct access to the people doing the work.',
   },
 ];
 
 const stats = [
-  { figure: '20', label: 'Years Experience' },
-  { figure: '50,000+', label: 'Kitchens Completed' },
-  { figure: '200+', label: 'Colours Available' },
-  { figure: '98%', label: 'Customer Satisfaction' },
+  { figure: '250+', label: 'Kitchens Fitted' },
+  { figure: '9', label: 'Premium Colours' },
+  { figure: '25 Yr', label: 'Surface Warranty' },
+  { figure: '5\u2605', label: 'Average Rating' },
+];
+
+const processSteps = [
+  {
+    num: '01',
+    title: 'Choose Your Surface',
+    desc: 'Browse our nine confirmed quartz colours online or request free samples posted to your door within a few working days.',
+  },
+  {
+    num: '02',
+    title: 'Free Quote & Consultation',
+    desc: 'Share your rough dimensions and we will return a transparent, fixed-price quote \u2014 usually the same day.',
+  },
+  {
+    num: '03',
+    title: 'Precision Template',
+    desc: 'Once your cabinets are fitted, our templater visits with digital laser equipment to capture every dimension to sub-millimetre accuracy.',
+  },
+  {
+    num: '04',
+    title: 'Expert Installation',
+    desc: 'Your worktop is cut, polished and fitted by experienced installers, and we personally inspect the finished job before we leave.',
+  },
 ];
 
 function AboutPage() {
@@ -45,7 +68,8 @@ function AboutPage() {
           <div className="container">
             <h1 className="about-hero__title">Our Story</h1>
             <p className="about-hero__subtitle">
-              Crafting exceptional surfaces since 2005
+              A small Northampton team with one aim &mdash; making premium
+              quartz worktops feel effortless to buy, fit and live with.
             </p>
           </div>
         </div>
@@ -68,26 +92,22 @@ function AboutPage() {
         <div className="container">
           <div className="about-story__body">
             <h2 className="about-story__heading">
-              From a Small Workshop to Britain's Trusted Surface Specialists
+              Premium Quartz, Without the Premium Fuss
             </h2>
             <p>
-              The Quartz Company was born from a simple belief: that every home
-              deserves surfaces crafted with passion, precision and purpose.
-              Founded in 2005 in the heart of the British Midlands, we began
-              as a small workshop with three artisans and a single CNC
-              machine. What we lacked in scale, we made up for in
-              determination and an unwavering commitment to quality.
+              The Quartz Company was founded on a simple idea: that ordering a
+              premium worktop shouldn't feel like a chore. Too many homeowners
+              told us the same story &mdash; pushy showrooms, vague pricing,
+              weeks of chasing for a quote, then a surprise bill at the end.
+              We knew it could be done differently.
             </p>
             <p>
-              In those early years, we earned our reputation one kitchen at a
-              time. Word spread quickly among local homeowners and designers
-              who noticed the difference that true craftsmanship makes: joints
-              so precise they almost disappear, edges polished to a mirror
-              finish and installations completed on time, every time. By 2010,
-              demand had outgrown our original unit and we moved to a
-              purpose-built fabrication facility in Northampton, investing in
-              five-axis CNC technology that allowed us to combine traditional
-              skill with modern precision.
+              So we built a boutique operation based in Northampton: a tightly
+              curated range of nine of the most beautiful quartz colours on
+              the market, honest fixed-price quotes, and a small team that
+              handles every project personally from the first enquiry through
+              to the final installed slab. No middlemen, no upsells, no
+              surprises.
             </p>
 
             <blockquote className="about-story__pullquote">
@@ -95,21 +115,18 @@ function AboutPage() {
             </blockquote>
 
             <p>
-              Today, The Quartz Company is one of the UK's most trusted names in
-              premium worktops. Our team has grown to over 80 specialists
-              &mdash; from designers and templaters to CNC operators and
-              installation technicians &mdash; yet we have never lost the
-              hands-on ethos that defined our earliest days. Every surface
-              that leaves our workshop is personally inspected by a senior
-              craftsperson, because we believe that quality is not just a
-              department; it is the entire company.
+              We work alongside experienced fabricators and installers across
+              the Midlands who share our standards, and we never hand a
+              customer over to a faceless call centre. When you call us, you
+              speak to the person who will be looking after your project.
+              That's something a lot of big surface brands have lost along the
+              way &mdash; and it's the single thing we refuse to compromise on.
             </p>
             <p>
-              Looking ahead, we remain committed to the values that got us
-              here: meticulous craftsmanship, honest service and a genuine
-              passion for helping homeowners create kitchens they love. Whether
-              you choose the engineered resilience of quartz, you can trust that a The Quartz Company
-              surface is made to last a lifetime.
+              Whether you're planning a full kitchen refit, a compact utility
+              worktop or an island with a waterfall edge, we would love to
+              help. Our aim is simple: you should enjoy the process as much
+              as you enjoy the finished result.
             </p>
           </div>
         </div>
@@ -118,10 +135,9 @@ function AboutPage() {
       {/* ── Our Values ── */}
       <section className="about-values section section--cream">
         <div className="container">
-          <h2 className="about-values__title">Our Values</h2>
+          <h2 className="about-values__title">What We Stand For</h2>
           <p className="about-values__subtitle">
-            The principles that guide everything we do, from the quarry to your
-            kitchen.
+            Four principles that guide every quote, template and installation.
           </p>
           <div className="about-values__list">
             {values.map((value, index) => (
@@ -144,57 +160,21 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* ── Our Workshop ── */}
-      <section className="about-workshop">
-        <div className="about-workshop__image">
-          <div className="about-workshop__image-placeholder">
-            <span>CNC Fabrication Process</span>
-          </div>
-        </div>
-        <div className="about-workshop__card">
-          <h2 className="about-workshop__heading">Our Workshop</h2>
-          <p>
-            Our fabrication facility in Northampton houses some
-            of the most advanced stone-working equipment in the UK. From
-            five-axis CNC saws to automated edge-polishing lines, we combine
-            cutting-edge technology with traditional hand-finishing
-            techniques to produce surfaces of unrivalled quality.
-          </p>
-          <p>
-            Every worktop begins with a precision laser-template of your
-            kitchen, accurate to within 1mm. This digital template is fed
-            directly into our CNC machines, ensuring a perfect fit every
-            time. Once cut, each surface is hand-inspected, polished and
-            quality-checked before it leaves our workshop.
-          </p>
-          <p>
-            We are proud to hold ISO 9001 quality certification and operate
-            a zero-to-landfill policy, recycling or repurposing 95% of our
-            stone offcuts into sample pieces, chopping boards and community
-            art projects.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Meet the Team ── */}
-      <section className="about-team section">
+      {/* ── Our Process ── */}
+      <section className="about-process section">
         <div className="container">
-          <h2 className="about-team__title">Our People</h2>
-          <p className="about-team__subtitle">
-            Meet our team of artisans, designers and installation experts who
-            bring your vision to life.
+          <h2 className="about-process__title">How We Work</h2>
+          <p className="about-process__subtitle">
+            Four simple steps from first enquiry to fitted worktop.
           </p>
-          <div className="about-team__placeholder">
-            <div className="about-team__placeholder-inner">
-              <span className="about-team__placeholder-icon" aria-hidden="true">
-                &#128101;
-              </span>
-              <p className="about-team__placeholder-text">
-                Team member profiles coming soon. In the meantime, you can meet
-                our friendly team in person at our{' '}
-                <Link to="/showrooms">Northampton showroom</Link>.
-              </p>
-            </div>
+          <div className="about-process__grid">
+            {processSteps.map((step) => (
+              <div key={step.num} className="about-process__card">
+                <span className="about-process__num">{step.num}</span>
+                <h3 className="about-process__step-title">{step.title}</h3>
+                <p className="about-process__step-desc">{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -204,14 +184,14 @@ function AboutPage() {
         <div className="container">
           <div className="about-cta__card">
             <h2 className="about-cta__heading">
-              Want to Visit Our Workshop?
+              Ready to Start Your Project?
             </h2>
             <p className="about-cta__text">
-              See our craftspeople at work, explore over 200 surface options and
-              discuss your project face to face with one of our designers.
+              Request free samples, a fixed-price quote or a chat with the
+              team &mdash; whichever is most useful. We'll reply the same day.
             </p>
-            <Link to="/showrooms" className="btn btn--gold btn--lg">
-              Book a Showroom Appointment
+            <Link to="/quote" className="btn btn--gold btn--lg">
+              Get a Free Quote
             </Link>
           </div>
         </div>
