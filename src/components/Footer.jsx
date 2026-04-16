@@ -25,11 +25,8 @@ const Footer = () => {
     { label: 'Measuring Guide', path: '/measuring-guide' },
     { label: 'How to Buy', path: '/how-to-buy' },
     { label: 'Design Options', path: '/design-options' },
-    { label: 'Installation Coverage', path: '/installation-coverage' },
     { label: 'Warranty', path: '/warranty' },
     { label: 'About', path: '/about' },
-    { label: 'Showroom', path: '/showrooms' },
-    { label: 'Careers', path: '/careers' },
     { label: 'Contact', path: '/contact' },
     { label: 'Inspiration', path: '/inspiration' },
   ];
