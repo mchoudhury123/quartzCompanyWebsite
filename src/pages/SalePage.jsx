@@ -7,8 +7,8 @@ import './SalePage.css';
 const offers = [
   {
     id: 1,
-    badge: 'Up to 35% Off',
-    title: 'Up to 35% Off Quartz Worktops',
+    badge: 'Up to 40% Off',
+    title: 'Up to 40% Off Quartz Worktops',
     description:
       'Our entire quartz collection is reduced this spring. From classic whites to bold statement colours, find your perfect surface at an exceptional price. Engineered for durability, designed for beauty.',
     link: '/colours/quartz',
@@ -55,7 +55,7 @@ export default function SalePage() {
             <div className="sale-hero__left">
               <span className="sale-hero__badge">Limited Time</span>
               <h1 className="sale-hero__title">
-                Spring Sale &mdash; Up to <span className="sale-hero__highlight">35% Off</span>
+                Grand Opening Sale &mdash; Up to <span className="sale-hero__highlight">40% Off</span>
               </h1>
               <p className="sale-hero__subtitle">
                 Premium kitchen worktops at exceptional prices. Transform your kitchen for less this spring.

@@ -130,7 +130,7 @@ export default function HomePage() {
               Premium Quartz Worktops, Delivered Direct to Your Door
             </h1>
             <p className="hp-hero__subtitle">
-              Engineered quartz &amp; full body printed quartz &mdash; up to 35% off this spring
+              Engineered quartz &amp; full body printed quartz &mdash; up to 40% off this spring
             </p>
             <div className="hp-hero__ctas">
               <Link to="/quote" className="btn btn--gold btn--lg hp-hero__btn">

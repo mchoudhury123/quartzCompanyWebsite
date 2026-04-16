@@ -175,21 +175,21 @@ function Header() {
         <div className="ticker-bar__track">
           <span className="ticker-bar__content">
             <span className="ticker-bar__highlight">Grand Opening Sale</span>
-            {" — Up to 35% off all worktops. Free local delivery. "}
+            {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
             <span className="ticker-bar__highlight">Grand Opening Sale</span>
-            {" — Up to 35% off all worktops. Free local delivery. "}
+            {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
           <span className="ticker-bar__content" aria-hidden="true">
             <span className="ticker-bar__highlight">Grand Opening Sale</span>
-            {" — Up to 35% off all worktops. Free local delivery. "}
+            {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
             <span className="ticker-bar__highlight">Grand Opening Sale</span>
-            {" — Up to 35% off all worktops. Free local delivery. "}
+            {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
