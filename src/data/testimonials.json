@@ -4,8 +4,8 @@
     "name": "Sarah & James T.",
     "location": "Northampton",
     "rating": 5,
-    "text": "From the first phone call to the final polish, The Quartz Company were exceptional. Our Calacatta Gold island is the centrepiece of our new kitchen and we couldn't be happier.",
-    "product": "Calacatta Gold",
+    "text": "From the first phone call to the final polish, The Quartz Company were exceptional. Our Calacatta Classico island is the centrepiece of our new kitchen and we couldn't be happier.",
+    "product": "Calacatta Classico",
     "date": "2025-02-10"
   },
   {
@@ -13,8 +13,8 @@
     "name": "David M.",
     "location": "Kettering",
     "rating": 5,
-    "text": "The quality of the quartz and the precision of the templating were outstanding. The fitters were courteous, tidy and incredibly skilled. Would recommend without hesitation.",
-    "product": "Storm Grey",
+    "text": "We chose Lincoln for our handleless grey kitchen and the finish is flawless. The quality of the quartz and the precision of the templating were outstanding. Would recommend without hesitation.",
+    "product": "Lincoln",
     "date": "2025-01-22"
   },
   {
@@ -22,8 +22,8 @@
     "name": "Emily R.",
     "location": "Wellingborough",
     "rating": 5,
-    "text": "We agonised over colours for weeks, but the free samples made the decision easy. The Arctic Frost looks absolutely stunning with our navy cabinets. Worth every penny.",
-    "product": "Arctic Frost",
+    "text": "We agonised over colours for weeks, but the free samples made the decision easy. Blanco White looks absolutely stunning with our navy cabinets \u2014 worth every penny.",
+    "product": "Blanco White",
     "date": "2025-01-15"
   },
   {
@@ -31,8 +31,8 @@
     "name": "Michael & Kate W.",
     "location": "Daventry",
     "rating": 4,
-    "text": "Brilliant service from start to finish. The design consultation helped us choose the perfect edge profile and sink cut-out. Installation was completed in a single day.",
-    "product": "Alpine White",
+    "text": "Brilliant service from start to finish. The design consultation helped us choose the perfect edge profile and sink cut-out for our Bianco Merino worktop. Installation was completed in a single day.",
+    "product": "Bianco Merino",
     "date": "2024-12-08"
   },
   {
@@ -40,8 +40,8 @@
     "name": "Laura P.",
     "location": "Corby",
     "rating": 5,
-    "text": "Third time using The Quartz Company and they never disappoint. Our latest project was an Emerald Coast worktop—the colour is breathtaking. True craftspeople.",
-    "product": "Emerald Coast",
+    "text": "Nero Sparkle was a bold choice but we are so glad we went with it. The subtle shimmer under the spotlights is breathtaking, and the team made the whole process effortless.",
+    "product": "Nero Sparkle",
     "date": "2024-11-30"
   },
   {
@@ -49,8 +49,8 @@
     "name": "Tom & Helen G.",
     "location": "Milton Keynes",
     "rating": 5,
-    "text": "From measuring to installation, the whole process was smooth and professional. Our Carrara Mist is gorgeous and we couldn't be happier with the result.",
-    "product": "Carrara Mist",
+    "text": "From measuring to installation, the whole process was smooth and professional. Our Carrara Extra is gorgeous and pairs beautifully with our shaker cabinets.",
+    "product": "Carrara Extra",
     "date": "2024-11-15"
   }
 ]
