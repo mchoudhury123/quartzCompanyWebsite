@@ -53,6 +53,9 @@ function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState('specs');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  /* ── Thickness selector ── */
+  const [thickness, setThickness] = useState('20mm');
+
   /* ── Related products scroll ── */
   const relatedScrollRef = useRef(null);
 
@@ -261,15 +264,50 @@ function ProductDetailPage() {
               </span>
             </div>
 
+            {(product.price20mm || product.price30mm) && (
+              <div className="pdp__thickness" role="radiogroup" aria-label="Select thickness">
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={thickness === '20mm'}
+                  className={`pdp__thickness-btn${thickness === '20mm' ? ' pdp__thickness-btn--active' : ''}`}
+                  onClick={() => setThickness('20mm')}
+                >
+                  20mm
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={thickness === '30mm'}
+                  className={`pdp__thickness-btn${thickness === '30mm' ? ' pdp__thickness-btn--active' : ''}`}
+                  onClick={() => setThickness('30mm')}
+                >
+                  30mm
+                </button>
+              </div>
+            )}
+
             <div className="pdp__price-block">
-              {product.onSale && product.originalPrice && (
-                <span className="pdp__price-original">
-                  From {formatPrice(product.originalPrice)} /m&sup2;
-                </span>
-              )}
-              <span className="pdp__price-sale">
-                From {formatPrice(product.pricePerSqm)} /m&sup2;
-              </span>
+              {(() => {
+                const current =
+                  thickness === '30mm'
+                    ? product.price30mm || product.pricePerSqm
+                    : product.price20mm || product.pricePerSqm;
+                const ratio = product.pricePerSqm ? current / product.pricePerSqm : 1;
+                const original = product.originalPrice ? Math.round(product.originalPrice * ratio) : null;
+                return (
+                  <>
+                    {product.onSale && original && (
+                      <span className="pdp__price-original">
+                        {formatPrice(original)} /m&sup2;
+                      </span>
+                    )}
+                    <span className="pdp__price-sale">
+                      {formatPrice(current)} /m&sup2;
+                    </span>
+                  </>
+                );
+              })()}
             </div>
 
             <p className="pdp__short-desc">{product.shortDesc}</p>
