@@ -10,7 +10,7 @@ const showrooms = [
     description:
       'Our Northampton showroom is the home of The Quartz Company. It features full kitchen displays, our complete material library and a dedicated design consultation suite. This is the ideal place to explore the full range of quartz and full body printed quartz worktops before making your decision.',
     address: 'Northampton, Northamptonshire',
-    phone: '01234 567 890',
+    phone: '07375 303 416',
     hours: 'Mon\u2013Sat 9am\u20135pm, Sun by appointment',
   },
 ];

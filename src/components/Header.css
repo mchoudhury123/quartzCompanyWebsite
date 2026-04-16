@@ -54,7 +54,7 @@
    Ticker / Marquee Announcement Bar
    ============================================================ */
 .ticker-bar {
-  background-color: var(--color-primary);
+  background-color: #c41e3a;
   color: var(--color-white);
   font-family: var(--font-body);
   font-size: 0.8rem;

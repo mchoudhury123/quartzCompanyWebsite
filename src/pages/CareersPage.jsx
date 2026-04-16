@@ -448,7 +448,7 @@ function CareersPage() {
                     careers@thequartzcompany.co.uk
                   </a>
                   <br />
-                  <a href="tel:+447414121706">07414 121 706</a> (ask for HR)
+                  <a href="tel:+447375303416">07375 303 416</a> (ask for HR)
                 </p>
               </div>
             </aside>
@@ -469,7 +469,7 @@ function CareersPage() {
                 careers@thequartzcompany.co.uk
               </a>
               <br />
-              <a className="careers-cta__link" href="tel:+447414121706">07414 121 706</a> (ask for HR)
+              <a className="careers-cta__link" href="tel:+447375303416">07375 303 416</a> (ask for HR)
             </p>
           </div>
         </div>

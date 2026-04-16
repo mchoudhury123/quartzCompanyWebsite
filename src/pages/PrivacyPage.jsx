@@ -118,8 +118,7 @@ const PrivacyPage = () => {
               information.
             </li>
             <li>
-              <strong>Financial Data:</strong> Bank account details, payment card information, and
-              credit history where applicable for finance applications.
+              <strong>Financial Data:</strong> Bank account details and payment card information.
             </li>
             <li>
               <strong>Transaction Data:</strong> Details of products and services you have
@@ -147,9 +146,6 @@ const PrivacyPage = () => {
 
           <h3 className="privacy-section__subheading">2.3 Information from Third Parties</h3>
           <ul>
-            <li>
-              Credit reference agencies when you apply for finance options.
-            </li>
             <li>
               Analytics providers such as Google Analytics.
             </li>
@@ -260,14 +256,7 @@ const PrivacyPage = () => {
             </li>
           </ul>
 
-          <h3 className="privacy-section__subheading">5.2 Finance Partners</h3>
-          <p>
-            If you apply for finance to fund your purchase, we will share relevant personal and
-            financial data with our finance partners to process your application. This may include
-            sharing data with credit reference agencies.
-          </p>
-
-          <h3 className="privacy-section__subheading">5.3 Our Commitment</h3>
+          <h3 className="privacy-section__subheading">5.2 Our Commitment</h3>
           <p className="privacy-section__highlight">
             We will never sell, rent, or trade your personal data to third parties for their
             marketing purposes. We require all third parties to respect the security of your
@@ -407,7 +396,7 @@ const PrivacyPage = () => {
             </p>
             <p>
               Telephone:{' '}
-              <a href="tel:+441234567890">01234 567 890</a>
+              <a href="tel:+447375303416">07375 303 416</a>
             </p>
           </div>
           <p>

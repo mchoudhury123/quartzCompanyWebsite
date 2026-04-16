@@ -95,7 +95,7 @@ export default function useAllSamples() {
         `Great news! Your samples are now being processed and are on their way.\n\n` +
         `Samples: ${sampleList}\n\n` +
         `You can expect delivery within 3\u20135 working days.\n\n` +
-        `If you have any questions in the meantime, feel free to reply to this email or call us on 07414 121 706.\n\n` +
+        `If you have any questions in the meantime, feel free to reply to this email or call us on 07375 303 416.\n\n` +
         `Kind regards,\n` +
         `The Quartz Company`;
 

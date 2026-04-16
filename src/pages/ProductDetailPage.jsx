@@ -115,8 +115,6 @@ function ProductDetailPage() {
       maximumFractionDigits: 0,
     }).format(val);
 
-  const monthlyPrice = product ? Math.ceil(product.pricePerSqm / 12) : 0;
-
   /* ── Star rating ── */
   const renderStars = (score) => {
     const full = Math.floor(score);
@@ -273,10 +271,6 @@ function ProductDetailPage() {
                 From {formatPrice(product.pricePerSqm)} /m&sup2;
               </span>
             </div>
-
-            <p className="pdp__finance">
-              or from <strong>{formatPrice(monthlyPrice)}/month</strong> with 0% finance
-            </p>
 
             <p className="pdp__short-desc">{product.shortDesc}</p>
 

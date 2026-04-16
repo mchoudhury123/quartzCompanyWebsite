@@ -174,29 +174,29 @@ function Header() {
       <div className="ticker-bar" role="banner">
         <div className="ticker-bar__track">
           <span className="ticker-bar__content">
-            <span className="ticker-bar__highlight">Spring Sale</span>
+            <span className="ticker-bar__highlight">Grand Opening Sale</span>
             {" — Up to 35% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Spring Sale</span>
+            <span className="ticker-bar__highlight">Grand Opening Sale</span>
             {" — Up to 35% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
           <span className="ticker-bar__content" aria-hidden="true">
-            <span className="ticker-bar__highlight">Spring Sale</span>
+            <span className="ticker-bar__highlight">Grand Opening Sale</span>
             {" — Up to 35% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Spring Sale</span>
+            <span className="ticker-bar__highlight">Grand Opening Sale</span>
             {" — Up to 35% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
         </div>
-        <a href="tel:+441234567890" className="ticker-bar__phone">
+        <a href="tel:+447375303416" className="ticker-bar__phone">
           <FiPhone aria-hidden="true" />
-          <span>01234 567 890</span>
+          <span>07375 303 416</span>
         </a>
       </div>
 
@@ -298,9 +298,9 @@ function Header() {
             <Link to="/quote" className="btn btn--gold btn--full" onClick={closeMobileMenu}>
               Get Quote
             </Link>
-            <a href="tel:+441234567890" className="mobile-overlay__phone">
+            <a href="tel:+447375303416" className="mobile-overlay__phone">
               <FiPhone aria-hidden="true" />
-              <span>01234 567 890</span>
+              <span>07375 303 416</span>
             </a>
           </div>
         </div>

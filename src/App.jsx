@@ -18,7 +18,6 @@ import DesignOptionsPage from './pages/DesignOptionsPage';
 import HowToBuyPage from './pages/HowToBuyPage';
 import InstallationCoveragePage from './pages/InstallationCoveragePage';
 import WarrantyPage from './pages/WarrantyPage';
-import FinancePage from './pages/FinancePage';
 import SalePage from './pages/SalePage';
 import QuotePage from './pages/QuotePage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -59,7 +58,6 @@ export default function App() {
         <Route path="/how-to-buy" element={<HowToBuyPage />} />
         <Route path="/installation-coverage" element={<InstallationCoveragePage />} />
         <Route path="/warranty" element={<WarrantyPage />} />
-        <Route path="/finance" element={<FinancePage />} />
         <Route path="/sale" element={<SalePage />} />
         <Route path="/quote" element={<QuotePage />} />
         <Route path="/privacy" element={<PrivacyPage />} />

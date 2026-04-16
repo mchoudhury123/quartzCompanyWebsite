@@ -53,7 +53,6 @@ export default function HomePage() {
     { q: 'Do you offer free samples?', a: 'Absolutely. We will post up to five free samples directly to your door so you can see and feel the surface in your own kitchen lighting. Simply add your favourite colours to the sample basket or request them as part of your free quote.' },
     { q: 'What areas do you cover for installation?', a: 'We offer professional installation across the whole of England, Scotland and Wales. Our network of certified fitting teams covers all major cities and most rural areas. Enter your postcode during the quote process and we will confirm coverage and estimated lead times for your area.' },
     { q: 'How long does installation take?', a: 'A typical kitchen worktop installation takes between 2 and 4 hours. Larger or more complex projects (e.g. islands, waterfall edges, integrated sinks) may take a full day. From placing your order, the total lead time is usually 10\u201320 working days depending on the material chosen.' },
-    { q: 'Do you offer finance?', a: 'Yes. We offer 0% interest-free finance on all orders over \u00a31,000, allowing you to spread the cost over 6 or 12 months with no additional charges. Longer terms of up to 48 months are also available at competitive rates. Finance is subject to status and provided through our FCA-regulated partner.' },
   ];
 
   /* ── Why Choose data ── */
@@ -62,7 +61,6 @@ export default function HomePage() {
     { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="8" cy="18.5" r="2.5"/><circle cx="16" cy="18.5" r="2.5"/></svg>), title: 'Personalised Design', desc: 'Free consultations with our in-house kitchen designers' },
     { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>), title: 'Lifetime Support', desc: 'Industry-leading warranties and dedicated after-care' },
     { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>), title: 'Local Fitting', desc: 'Professional installation across Northamptonshire and surrounding areas' },
-    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>), title: '0% Finance', desc: 'Spread the cost with interest-free monthly payments' },
   ];
 
   /* ── Comparison data ── */
@@ -118,7 +116,6 @@ export default function HomePage() {
     { icon: '\u2605', text: '4.8 Trustpilot' },
     { icon: '\uD83D\uDEE1\uFE0F', text: '25 Year Warranty' },
     { icon: '\uD83D\uDE9A', text: 'Free Local Delivery' },
-    { icon: '\uD83D\uDCB3', text: '0% Finance Available' },
   ];
 
   return (
@@ -408,8 +405,8 @@ export default function HomePage() {
               <Link to="/quote" className="btn btn--gold btn--lg">
                 Get Free Quote
               </Link>
-              <a href="tel:+447414121706" className="btn btn--lg hp-cta-banner__btn--outline">
-                Call Us: 07414 121 706
+              <a href="tel:+447375303416" className="btn btn--lg hp-cta-banner__btn--outline">
+                Call Us: 07375 303 416
               </a>
             </div>
           </div>

@@ -8,7 +8,6 @@ import './Footer.css';
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const [showFca, setShowFca] = useState(false);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -28,7 +27,6 @@ const Footer = () => {
     { label: 'Design Options', path: '/design-options' },
     { label: 'Installation Coverage', path: '/installation-coverage' },
     { label: 'Warranty', path: '/warranty' },
-    { label: 'Finance', path: '/finance' },
     { label: 'About', path: '/about' },
     { label: 'Showroom', path: '/showrooms' },
     { label: 'Careers', path: '/careers' },
@@ -40,7 +38,6 @@ const Footer = () => {
     { label: 'Privacy Policy', path: '/privacy' },
     { label: 'Terms & Conditions', path: '/terms' },
     { label: 'Cookies', path: '/cookies' },
-    { label: 'Finance Disclosure', path: '/finance' },
   ];
 
   const socialLinks = [
@@ -105,9 +102,9 @@ const Footer = () => {
                 elegance.
               </p>
               <div className="footer-contact-details">
-                <a href="tel:+447414121706" className="footer-contact-item">
+                <a href="tel:+447375303416" className="footer-contact-item">
                   <FiPhone className="footer-contact-icon" />
-                  <span>07414 121 706</span>
+                  <span>07375 303 416</span>
                 </a>
                 <a href="mailto:sales@thequartzcompany.co.uk" className="footer-contact-item">
                   <FiMail className="footer-contact-icon" />
@@ -182,26 +179,6 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} The Quartz Company Ltd. All rights reserved.
             Registered in England &amp; Wales. Company No. 12345678.
           </p>
-          <div className="footer-fca">
-            <button
-              className="footer-fca__toggle"
-              onClick={() => setShowFca((prev) => !prev)}
-              aria-expanded={showFca}
-              type="button"
-            >
-              FCA Regulatory Information {showFca ? '−' : '+'}
-            </button>
-            <div className={`footer-fca__content${showFca ? ' footer-fca__content--open' : ''}`}>
-              <p>
-                The Quartz Company Ltd is authorised and regulated by the Financial Conduct
-                Authority (FCA) for credit broking activities. FCA registration number:
-                123456. Finance is subject to status. Terms and conditions apply. The Quartz
-                Company Ltd acts as a credit broker, not a lender, and offers credit products
-                from a panel of lenders. Applicants must be 18 or over. Guarantee may be
-                required.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </footer>

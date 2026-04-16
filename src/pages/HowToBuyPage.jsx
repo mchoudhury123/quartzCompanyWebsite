@@ -26,7 +26,7 @@ const stages = [
       'A 50% deposit secures your order and locks in your pricing.',
       'We\'ll send an order confirmation detailing every specification — colour, thickness, edge profile, cut-outs and accessories.',
       'Your dedicated project coordinator will be your single point of contact from this point onwards.',
-      'You can pay by bank transfer, credit card or through our finance options.',
+      'You can pay by bank transfer or credit card.',
     ],
   },
   {

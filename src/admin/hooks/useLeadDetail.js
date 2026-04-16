@@ -158,7 +158,7 @@ export default function useLeadDetail(id) {
         // Second attempt failed — send auto-email and clear action
         // Lead stays in current status; 2+ unanswered calls place it in "1+ Quote Requests"
         const firstName = lead?.full_name?.split(' ')[0] || 'there';
-        const emailBody = `Hi ${firstName},\n\nWe tried to contact you regarding your quote request but weren't able to reach you.\n\nIf you're still interested in a quartz worktop, please give us a call on 07414 121 706 or simply reply to this email and we'll get back to you.\n\nKind regards,\nThe Quartz Company`;
+        const emailBody = `Hi ${firstName},\n\nWe tried to contact you regarding your quote request but weren't able to reach you.\n\nIf you're still interested in a quartz worktop, please give us a call on 07375 303 416 or simply reply to this email and we'll get back to you.\n\nKind regards,\nThe Quartz Company`;
 
         // Send auto-email if lead has an email address
         if (lead?.email) {

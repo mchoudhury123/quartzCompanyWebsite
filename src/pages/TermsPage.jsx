@@ -296,12 +296,6 @@ const TermsPage = () => {
             rescheduled, subject to availability.
           </p>
 
-          <h3 className="terms-section__subheading">4.4 Finance Options</h3>
-          <p>
-            We may offer finance options through our approved finance partners. Finance is subject
-            to status, terms, and conditions. Full details of available finance options will be
-            provided upon request. The Quartz Company Ltd acts as a credit broker and not a lender.
-          </p>
         </section>
 
         <section id="delivery-installation" className="terms-section terms-section--left">
@@ -526,7 +520,7 @@ const TermsPage = () => {
               <strong>The Quartz Company Ltd</strong><br />
               Northampton, Northamptonshire<br />
               Email: <a href="mailto:info@thequartzcompany.co.uk">info@thequartzcompany.co.uk</a> |
-              Tel: <a href="tel:+441234567890">01234 567 890</a>
+              Tel: <a href="tel:+447375303416">07375 303 416</a>
             </p>
           </div>
         </section>
