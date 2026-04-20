@@ -66,7 +66,7 @@ export default function HomePage() {
   /* ── Comparison data ── */
   const comparisonData = [
     { attribute: 'Consistency', quartz: { text: 'Perfect slab-to-slab', icon: 'check' }, granite: { text: 'Varies by slab', icon: 'cross' }, laminate: { text: 'Consistent print', icon: 'check' } },
-    { attribute: 'Pattern Variety', quartz: { text: '60+ designs', icon: 'check' }, granite: { text: 'Natural only', icon: 'neutral' }, laminate: { text: 'Wide range', icon: 'check' } },
+    { attribute: 'Pattern Variety', quartz: { text: 'Extensive range', icon: 'check' }, granite: { text: 'Natural only', icon: 'neutral' }, laminate: { text: 'Wide range', icon: 'check' } },
     { attribute: 'Stain Resistance', quartz: { text: 'Non-porous', icon: 'check' }, granite: { text: 'Requires sealing', icon: 'neutral' }, laminate: { text: 'Good', icon: 'check' } },
     { attribute: 'Heat Resistance', quartz: { text: 'Up to 150\u00b0C', icon: 'check' }, granite: { text: 'Excellent', icon: 'check' }, laminate: { text: 'Poor', icon: 'cross' } },
     { attribute: 'Maintenance', quartz: { text: 'Wipe clean', icon: 'check' }, granite: { text: 'Annual sealing', icon: 'neutral' }, laminate: { text: 'Wipe clean', icon: 'check' } },
