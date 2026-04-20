@@ -82,7 +82,7 @@ export default async function handler(req, res) {
 }
 
 function wrapInBrandTemplate({ subject, body, siteUrl }) {
-  const logoUrl = `${siteUrl}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.jpg`;
+  const logoUrl = `${siteUrl}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.png`;
   const paragraphs = body
     .split(/\n{2,}/)
     .map(

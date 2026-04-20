@@ -18,6 +18,7 @@ export default function MaterialSelector({
   }, [products, search]);
 
   const priceKey = thickness === '30mm' ? 'price_30mm' : 'price_20mm';
+  const originalKey = thickness === '30mm' ? 'original_price_30mm' : 'original_price_20mm';
 
   return (
     <div className="mat-selector">
@@ -28,6 +29,11 @@ export default function MaterialSelector({
             <FiCheck className="mat-selector__selected-check" />
             <span className="mat-selector__selected-name">{selectedMaterial.name}</span>
             <span className="mat-selector__selected-thickness">{thickness.toUpperCase()}</span>
+            {selectedMaterial.on_sale && selectedMaterial.discount_percent > 0 && (
+              <span className="mat-selector__selected-sale">
+                {selectedMaterial.discount_percent}% OFF
+              </span>
+            )}
           </div>
           <button
             className="mat-selector__selected-change"
@@ -76,18 +82,35 @@ export default function MaterialSelector({
             {stones.length === 0 && (
               <div className="mat-selector__empty">No materials found</div>
             )}
-            {stones.map((product) => (
-              <button
-                key={product.id}
-                className="mat-selector__item"
-                onClick={() => onSelectMaterial(product)}
-              >
-                <span className="mat-selector__item-name">{product.name}</span>
-                <span className="mat-selector__item-price">
-                  £{Number(product[priceKey]).toFixed(2)}/sqm
-                </span>
-              </button>
-            ))}
+            {stones.map((product) => {
+              const showWas = product.on_sale && product[originalKey] && product[originalKey] > product[priceKey];
+              return (
+                <button
+                  key={product.id}
+                  className="mat-selector__item"
+                  onClick={() => onSelectMaterial(product)}
+                >
+                  <span className="mat-selector__item-name">
+                    {product.name}
+                    {product.on_sale && product.discount_percent > 0 && (
+                      <span className="mat-selector__item-badge">
+                        {product.discount_percent}% OFF
+                      </span>
+                    )}
+                  </span>
+                  <span className="mat-selector__item-pricing">
+                    {showWas && (
+                      <span className="mat-selector__item-was">
+                        £{Number(product[originalKey]).toFixed(2)}
+                      </span>
+                    )}
+                    <span className="mat-selector__item-price">
+                      £{Number(product[priceKey]).toFixed(2)}/sqm
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </>
       )}
