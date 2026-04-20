@@ -65,7 +65,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fromAddress: 'sales@thequartzcompany.co.uk',
+          fromAddress: 'The Quartz Company <sales@thequartzcompany.co.uk>',
           toAddress: clientEmail,
           subject: `Your Quote ${quoteNumber || ''} from The Quartz Company`,
           content: htmlBody,
