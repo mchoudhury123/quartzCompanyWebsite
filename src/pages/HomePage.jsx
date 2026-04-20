@@ -48,8 +48,8 @@ export default function HomePage() {
   const toggleFaq = (index) => setOpenFaq((prev) => (prev === index ? null : index));
 
   const faqData = [
-    { q: 'What materials do you offer?', a: 'We specialise in two types of premium worktop: engineered quartz and full body printed quartz. Our standard engineered quartz offers over 60 colours with virtually zero maintenance. Our full body printed quartz takes it further \u2014 the veining pattern runs through the entire slab thickness, so waterfall edges and mitres look flawless. Both are non-porous, scratch resistant and incredibly durable. Visit our Colours page to explore the full range or order free samples.' },
-    { q: 'How much do worktops cost?', a: 'Prices vary depending on colour, thickness, edge profile and kitchen complexity. Our engineered quartz starts from \u00a3245 per square metre (inc. VAT). Most kitchens fall between \u00a32,000 and \u00a35,000 fully fitted. Request a free quote for an accurate price tailored to your project.' },
+    { q: 'What materials do you offer?', a: 'We specialise in two types of premium worktop: engineered quartz and full body printed quartz. Our standard engineered quartz comes in a wide range of colours with virtually zero maintenance. Our full body printed quartz takes it further \u2014 the veining pattern runs through the entire slab thickness, so waterfall edges and mitres look flawless. Both are non-porous, scratch resistant and incredibly durable. Visit our Colours page to explore the full range or order free samples.' },
+    { q: 'How much do worktops cost?', a: 'Prices vary depending on colour, thickness, edge profile and kitchen complexity. Most kitchens fall between \u00a32,000 and \u00a35,000 fully fitted. Request a free quote for an accurate price tailored to your project.' },
     { q: 'Do you offer free samples?', a: 'Absolutely. We will post up to five free samples directly to your door so you can see and feel the surface in your own kitchen lighting. Simply add your favourite colours to the sample basket or request them as part of your free quote.' },
     { q: 'What areas do you cover for installation?', a: 'We cover Northamptonshire and the surrounding counties \u2014 Warwickshire, Leicestershire, Buckinghamshire, Bedfordshire, Oxfordshire, Cambridgeshire and parts of the West Midlands. If you are just outside this area, get in touch anyway \u2014 we can often accommodate nearby postcodes, we will just confirm coverage during your quote.' },
     { q: 'How long does installation take?', a: 'A typical kitchen worktop installation takes between 2 and 4 hours. Larger or more complex projects (e.g. islands, waterfall edges, integrated sinks) may take a full day. From placing your order, the total lead time is usually 10\u201320 working days depending on the material chosen.' },
@@ -71,7 +71,6 @@ export default function HomePage() {
     { attribute: 'Heat Resistance', quartz: { text: 'Up to 150\u00b0C', icon: 'check' }, granite: { text: 'Excellent', icon: 'check' }, laminate: { text: 'Poor', icon: 'cross' } },
     { attribute: 'Maintenance', quartz: { text: 'Wipe clean', icon: 'check' }, granite: { text: 'Annual sealing', icon: 'neutral' }, laminate: { text: 'Wipe clean', icon: 'check' } },
     { attribute: 'Scratch Resistance', quartz: { text: 'Excellent', icon: 'check' }, granite: { text: 'Very good', icon: 'check' }, laminate: { text: 'Fair', icon: 'neutral' } },
-    { attribute: 'Cost', quartz: { text: 'From \u00a3245/m\u00b2', icon: 'check' }, granite: { text: 'From \u00a3380/m\u00b2', icon: 'neutral' }, laminate: { text: 'From \u00a350/m\u00b2', icon: 'check' } },
   ];
 
   const renderIcon = (type) => {
