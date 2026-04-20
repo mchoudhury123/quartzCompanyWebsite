@@ -1,299 +1,454 @@
 .qv {
   min-height: 100vh;
-  background: #f7f7f7;
-  font-family: 'Inter', Arial, sans-serif;
-  padding: 32px 16px;
+  background: #f4f1ea;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.qv__loading {
-  text-align: center;
-  padding: 80px 0;
-  font-size: 1rem;
-  color: #888;
-}
-
-.qv__error {
-  text-align: center;
-  padding: 60px 0;
-  font-size: 1rem;
-  color: #888;
-}
-
-.qv__container {
+.qv__accent {
+  width: 100%;
   max-width: 680px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
-  overflow: hidden;
-}
-
-/* Header */
-.qv__header {
+  height: 2px;
   background: #c5a47e;
-  padding: 28px 32px;
-  text-align: center;
 }
 
-.qv__logo {
-  margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #fff;
+.qv__accent--top { margin-bottom: 0; }
+.qv__accent--bottom { margin-top: 0; }
+
+.qv__card {
+  width: 100%;
+  max-width: 680px;
+  background: #ffffff;
+  padding: 52px 56px 48px;
+  box-sizing: border-box;
+}
+
+.qv__loading,
+.qv__error {
+  padding: 60px 0;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #5a5a5a;
+  font-family: Georgia, serif;
+  line-height: 1.7;
+}
+
+/* Expired banner */
+.qv__expired {
+  margin: -12px 0 32px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #b91c1c;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* Logo */
+.qv__logo-wrap {
+  text-align: center;
+  padding: 0 0 16px;
+}
+
+.qv__logo-img {
+  max-width: 240px;
+  height: auto;
+  display: inline-block;
+}
+
+.qv__divider {
+  width: 40px;
+  height: 1px;
+  background: #c5a47e;
+  margin: 0 auto 36px;
+}
+
+/* Eyebrow + Quote number */
+.qv__eyebrow {
+  margin: 0 0 10px;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #c5a47e;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.qv__quote-number {
+  margin: 0 0 32px;
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #1a1a1a;
   letter-spacing: 0.06em;
 }
 
-/* Expired Banner */
-.qv__expired-banner {
-  background: #fef2f2;
-  border-bottom: 1px solid #fecaca;
-  padding: 12px 32px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #dc2626;
-  text-align: center;
-}
-
-/* Info */
+/* Info list */
 .qv__info {
-  padding: 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 10px;
+  margin: 0 0 4px;
+  padding: 0;
 }
 
 .qv__info-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0;
 }
 
-.qv__info-label {
-  font-size: 0.82rem;
-  color: #888;
+.qv__info-row dt {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8rem;
+  color: #8a8a8a;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
 }
 
-.qv__info-value {
-  font-size: 0.85rem;
-  font-weight: 600;
+.qv__info-row dd {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
   color: #1a1a1a;
+  font-weight: 600;
+  text-align: right;
 }
 
-.qv__info-value--expired {
-  color: #dc2626;
+.qv__info-expired {
+  color: #b91c1c !important;
   text-decoration: line-through;
 }
 
-/* Items Table */
-.qv__items {
-  padding: 0 32px;
+/* Horizontal rule */
+.qv__hr {
+  height: 1px;
+  background: #eee5d4;
+  margin: 32px 0;
 }
 
-.qv__table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.qv__th {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #888;
-  padding: 14px 6px 8px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-}
-
-.qv__th--right {
-  text-align: right;
-}
-
+/* Section label */
 .qv__section-label {
+  margin: 0 0 16px;
+  font-family: Georgia, serif;
   font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 400;
   color: #c5a47e;
-  padding: 12px 6px 4px;
-  background: #faf9f7;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
-.qv__cell {
-  font-size: 0.82rem;
-  padding: 10px 6px;
-  border-bottom: 1px solid #f3f4f6;
-  color: #333;
+/* Line items */
+.qv__section {
+  margin-bottom: 20px;
 }
 
-.qv__cell--right {
-  text-align: right;
+.qv__section:last-child {
+  margin-bottom: 0;
 }
 
-.qv__cell--bold {
-  font-weight: 600;
+.qv__line {
+  padding: 14px 0;
+  border-bottom: 1px solid #f4ede0;
+}
+
+.qv__line:last-child {
+  border-bottom: none;
+}
+
+.qv__line-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.qv__line-name {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.qv__line-title {
+  font-family: Georgia, serif;
+  font-size: 0.98rem;
   color: #1a1a1a;
+  font-weight: 400;
+  text-transform: capitalize;
 }
 
-.qv__cell--discount {
-  color: #ef4444;
+.qv__line-dims {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.76rem;
+  color: #8a8a8a;
+  letter-spacing: 0.01em;
 }
 
-.qv__cell-dims {
-  font-size: 0.72rem;
-  color: #aaa;
-  margin-left: 4px;
+.qv__line-total {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.qv__cell-qty {
-  font-size: 0.72rem;
-  color: #888;
+.qv__line-sub {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.qv__line-was {
+  color: #9a8c75;
+  text-decoration: line-through;
+}
+
+.qv__line-save {
+  color: #c5a47e;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 /* Totals */
 .qv__totals {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 20px 32px;
-  border-top: 1px solid #e5e7eb;
-  max-width: 300px;
+  gap: 10px;
+  max-width: 340px;
   margin-left: auto;
 }
 
 .qv__total-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
-  color: #555;
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  color: #5a5a5a;
 }
 
 .qv__total-row--grand {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #c5a47e;
-  padding-top: 6px;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 4px;
-}
-
-/* Deposit */
-.qv__deposit {
-  margin: 0 32px 24px;
-  padding: 24px;
-  background: #faf9f7;
-  border-radius: 12px;
-  border: 1px solid #f0ede8;
-}
-
-.qv__deposit-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.qv__deposit-title {
-  margin: 0;
-  font-size: 0.95rem;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #eee5d4;
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1a1a1a;
 }
 
+.qv__total-row--grand span:last-child {
+  color: #c5a47e;
+}
+
+/* Deposit */
+.qv__deposit {
+  padding: 28px 28px 24px;
+  background: #faf7f2;
+  border: 1px solid #eee5d4;
+}
+
+.qv__deposit .qv__section-label {
+  margin-bottom: 12px;
+}
+
 .qv__deposit-amount {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #ef4444;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.1rem;
+  font-weight: 400;
+  color: #c5a47e;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 10px;
 }
 
 .qv__deposit-note {
-  font-size: 0.82rem;
-  color: #888;
-  margin: 0 0 16px;
+  margin: 0 0 22px;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  color: #5a5a5a;
+  line-height: 1.6;
 }
 
-.qv__deposit-action {
+.qv__cta {
   display: flex;
   gap: 10px;
 }
 
 .qv__btn {
   flex: 1;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 0.88rem;
+  padding: 14px 20px;
+  font-family: Georgia, serif;
+  font-size: 0.78rem;
   font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.15s;
-  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .qv__btn--primary {
-  background: #c5a47e;
-  color: #fff;
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #c5a47e;
 }
 
 .qv__btn--primary:hover {
-  background: #b8956e;
+  background: #2a2a2a;
 }
 
 .qv__btn--secondary {
-  background: #f3f4f6;
-  color: #333;
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #eee5d4;
 }
 
 .qv__btn--secondary:hover {
-  background: #e5e7eb;
-}
-
-.qv__deposit-expired {
-  font-size: 0.85rem;
-  color: #dc2626;
-  font-weight: 600;
-  margin: 0;
+  background: #faf7f2;
+  border-color: #c5a47e;
 }
 
 /* Footer */
 .qv__footer {
-  padding: 20px 32px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid #eee5d4;
   text-align: center;
-  border-top: 1px solid #f0f0f0;
 }
 
-.qv__footer p {
-  margin: 2px 0;
-  font-size: 0.75rem;
-  color: #bbb;
+.qv__footer-brand {
+  margin: 0 0 8px;
+  font-family: Georgia, serif;
+  font-size: 0.72rem;
+  color: #c5a47e;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+.qv__footer-details {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.78rem;
+  color: #8a8a8a;
+  letter-spacing: 0.02em;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
   .qv {
-    padding: 16px 8px;
+    padding: 24px 12px;
   }
 
-  .qv__info,
-  .qv__items,
+  .qv__card {
+    padding: 36px 22px 32px;
+  }
+
+  .qv__logo-img {
+    max-width: 180px;
+  }
+
+  .qv__divider {
+    margin-bottom: 28px;
+  }
+
+  .qv__quote-number {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+  }
+
+  .qv__hr {
+    margin: 24px 0;
+  }
+
+  .qv__info-row {
+    gap: 12px;
+  }
+
+  .qv__info-row dd {
+    font-size: 0.88rem;
+  }
+
+  .qv__line-head {
+    gap: 12px;
+  }
+
+  .qv__line-title {
+    font-size: 0.92rem;
+  }
+
+  .qv__line-total {
+    font-size: 0.95rem;
+  }
+
   .qv__totals {
-    padding-left: 16px;
-    padding-right: 16px;
+    max-width: none;
+  }
+
+  .qv__total-row--grand {
+    font-size: 1.05rem;
   }
 
   .qv__deposit {
-    margin-left: 16px;
-    margin-right: 16px;
+    padding: 22px 20px 20px;
   }
 
-  .qv__deposit-action {
+  .qv__deposit-amount {
+    font-size: 1.7rem;
+  }
+
+  .qv__cta {
     flex-direction: column;
   }
 
-  .qv__header {
-    padding: 20px 16px;
+  .qv__btn {
+    padding: 15px 20px;
+  }
+
+  .qv__footer-details {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .qv__card {
+    padding: 28px 18px 26px;
+  }
+
+  .qv__logo-img {
+    max-width: 150px;
+  }
+
+  .qv__quote-number {
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+  }
+
+  .qv__line-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .qv__line-total {
+    align-self: flex-end;
   }
 }

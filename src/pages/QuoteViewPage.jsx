@@ -26,7 +26,11 @@ export default function QuoteViewPage() {
   if (loading) {
     return (
       <div className="qv">
-        <div className="qv__loading">Loading quote...</div>
+        <div className="qv__accent qv__accent--top" />
+        <div className="qv__card">
+          <div className="qv__loading">Loading your quote…</div>
+        </div>
+        <div className="qv__accent qv__accent--bottom" />
       </div>
     );
   }
@@ -34,12 +38,15 @@ export default function QuoteViewPage() {
   if (!quote) {
     return (
       <div className="qv">
-        <div className="qv__container">
-          <div className="qv__header">
-            <h1 className="qv__logo">THE QUARTZ COMPANY</h1>
+        <div className="qv__accent qv__accent--top" />
+        <div className="qv__card">
+          <div className="qv__logo-wrap">
+            <img src="/LOGO IDEA BIG QUARTZ ARIAL.png" alt="The Quartz Company" className="qv__logo-img" />
           </div>
-          <div className="qv__error">Quote not found.</div>
+          <div className="qv__divider" />
+          <p className="qv__error">We couldn't find this quote. Please check the link or contact us.</p>
         </div>
+        <div className="qv__accent qv__accent--bottom" />
       </div>
     );
   }
@@ -61,106 +68,104 @@ export default function QuoteViewPage() {
       })
     : null;
 
+  const createdDate = new Date(quote.created_at).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
+
+  const priceBefore = (item) => {
+    if (item.original_price !== undefined) return item.original_price;
+    return (item.material_cost || 0) + (item.features_total || 0) + (item.discount || 0);
+  };
+
   return (
     <div className="qv">
-      <div className="qv__container">
-        {/* Header */}
-        <div className="qv__header">
-          <h1 className="qv__logo">THE QUARTZ COMPANY</h1>
-        </div>
+      <div className="qv__accent qv__accent--top" />
 
-        {/* Expiry Banner */}
+      <div className="qv__card">
         {isExpired && (
-          <div className="qv__expired-banner">
-            This quote has expired. Please contact us for an updated quote.
+          <div className="qv__expired">
+            This quote has expired — please contact us for an updated one.
           </div>
         )}
 
-        {/* Quote Info */}
-        <div className="qv__info">
+        <div className="qv__logo-wrap">
+          <img src="/LOGO IDEA BIG QUARTZ ARIAL.png" alt="The Quartz Company" className="qv__logo-img" />
+        </div>
+        <div className="qv__divider" />
+
+        <p className="qv__eyebrow">Your Quotation</p>
+        <h1 className="qv__quote-number">{quote.quote_number}</h1>
+
+        <dl className="qv__info">
           <div className="qv__info-row">
-            <span className="qv__info-label">Quote Number</span>
-            <span className="qv__info-value">{quote.quote_number}</span>
-          </div>
-          <div className="qv__info-row">
-            <span className="qv__info-label">Date</span>
-            <span className="qv__info-value">
-              {new Date(quote.created_at).toLocaleDateString('en-GB', {
-                day: 'numeric', month: 'long', year: 'numeric',
-              })}
-            </span>
+            <dt>Date</dt>
+            <dd>{createdDate}</dd>
           </div>
           {validDate && (
             <div className="qv__info-row">
-              <span className="qv__info-label">Valid Until</span>
-              <span className={`qv__info-value ${isExpired ? 'qv__info-value--expired' : ''}`}>
-                {validDate}
-              </span>
+              <dt>Valid Until</dt>
+              <dd className={isExpired ? 'qv__info-expired' : ''}>{validDate}</dd>
             </div>
           )}
           {quote.description && (
             <div className="qv__info-row">
-              <span className="qv__info-label">Description</span>
-              <span className="qv__info-value">{quote.description}</span>
+              <dt>Description</dt>
+              <dd>{quote.description}</dd>
             </div>
           )}
-        </div>
+        </dl>
 
-        {/* Items */}
-        <div className="qv__items">
-          <table className="qv__table">
-            <thead>
-              <tr>
-                <th className="qv__th">Item</th>
-                <th className="qv__th qv__th--right">Price</th>
-                <th className="qv__th qv__th--right">Discount</th>
-                <th className="qv__th qv__th--right">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {materials.length > 0 && (
-                <>
-                  <tr><td colSpan={4} className="qv__section-label">Materials</td></tr>
-                  {materials.map((item, i) => (
-                    <tr key={`m-${i}`} className="qv__row">
-                      <td className="qv__cell">
+        <div className="qv__hr" />
+
+        {materials.length > 0 && (
+          <section className="qv__section">
+            <p className="qv__section-label">Materials</p>
+            {materials.map((item, i) => {
+              const before = priceBefore(item);
+              const hasDiscount = item.discount > 0 && before > item.line_total;
+              const dims = item.x_mm && item.y_mm ? `${item.x_mm}×${item.y_mm}mm` : '';
+              return (
+                <div key={`m-${i}`} className="qv__line">
+                  <div className="qv__line-head">
+                    <div className="qv__line-name">
+                      <span className="qv__line-title">
                         {item.piece_type}{item.description ? ` — ${item.description}` : ''}
-                        <span className="qv__cell-dims">
-                          {item.x_mm && item.y_mm ? ` (${item.x_mm}×${item.y_mm}mm)` : ''}
-                        </span>
-                      </td>
-                      <td className="qv__cell qv__cell--right">
-                        {fmt((item.material_cost || 0) + (item.features_total || 0))}
-                      </td>
-                      <td className="qv__cell qv__cell--right qv__cell--discount">
-                        {item.discount > 0 ? `-${fmt(item.discount)}` : '—'}
-                      </td>
-                      <td className="qv__cell qv__cell--right qv__cell--bold">{fmt(item.line_total)}</td>
-                    </tr>
-                  ))}
-                </>
-              )}
-              {accessories.length > 0 && (
-                <>
-                  <tr><td colSpan={4} className="qv__section-label">Products & Accessories</td></tr>
-                  {accessories.map((item, i) => (
-                    <tr key={`a-${i}`} className="qv__row">
-                      <td className="qv__cell">
-                        {item.product_name}
-                        {item.quantity > 1 && <span className="qv__cell-qty"> ×{item.quantity}</span>}
-                      </td>
-                      <td className="qv__cell qv__cell--right">{fmt(item.line_total)}</td>
-                      <td className="qv__cell qv__cell--right">—</td>
-                      <td className="qv__cell qv__cell--right qv__cell--bold">{fmt(item.line_total)}</td>
-                    </tr>
-                  ))}
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
+                      </span>
+                      {dims && <span className="qv__line-dims">{dims}</span>}
+                    </div>
+                    <span className="qv__line-total">{fmt(item.line_total)}</span>
+                  </div>
+                  {hasDiscount && (
+                    <div className="qv__line-sub">
+                      <span className="qv__line-was">Was {fmt(before)}</span>
+                      <span className="qv__line-save">Saving {fmt(item.discount)}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </section>
+        )}
 
-        {/* Totals */}
+        {accessories.length > 0 && (
+          <section className="qv__section">
+            <p className="qv__section-label">Products &amp; Accessories</p>
+            {accessories.map((item, i) => (
+              <div key={`a-${i}`} className="qv__line">
+                <div className="qv__line-head">
+                  <div className="qv__line-name">
+                    <span className="qv__line-title">{item.product_name}</span>
+                    {item.quantity > 1 && <span className="qv__line-dims">×{item.quantity}</span>}
+                  </div>
+                  <span className="qv__line-total">{fmt(item.line_total)}</span>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        <div className="qv__hr" />
+
         <div className="qv__totals">
           <div className="qv__total-row">
             <span>Subtotal</span>
@@ -176,34 +181,38 @@ export default function QuoteViewPage() {
           </div>
         </div>
 
-        {/* Deposit Section */}
-        <div className="qv__deposit">
-          <div className="qv__deposit-header">
-            <h3 className="qv__deposit-title">Deposit Required</h3>
-            <span className="qv__deposit-amount">{fmt(deposit)}</span>
-          </div>
-          <p className="qv__deposit-note">A deposit of 20% is required to secure your quote.</p>
+        <div className="qv__hr" />
 
-          {!isExpired ? (
-            <div className="qv__deposit-action">
-              <a href="tel:+44000000000" className="qv__btn qv__btn--primary">
+        <div className="qv__deposit">
+          <p className="qv__section-label">Deposit to Secure</p>
+          <div className="qv__deposit-amount">{fmt(deposit)}</div>
+          <p className="qv__deposit-note">
+            A 20% deposit secures your quote{validDate ? ` until ${validDate}` : ''}.
+          </p>
+          {!isExpired && (
+            <div className="qv__cta">
+              <a href="tel:+447375303416" className="qv__btn qv__btn--primary">
                 Contact to Pay
               </a>
-              <a href="mailto:sales@thequartzcompany.co.uk" className="qv__btn qv__btn--secondary">
+              <a
+                href="mailto:sales@thequartzcompany.co.uk"
+                className="qv__btn qv__btn--secondary"
+              >
                 Email Us
               </a>
             </div>
-          ) : (
-            <p className="qv__deposit-expired">This quote has expired. Please contact us for a new quote.</p>
           )}
         </div>
 
-        {/* Footer */}
         <div className="qv__footer">
-          <p>The Quartz Company</p>
-          <p>sales@thequartzcompany.co.uk</p>
+          <p className="qv__footer-brand">The Quartz Company</p>
+          <p className="qv__footer-details">
+            sales@thequartzcompany.co.uk &nbsp;·&nbsp; 07375 303 416
+          </p>
         </div>
       </div>
+
+      <div className="qv__accent qv__accent--bottom" />
     </div>
   );
 }
