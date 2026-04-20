@@ -27,7 +27,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Refresh Zoho token
     const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -44,96 +43,102 @@ export default async function handler(req, res) {
       return res.status(200).json({ error: 'Token refresh failed' });
     }
 
-    // 3. Build email HTML
     const viewUrl = `${SITE_URL}/quote/view/${quoteId}`;
+    const logoUrl = `${SITE_URL}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.jpg`;
     const fmtDate = validUntil
       ? new Date(validUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
       : '';
     const fmtCurrency = (v) => `£${Number(v || 0).toFixed(2)}`;
-
     const firstName = clientName ? clientName.split(' ')[0] : 'there';
 
-    const htmlBody = `
-<!DOCTYPE html>
+    const htmlBody = `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f7f7f7;font-family:Arial,Helvetica,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;padding:32px 0;">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f1ea;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f1ea;padding:40px 16px;">
 <tr><td align="center">
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
 
-  <!-- Gold Header -->
-  <tr>
-    <td style="background:#c5a47e;padding:28px 32px;text-align:center;">
-      <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:0.08em;">THE QUARTZ</h1>
-      <p style="margin:2px 0 0;font-family:Georgia,serif;font-size:12px;color:rgba(255,255,255,0.85);letter-spacing:0.2em;">COMPANY</p>
-    </td>
-  </tr>
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+<tr><td style="border-top:2px solid #c5a47e;height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
+</table>
 
-  <!-- Body -->
-  <tr>
-    <td style="padding:32px;">
-      <p style="font-size:16px;color:#333;margin:0 0 16px;">Hi ${firstName},</p>
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;">
 
-      <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.6;">I have completed your Quartz Company quote using the details you have provided. You can view this quote <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;">here</a>. Your quote expires <strong style="color:#c5a47e;text-decoration:underline;">${fmtDate}</strong>.</p>
+  <tr><td align="center" style="padding:48px 32px 20px;">
+    <img src="${logoUrl}" alt="The Quartz Company" width="220" style="display:block;max-width:220px;height:auto;border:0;outline:none;text-decoration:none;">
+  </td></tr>
 
-      <p style="font-size:14px;color:#555;margin:0 0 24px;line-height:1.6;">If you'd like to secure your quote before this date, all we need is a <strong>${fmtCurrency(deposit)} deposit</strong> (payable over the phone with me or using the link below).</p>
+  <tr><td align="center" style="padding:0 32px 36px;">
+    <table width="40" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="border-bottom:1px solid #c5a47e;font-size:0;line-height:0;">&nbsp;</td>
+    </tr></table>
+  </td></tr>
 
-      <!-- CTA Button -->
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr><td align="center" style="padding:0 0 24px;">
-          <a href="${viewUrl}" style="display:inline-block;padding:14px 36px;background:#c5a47e;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">
-            View and secure your quote
-          </a>
-        </td></tr>
-      </table>
+  <tr><td style="padding:0 48px 32px;font-family:Georgia,'Times New Roman',serif;">
 
-      <!-- Not quite ready -->
-      <p style="font-size:14px;font-weight:700;color:#333;margin:0 0 6px;">Not quite ready?</p>
-      <p style="font-size:13px;color:#555;margin:0 0 24px;line-height:1.6;">Not to worry, you can view your quote, update and compare colours and thicknesses on the <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;">customer portal</a>.</p>
+    <p style="margin:0 0 20px;font-family:Georgia,serif;font-size:17px;color:#1a1a1a;">Hi ${firstName},</p>
 
-      <!-- Quote Details -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf9f7;border-radius:8px;">
-        <tr><td style="padding:18px 20px;">
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="font-size:13px;color:#888;padding:5px 0;">Quote Reference</td>
-              <td style="font-size:13px;font-weight:700;color:#1a1a1a;text-align:right;padding:5px 0;">${quoteNumber || ''}</td>
-            </tr>
-            <tr>
-              <td style="font-size:13px;color:#888;padding:5px 0;">Total (inc. VAT)</td>
-              <td style="font-size:15px;font-weight:800;color:#c5a47e;text-align:right;padding:5px 0;">${fmtCurrency(total)}</td>
-            </tr>
-            <tr>
-              <td style="font-size:13px;color:#888;padding:5px 0;">Deposit Required</td>
-              <td style="font-size:14px;font-weight:700;color:#ef4444;text-align:right;padding:5px 0;">${fmtCurrency(deposit)}</td>
-            </tr>
-            <tr>
-              <td style="font-size:13px;color:#888;padding:5px 0;">Quote Expires</td>
-              <td style="font-size:13px;font-weight:600;color:#1a1a1a;text-align:right;padding:5px 0;">${fmtDate}</td>
-            </tr>
-          </table>
-        </td></tr>
-      </table>
+    <p style="margin:0 0 18px;font-size:15px;line-height:1.75;color:#3a3a3a;">I have completed your Quartz Company quote using the details you have provided. You can view it <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;text-decoration:none;border-bottom:1px solid #c5a47e;">here</a>. Your quote expires on <strong style="color:#c5a47e;">${fmtDate}</strong>.</p>
 
-    </td>
-  </tr>
+    <p style="margin:0 0 32px;font-size:15px;line-height:1.75;color:#3a3a3a;">If you would like to secure your quote before this date, all we need is a <strong style="color:#1a1a1a;">${fmtCurrency(deposit)} deposit</strong> — payable over the phone or via the link below.</p>
 
-  <!-- Footer -->
-  <tr>
-    <td style="background:#faf9f7;padding:20px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:12px;color:#999;">The Quartz Company</p>
-      <p style="margin:4px 0 0;font-size:11px;color:#bbb;">sales@thequartzcompany.co.uk</p>
-    </td>
-  </tr>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td align="center" style="padding:0 0 36px;">
+        <a href="${viewUrl}" style="display:inline-block;padding:16px 40px;background:#1a1a1a;color:#ffffff;font-family:Georgia,serif;font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;border:1px solid #c5a47e;">
+          View &amp; Secure Quote
+        </a>
+      </td></tr>
+    </table>
+
+    <p style="margin:0 0 8px;font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1a1a1a;">Not quite ready?</p>
+    <p style="margin:0 0 32px;font-size:14px;line-height:1.7;color:#5a5a5a;">You can view your quote, update and compare colours and thicknesses on the <a href="${viewUrl}" style="color:#c5a47e;text-decoration:none;border-bottom:1px solid #c5a47e;">customer portal</a>.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#faf7f2;border:1px solid #eee5d4;">
+      <tr><td style="padding:26px 28px;">
+        <p style="margin:0 0 16px;font-family:Georgia,serif;font-size:11px;letter-spacing:0.28em;color:#c5a47e;text-transform:uppercase;">Quote Summary</p>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Reference</td>
+            <td style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1a1a1a;text-align:right;padding:7px 0;">${quoteNumber || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Total (inc. VAT)</td>
+            <td style="font-family:Georgia,serif;font-size:18px;font-weight:700;color:#c5a47e;text-align:right;padding:7px 0;">${fmtCurrency(total)}</td>
+          </tr>
+          <tr>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Deposit</td>
+            <td style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1a1a1a;text-align:right;padding:7px 0;">${fmtCurrency(deposit)}</td>
+          </tr>
+          <tr>
+            <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Expires</td>
+            <td style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#1a1a1a;text-align:right;padding:7px 0;">${fmtDate}</td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+
+  </td></tr>
+
+  <tr><td align="center" style="padding:32px 48px 48px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #eee5d4;">
+      <tr><td align="center" style="padding:28px 0 0;">
+        <p style="margin:0 0 8px;font-family:Georgia,serif;font-size:11px;letter-spacing:0.28em;color:#c5a47e;text-transform:uppercase;">The Quartz Company</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:12px;color:#999;letter-spacing:0.02em;">sales@thequartzcompany.co.uk &nbsp;·&nbsp; 07375 303 416</p>
+      </td></tr>
+    </table>
+  </td></tr>
 
 </table>
+
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+<tr><td style="border-top:2px solid #c5a47e;height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
+</table>
+
 </td></tr>
 </table>
 </body>
 </html>`;
 
-    // 4. Send email via Zoho
     const sendRes = await fetch(
       `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages`,
       {
@@ -154,7 +159,6 @@ export default async function handler(req, res) {
 
     const sendData = await sendRes.json();
 
-    // Zoho returns various response shapes — check for success
     const isSuccess =
       sendData.status?.code === 200 ||
       sendData.status?.code === 201 ||
