@@ -39,6 +39,8 @@ export default function PieceEditor({
   materialName,
   thickness,
   pricePerSqm,
+  originalPricePerSqm,
+  discountPercent = 0,
 }) {
   const [expandedId, setExpandedId] = useState(null);
   const [featureSelect, setFeatureSelect] = useState('');
@@ -46,7 +48,14 @@ export default function PieceEditor({
   const filtered = pieces.filter((p) => p.piece_type === activePieceType);
   const label = PIECE_TYPES.find((t) => t.key === activePieceType)?.label || activePieceType;
 
-  const calcPrice = (piece) => {
+  const effectiveOriginal = originalPricePerSqm || pricePerSqm || 0;
+
+  const calcOriginalMaterial = (piece) => {
+    const areaSqm = ((piece.x_mm || 0) * (piece.y_mm || 0)) / 1_000_000;
+    return areaSqm * effectiveOriginal;
+  };
+
+  const calcSaleMaterial = (piece) => {
     const areaSqm = ((piece.x_mm || 0) * (piece.y_mm || 0)) / 1_000_000;
     return areaSqm * (pricePerSqm || 0);
   };
@@ -104,7 +113,7 @@ export default function PieceEditor({
         <span>Edge</span>
         <span>Edge mm</span>
         <span>Price</span>
-        <span>Discount</span>
+        <span>{discountPercent > 0 ? `Discount (${discountPercent}%)` : 'Discount'}</span>
         <span>Sale</span>
         <span></span>
       </div>
@@ -112,11 +121,12 @@ export default function PieceEditor({
       {/* Piece rows */}
       <div className="piece-editor__rows">
         {filtered.map((piece, i) => {
-          const price = calcPrice(piece);
+          const originalMaterial = calcOriginalMaterial(piece);
+          const saleMaterial = calcSaleMaterial(piece);
           const featuresTotal = calcFeaturesTotal(piece);
-          const fullPrice = price + featuresTotal;
-          const discount = piece.discount || 0;
-          const sale = Math.max(0, fullPrice - discount);
+          const price = originalMaterial + featuresTotal;
+          const sale = saleMaterial + featuresTotal;
+          const discount = Math.max(0, price - sale);
           const isExpanded = expandedId === piece.id;
 
           return (
@@ -171,16 +181,8 @@ export default function PieceEditor({
                   onChange={(e) => onUpdatePiece(piece.id, 'edge_mm', parseFloat(e.target.value) || 0)}
                   className="piece-editor__input piece-editor__input--center"
                 />
-                <span className="piece-editor__price">{fmt(fullPrice)}</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="0"
-                  value={piece.discount || ''}
-                  onChange={(e) => onUpdatePiece(piece.id, 'discount', parseFloat(e.target.value) || 0)}
-                  className="piece-editor__input piece-editor__input--center piece-editor__input--discount"
-                />
+                <span className="piece-editor__price">{fmt(price)}</span>
+                <span className="piece-editor__discount">{fmt(discount)}</span>
                 <span className="piece-editor__sale">{fmt(sale)}</span>
                 <button
                   className="piece-editor__remove"

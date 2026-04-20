@@ -159,8 +159,9 @@
   color: #ef4444;
 }
 
-/* Price & Sale display */
+/* Price, Discount & Sale display */
 .piece-editor__price,
+.piece-editor__discount,
 .piece-editor__sale {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.78rem;
@@ -171,6 +172,11 @@
 
 .piece-editor__price {
   color: var(--admin-text-light);
+  text-decoration: line-through;
+}
+
+.piece-editor__discount {
+  color: #ef4444;
 }
 
 .piece-editor__sale {

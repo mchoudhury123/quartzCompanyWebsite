@@ -68,7 +68,6 @@ export default function QuoteBuilderPage() {
           y_mm: item.y_mm || 0,
           edge_type: item.edge_type || 'none',
           edge_mm: item.edge_mm || 0,
-          discount: item.discount || 0,
           comments: item.comments || '',
           features: item.features || [],
         });
@@ -93,6 +92,9 @@ export default function QuoteBuilderPage() {
   const pricePerSqm = selectedMaterial
     ? Number(selectedMaterial[thickness === '30mm' ? 'price_30mm' : 'price_20mm']) || 0
     : 0;
+  const originalPricePerSqm = selectedMaterial
+    ? Number(selectedMaterial[thickness === '30mm' ? 'original_price_30mm' : 'original_price_20mm']) || pricePerSqm
+    : 0;
 
   // --- Piece handlers ---
   const handleAddPiece = useCallback((pieceType) => {
@@ -107,7 +109,6 @@ export default function QuoteBuilderPage() {
         y_mm: 0,
         edge_type: 'none',
         edge_mm: 0,
-        discount: 0,
         comments: '',
         features: [],
       },
@@ -156,18 +157,19 @@ export default function QuoteBuilderPage() {
   const allItems = useMemo(() => {
     const pieceItems = pieces.map((p) => {
       const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
-      const materialCost = areaSqm * pricePerSqm;
+      const originalMaterial = areaSqm * originalPricePerSqm;
+      const saleMaterial = areaSqm * pricePerSqm;
       const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
-      const fullPrice = materialCost + featuresTotal;
-      const discount = p.discount || 0;
-      const sale = Math.max(0, fullPrice - discount);
+      const originalPrice = originalMaterial + featuresTotal;
+      const linePrice = saleMaterial + featuresTotal;
+      const discount = Math.max(0, originalPrice - linePrice);
 
       return {
         category: 'stones',
         product_name: `${selectedMaterial?.name || 'Material'} — ${p.piece_type} ${p.description}`.trim(),
-        original_price: fullPrice,
+        original_price: originalPrice,
         discount,
-        line_total: sale,
+        line_total: linePrice,
         features_total: featuresTotal,
         piece_type: p.piece_type,
       };
@@ -182,7 +184,7 @@ export default function QuoteBuilderPage() {
     }));
 
     return [...pieceItems, ...accItems];
-  }, [pieces, accessories, selectedMaterial, pricePerSqm]);
+  }, [pieces, accessories, selectedMaterial, pricePerSqm, originalPricePerSqm]);
 
   // --- Build quote payload ---
   const buildPayload = (status, validUntil = null) => {
@@ -203,8 +205,12 @@ export default function QuoteBuilderPage() {
     const storedItems = [
       ...pieces.map((p) => {
         const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
-        const materialCost = areaSqm * pricePerSqm;
+        const originalMaterial = areaSqm * originalPricePerSqm;
+        const saleMaterial = areaSqm * pricePerSqm;
         const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
+        const originalPrice = originalMaterial + featuresTotal;
+        const linePrice = saleMaterial + featuresTotal;
+        const discount = Math.max(0, originalPrice - linePrice);
         return {
           type: 'piece',
           piece_type: p.piece_type,
@@ -213,12 +219,14 @@ export default function QuoteBuilderPage() {
           y_mm: p.y_mm,
           edge_type: p.edge_type,
           edge_mm: p.edge_mm,
-          discount: p.discount || 0,
           comments: p.comments || '',
           features: p.features || [],
-          material_cost: materialCost,
+          material_cost: saleMaterial,
+          original_material_cost: originalMaterial,
           features_total: featuresTotal,
-          line_total: Math.max(0, materialCost + featuresTotal - (p.discount || 0)),
+          original_price: originalPrice,
+          discount,
+          line_total: linePrice,
         };
       }),
       ...accessories.map((a) => ({
@@ -409,6 +417,8 @@ export default function QuoteBuilderPage() {
               materialName={selectedMaterial.name}
               thickness={thickness}
               pricePerSqm={pricePerSqm}
+              originalPricePerSqm={originalPricePerSqm}
+              discountPercent={selectedMaterial.discount_percent || 0}
             />
           )}
 
