@@ -50,7 +50,7 @@ export function buildQuoteEmailHtml({
 
     <p style="margin:0 0 18px;font-size:15px;line-height:1.75;color:#3a3a3a;">I have completed your Quartz Company quote using the details you have provided. You can view it <a href="${viewUrl}" style="color:#c5a47e;font-weight:600;text-decoration:none;border-bottom:1px solid #c5a47e;">here</a>. Your quote expires on <strong style="color:#c5a47e;">${fmtDate}</strong>.</p>
 
-    <p style="margin:0 0 32px;font-size:15px;line-height:1.75;color:#3a3a3a;">If you would like to secure your quote before this date, all we need is a <strong style="color:#1a1a1a;">${fmtCurrency(deposit)} deposit</strong> — payable over the phone or via the link below.</p>
+    <p style="margin:0 0 32px;font-size:15px;line-height:1.75;color:#3a3a3a;">If you would like to secure your quote before this date, all we need is a <strong style="color:#1a1a1a;"><span style="font-family:Arial,Helvetica,sans-serif;">${fmtCurrency(deposit)}</span> deposit</strong> — payable over the phone or via the link below.</p>
 
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr><td align="center" style="padding:0 0 36px;">
@@ -73,11 +73,11 @@ export function buildQuoteEmailHtml({
           </tr>
           <tr>
             <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Total (inc. VAT)</td>
-            <td style="font-family:Georgia,serif;font-size:18px;font-weight:700;color:#c5a47e;text-align:right;padding:7px 0;">${fmtCurrency(total)}</td>
+            <td style="font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;color:#c5a47e;text-align:right;padding:7px 0;">${fmtCurrency(total)}</td>
           </tr>
           <tr>
             <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Deposit</td>
-            <td style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1a1a1a;text-align:right;padding:7px 0;">${fmtCurrency(deposit)}</td>
+            <td style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#1a1a1a;text-align:right;padding:7px 0;">${fmtCurrency(deposit)}</td>
           </tr>
           <tr>
             <td style="font-family:Arial,sans-serif;font-size:13px;color:#888;padding:7px 0;">Expires</td>

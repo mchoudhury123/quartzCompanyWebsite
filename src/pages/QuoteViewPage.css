@@ -198,7 +198,8 @@
 }
 
 .qv__line-total {
-  font-family: Georgia, serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 1rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -243,6 +244,12 @@
   color: #5a5a5a;
 }
 
+.qv__total-row span:last-child {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a1a;
+}
+
 .qv__total-row--grand {
   margin-top: 8px;
   padding-top: 16px;
@@ -269,11 +276,12 @@
 }
 
 .qv__deposit-amount {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 2.1rem;
-  font-weight: 400;
+  font-weight: 600;
   color: #c5a47e;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1;
   margin-bottom: 10px;
 }
