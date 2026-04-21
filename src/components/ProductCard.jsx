@@ -117,6 +117,7 @@ function ProductCard({ product }) {
               alt={`${name} swatch`}
               className={`product-card__image${imageLoaded ? ' product-card__image--loaded' : ''}`}
               loading="lazy"
+              decoding="async"
               onLoad={() => setImageLoaded(true)}
             />
           )}
@@ -127,6 +128,7 @@ function ProductCard({ product }) {
               alt={`${name} in kitchen`}
               className={`product-card__image product-card__image--hover${hoverLoaded ? ' product-card__image--hover-ready' : ''}`}
               loading="lazy"
+              decoding="async"
               onLoad={() => setHoverLoaded(true)}
             />
           )}

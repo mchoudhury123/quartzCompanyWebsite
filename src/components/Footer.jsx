@@ -172,8 +172,8 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom__inner">
           <p className="footer-copyright">
-            &copy; {new Date().getFullYear()} The Quartz Company Ltd. All rights reserved.
-            Registered in England &amp; Wales. Company No. 12345678.
+            &copy; {new Date().getFullYear()} The Quartz Company. All rights reserved.
+            Registered in England &amp; Wales as Quartz Company SP Ltd. Company No. 17057823.
           </p>
         </div>
       </div>

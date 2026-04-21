@@ -193,10 +193,6 @@ function Header() {
             <span className="ticker-bar__separator">|</span>
           </span>
         </div>
-        <a href="tel:+447375303416" className="ticker-bar__phone">
-          <FiPhone aria-hidden="true" />
-          <span>07375 303 416</span>
-        </a>
       </div>
 
       {/* Centered-Logo Split Navigation */}

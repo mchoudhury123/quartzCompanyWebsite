@@ -206,6 +206,8 @@ function ProductDetailPage() {
                 className={`pdp__main-image-inner${mainImageLoaded ? ' pdp__main-image-inner--loaded' : ''}`}
                 style={zoomStyle}
                 onLoad={() => setMainImageLoaded(true)}
+                decoding="async"
+                fetchpriority="high"
               />
 
               {images.length > 1 && (
@@ -236,7 +238,7 @@ function ProductDetailPage() {
                   onClick={() => setActiveImageIndex(i)}
                   aria-label={`View image ${i + 1}`}
                 >
-                  <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="pdp__thumb-img" />
+                  <img src={img} alt={`${product.name} thumbnail ${i + 1}`} className="pdp__thumb-img" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>
@@ -533,6 +535,8 @@ function ProductDetailPage() {
                 src={product.fullSlabImage || images[images.length - 1]}
                 alt={`${product.name} \u2014 Full Slab View`}
                 className="pdp__slab-modal-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

@@ -328,6 +328,8 @@ function QuoteModal({ product = null, onClose }) {
                       src={product.swatch}
                       alt={product.name}
                       className="quote-modal__selected-product-swatch"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div>
                       <strong>{product.name}</strong>
