@@ -40,7 +40,8 @@
       "/Calacatta Classico/Calacatta Classico Close up 1.JPG",
       "/Calacatta Classico/Calacatta Classico Close up 2.JPG",
       "/Calacatta Classico/Calacatta Classico Close up 3.JPG",
-      "/Calacatta Classico/Calacatta Classico Full Slab.JPG"
+      "/Calacatta Classico/Calacatta Classico Full Slab.JPG",
+      "/Calacatta Classico/Calacatta Classico Fitted.jpg"
     ],
     "fittedImages": [
       "/Calacatta Classico/Calacatta Classico Fitted.jpg"
@@ -88,7 +89,9 @@
     "images": [
       "/Calacatta Lusso/Calacatta Lusso Close up 1.JPG",
       "/Calacatta Lusso/Calacatta Lusso Close up 2.JPG",
-      "/Calacatta Lusso/Calacatta Lusso Full Slab.JPG"
+      "/Calacatta Lusso/Calacatta Lusso Full Slab.JPG",
+      "/Calacatta Lusso/Calacatta Lusso Fitted 1.jpg",
+      "/Calacatta Lusso/Calacatta Lusso Fitted 2.jpg"
     ],
     "fittedImages": [
       "/Calacatta Lusso/Calacatta Lusso Fitted 1.jpg",
@@ -137,7 +140,8 @@
     "images": [
       "/Statuario Gold/Statuario Gold Close up 1.JPG",
       "/Statuario Gold/Statuario Gold C lose up 2.JPG",
-      "/Statuario Gold/Statuario Gold Full Slab.JPG"
+      "/Statuario Gold/Statuario Gold Full Slab.JPG",
+      "/Statuario Gold/Statuario Gold Fitted.jpg"
     ],
     "fittedImages": [
       "/Statuario Gold/Statuario Gold Fitted.jpg"
@@ -186,7 +190,8 @@
       "/Carrara Extra/Carrara Extra Close up 1.JPG",
       "/Carrara Extra/Carrara Extra Close up 2.JPG",
       "/Carrara Extra/Carrara Extra Close up 3.JPG",
-      "/Carrara Extra/Carrara Extra.JPG"
+      "/Carrara Extra/Carrara Extra.JPG",
+      "/Carrara Extra/carrara extra example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Carrara Extra/Carrara Extra.JPG",
@@ -233,7 +238,8 @@
       "/Bianco Galaxy/Bianco Galaxy Close Up 1.JPG",
       "/Bianco Galaxy/Bianco Galaxy Close Up 2.JPG",
       "/Bianco Galaxy/Bianco Galaxy Close Up 3.JPG",
-      "/Bianco Galaxy/Bianco Galaxy Full Slab.jpg"
+      "/Bianco Galaxy/Bianco Galaxy Full Slab.jpg",
+      "/Bianco Galaxy/bianco galaxy example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Bianco Galaxy/Bianco Galaxy Full Slab.jpg",
@@ -278,7 +284,8 @@
     },
     "images": [
       "/Bianco Merino/Bianco Merino Close up.jpg",
-      "/Bianco Merino/Bianco Merino Full Slab.jpg"
+      "/Bianco Merino/Bianco Merino Full Slab.jpg",
+      "/Bianco Merino/bianco merino example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Bianco Merino/Bianco Merino Full Slab.jpg",
@@ -323,7 +330,8 @@
     },
     "images": [
       "/Blanco White/Blanco White Close Up.JPG",
-      "/Blanco White/Blanco White Full Slab.JPG"
+      "/Blanco White/Blanco White Full Slab.JPG",
+      "/Blanco White/bianco white example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Blanco White/Blanco White Full Slab.JPG",
@@ -368,7 +376,8 @@
     },
     "images": [
       "/Lincoln/Lincoln Close Up.JPG",
-      "/Lincoln/Lincoln Full Slab.JPG"
+      "/Lincoln/Lincoln Full Slab.JPG",
+      "/Lincoln/lincoln example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Lincoln/Lincoln Full Slab.JPG",
@@ -414,7 +423,8 @@
     "images": [
       "/Nero Sparkle/Nero Sparkle Close Up 1.JPG",
       "/Nero Sparkle/Nero Sparkle Close Up 2.JPG",
-      "/Nero Sparkle/Nero Sparkle Full Slab.JPG"
+      "/Nero Sparkle/Nero Sparkle Full Slab.JPG",
+      "/Nero Sparkle/nero sparkle example.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Nero Sparkle/Nero Sparkle Full Slab.JPG",
