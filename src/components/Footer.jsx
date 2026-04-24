@@ -154,7 +154,7 @@ const Footer = () => {
                 </a>
                 <div className="footer-contact-item">
                   <FiMapPin className="footer-contact-icon" />
-                  <span>Showroom in Northampton</span>
+                  <span>Northamptonshire, UK</span>
                 </div>
               </div>
               <div className="footer-social">

@@ -9,7 +9,6 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import MaterialPage from './pages/MaterialPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import ShowroomsPage from './pages/ShowroomsPage';
 import CareersPage from './pages/CareersPage';
 import MeasuringGuidePage from './pages/MeasuringGuidePage';
 import DesignOptionsPage from './pages/DesignOptionsPage';
@@ -47,7 +46,6 @@ export default function App() {
         <Route path="/materials/:type" element={<MaterialPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/showrooms" element={<ShowroomsPage />} />
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/measuring-guide" element={<MeasuringGuidePage />} />
         <Route path="/design-options" element={<DesignOptionsPage />} />

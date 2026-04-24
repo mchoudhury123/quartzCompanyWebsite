@@ -97,7 +97,7 @@ function AboutPage() {
             <p>
               The Quartz Company was founded on a simple idea: that ordering a
               premium worktop shouldn't feel like a chore. Too many homeowners
-              told us the same story &mdash; pushy showrooms, vague pricing,
+              told us the same story &mdash; pushy sales, vague pricing,
               weeks of chasing for a quote, then a surprise bill at the end.
               We knew it could be done differently.
             </p>

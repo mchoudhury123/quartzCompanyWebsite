@@ -21,7 +21,7 @@ const materialData = {
       {
         title: 'Consistent Patterns',
         description:
-          'Unlike natural stone, quartz delivers predictable veining and colour. What you see in our showroom is exactly what you get at home.',
+          'Unlike natural stone, quartz delivers predictable veining and colour. What you see in your free sample is exactly what you get at home.',
       },
       {
         title: 'Scratch & Impact Resistant',

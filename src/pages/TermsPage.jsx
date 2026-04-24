@@ -149,8 +149,8 @@ const TermsPage = () => {
 
           <h3 className="terms-section__subheading">2.1 Product Descriptions</h3>
           <p>
-            All product descriptions, images, and samples provided on our website, in our
-            showroom, or through other marketing materials are intended as a guide only. We make
+            All product descriptions, images, and samples provided on our website
+            or through other marketing materials are intended as a guide only. We make
             every effort to display colours and textures as accurately as possible; however,
             actual products may vary slightly from images and samples due to the following
             factors:
@@ -177,7 +177,7 @@ const TermsPage = () => {
           <p>
             We strongly recommend that customers view and approve physical samples of their
             chosen material before placing an order. Sample pieces are available on request and
-            may be viewed at our showroom or sent by post. Samples are provided free of charge
+            will be sent by post free of charge. Samples are provided free of charge
             but remain indicative of the material rather than an exact representation of the
             finished product.
           </p>
@@ -201,7 +201,7 @@ const TermsPage = () => {
               <div className="terms-section__step-body">
                 <h3>Quote</h3>
                 <p>
-                  You submit an enquiry via our website, telephone, or showroom visit. We will
+                  You submit an enquiry via our website or by telephone. We will
                   provide you with a detailed written quotation based on the information you
                   provide, including your chosen material, approximate dimensions, and any
                   additional requirements. Quotes are valid for 30 days unless otherwise stated.
@@ -358,8 +358,8 @@ const TermsPage = () => {
 
           <h3 className="terms-section__subheading">6.1 Cooling-Off Period</h3>
           <p>
-            If you placed your order at a distance (online or by telephone) rather than in our
-            showroom, you have a statutory right to cancel your order within 14 days of the date
+            As your order was placed at a distance (online or by telephone), you
+            have a statutory right to cancel your order within 14 days of the date
             of Order Confirmation, in accordance with the Consumer Contracts (Information,
             Cancellation and Additional Charges) Regulations 2013.
           </p>

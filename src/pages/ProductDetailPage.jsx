@@ -34,7 +34,7 @@ function buildFaqs(name) {
     },
     {
       q: 'Can I see this surface before ordering?',
-      a: 'Of course. We strongly recommend viewing a physical sample before committing. You can order up to three free samples delivered to your door within 48 hours, or visit our Northampton showroom where full slabs are on display. Our design consultants are available in-showroom to help you pair your surface with cabinetry and splashback options.',
+      a: 'Of course. We strongly recommend viewing a physical sample before committing. You can order up to five free samples delivered directly to your door, and our design consultants are available by phone or video call to help you pair your surface with cabinetry and splashback options.',
     },
   ];
 }

@@ -55,7 +55,7 @@ const vacancies = [
     salary: '\u00A330,000 \u2013 \u00A338,000 + commission',
     type: 'Full-time',
     description:
-      'Work from our Northampton showroom to guide homeowners and trade clients through the surface selection process. You will conduct showroom consultations, create design proposals and manage projects from enquiry through to installation. Previous experience in kitchen or interior design is essential.',
+      'Work from our Northampton base to guide homeowners and trade clients through the surface selection process. You will conduct on-site and remote consultations, create design proposals and manage projects from enquiry through to installation. Previous experience in kitchen or interior design is essential.',
   },
 ];
 

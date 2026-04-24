@@ -17,7 +17,6 @@ const STATUS_OPTIONS = ['scheduled', 'completed', 'cancelled', 'no_show'];
 
 /* ── Appointment type presets with colours ── */
 const APPT_TYPES = [
-  { value: 'Showroom Visit', slug: 'showroom_visit', color: '#5b8fd4' },
   { value: 'Home Appointment', slug: 'home_appointment', color: '#c5a47e' },
   { value: 'Template / Measure', slug: 'template_measure', color: '#8b7fc7' },
   { value: 'Installation', slug: 'installation', color: '#6b8f71' },
@@ -500,7 +499,7 @@ export default function AppointmentsPage() {
                       className="appt-form__input"
                       value={form.location}
                       onChange={(e) => setForm({ ...form, location: e.target.value })}
-                      placeholder="Address or 'Showroom'"
+                      placeholder="Address"
                     />
                   </label>
                 </div>
