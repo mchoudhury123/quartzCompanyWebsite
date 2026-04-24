@@ -37,6 +37,26 @@ const Footer = () => {
     setSubscribed(true);
     setEmail('');
     setTimeout(() => setSubscribed(false), 4000);
+
+    // Fire-and-forget welcome email — failure doesn't block the UX, the
+    // subscription itself has already landed in Supabase.
+    const welcomeBody =
+      `Hi there,\n\n` +
+      `Thank you for subscribing to The Quartz Company.\n\n` +
+      `You'll now receive occasional design inspiration, exclusive sale previews and helpful guides for choosing your perfect worktop — straight to your inbox.\n\n` +
+      `In the meantime, feel free to browse our colour range or order up to five free samples at thequartzcompany.co.uk, or simply reply to this email with any questions.\n\n` +
+      `Kind regards,\n` +
+      `The Quartz Company`;
+
+    fetch('/api/zoho-send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: trimmed,
+        subject: 'Welcome to The Quartz Company',
+        body: welcomeBody,
+      }),
+    }).catch(() => {});
   };
 
   const browseLinks = [

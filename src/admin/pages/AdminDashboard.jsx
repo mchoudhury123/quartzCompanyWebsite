@@ -12,6 +12,7 @@ import './AdminDashboard.css';
 const ROW_1 = [
   { key: 'newQuotes', label: 'New Quote\nRequests', icon: FiFileText, color: '#3b3b3b', filter: 'new_quotes' },
   { key: 'repeatQuotes', label: '1+ Quote\nRequests', icon: FiCopy, color: '#c5a47e', filter: 'repeat_quotes', highlightWhenActive: true },
+  { key: 'newsletter', label: 'Stay\nInspired', icon: FiHeart, color: '#b86f91', filter: 'newsletter' },
   { key: 'newQuotesSelfServe', label: 'New Quote\nRequests\nSelf Serve', icon: FiFileText, color: '#6b8f71', filter: 'new_quotes_self_serve' },
   { key: 'repeatQuotesSelfServe', label: '1+ Quote\nRequests\nSelf Serve', icon: FiCopy, color: '#8b7fc7', filter: 'repeat_quotes_self_serve', highlightWhenActive: true },
   { key: 'emails', label: 'Emails', icon: FiMail, color: '#7c6dab', isEmail: true },
@@ -28,7 +29,6 @@ const ROW_2 = [
   { key: 'chaseMeasurements', label: 'Chase\nMeasurements', icon: FiMapPin, color: '#b93131', filter: 'chase_measurements' },
   { key: 'otherTasks', label: 'Other Tasks', icon: FiPhone, color: '#4a9e8e', filter: 'other_tasks' },
   { key: 'complianceTasks', label: 'Compliance\nTasks', icon: FiClipboard, color: '#6b8f71', filter: 'compliance_tasks' },
-  { key: 'newsletter', label: 'Stay\nInspired', icon: FiHeart, color: '#b86f91', filter: 'newsletter' },
 ];
 
 export default function AdminDashboard() {
