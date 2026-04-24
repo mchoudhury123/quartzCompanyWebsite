@@ -14,6 +14,7 @@ const PRESET_FILTERS = {
   chase_measurements: { label: 'Chase Measurements' },
   other_tasks: { label: 'Other Tasks' },
   compliance_tasks: { label: 'Compliance Tasks' },
+  newsletter: { label: 'Stay Inspired' },
 };
 
 export { PRESET_FILTERS };
@@ -63,6 +64,9 @@ export default function useLeads(initialFilter) {
             break;
           case 'chase_measurements':
             query = query.eq('pending_action', 'chase_measurements');
+            break;
+          case 'newsletter':
+            query = query.eq('source', 'newsletter');
             break;
           case 'appointments':
           case 'pro_welcome':

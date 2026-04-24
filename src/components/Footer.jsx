@@ -3,19 +3,40 @@ import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
+import { supabase } from '../lib/supabase';
 import './Footer.css';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 4000);
+    const trimmed = email.trim();
+    if (!trimmed || submitting) return;
+
+    setSubmitting(true);
+    setErrorMsg('');
+
+    const { error } = await supabase.from('leads').insert({
+      full_name: trimmed,
+      email: trimmed,
+      source: 'newsletter',
+      status: 'new',
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setErrorMsg('Something went wrong — please try again.');
+      return;
     }
+
+    setSubscribed(true);
+    setEmail('');
+    setTimeout(() => setSubscribed(false), 4000);
   };
 
   const browseLinks = [
@@ -70,13 +91,18 @@ const Footer = () => {
                 required
                 aria-label="Email address for newsletter"
               />
-              <button type="submit" className="prefooter-newsletter__btn">
-                {subscribed ? 'Subscribed!' : 'Subscribe'}
+              <button type="submit" className="prefooter-newsletter__btn" disabled={submitting}>
+                {submitting ? 'Subscribing…' : subscribed ? 'Subscribed!' : 'Subscribe'}
               </button>
             </div>
             {subscribed && (
               <p className="prefooter-newsletter__success">
                 Thank you for subscribing. Welcome to The Quartz Company.
+              </p>
+            )}
+            {errorMsg && (
+              <p className="prefooter-newsletter__success" style={{ color: '#dc2626' }}>
+                {errorMsg}
               </p>
             )}
           </form>

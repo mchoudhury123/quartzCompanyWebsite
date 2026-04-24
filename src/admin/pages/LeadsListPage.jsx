@@ -4,6 +4,7 @@ import useLeads, { PRESET_FILTERS } from '../hooks/useLeads';
 import StatusBadge from '../components/StatusBadge';
 import AddClientModal from '../components/modals/AddClientModal';
 import ModalShell from '../components/modals/ModalShell';
+import { sourceLabel } from '../utils/leadSource';
 import { FiSearch, FiChevronUp, FiChevronDown, FiX, FiUserPlus, FiTrash2 } from 'react-icons/fi';
 import './LeadsListPage.css';
 
@@ -121,7 +122,7 @@ export default function LeadsListPage() {
                   <td>{lead.phone}</td>
                   <td><StatusBadge status={lead.status} /></td>
                   <td className="admin-table__source">
-                    {lead.source === 'quote_modal' ? 'Quote' : lead.source === 'admin' ? 'Admin' : lead.source === 'quote_page' ? 'Quote' : 'Contact'}
+                    {sourceLabel(lead.source)}
                   </td>
                   <td className="admin-table__date">{formatDate(lead.created_at)}</td>
                   <td>

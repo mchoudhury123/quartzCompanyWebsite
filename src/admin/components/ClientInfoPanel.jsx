@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import StatusBadge from './StatusBadge';
 import StatusSelect from './StatusSelect';
+import { sourceLabel } from '../utils/leadSource';
 import { FiMail, FiPhone, FiMessageSquare, FiMapPin, FiEdit2, FiCheck, FiX } from 'react-icons/fi';
 import './ClientInfoPanel.css';
 
@@ -125,7 +126,7 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, o
         <div className="client-info__meta-row">
           <span className="client-info__meta-label">Source</span>
           <span className="client-info__meta-value">
-            {lead.source === 'quote_modal' ? 'Quote Form' : lead.source === 'contact_form' ? 'Contact Form' : lead.source || '—'}
+            {sourceLabel(lead.source)}
           </span>
         </div>
         <div className="client-info__meta-row">

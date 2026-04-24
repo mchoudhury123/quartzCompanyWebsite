@@ -18,6 +18,7 @@ export default function useDashboardStats() {
     chaseMeasurements: 0,
     otherTasks: 0,
     complianceTasks: 0,
+    newsletter: 0,
   });
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,12 +47,14 @@ export default function useDashboardStats() {
         chaseMeasurements: 0,
         otherTasks: 0,
         complianceTasks: 0,
+        newsletter: 0,
       };
 
       allLeads.forEach((l) => {
         // 1+ Quote Requests: status is still 'new' but pending_action was cleared
-        // (admin said "no answer" twice via action bar)
-        const isRepeat = l.status === 'new' && !l.pending_action;
+        // (admin said "no answer" twice via action bar). Newsletter signups
+        // are tracked separately so they don't clutter the repeat buckets.
+        const isRepeat = l.status === 'new' && !l.pending_action && l.source !== 'newsletter';
 
         if (isRepeat) {
           if (l.source === 'contact_form') {
@@ -68,6 +71,8 @@ export default function useDashboardStats() {
         if (l.source === 'contact_form' && l.status === 'new' && l.pending_action) {
           c.newQuotesSelfServe++;
         }
+
+        if (l.source === 'newsletter' && l.status === 'new') c.newsletter++;
 
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
