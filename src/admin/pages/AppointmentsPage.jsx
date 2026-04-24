@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useAppointments from '../hooks/useAppointments';
 import { supabase } from '../../lib/supabase';
 import {
   FiChevronLeft, FiChevronRight, FiPlus, FiClock, FiUser,
-  FiPhone, FiMapPin, FiTrash2, FiCheck, FiX, FiAlertCircle,
+  FiPhone, FiMapPin, FiTrash2, FiCheck, FiX, FiAlertCircle, FiFilter,
 } from 'react-icons/fi';
 import './AppointmentsPage.css';
 
@@ -17,18 +17,22 @@ const STATUS_OPTIONS = ['scheduled', 'completed', 'cancelled', 'no_show'];
 
 /* ── Appointment type presets with colours ── */
 const APPT_TYPES = [
-  { value: 'Showroom Visit', color: '#5b8fd4' },
-  { value: 'Home Appointment', color: '#c5a47e' },
-  { value: 'Template / Measure', color: '#8b7fc7' },
-  { value: 'Installation', color: '#6b8f71' },
-  { value: 'Follow Up Call', color: '#d4874e' },
-  { value: 'Consultation', color: '#d4748b' },
-  { value: 'Other', color: '#9e9e9e' },
+  { value: 'Showroom Visit', slug: 'showroom_visit', color: '#5b8fd4' },
+  { value: 'Home Appointment', slug: 'home_appointment', color: '#c5a47e' },
+  { value: 'Template / Measure', slug: 'template_measure', color: '#8b7fc7' },
+  { value: 'Installation', slug: 'installation', color: '#6b8f71' },
+  { value: 'Follow Up Call', slug: 'follow_up_call', color: '#d4874e' },
+  { value: 'Consultation', slug: 'consultation', color: '#d4748b' },
+  { value: 'Other', slug: 'other', color: '#9e9e9e' },
 ];
 
 function getTypeColor(title) {
   const match = APPT_TYPES.find((t) => t.value === title);
   return match ? match.color : '#9e9e9e';
+}
+
+function getTypeBySlug(slug) {
+  return APPT_TYPES.find((t) => t.slug === slug) || null;
 }
 
 function toDateStr(d) {
@@ -41,7 +45,11 @@ function toDateStr(d) {
 export default function AppointmentsPage() {
   const { appointments, loading, createAppointment, updateAppointment, deleteAppointment } = useAppointments();
   const location = useLocation();
+  const navigate = useNavigate();
   const prefill = location.state?.prefill || null;
+
+  const typeSlug = new URLSearchParams(location.search).get('type');
+  const activeTypeFilter = typeSlug ? getTypeBySlug(typeSlug) : null;
 
   const today = new Date();
   const todayStr = toDateStr(today);
@@ -52,9 +60,9 @@ export default function AppointmentsPage() {
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState(null);
 
-  // Form state
+  // Form state — when a type filter is active, pre-select it for new appointments
   const [form, setForm] = useState({
-    title: '',
+    title: activeTypeFilter?.value || '',
     customTitle: '',
     customer_name: prefill?.customer_name || '',
     customer_phone: prefill?.customer_phone || '',
@@ -75,7 +83,7 @@ export default function AppointmentsPage() {
 
   const resetForm = () => {
     setForm({
-      title: '',
+      title: activeTypeFilter?.value || '',
       customTitle: '',
       customer_name: '',
       customer_phone: '',
@@ -135,15 +143,21 @@ export default function AppointmentsPage() {
     setShowClientDropdown(false);
   };
 
+  // Apply active type filter (from ?type= URL param) before everything else
+  const visibleAppointments = useMemo(() => {
+    if (!activeTypeFilter) return appointments;
+    return appointments.filter((a) => a.title === activeTypeFilter.value);
+  }, [appointments, activeTypeFilter]);
+
   // Group appointments by date
   const apptsByDate = useMemo(() => {
     const map = {};
-    appointments.forEach((a) => {
+    visibleAppointments.forEach((a) => {
       if (!map[a.date]) map[a.date] = [];
       map[a.date].push(a);
     });
     return map;
-  }, [appointments]);
+  }, [visibleAppointments]);
 
   // Calendar grid
   const calendarDays = useMemo(() => {
@@ -184,17 +198,17 @@ export default function AppointmentsPage() {
     setViewMonth(today.getMonth());
   };
 
-  // Stats
+  // Stats (reflect active type filter)
   const stats = useMemo(() => {
     const thisMonth = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`;
-    const monthAppts = appointments.filter((a) => a.date.startsWith(thisMonth));
+    const monthAppts = visibleAppointments.filter((a) => a.date.startsWith(thisMonth));
     return {
       total: monthAppts.length,
       scheduled: monthAppts.filter((a) => a.status === 'scheduled').length,
       completed: monthAppts.filter((a) => a.status === 'completed').length,
       cancelled: monthAppts.filter((a) => a.status === 'cancelled').length,
     };
-  }, [appointments, viewYear, viewMonth]);
+  }, [visibleAppointments, viewYear, viewMonth]);
 
   const selectedAppts = selectedDate ? (apptsByDate[selectedDate] || []) : [];
 
@@ -257,7 +271,23 @@ export default function AppointmentsPage() {
   return (
     <div className="appt-page">
       <div className="appt-page__header">
-        <h1 className="appt-page__title">Appointments</h1>
+        <div className="appt-page__title-wrap">
+          <h1 className="appt-page__title">
+            {activeTypeFilter ? activeTypeFilter.value : 'Appointments'}
+          </h1>
+          {activeTypeFilter && (
+            <button
+              className="appt-page__filter-pill"
+              style={{ '--pill-color': activeTypeFilter.color }}
+              onClick={() => navigate('/admin/appointments')}
+              title="Clear filter"
+            >
+              <FiFilter />
+              <span>Filtered by type</span>
+              <FiX className="appt-page__filter-pill-x" />
+            </button>
+          )}
+        </div>
         <button className="appt-page__add-btn" onClick={() => openNewForm(todayStr)}>
           <FiPlus /> New Appointment
         </button>

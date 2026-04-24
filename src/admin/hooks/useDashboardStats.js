@@ -12,6 +12,8 @@ export default function useDashboardStats() {
     samples: 0,
     followUp: 0,
     appointments: 0,
+    templateMeasure: 0,
+    followUpCall: 0,
     proWelcome: 0,
     chaseMeasurements: 0,
     otherTasks: 0,
@@ -38,6 +40,8 @@ export default function useDashboardStats() {
         samples: 0,
         followUp: 0,
         appointments: 0,
+        templateMeasure: 0,
+        followUpCall: 0,
         proWelcome: 0,
         chaseMeasurements: 0,
         otherTasks: 0,
@@ -77,14 +81,30 @@ export default function useDashboardStats() {
         .eq('status', 'preparing');
       c.samples = samplesCount || 0;
 
-      // Count upcoming scheduled appointments
+      // Count upcoming scheduled appointments (all + by type within next 3 weeks)
       const todayStr = new Date().toISOString().split('T')[0];
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() + 21);
+      const cutoffStr = cutoff.toISOString().split('T')[0];
+
       const { count: apptCount } = await supabase
         .from('appointments')
         .select('*', { count: 'exact', head: true })
         .eq('status', 'scheduled')
         .gte('date', todayStr);
       c.appointments = apptCount || 0;
+
+      const { data: upcomingAppts } = await supabase
+        .from('appointments')
+        .select('title')
+        .eq('status', 'scheduled')
+        .gte('date', todayStr)
+        .lte('date', cutoffStr);
+
+      (upcomingAppts || []).forEach((a) => {
+        if (a.title === 'Template / Measure') c.templateMeasure++;
+        else if (a.title === 'Follow Up Call') c.followUpCall++;
+      });
 
       setCounts(c);
 

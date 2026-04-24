@@ -17,6 +17,38 @@
   color: var(--admin-text);
 }
 
+.appt-page__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.appt-page__filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem 0.35rem 0.6rem;
+  background: color-mix(in srgb, var(--pill-color, #8b7fc7) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pill-color, #8b7fc7) 40%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pill-color, #8b7fc7);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.appt-page__filter-pill:hover {
+  background: color-mix(in srgb, var(--pill-color, #8b7fc7) 18%, transparent);
+}
+
+.appt-page__filter-pill-x {
+  margin-left: 0.15rem;
+  opacity: 0.7;
+}
+
 .appt-page__add-btn {
   display: inline-flex;
   align-items: center;

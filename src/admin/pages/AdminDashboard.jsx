@@ -5,7 +5,7 @@ import TaskCard from '../components/TaskCard';
 import {
   FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
   FiRepeat, FiCalendar, FiThumbsUp, FiMapPin, FiPhone,
-  FiClipboard
+  FiClipboard, FiCrop, FiPhoneCall
 } from 'react-icons/fi';
 import './AdminDashboard.css';
 
@@ -22,6 +22,8 @@ const ROW_1 = [
 
 const ROW_2 = [
   { key: 'appointments', label: 'Appointments', icon: FiCalendar, color: '#8b3a3a', to: '/admin/appointments' },
+  { key: 'templateMeasure', label: 'Template\n& Measure', icon: FiCrop, color: '#8b7fc7', to: '/admin/appointments?type=template_measure', showCountAsBadge: true },
+  { key: 'followUpCall', label: 'Follow Up\nCall', icon: FiPhoneCall, color: '#d4874e', to: '/admin/appointments?type=follow_up_call', showCountAsBadge: true },
   { key: 'proWelcome', label: 'Pro Welcome', icon: FiThumbsUp, color: '#d4748b', filter: 'pro_welcome' },
   { key: 'chaseMeasurements', label: 'Chase\nMeasurements', icon: FiMapPin, color: '#b93131', filter: 'chase_measurements' },
   { key: 'otherTasks', label: 'Other Tasks', icon: FiPhone, color: '#4a9e8e', filter: 'other_tasks' },
@@ -56,7 +58,8 @@ export default function AdminDashboard() {
       <TaskCard
         key={card.key}
         label={card.label}
-        count={count}
+        count={card.showCountAsBadge ? '' : count}
+        badge={card.showCountAsBadge ? count : undefined}
         icon={card.icon}
         color={card.color}
         to={card.to || `/admin/leads?filter=${card.filter}`}
