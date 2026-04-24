@@ -19,6 +19,7 @@ export default function useDashboardStats() {
     otherTasks: 0,
     complianceTasks: 0,
     newsletter: 0,
+    tradeContacts: 0,
   });
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +49,7 @@ export default function useDashboardStats() {
         otherTasks: 0,
         complianceTasks: 0,
         newsletter: 0,
+        tradeContacts: 0,
       };
 
       allLeads.forEach((l) => {
@@ -110,6 +112,12 @@ export default function useDashboardStats() {
         if (a.title === 'Template / Measure') c.templateMeasure++;
         else if (a.title === 'Follow Up Call') c.followUpCall++;
       });
+
+      const { count: tradeCount } = await supabase
+        .from('trade_contacts')
+        .select('*', { count: 'exact', head: true })
+        .eq('active', true);
+      c.tradeContacts = tradeCount || 0;
 
       setCounts(c);
 

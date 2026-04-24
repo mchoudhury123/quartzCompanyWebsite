@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { FiGrid, FiUsers, FiPackage, FiCalendar, FiArrowLeft } from 'react-icons/fi';
+import { FiGrid, FiUsers, FiPackage, FiCalendar, FiBriefcase, FiArrowLeft } from 'react-icons/fi';
 import './AdminSidebar.css';
 
 const navItems = [
@@ -7,6 +7,7 @@ const navItems = [
   { to: '/admin/leads', label: 'Clients', icon: FiUsers },
   { to: '/admin/samples', label: 'Samples', icon: FiPackage },
   { to: '/admin/appointments', label: 'Appointments', icon: FiCalendar },
+  { to: '/admin/trade-contacts', label: 'Trade Contacts', icon: FiBriefcase },
 ];
 
 export default function AdminSidebar() {

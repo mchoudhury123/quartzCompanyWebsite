@@ -1,0 +1,324 @@
+.tc-page {
+  max-width: 1200px;
+}
+
+.tc-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.tc-page__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.tc-page__subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  color: var(--admin-text-light);
+}
+
+.tc-page__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.tc-page__add-btn:hover { background: #b8935f; }
+
+/* Toolbar */
+.tc-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tc-toolbar__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tc-toolbar__search-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--admin-text-light);
+  pointer-events: none;
+}
+
+.tc-toolbar__search-input {
+  width: 100%;
+  padding: 0.65rem 2.4rem 0.65rem 2.5rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.9rem;
+  background: var(--admin-card-bg);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.tc-toolbar__search-input:focus {
+  border-color: var(--color-gold, #c5a47e);
+}
+
+.tc-toolbar__clear {
+  position: absolute;
+  right: 0.55rem;
+  background: none;
+  border: none;
+  color: var(--admin-text-light);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+}
+
+.tc-toolbar__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tc-role-chip {
+  padding: 0.35rem 0.85rem;
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tc-role-chip:hover {
+  border-color: var(--chip-color, #c5a47e);
+  color: var(--chip-color, #c5a47e);
+}
+
+.tc-role-chip--active {
+  background: var(--chip-color, #1a1a1a);
+  border-color: var(--chip-color, #1a1a1a);
+  color: #ffffff;
+}
+
+/* Empty state */
+.tc-empty {
+  padding: 4rem 1.5rem;
+  text-align: center;
+  background: var(--admin-card-bg);
+  border: 1px dashed var(--admin-border);
+  border-radius: 14px;
+}
+
+.tc-empty__icon {
+  font-size: 2.25rem;
+  color: var(--color-gold, #c5a47e);
+  margin-bottom: 0.75rem;
+}
+
+.tc-empty__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.tc-empty__copy {
+  margin: 0 auto 1.25rem;
+  max-width: 400px;
+  font-size: 0.9rem;
+  color: var(--admin-text-light);
+  line-height: 1.6;
+}
+
+/* Card grid */
+.tc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.tc-card {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 1.15rem 1.15rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.tc-card:hover {
+  border-color: var(--color-gold, #c5a47e);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.tc-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.tc-card__identity {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.tc-card__avatar {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #faf7f2;
+  border: 1px solid #eee5d4;
+  border-radius: 50%;
+  color: var(--color-gold, #c5a47e);
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.tc-card__name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tc-card__company {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--admin-text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tc-card__role {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  background: color-mix(in srgb, var(--role-color, #9e9e9e) 14%, transparent);
+  color: var(--role-color, #9e9e9e);
+  border: 1px solid color-mix(in srgb, var(--role-color, #9e9e9e) 40%, transparent);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.tc-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tc-card__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--admin-text);
+  text-decoration: none;
+}
+
+.tc-card__row svg {
+  color: var(--admin-text-light);
+  flex-shrink: 0;
+}
+
+.tc-card__row[href]:hover {
+  color: var(--color-gold, #c5a47e);
+}
+
+.tc-card__row span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tc-card__notes {
+  margin: 0.35rem 0 0;
+  padding: 0.6rem 0.7rem;
+  background: #faf9f7;
+  border-left: 2px solid var(--color-gold, #c5a47e);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--admin-text-light);
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.tc-card__actions {
+  display: flex;
+  gap: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+.tc-card__action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.7rem;
+  background: none;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tc-card__action:hover {
+  border-color: var(--color-gold, #c5a47e);
+  color: var(--color-gold, #c5a47e);
+}
+
+.tc-card__action--danger:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+@media (max-width: 640px) {
+  .tc-page__header {
+    flex-direction: column;
+  }
+
+  .tc-grid {
+    grid-template-columns: 1fr;
+  }
+}

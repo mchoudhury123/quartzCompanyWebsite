@@ -29,6 +29,7 @@ import LeadDetailPage from './admin/pages/LeadDetailPage';
 import QuoteBuilderPage from './admin/pages/QuoteBuilderPage';
 import SamplesPage from './admin/pages/SamplesPage';
 import AppointmentsPage from './admin/pages/AppointmentsPage';
+import TradeContactsPage from './admin/pages/TradeContactsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 
 export default function App() {
@@ -71,6 +72,7 @@ export default function App() {
           <Route path="leads/:id/quote/:quoteId" element={<QuoteBuilderPage />} />
           <Route path="samples" element={<SamplesPage />} />
           <Route path="appointments" element={<AppointmentsPage />} />
+          <Route path="trade-contacts" element={<TradeContactsPage />} />
         </Route>
       </Route>
     </Routes>
