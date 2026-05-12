@@ -7,6 +7,6 @@ export default function robots() {
         disallow: ['/admin', '/admin/', '/quote/view/', '/api/'],
       },
     ],
-    sitemap: 'https://thequartzcompany.co.uk/sitemap.xml',
+    sitemap: 'https://www.thequartzcompany.co.uk/sitemap.xml',
   };
 }

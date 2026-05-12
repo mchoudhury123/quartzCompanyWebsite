@@ -3,7 +3,7 @@ import Header from './_components/Header';
 import Footer from './_components/Footer';
 
 export const metadata = {
-  metadataBase: new URL('https://thequartzcompany.co.uk'),
+  metadataBase: new URL('https://www.thequartzcompany.co.uk'),
   title: {
     default: 'Affordable Quartz Worktops UK | The Quartz Company',
     template: '%s | The Quartz Company',
@@ -27,8 +27,8 @@ const organizationJsonLd = {
   '@type': 'Organization',
   name: 'The Quartz Company',
   legalName: 'Quartz Company SP Ltd',
-  url: 'https://thequartzcompany.co.uk',
-  logo: 'https://thequartzcompany.co.uk/logo.png',
+  url: 'https://www.thequartzcompany.co.uk',
+  logo: 'https://www.thequartzcompany.co.uk/logo.png',
   description: 'Affordable engineered and printed quartz kitchen worktops, handcrafted in Britain.',
   identifier: 'Company No. 17057823',
   telephone: '+44 7375 303416',
@@ -49,10 +49,10 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'The Quartz Company',
-  url: 'https://thequartzcompany.co.uk',
+  url: 'https://www.thequartzcompany.co.uk',
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://thequartzcompany.co.uk/colours?search={search_term_string}',
+    target: 'https://www.thequartzcompany.co.uk/colours?search={search_term_string}',
     'query-input': 'required name=search_term_string',
   },
 };

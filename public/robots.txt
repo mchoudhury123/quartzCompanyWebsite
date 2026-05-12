@@ -6,4 +6,4 @@ Disallow: /admin/
 Disallow: /quote/view/
 Disallow: /api/
 
-Sitemap: https://thequartzcompany.co.uk/sitemap.xml
+Sitemap: https://www.thequartzcompany.co.uk/sitemap.xml

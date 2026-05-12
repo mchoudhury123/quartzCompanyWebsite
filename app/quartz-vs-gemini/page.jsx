@@ -17,8 +17,8 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://thequartzcompany.co.uk/' },
-    { '@type': 'ListItem', position: 2, name: 'Quartz vs Gemini', item: 'https://thequartzcompany.co.uk/quartz-vs-gemini' },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.thequartzcompany.co.uk/' },
+    { '@type': 'ListItem', position: 2, name: 'Quartz vs Gemini', item: 'https://www.thequartzcompany.co.uk/quartz-vs-gemini' },
   ],
 };
 

@@ -1,6 +1,6 @@
 import productsData from '../src/data/products.json';
 
-const BASE_URL = 'https://thequartzcompany.co.uk';
+const BASE_URL = 'https://www.thequartzcompany.co.uk';
 
 export default function sitemap() {
   const now = new Date();
