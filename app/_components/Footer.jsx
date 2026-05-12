@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
-import { supabase } from '../_lib/supabase';
 import '../../src/components/Footer.css';
 
 export default function Footer() {
@@ -22,6 +21,7 @@ export default function Footer() {
     setSubmitting(true);
     setErrorMsg('');
 
+    const { supabase } = await import('../_lib/supabase');
     const { error } = await supabase.from('leads').insert({
       full_name: trimmed,
       email: trimmed,
