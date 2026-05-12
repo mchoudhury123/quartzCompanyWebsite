@@ -1,4 +1,6 @@
 import '../src/styles/global.css';
+import Header from './_components/Header';
+import Footer from './_components/Footer';
 
 export const metadata = {
   metadataBase: new URL('https://thequartzcompany.co.uk'),
@@ -74,7 +76,11 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

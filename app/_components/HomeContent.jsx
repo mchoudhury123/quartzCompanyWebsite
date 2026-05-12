@@ -1,0 +1,346 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import ProductCard from './ProductCard';
+import products from '../../src/data/products.json';
+import testimonials from '../../src/data/testimonials.json';
+import '../../src/pages/HomePage.css';
+
+function useInView(options = {}) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold: 0.1, ...options }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, inView];
+}
+
+function AnimatedSection({ children, className = '', id }) {
+  const [ref, inView] = useInView();
+  return (
+    <section id={id} ref={ref} className={`${className} ${inView ? 'hp-visible' : 'hp-hidden'}`}>
+      {children}
+    </section>
+  );
+}
+
+export default function HomeContent() {
+  const featuredProducts = products.filter((p) => p.popular).slice(0, 6);
+  if (featuredProducts.length < 6) {
+    const remaining = products.filter((p) => !p.popular);
+    featuredProducts.push(...remaining.slice(0, 6 - featuredProducts.length));
+  }
+
+  const [showAllTestimonials, setShowAllTestimonials] = useState(false);
+  const visibleTestimonials = showAllTestimonials ? testimonials : testimonials.slice(0, 3);
+
+  const [openFaq, setOpenFaq] = useState(null);
+  const toggleFaq = (index) => setOpenFaq((prev) => (prev === index ? null : index));
+
+  const faqData = [
+    { q: 'What materials do you offer?', a: 'We specialise in two types of premium worktop: engineered quartz and full body printed quartz. Our standard engineered quartz comes in a wide range of colours with virtually zero maintenance. Our full body printed quartz takes it further — the veining pattern runs through the entire slab thickness, so waterfall edges and mitres look flawless. Both are non-porous, scratch resistant and incredibly durable. Visit our Colours page to explore the full range or order free samples.' },
+    { q: 'How much do worktops cost?', a: 'Prices vary depending on colour, thickness, edge profile and kitchen complexity. Most kitchens fall between £2,000 and £5,000 fully fitted. Request a free quote for an accurate price tailored to your project.' },
+    { q: 'Do you offer free samples?', a: 'Absolutely. We will post up to five free samples directly to your door so you can see and feel the surface in your own kitchen lighting. Simply add your favourite colours to the sample basket or request them as part of your free quote.' },
+    { q: 'What areas do you cover for installation?', a: 'We cover Northamptonshire and the surrounding counties — Warwickshire, Leicestershire, Buckinghamshire, Bedfordshire, Oxfordshire, Cambridgeshire and parts of the West Midlands. If you are just outside this area, get in touch anyway — we can often accommodate nearby postcodes, we will just confirm coverage during your quote.' },
+    { q: 'How long does installation take?', a: 'A typical kitchen worktop installation takes between 2 and 4 hours. Larger or more complex projects (e.g. islands, waterfall edges, integrated sinks) may take a full day. From placing your order, the total lead time is usually 10–20 working days depending on the material chosen.' },
+  ];
+
+  const whyChooseData = [
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M17 8c-1.5-1-3-1.5-5-1.5"/><path d="M8 3.5c1 2 1.5 4.5.5 7"/><path d="M14 10.5c-1 2.5-3 4-5.5 4.5"/><path d="M20 4l-2 2"/><path d="M22 2l-6 6"/></svg>), title: 'Sustainable Sourcing', desc: 'Responsibly sourced quartz and low-waste engineered manufacturing' },
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="8" cy="18.5" r="2.5"/><circle cx="16" cy="18.5" r="2.5"/></svg>), title: 'Personalised Design', desc: 'Free consultations with our in-house kitchen designers' },
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>), title: 'Lifetime Support', desc: 'Industry-leading warranties and dedicated after-care' },
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>), title: 'Local Fitting', desc: 'Professional installation across Northamptonshire and surrounding areas' },
+  ];
+
+  const comparisonData = [
+    { attribute: 'Consistency', quartz: { text: 'Perfect slab-to-slab', icon: 'check' }, granite: { text: 'Varies by slab', icon: 'cross' }, laminate: { text: 'Consistent print', icon: 'check' } },
+    { attribute: 'Pattern Variety', quartz: { text: 'Extensive range', icon: 'check' }, granite: { text: 'Natural only', icon: 'neutral' }, laminate: { text: 'Wide range', icon: 'check' } },
+    { attribute: 'Stain Resistance', quartz: { text: 'Non-porous', icon: 'check' }, granite: { text: 'Requires sealing', icon: 'neutral' }, laminate: { text: 'Good', icon: 'check' } },
+    { attribute: 'Heat Resistance', quartz: { text: 'Up to 150°C', icon: 'check' }, granite: { text: 'Excellent', icon: 'check' }, laminate: { text: 'Poor', icon: 'cross' } },
+    { attribute: 'Maintenance', quartz: { text: 'Wipe clean', icon: 'check' }, granite: { text: 'Annual sealing', icon: 'neutral' }, laminate: { text: 'Wipe clean', icon: 'check' } },
+    { attribute: 'Scratch Resistance', quartz: { text: 'Excellent', icon: 'check' }, granite: { text: 'Very good', icon: 'check' }, laminate: { text: 'Fair', icon: 'neutral' } },
+  ];
+
+  const renderIcon = (type) => {
+    if (type === 'check') return <span className="hp-compare__icon hp-compare__icon--check">{'✓'}</span>;
+    if (type === 'cross') return <span className="hp-compare__icon hp-compare__icon--cross">{'✗'}</span>;
+    return <span className="hp-compare__icon hp-compare__icon--neutral">{'○'}</span>;
+  };
+
+  const stepsData = [
+    { num: 1, title: 'Choose Your Surface', desc: 'Browse our collection and order free samples' },
+    { num: 2, title: 'Design Consultation', desc: 'Speak with our designers about your project' },
+    { num: 3, title: 'Template & Quote', desc: 'We measure precisely and provide a fixed-price quote' },
+    { num: 4, title: 'Expert Installation', desc: 'Our craftspeople fit your worktop to perfection' },
+  ];
+
+  const renderStars = (count) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <span key={i} className={i < count ? 'hp-test__star--filled' : 'hp-test__star--empty'}>
+          {i < count ? '★' : '☆'}
+        </span>
+      );
+    }
+    return stars;
+  };
+
+  const trustItems = [
+    { icon: '★', text: '4.8 Trustpilot' },
+    { icon: '🛡️', text: '25 Year Warranty' },
+    { icon: '🚚', text: 'Free Local Delivery' },
+  ];
+
+  return (
+    <div className="hp">
+      <section className="hp-hero">
+        <div className="hp-hero__left">
+          <div className="hp-hero__content">
+            <h1 className="hp-hero__title">
+              Affordable Quartz Worktops, Handcrafted in Britain
+            </h1>
+            <p className="hp-hero__subtitle">
+              Engineered quartz &amp; full body printed quartz &mdash; up to 40% off this spring
+            </p>
+            <div className="hp-hero__ctas">
+              <Link href="/quote" className="btn btn--gold btn--lg hp-hero__btn">
+                Get Quote &amp; Free Samples
+              </Link>
+              <Link href="/colours" className="btn btn--lg hp-hero__btn hp-hero__btn--outline">
+                Browse Colours
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="hp-hero__right">
+          <div className="hp-hero__visual" />
+        </div>
+
+        <div className="hp-trust">
+          <div className="hp-trust__inner container">
+            {trustItems.map((item, i) => (
+              <div className="hp-trust__item" key={i}>
+                <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
+                <span className="hp-trust__text">{item.text}</span>
+              </div>
+            ))}
+          </div>
+          <div className="hp-trust__track">
+            <div className="hp-trust__track-content">
+              {trustItems.map((item, i) => (
+                <div className="hp-trust__item" key={i}>
+                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="hp-trust__text">{item.text}</span>
+                </div>
+              ))}
+            </div>
+            <div className="hp-trust__track-content" aria-hidden="true">
+              {trustItems.map((item, i) => (
+                <div className="hp-trust__item" key={`dup-${i}`}>
+                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="hp-trust__text">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <AnimatedSection className="section hp-featured" id="featured">
+        <div className="container">
+          <h2 className="section-title">Trending This Season</h2>
+          <p className="section-subtitle">
+            Our most-loved surfaces, chosen by thousands of homeowners
+          </p>
+          <div className="hp-featured__scroll">
+            {featuredProducts.map((product) => (
+              <div className="hp-featured__scroll-item" key={product.id}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+            <Link href="/colours" className="hp-featured__view-all">
+              <span className="hp-featured__view-all-text">View All Colours &rarr;</span>
+            </Link>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="section section--cream hp-test" id="testimonials">
+        <div className="container">
+          <h2 className="section-title">What Our Customers Say</h2>
+          <div className="hp-test__grid">
+            {visibleTestimonials.map((t, i) => (
+              <div className="hp-test__card" key={t.id} style={{ '--stagger': i }}>
+                <blockquote className="hp-test__quote">
+                  &ldquo;{t.text}&rdquo;
+                </blockquote>
+                <div className="hp-test__stars">{renderStars(t.rating)}</div>
+                <p className="hp-test__author">{t.name}</p>
+                <p className="hp-test__location">{t.location}</p>
+                <p className="hp-test__product">Purchased: {t.product}</p>
+              </div>
+            ))}
+          </div>
+          {testimonials.length > 3 && (
+            <div className="hp-test__more">
+              <button
+                className="btn btn--outline"
+                onClick={() => setShowAllTestimonials((p) => !p)}
+              >
+                {showAllTestimonials ? 'Show Less' : 'Show More Reviews'}
+              </button>
+            </div>
+          )}
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="section hp-compare" id="compare">
+        <div className="container">
+          <h2 className="section-title">Engineered Quartz vs The Rest</h2>
+          <p className="section-subtitle">
+            See how our quartz worktops compare across the attributes that matter most
+          </p>
+          <div className="hp-compare__table">
+            <div className="hp-compare__header">
+              <div className="hp-compare__header-cell hp-compare__header-cell--attr" />
+              <div className="hp-compare__header-cell hp-compare__header-cell--quartz">
+                <span className="hp-compare__header-badge">Our Pick</span>
+                <span className="hp-compare__header-label">Quartz</span>
+              </div>
+              <div className="hp-compare__header-cell">
+                <span className="hp-compare__header-label">Granite</span>
+              </div>
+              <div className="hp-compare__header-cell">
+                <span className="hp-compare__header-label">Laminate</span>
+              </div>
+            </div>
+            {comparisonData.map((row, i) => (
+              <div className={`hp-compare__row${i % 2 === 0 ? ' hp-compare__row--alt' : ''}`} key={i}>
+                <div className="hp-compare__cell hp-compare__cell--attr">{row.attribute}</div>
+                <div className="hp-compare__cell hp-compare__cell--quartz">
+                  {renderIcon(row.quartz.icon)}
+                  <span className="hp-compare__cell-text">{row.quartz.text}</span>
+                </div>
+                <div className="hp-compare__cell">
+                  {renderIcon(row.granite.icon)}
+                  <span className="hp-compare__cell-text">{row.granite.text}</span>
+                </div>
+                <div className="hp-compare__cell">
+                  {renderIcon(row.laminate.icon)}
+                  <span className="hp-compare__cell-text">{row.laminate.text}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="section section--cream hp-steps" id="how-it-works">
+        <div className="container">
+          <h2 className="section-title">Four Simple Steps to Your Dream Kitchen</h2>
+          <div className="hp-steps__timeline">
+            {stepsData.map((step, i) => (
+              <div className={`hp-steps__item ${i % 2 === 0 ? 'hp-steps__item--left' : 'hp-steps__item--right'}`} key={i}>
+                <div className="hp-steps__content">
+                  <div className="hp-steps__number">{step.num}</div>
+                  <h3 className="hp-steps__title">{step.title}</h3>
+                  <p className="hp-steps__desc">{step.desc}</p>
+                </div>
+                <div className="hp-steps__marker" />
+              </div>
+            ))}
+          </div>
+          <div className="hp-steps__cta">
+            <Link href="/quote" className="btn btn--gold btn--lg">
+              Start Your Journey
+            </Link>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="section hp-why" id="why-choose">
+        <div className="container">
+          <div className="hp-why__layout">
+            <div className="hp-why__intro">
+              <h2 className="hp-why__heading">Why Choose The Quartz Company</h2>
+              <p className="hp-why__intro-text">
+                We combine premium materials, expert craftsmanship and personal service to deliver worktops that transform your kitchen. Here&rsquo;s what sets us apart.
+              </p>
+            </div>
+            <div className="hp-why__features">
+              {whyChooseData.map((card, i) => (
+                <div className="hp-why__feature" key={i}>
+                  <div className="hp-why__icon">{card.icon}</div>
+                  <div className="hp-why__feature-text">
+                    <h3 className="hp-why__feature-title">{card.title}</h3>
+                    <p className="hp-why__feature-desc">{card.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="section hp-faq" id="faq">
+        <div className="container">
+          <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="hp-faq__columns">
+            {faqData.map((faq, i) => (
+              <div className={`hp-faq__item ${openFaq === i ? 'hp-faq__item--open' : ''}`} key={i}>
+                <button
+                  className="hp-faq__question"
+                  onClick={() => toggleFaq(i)}
+                  aria-expanded={openFaq === i}
+                  aria-controls={`faq-answer-${i}`}
+                >
+                  <span className="hp-faq__question-text">{faq.q}</span>
+                  <span className="hp-faq__toggle" aria-hidden="true">
+                    {openFaq === i ? '−' : '+'}
+                  </span>
+                </button>
+                <div id={`faq-answer-${i}`} className="hp-faq__answer" role="region">
+                  <div className="hp-faq__answer-inner">
+                    <p>{faq.a}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <section className="hp-cta-banner">
+        <div className="hp-cta-banner__left">
+          <div className="hp-cta-banner__content">
+            <h2 className="hp-cta-banner__title">
+              Ready to Transform Your Kitchen?
+            </h2>
+            <p className="hp-cta-banner__text">
+              Get a free, no-obligation quote and we&rsquo;ll post you free samples
+              of your favourite colours
+            </p>
+            <div className="hp-cta-banner__buttons">
+              <Link href="/quote" className="btn btn--gold btn--lg">
+                Get Free Quote
+              </Link>
+              <a href="tel:+447375303416" className="btn btn--lg hp-cta-banner__btn--outline">
+                Call Us: 07375 303 416
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="hp-cta-banner__right" />
+      </section>
+    </div>
+  );
+}

@@ -7,6 +7,11 @@ export default function sitemap() {
 
   const staticRoutes = [
     { path: '/', priority: 1.0, changeFrequency: 'weekly' },
+    { path: '/kitchens', priority: 0.95, changeFrequency: 'monthly' },
+    { path: '/printed-quartz-worktops', priority: 0.95, changeFrequency: 'monthly' },
+    { path: '/quartz-vs-granite', priority: 0.85, changeFrequency: 'monthly' },
+    { path: '/quartz-vs-gemini', priority: 0.85, changeFrequency: 'monthly' },
+    { path: '/quartz-vs-caesarstone', priority: 0.85, changeFrequency: 'monthly' },
     { path: '/colours', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/colours/veined', priority: 0.8, changeFrequency: 'weekly' },
     { path: '/colours/plain', priority: 0.8, changeFrequency: 'weekly' },
