@@ -70,6 +70,7 @@ export default function QuoteBuilderPage() {
           edge_mm: item.edge_mm || 0,
           comments: item.comments || '',
           features: item.features || [],
+          manual_price: item.manual_price || 0,
         });
       } else if (item.type === 'accessory') {
         restoredAccessories.push({
@@ -111,6 +112,7 @@ export default function QuoteBuilderPage() {
         edge_mm: 0,
         comments: '',
         features: [],
+        manual_price: 0,
       },
     ]);
   }, []);
@@ -156,6 +158,20 @@ export default function QuoteBuilderPage() {
   // --- Compute all line items for receipt ---
   const allItems = useMemo(() => {
     const pieceItems = pieces.map((p) => {
+      if (p.piece_type === 'specialist') {
+        const manualPrice = Number(p.manual_price) || 0;
+        const name = (p.description || '').trim() || 'Custom Worktop';
+        return {
+          category: 'stones',
+          product_name: `${name} (Specialist Worktop)`,
+          original_price: manualPrice,
+          discount: 0,
+          line_total: manualPrice,
+          features_total: 0,
+          piece_type: 'specialist',
+        };
+      }
+
       const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
       const originalMaterial = areaSqm * originalPricePerSqm;
       const saleMaterial = areaSqm * pricePerSqm;
@@ -204,6 +220,27 @@ export default function QuoteBuilderPage() {
 
     const storedItems = [
       ...pieces.map((p) => {
+        if (p.piece_type === 'specialist') {
+          const manualPrice = Number(p.manual_price) || 0;
+          return {
+            type: 'piece',
+            piece_type: 'specialist',
+            description: p.description,
+            x_mm: p.x_mm,
+            y_mm: p.y_mm,
+            edge_type: p.edge_type,
+            edge_mm: p.edge_mm,
+            comments: p.comments || '',
+            features: [],
+            manual_price: manualPrice,
+            material_cost: manualPrice,
+            original_material_cost: manualPrice,
+            features_total: 0,
+            original_price: manualPrice,
+            discount: 0,
+            line_total: manualPrice,
+          };
+        }
         const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
         const originalMaterial = areaSqm * originalPricePerSqm;
         const saleMaterial = areaSqm * pricePerSqm;
