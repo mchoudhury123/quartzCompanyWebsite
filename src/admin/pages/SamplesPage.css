@@ -380,3 +380,57 @@
   color: var(--admin-text-light);
   margin: 0.5rem 0 0;
 }
+
+/* ===== Add custom (specialist) sample row ===== */
+.samples-page__custom-add {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--admin-border);
+}
+
+.samples-page__custom-input {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  background: #fff;
+  color: var(--admin-text);
+}
+
+.samples-page__custom-input:focus {
+  outline: none;
+  border-color: #c5a47e;
+}
+
+.samples-page__custom-input:disabled {
+  opacity: 0.6;
+}
+
+.samples-page__custom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: #c5a47e;
+  border: none;
+  border-radius: var(--admin-radius);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.samples-page__custom-btn:hover:not(:disabled) {
+  background: #b8946d;
+}
+
+.samples-page__custom-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

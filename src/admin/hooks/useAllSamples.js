@@ -65,6 +65,32 @@ export default function useAllSamples() {
     }
   });
 
+  // Add a manually-entered custom sample for a lead (specialist material not in catalogue)
+  const addCustomSample = async (leadId, productName) => {
+    const trimmed = (productName || '').trim();
+    if (!trimmed) return { error: { message: 'Sample name required' } };
+
+    const { data, error } = await supabase
+      .from('lead_samples')
+      .insert({
+        lead_id: leadId,
+        product_name: trimmed,
+        status: 'preparing',
+      })
+      .select()
+      .single();
+
+    if (!error) {
+      await logActivity(leadId, {
+        type: 'sample_requested',
+        title: `Custom sample added: ${trimmed}`,
+        metadata: { sample_id: data?.id, product_name: trimmed, custom: true },
+      });
+      await fetchAll();
+    }
+    return { data, error };
+  };
+
   // Confirm all samples for a lead at once and email the customer
   const confirmAll = async (leadId, lead, leadSamples) => {
     const now = new Date().toISOString();
@@ -137,5 +163,5 @@ export default function useAllSamples() {
     return { error: null };
   };
 
-  return { samples, preparingGroups, completedGroups, loading, updateStatus, confirmAll, refetch: fetchAll };
+  return { samples, preparingGroups, completedGroups, loading, updateStatus, confirmAll, addCustomSample, refetch: fetchAll };
 }

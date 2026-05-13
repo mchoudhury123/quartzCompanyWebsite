@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import useAllSamples from '../hooks/useAllSamples';
 import StatusBadge from '../components/StatusBadge';
-import { FiArrowLeft, FiPackage, FiMessageCircle, FiPhone, FiMail, FiMapPin, FiUser, FiCheckCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiPackage, FiMessageCircle, FiPhone, FiMail, FiMapPin, FiUser, FiCheckCircle, FiPlus } from 'react-icons/fi';
 import './SamplesPage.css';
 
 const STATUS_OPTIONS = ['preparing', 'sent', 'delivered'];
 
 export default function SamplesPage() {
-  const { preparingGroups, completedGroups, loading, updateStatus, confirmAll } = useAllSamples();
+  const { preparingGroups, completedGroups, loading, updateStatus, confirmAll, addCustomSample } = useAllSamples();
   const [confirming, setConfirming] = useState(false);
   const [activeTab, setActiveTab] = useState('preparing');
   const [selectedLeadId, setSelectedLeadId] = useState(null);
+  const [customSampleName, setCustomSampleName] = useState('');
+  const [addingCustom, setAddingCustom] = useState(false);
   const [fabricatorNumber, setFabricatorNumber] = useState(
     () => localStorage.getItem('fabricator_whatsapp') || ''
   );
@@ -88,6 +90,31 @@ export default function SamplesPage() {
               <StatusBadge status={s.status} label={s.status} />
             </div>
           ))}
+
+          {/* Add custom (specialist) sample */}
+          <div className="samples-page__custom-add">
+            <input
+              type="text"
+              className="samples-page__custom-input"
+              placeholder="Custom sample name (e.g. Carrara White Marble)"
+              value={customSampleName}
+              onChange={(e) => setCustomSampleName(e.target.value)}
+              disabled={addingCustom}
+            />
+            <button
+              type="button"
+              className="samples-page__custom-btn"
+              disabled={!customSampleName.trim() || addingCustom}
+              onClick={async () => {
+                setAddingCustom(true);
+                const { error } = await addCustomSample(lead.id, customSampleName);
+                setAddingCustom(false);
+                if (!error) setCustomSampleName('');
+              }}
+            >
+              <FiPlus /> {addingCustom ? 'Adding...' : 'Add Custom Sample'}
+            </button>
+          </div>
         </div>
 
         {samples.some((s) => s.status === 'preparing') && (

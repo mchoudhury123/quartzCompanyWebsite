@@ -53,7 +53,7 @@ export default async function handler(req, res) {
       deposit,
       validUntil,
       viewUrl: `${SITE_URL}/quote/view/${quoteId}`,
-      logoUrl: `${SITE_URL}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.png`,
+      logoUrl: `${SITE_URL}/logo.png`,
     });
 
     const sendRes = await fetch(

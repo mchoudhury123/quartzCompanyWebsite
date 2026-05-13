@@ -41,7 +41,7 @@ export default function QuoteViewPage() {
         <div className="qv__accent qv__accent--top" />
         <div className="qv__card">
           <div className="qv__logo-wrap">
-            <img src="/LOGO IDEA BIG QUARTZ ARIAL.png" alt="The Quartz Company" className="qv__logo-img" />
+            <img src="/logo.png" alt="The Quartz Company" className="qv__logo-img" />
           </div>
           <div className="qv__divider" />
           <p className="qv__error">We couldn't find this quote. Please check the link or contact us.</p>
@@ -89,7 +89,7 @@ export default function QuoteViewPage() {
         )}
 
         <div className="qv__logo-wrap">
-          <img src="/LOGO IDEA BIG QUARTZ ARIAL.png" alt="The Quartz Company" className="qv__logo-img" />
+          <img src="/logo.png" alt="The Quartz Company" className="qv__logo-img" />
         </div>
         <div className="qv__divider" />
 
@@ -129,7 +129,9 @@ export default function QuoteViewPage() {
                   <div className="qv__line-head">
                     <div className="qv__line-name">
                       <span className="qv__line-title">
-                        {item.piece_type}{item.description ? ` — ${item.description}` : ''}
+                        {item.piece_type === 'specialist'
+                          ? `${item.description || 'Custom Worktop'} (Specialist Worktop)`
+                          : `${item.piece_type}${item.description ? ` — ${item.description}` : ''}`}
                       </span>
                       {dims && <span className="qv__line-dims">{dims}</span>}
                     </div>
