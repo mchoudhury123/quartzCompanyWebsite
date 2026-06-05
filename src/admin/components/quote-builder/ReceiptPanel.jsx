@@ -21,6 +21,8 @@ function getPricingGroup(cat) {
 
 export default function ReceiptPanel({
   items,
+  depositPercent = 20,
+  onDepositPercentChange,
   onSaveDraft,
   onDownloadPDF,
   onSendEmail,
@@ -153,11 +155,28 @@ export default function ReceiptPanel({
 
         <div className="rp__divider" />
 
-        {/* Deposit (auto 20%) */}
+        {/* Deposit (admin-set %) */}
         <div className="rp__row rp__row--deposit">
-          <span className="rp__row-label">Deposit Amount<br /><span className="rp__row-sub">20% of Grand Total</span></span>
+          <span className="rp__row-label">
+            Deposit Amount
+            <br />
+            <span className="rp__row-sub">
+              <input
+                type="number"
+                className="rp__deposit-input"
+                min="0"
+                max="100"
+                value={depositPercent}
+                onChange={(e) => {
+                  const v = Math.max(0, Math.min(100, Number(e.target.value)));
+                  onDepositPercentChange?.(Number.isNaN(v) ? 0 : v);
+                }}
+              />
+              % of {showVat ? 'Grand Total' : 'Total'}
+            </span>
+          </span>
           <span className="rp__row-val rp__row-val--deposit">
-            {showVat ? fmt(totals.deposit) : fmt(totals.totalSale * 0.2)}
+            {fmt((showVat ? totals.grandTotal : totals.totalSale) * (depositPercent / 100))}
           </span>
         </div>
       </div>

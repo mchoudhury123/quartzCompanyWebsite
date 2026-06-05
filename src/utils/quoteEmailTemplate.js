@@ -30,6 +30,10 @@ const MUTED = '#777777';
 const LINE = '#e7ddcb';
 const CREAM = '#f7f3ec';
 
+// Prices/amounts use a clean sans-serif — the serif numerals were hard to
+// read. This is applied ONLY to monetary figures, not to labels or headings.
+const PRICE_FONT = "'Helvetica Neue', Arial, Helvetica, sans-serif";
+
 function escapeHtml(value) {
   return String(value == null ? '' : value)
     .replace(/&/g, '&amp;')
@@ -128,7 +132,7 @@ export function buildQuoteEmailHtml({
           <td style="padding:18px 0;border-bottom:1px solid ${LINE};text-align:center;vertical-align:top;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3a3a3a;">${escapeHtml(
               qty
             )}</td>
-          <td style="padding:18px 0;border-bottom:1px solid ${LINE};text-align:right;vertical-align:top;font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:700;color:${INK};">${fmtCurrency(
+          <td style="padding:18px 0;border-bottom:1px solid ${LINE};text-align:right;vertical-align:top;font-family:${PRICE_FONT};font-size:15px;font-weight:600;color:${INK};">${fmtCurrency(
               item.line_total
             )}</td>
         </tr>`;
@@ -238,21 +242,21 @@ export function buildQuoteEmailHtml({
       <tr>
         <td style="padding:7px 0;"></td>
         <td style="padding:7px 0;text-align:right;font-family:Georgia,serif;font-size:15px;color:${MUTED};width:160px;">Subtotal</td>
-        <td style="padding:7px 0;text-align:right;font-family:Georgia,serif;font-size:15px;color:${INK};width:140px;">${fmtCurrency(
+        <td style="padding:7px 0;text-align:right;font-family:${PRICE_FONT};font-size:15px;color:${INK};width:140px;">${fmtCurrency(
           subtotal
         )}</td>
       </tr>
       <tr>
         <td style="padding:7px 0;"></td>
         <td style="padding:7px 0;text-align:right;font-family:Georgia,serif;font-size:15px;color:${MUTED};">VAT @20%</td>
-        <td style="padding:7px 0;text-align:right;font-family:Georgia,serif;font-size:15px;color:${INK};">${fmtCurrency(
+        <td style="padding:7px 0;text-align:right;font-family:${PRICE_FONT};font-size:15px;color:${INK};">${fmtCurrency(
           vat
         )}</td>
       </tr>
       <tr>
         <td style="padding:16px 0 0;"></td>
         <td style="padding:16px 0 0;text-align:right;font-family:Georgia,serif;font-size:20px;font-weight:700;color:${INK};border-top:1px solid ${LINE};">Grand Total</td>
-        <td style="padding:16px 0 0;text-align:right;font-family:Georgia,serif;font-size:22px;font-weight:700;color:${GOLD};border-top:1px solid ${LINE};">${fmtCurrency(
+        <td style="padding:16px 0 0;text-align:right;font-family:${PRICE_FONT};font-size:22px;font-weight:700;color:${GOLD};border-top:1px solid ${LINE};">${fmtCurrency(
           total
         )}</td>
       </tr>
@@ -264,7 +268,7 @@ export function buildQuoteEmailHtml({
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${CREAM};border:1px solid ${LINE};">
       <tr><td style="padding:30px 32px;">
         <p style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:0.24em;color:${TAN};text-transform:uppercase;">Deposit to Secure</p>
-        <p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:38px;font-weight:700;color:${GOLD};line-height:1.1;">${fmtCurrency(
+        <p style="margin:0 0 6px;font-family:${PRICE_FONT};font-size:38px;font-weight:700;color:${GOLD};line-height:1.1;">${fmtCurrency(
           deposit
         )}</p>
         <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:15px;color:#5a5a5a;">A ${depositPct}% deposit secures your quote.</p>

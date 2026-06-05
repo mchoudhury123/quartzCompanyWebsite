@@ -32,6 +32,7 @@ export default function QuoteBuilderPage() {
   const [activePieceType, setActivePieceType] = useState('worktop');
   const [accessories, setAccessories] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [depositPercent, setDepositPercent] = useState(20);
   const [initialized, setInitialized] = useState(!isEditMode);
   const [showEmailPreview, setShowEmailPreview] = useState(false);
   const [emailPreviewData, setEmailPreviewData] = useState(null);
@@ -43,6 +44,13 @@ export default function QuoteBuilderPage() {
     // Restore thickness
     if (existingQuote.selected_thickness) {
       setThickness(existingQuote.selected_thickness);
+    }
+
+    // Restore deposit percentage (derived from stored deposit / total)
+    if (existingQuote.total > 0 && existingQuote.deposit_amount != null) {
+      setDepositPercent(
+        Math.round((existingQuote.deposit_amount / existingQuote.total) * 100)
+      );
     }
 
     // Restore material
@@ -216,7 +224,7 @@ export default function QuoteBuilderPage() {
     const subtotal = materialsTotal + processesTotal + productsTotal;
     const vat = subtotal * 0.2;
     const total = subtotal + vat;
-    const depositAmount = total * 0.2;
+    const depositAmount = total * (depositPercent / 100);
 
     const storedItems = [
       ...pieces.map((p) => {
@@ -489,6 +497,8 @@ export default function QuoteBuilderPage() {
         <div className="quote-builder__right">
           <ReceiptPanel
             items={allItems}
+            depositPercent={depositPercent}
+            onDepositPercentChange={setDepositPercent}
             onSaveDraft={handleSaveDraft}
             onDownloadPDF={handleDownloadPDF}
             onSendEmail={handleSendEmail}

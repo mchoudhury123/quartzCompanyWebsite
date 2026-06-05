@@ -169,6 +169,24 @@
   color: var(--admin-text-light);
 }
 
+.rp__deposit-input {
+  width: 3.1rem;
+  padding: 0.1rem 0.3rem;
+  margin-right: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  text-align: center;
+  border: 1px solid var(--admin-border, #d9d4cb);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.rp__deposit-input:focus {
+  outline: none;
+  border-color: #b08d57;
+}
+
 /* Detail rows */
 .rp__row--detail {
   padding-left: 0.5rem;
