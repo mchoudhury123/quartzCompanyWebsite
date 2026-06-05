@@ -346,9 +346,18 @@ export default function QuoteBuilderPage() {
     setEmailPreviewData({
       clientName: lead?.full_name || '',
       clientEmail: lead?.email || '',
+      clientCompany: lead?.company || '',
+      clientAddress: lead?.address || '',
+      clientCity: lead?.city || '',
+      clientPostcode: lead?.postcode || '',
       quoteNumber: existingQuote?.quote_number || 'QC-2026-XXXX',
+      description: payload.description,
+      items: payload.items,
+      subtotal: payload.subtotal,
+      vat: payload.vat,
       total: payload.total,
       deposit: payload.deposit_amount,
+      date: new Date().toISOString(),
       validUntil: validUntilStr,
     });
     setShowEmailPreview(true);
@@ -379,6 +388,15 @@ export default function QuoteBuilderPage() {
           validUntil: validUntilStr,
           clientEmail: emailPreviewData.clientEmail,
           clientName: emailPreviewData.clientName,
+          clientCompany: emailPreviewData.clientCompany,
+          clientAddress: emailPreviewData.clientAddress,
+          clientCity: emailPreviewData.clientCity,
+          clientPostcode: emailPreviewData.clientPostcode,
+          description: payload.description,
+          items: payload.items,
+          subtotal: payload.subtotal,
+          vat: payload.vat,
+          date: data?.created_at || new Date().toISOString(),
         }),
       });
       const result = await res.json();
@@ -487,10 +505,18 @@ export default function QuoteBuilderPage() {
         <EmailPreviewModal
           clientName={emailPreviewData.clientName}
           clientEmail={emailPreviewData.clientEmail}
+          clientCompany={emailPreviewData.clientCompany}
+          clientAddress={emailPreviewData.clientAddress}
+          clientCity={emailPreviewData.clientCity}
+          clientPostcode={emailPreviewData.clientPostcode}
           quoteNumber={emailPreviewData.quoteNumber}
+          description={emailPreviewData.description}
+          items={emailPreviewData.items}
+          subtotal={emailPreviewData.subtotal}
+          vat={emailPreviewData.vat}
           total={emailPreviewData.total}
           deposit={emailPreviewData.deposit}
-          validUntil={emailPreviewData.validUntil}
+          date={emailPreviewData.date}
           onConfirm={handleConfirmSendEmail}
           onCancel={() => setShowEmailPreview(false)}
           sending={saving}

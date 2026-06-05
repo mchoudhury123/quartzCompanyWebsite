@@ -6,8 +6,11 @@ export default function AddClientModal({ onClose, onCreated }) {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     fullName: '',
+    company: '',
     email: '',
     phone: '',
+    address: '',
+    city: '',
     postcode: '',
     comments: '',
   });
@@ -23,8 +26,11 @@ export default function AddClientModal({ onClose, onCreated }) {
       .from('leads')
       .insert({
         full_name: form.fullName.trim(),
+        company: form.company.trim() || null,
         email: form.email.trim() || null,
         phone: form.phone.trim() || null,
+        address: form.address.trim() || null,
+        city: form.city.trim() || null,
         postcode: form.postcode.trim() || null,
         comments: form.comments.trim() || null,
         source: 'admin',
@@ -55,6 +61,15 @@ export default function AddClientModal({ onClose, onCreated }) {
             autoFocus
           />
         </div>
+        <div className="modal-field">
+          <label className="modal-field__label">Company <span style={{ color: '#999', fontWeight: 400 }}>(optional)</span></label>
+          <input
+            className="modal-field__input"
+            value={form.company}
+            onChange={(e) => set('company', e.target.value)}
+            placeholder="e.g. Brickhill Construction Ltd"
+          />
+        </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
           <div className="modal-field">
             <label className="modal-field__label">Email</label>
@@ -78,13 +93,33 @@ export default function AddClientModal({ onClose, onCreated }) {
           </div>
         </div>
         <div className="modal-field">
-          <label className="modal-field__label">Postcode</label>
+          <label className="modal-field__label">Address Line 1</label>
           <input
             className="modal-field__input"
-            value={form.postcode}
-            onChange={(e) => set('postcode', e.target.value)}
-            placeholder="e.g. SW1A 1AA"
+            value={form.address}
+            onChange={(e) => set('address', e.target.value)}
+            placeholder="e.g. Unit 3, The Barn"
           />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className="modal-field">
+            <label className="modal-field__label">City</label>
+            <input
+              className="modal-field__input"
+              value={form.city}
+              onChange={(e) => set('city', e.target.value)}
+              placeholder="e.g. Mursley"
+            />
+          </div>
+          <div className="modal-field">
+            <label className="modal-field__label">Postcode</label>
+            <input
+              className="modal-field__input"
+              value={form.postcode}
+              onChange={(e) => set('postcode', e.target.value)}
+              placeholder="e.g. MK17 0PL"
+            />
+          </div>
         </div>
         <div className="modal-field">
           <label className="modal-field__label">Notes</label>

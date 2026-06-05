@@ -2,7 +2,7 @@ import { useState } from 'react';
 import StatusBadge from './StatusBadge';
 import StatusSelect from './StatusSelect';
 import { sourceLabel } from '../utils/leadSource';
-import { FiMail, FiPhone, FiMessageSquare, FiMapPin, FiEdit2, FiCheck, FiX } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMessageSquare, FiMapPin, FiBriefcase, FiEdit2, FiCheck, FiX } from 'react-icons/fi';
 import './ClientInfoPanel.css';
 
 function EditableField({ value, onSave, placeholder }) {
@@ -90,19 +90,37 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, o
           </div>
         )}
         <div className="client-info__field">
+          <FiBriefcase className="client-info__field-icon" />
+          <EditableField
+            value={lead.company}
+            onSave={(v) => onFieldUpdate('company', v)}
+            placeholder="Add company (optional)"
+          />
+        </div>
+        <div className="client-info__field">
           <FiMapPin className="client-info__field-icon" />
           <EditableField
             value={lead.address}
             onSave={(v) => onFieldUpdate('address', v)}
-            placeholder="Add address"
+            placeholder="Add address line 1"
           />
         </div>
-        {lead.postcode && (
-          <div className="client-info__field">
-            <FiMapPin className="client-info__field-icon" />
-            <span>{lead.postcode}</span>
-          </div>
-        )}
+        <div className="client-info__field">
+          <FiMapPin className="client-info__field-icon" />
+          <EditableField
+            value={lead.city}
+            onSave={(v) => onFieldUpdate('city', v)}
+            placeholder="Add city"
+          />
+        </div>
+        <div className="client-info__field">
+          <FiMapPin className="client-info__field-icon" />
+          <EditableField
+            value={lead.postcode}
+            onSave={(v) => onFieldUpdate('postcode', v)}
+            placeholder="Add postcode"
+          />
+        </div>
       </div>
 
       <div className="client-info__section">

@@ -6,29 +6,42 @@ import './EmailPreviewModal.css';
 export default function EmailPreviewModal({
   clientName,
   clientEmail,
+  clientCompany,
+  clientAddress,
+  clientCity,
+  clientPostcode,
   quoteNumber,
+  description,
+  items,
+  subtotal,
+  vat,
   total,
   deposit,
-  validUntil,
+  date,
   onConfirm,
   onCancel,
   sending,
 }) {
-  const firstName = clientName ? clientName.split(' ')[0] : 'there';
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
   const previewHtml = useMemo(
     () =>
       buildQuoteEmailHtml({
-        firstName,
         quoteNumber: quoteNumber || 'QC-2026-XXXX',
+        date,
+        description,
+        items,
+        subtotal,
+        vat,
         total,
         deposit,
-        validUntil,
-        viewUrl: `${origin}/quote/view/preview`,
+        customerName: clientName || '',
+        customerCompany: clientCompany || '',
+        customerAddressLines: [clientAddress, clientCity],
+        customerPostcode: clientPostcode || '',
         logoUrl: `${origin}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.png`,
       }),
-    [firstName, quoteNumber, total, deposit, validUntil, origin]
+    [clientName, clientCompany, clientAddress, clientCity, clientPostcode, quoteNumber, description, items, subtotal, vat, total, deposit, date, origin]
   );
 
   return (

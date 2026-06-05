@@ -18,7 +18,24 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { quoteId, quoteNumber, total, deposit, validUntil, clientEmail, clientName } = req.body || {};
+  const {
+    quoteId,
+    quoteNumber,
+    total,
+    deposit,
+    validUntil,
+    clientEmail,
+    clientName,
+    clientCompany,
+    items,
+    subtotal,
+    vat,
+    description,
+    clientAddress,
+    clientCity,
+    clientPostcode,
+    date,
+  } = req.body || {};
 
   if (!quoteId) {
     return res.status(400).json({ error: 'Missing quoteId' });
@@ -45,14 +62,19 @@ export default async function handler(req, res) {
       return res.status(200).json({ error: 'Token refresh failed' });
     }
 
-    const firstName = clientName ? clientName.split(' ')[0] : 'there';
     const htmlBody = buildQuoteEmailHtml({
-      firstName,
       quoteNumber: quoteNumber || '',
-      total,
-      deposit,
-      validUntil,
-      viewUrl: `${SITE_URL}/quote/view/${quoteId}`,
+      date: date || new Date().toISOString(),
+      description: description || '',
+      items: Array.isArray(items) ? items : [],
+      subtotal: subtotal || 0,
+      vat: vat || 0,
+      total: total || 0,
+      deposit: deposit || 0,
+      customerName: clientName || '',
+      customerCompany: clientCompany || '',
+      customerAddressLines: [clientAddress, clientCity],
+      customerPostcode: clientPostcode || '',
       logoUrl: `${SITE_URL}/logo.png`,
     });
 
