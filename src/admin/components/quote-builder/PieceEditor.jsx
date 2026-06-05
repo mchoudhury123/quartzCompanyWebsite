@@ -111,6 +111,7 @@ export default function PieceEditor({
         <span></span>
         <span>X mm</span>
         <span>Y mm</span>
+        <span>Qty</span>
         <span>Edge</span>
         <span>Edge mm</span>
         <span>Price</span>
@@ -123,12 +124,14 @@ export default function PieceEditor({
       <div className="piece-editor__rows">
         {filtered.map((piece, i) => {
           const isSpecialist = piece.piece_type === 'specialist';
+          const qty = piece.quantity || 1;
           const manualPrice = Number(piece.manual_price) || 0;
           const originalMaterial = isSpecialist ? manualPrice : calcOriginalMaterial(piece);
           const saleMaterial = isSpecialist ? manualPrice : calcSaleMaterial(piece);
           const featuresTotal = calcFeaturesTotal(piece);
-          const price = isSpecialist ? manualPrice : originalMaterial + featuresTotal;
-          const sale = isSpecialist ? manualPrice : saleMaterial + featuresTotal;
+          // Price/Discount/Sale shown are line totals (unit × quantity)
+          const price = (isSpecialist ? manualPrice : originalMaterial + featuresTotal) * qty;
+          const sale = (isSpecialist ? manualPrice : saleMaterial + featuresTotal) * qty;
           const discount = isSpecialist ? 0 : Math.max(0, price - sale);
           const isExpanded = expandedId === piece.id;
 
@@ -166,6 +169,18 @@ export default function PieceEditor({
                   value={piece.y_mm || ''}
                   onChange={(e) => onUpdatePiece(piece.id, 'y_mm', parseFloat(e.target.value) || 0)}
                   className="piece-editor__input piece-editor__input--center"
+                />
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  placeholder="1"
+                  value={piece.quantity ?? 1}
+                  onChange={(e) =>
+                    onUpdatePiece(piece.id, 'quantity', Math.max(1, parseInt(e.target.value, 10) || 1))
+                  }
+                  className="piece-editor__input piece-editor__input--center"
+                  title="Quantity"
                 />
                 <select
                   value={piece.edge_type}

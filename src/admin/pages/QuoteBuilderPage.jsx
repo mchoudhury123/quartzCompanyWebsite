@@ -74,6 +74,7 @@ export default function QuoteBuilderPage() {
           description: item.description || '',
           x_mm: item.x_mm || 0,
           y_mm: item.y_mm || 0,
+          quantity: item.quantity || 1,
           edge_type: item.edge_type || 'none',
           edge_mm: item.edge_mm || 0,
           comments: item.comments || '',
@@ -116,6 +117,7 @@ export default function QuoteBuilderPage() {
         description: '',
         x_mm: 0,
         y_mm: 0,
+        quantity: 1,
         edge_type: 'none',
         edge_mm: 0,
         comments: '',
@@ -166,15 +168,17 @@ export default function QuoteBuilderPage() {
   // --- Compute all line items for receipt ---
   const allItems = useMemo(() => {
     const pieceItems = pieces.map((p) => {
+      const qty = p.quantity || 1;
       if (p.piece_type === 'specialist') {
         const manualPrice = Number(p.manual_price) || 0;
         const name = (p.description || '').trim() || 'Custom Worktop';
         return {
           category: 'stones',
           product_name: `${name} (Specialist Worktop)`,
-          original_price: manualPrice,
+          quantity: qty,
+          original_price: manualPrice * qty,
           discount: 0,
-          line_total: manualPrice,
+          line_total: manualPrice * qty,
           features_total: 0,
           piece_type: 'specialist',
         };
@@ -184,13 +188,14 @@ export default function QuoteBuilderPage() {
       const originalMaterial = areaSqm * originalPricePerSqm;
       const saleMaterial = areaSqm * pricePerSqm;
       const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
-      const originalPrice = originalMaterial + featuresTotal;
-      const linePrice = saleMaterial + featuresTotal;
+      const originalPrice = (originalMaterial + featuresTotal) * qty;
+      const linePrice = (saleMaterial + featuresTotal) * qty;
       const discount = Math.max(0, originalPrice - linePrice);
 
       return {
         category: 'stones',
         product_name: `${selectedMaterial?.name || 'Material'} — ${p.piece_type} ${p.description}`.trim(),
+        quantity: qty,
         original_price: originalPrice,
         discount,
         line_total: linePrice,
@@ -228,6 +233,7 @@ export default function QuoteBuilderPage() {
 
     const storedItems = [
       ...pieces.map((p) => {
+        const qty = p.quantity || 1;
         if (p.piece_type === 'specialist') {
           const manualPrice = Number(p.manual_price) || 0;
           return {
@@ -236,25 +242,26 @@ export default function QuoteBuilderPage() {
             description: p.description,
             x_mm: p.x_mm,
             y_mm: p.y_mm,
+            quantity: qty,
             edge_type: p.edge_type,
             edge_mm: p.edge_mm,
             comments: p.comments || '',
             features: [],
             manual_price: manualPrice,
-            material_cost: manualPrice,
-            original_material_cost: manualPrice,
+            material_cost: manualPrice * qty,
+            original_material_cost: manualPrice * qty,
             features_total: 0,
-            original_price: manualPrice,
+            original_price: manualPrice * qty,
             discount: 0,
-            line_total: manualPrice,
+            line_total: manualPrice * qty,
           };
         }
         const areaSqm = ((p.x_mm || 0) * (p.y_mm || 0)) / 1_000_000;
         const originalMaterial = areaSqm * originalPricePerSqm;
         const saleMaterial = areaSqm * pricePerSqm;
         const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
-        const originalPrice = originalMaterial + featuresTotal;
-        const linePrice = saleMaterial + featuresTotal;
+        const originalPrice = (originalMaterial + featuresTotal) * qty;
+        const linePrice = (saleMaterial + featuresTotal) * qty;
         const discount = Math.max(0, originalPrice - linePrice);
         return {
           type: 'piece',
@@ -262,13 +269,14 @@ export default function QuoteBuilderPage() {
           description: p.description,
           x_mm: p.x_mm,
           y_mm: p.y_mm,
+          quantity: qty,
           edge_type: p.edge_type,
           edge_mm: p.edge_mm,
           comments: p.comments || '',
           features: p.features || [],
-          material_cost: saleMaterial,
-          original_material_cost: originalMaterial,
-          features_total: featuresTotal,
+          material_cost: saleMaterial * qty,
+          original_material_cost: originalMaterial * qty,
+          features_total: featuresTotal * qty,
           original_price: originalPrice,
           discount,
           line_total: linePrice,

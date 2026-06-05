@@ -51,11 +51,11 @@
 }
 
 /* ===== Grid layout ===== */
-/* Columns: edit | label | desc | x | y | edge | edge_mm | price | discount | sale | delete */
+/* Columns: edit | label | desc | x | y | qty | edge | edge_mm | price | discount | sale | delete */
 .piece-editor__grid-header,
 .piece-editor__grid-row {
   display: grid;
-  grid-template-columns: 32px 100px 64px 64px 64px 120px 64px 80px 72px 80px 28px;
+  grid-template-columns: 32px 96px 64px 60px 60px 52px 116px 60px 78px 70px 78px 28px;
   gap: 6px;
   align-items: center;
 }

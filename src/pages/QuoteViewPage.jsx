@@ -124,6 +124,7 @@ export default function QuoteViewPage() {
               const before = priceBefore(item);
               const hasDiscount = item.discount > 0 && before > item.line_total;
               const dims = item.x_mm && item.y_mm ? `${item.x_mm}×${item.y_mm}mm` : '';
+              const qty = item.quantity || 1;
               return (
                 <div key={`m-${i}`} className="qv__line">
                   <div className="qv__line-head">
@@ -133,7 +134,11 @@ export default function QuoteViewPage() {
                           ? `${item.description || 'Custom Worktop'} (Specialist Worktop)`
                           : `${item.piece_type}${item.description ? ` — ${item.description}` : ''}`}
                       </span>
-                      {dims && <span className="qv__line-dims">{dims}</span>}
+                      {(dims || qty > 1) && (
+                        <span className="qv__line-dims">
+                          {dims}{dims && qty > 1 ? ' · ' : ''}{qty > 1 ? `Qty ${qty}` : ''}
+                        </span>
+                      )}
                     </div>
                     <span className="qv__line-total">{fmt(item.line_total)}</span>
                   </div>
