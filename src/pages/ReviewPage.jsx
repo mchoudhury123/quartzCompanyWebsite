@@ -58,7 +58,10 @@ export default function ReviewPage() {
 
     setSubmitting(false);
     if (insertError) {
-      setError("Sorry, we couldn't save your review. Please try again.");
+      console.error('Review save failed:', insertError);
+      setError(
+        `Sorry, we couldn't save your review${insertError.message ? ` (${insertError.message})` : ''}. Please try again or email us.`
+      );
       return;
     }
     setSubmitted(true);

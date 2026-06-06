@@ -79,11 +79,11 @@ export function buildBalanceReceiptEmailHtml({
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f1ea;padding:40px 12px;">
 <tr><td align="center">
 
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+<table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;">
 <tr><td style="border-top:2px solid ${GOLD};height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
 </table>
 
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;">
+<table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;background:#ffffff;">
 
   <tr><td align="center" style="padding:44px 32px 16px;">
     <img src="${logoUrl}" alt="The Quartz Company" width="190" style="display:block;max-width:190px;height:auto;border:0;outline:none;text-decoration:none;">
@@ -168,7 +168,7 @@ export function buildBalanceReceiptEmailHtml({
 
 </table>
 
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+<table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;">
 <tr><td style="border-top:2px solid ${GOLD};height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
 </table>
 
