@@ -10,6 +10,7 @@
 
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { buildDepositConfirmationEmail } from '../src/utils/depositConfirmationEmail.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -55,6 +56,14 @@ export default async function handler(req, res) {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
       const nowIso = new Date().toISOString();
 
+      // Read current state + customer details (also tells us if the
+      // confirmation email already went out, so retries don't double-send)
+      const { data: quote } = await supabase
+        .from('lead_quotes')
+        .select('id, quote_number, deposit_confirmation_sent_at, leads:lead_id(full_name, email)')
+        .eq('id', quoteId)
+        .single();
+
       await supabase
         .from('lead_quotes')
         .update({
@@ -84,6 +93,57 @@ export default async function handler(req, res) {
           });
         } catch (_) {
           /* ignore */
+        }
+      }
+
+      // Send the "deposit received — thank you" email (once per quote)
+      const customerEmail =
+        quote?.leads?.email || session.customer_details?.email || session.customer_email;
+
+      if (customerEmail && !quote?.deposit_confirmation_sent_at) {
+        const firstName =
+          (quote?.leads?.full_name || session.customer_details?.name || '').split(' ')[0] || 'there';
+        const { subject, body } = buildDepositConfirmationEmail({
+          firstName,
+          quoteNumber: quote?.quote_number || quoteNumber,
+        });
+
+        try {
+          const host = req.headers.host;
+          const protocol = host?.includes('localhost') ? 'http' : 'https';
+          const sendRes = await fetch(`${protocol}://${host}/api/zoho-send-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: customerEmail, subject, body }),
+          });
+          const sendData = await sendRes.json();
+
+          if (!sendData.error) {
+            await supabase
+              .from('lead_quotes')
+              .update({ deposit_confirmation_sent_at: nowIso })
+              .eq('id', quoteId);
+
+            if (leadId) {
+              try {
+                await supabase.from('lead_emails').insert({
+                  lead_id: leadId,
+                  direction: 'outbound',
+                  subject,
+                  body,
+                  to_address: customerEmail,
+                  from_address: 'sales@thequartzcompany.co.uk',
+                  zoho_message_id: sendData.messageId || null,
+                  status: 'sent',
+                  sent_by: 'System',
+                });
+              } catch (_) {
+                /* ignore */
+              }
+            }
+          }
+        } catch (_) {
+          /* ignore — payment is recorded regardless of email outcome */
         }
       }
     }
