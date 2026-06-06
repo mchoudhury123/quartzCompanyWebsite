@@ -43,6 +43,7 @@ export default function useDashboardStats() {
         deposits: 0,
         samples: 0,
         followUp: 0,
+        completed: 0,
         appointments: 0,
         templateMeasure: 0,
         followUpCall: 0,
