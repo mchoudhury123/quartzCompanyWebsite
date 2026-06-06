@@ -71,6 +71,7 @@ export function buildQuoteEmailHtml({
   customerAddressLines = [],
   customerPostcode = '',
   logoUrl = '',
+  payUrl = '',
 }) {
   const fmtCurrency = (v) =>
     `£${Number(v || 0).toLocaleString('en-GB', {
@@ -275,12 +276,21 @@ export function buildQuoteEmailHtml({
 
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td width="50%" style="padding-right:8px;">
+            ${
+              payUrl
+                ? `<td width="50%" style="padding-right:8px;">
+              <a href="${payUrl}" style="display:block;padding:16px 10px;background:${INK};color:#ffffff;font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;">Pay Deposit</a>
+            </td>
+            <td width="50%" style="padding-left:8px;">
+              <a href="tel:${BUSINESS_PHONE_TEL}" style="display:block;padding:15px 10px;background:#ffffff;color:${INK};font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid ${INK};">Contact to Pay</a>
+            </td>`
+                : `<td width="50%" style="padding-right:8px;">
               <a href="tel:${BUSINESS_PHONE_TEL}" style="display:block;padding:16px 10px;background:${INK};color:#ffffff;font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;">Contact to Pay</a>
             </td>
             <td width="50%" style="padding-left:8px;">
               <a href="mailto:${BUSINESS_EMAIL}" style="display:block;padding:15px 10px;background:#ffffff;color:${INK};font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid ${INK};">Email Us</a>
-            </td>
+            </td>`
+            }
           </tr>
         </table>
       </td></tr>

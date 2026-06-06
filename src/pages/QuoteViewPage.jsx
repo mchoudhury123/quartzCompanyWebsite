@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import './QuoteViewPage.css';
 
 export default function QuoteViewPage() {
   const { quoteId } = useParams();
+  const [searchParams] = useSearchParams();
+  const justPaid = searchParams.get('paid') === '1';
+  const payError = searchParams.get('payerror') === '1';
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -61,6 +64,8 @@ export default function QuoteViewPage() {
   const vat = quote.vat || 0;
   const total = quote.total || 0;
   const deposit = quote.deposit_amount || total * 0.2;
+  const depositPct = total > 0 ? Math.round((deposit / total) * 100) : 0;
+  const depositPaid = quote.deposit_paid || justPaid;
 
   const validDate = quote.valid_until
     ? new Date(quote.valid_until).toLocaleDateString('en-GB', {
@@ -193,21 +198,34 @@ export default function QuoteViewPage() {
         <div className="qv__deposit">
           <p className="qv__section-label">Deposit to Secure</p>
           <div className="qv__deposit-amount">{fmt(deposit)}</div>
-          <p className="qv__deposit-note">
-            A 20% deposit secures your quote{validDate ? ` until ${validDate}` : ''}.
-          </p>
-          {!isExpired && (
-            <div className="qv__cta">
-              <a href="tel:+447375303416" className="qv__btn qv__btn--primary">
-                Contact to Pay
-              </a>
-              <a
-                href="mailto:sales@thequartzcompany.co.uk"
-                className="qv__btn qv__btn--secondary"
-              >
-                Email Us
-              </a>
-            </div>
+          {depositPaid ? (
+            <p className="qv__deposit-paid">
+              ✓ Deposit received — thank you! We'll be in touch shortly to arrange the next steps.
+            </p>
+          ) : (
+            <>
+              <p className="qv__deposit-note">
+                A {depositPct}% deposit secures your quote{validDate ? ` until ${validDate}` : ''}.
+              </p>
+              {payError && (
+                <p className="qv__deposit-error">
+                  Sorry, we couldn't start your payment. Please try again or call us on 07375 303 416.
+                </p>
+              )}
+              {!isExpired && (
+                <div className="qv__cta">
+                  <a
+                    href={`/api/stripe-create-checkout?quoteId=${quote.id}`}
+                    className="qv__btn qv__btn--primary"
+                  >
+                    Pay Deposit
+                  </a>
+                  <a href="tel:+447375303416" className="qv__btn qv__btn--secondary">
+                    Contact to Pay
+                  </a>
+                </div>
+              )}
+            </>
           )}
         </div>
 

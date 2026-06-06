@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 680px;
   height: 2px;
-  background: #c5a47e;
+  background: #A9885C;
 }
 
 .qv__accent--top { margin-bottom: 0; }
@@ -65,7 +65,7 @@
 .qv__divider {
   width: 40px;
   height: 1px;
-  background: #c5a47e;
+  background: #A9885C;
   margin: 0 auto 36px;
 }
 
@@ -76,7 +76,7 @@
   font-family: Georgia, serif;
   font-size: 0.72rem;
   font-weight: 400;
-  color: #c5a47e;
+  color: #A9885C;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -87,7 +87,7 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.6rem;
   font-weight: 400;
-  color: #1a1a1a;
+  color: #1C1712;
   letter-spacing: 0.06em;
 }
 
@@ -121,7 +121,7 @@
   margin: 0;
   font-family: Georgia, serif;
   font-size: 0.95rem;
-  color: #1a1a1a;
+  color: #1C1712;
   font-weight: 600;
   text-align: right;
 }
@@ -144,7 +144,7 @@
   font-family: Georgia, serif;
   font-size: 0.72rem;
   font-weight: 400;
-  color: #c5a47e;
+  color: #A9885C;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -185,7 +185,7 @@
 .qv__line-title {
   font-family: Georgia, serif;
   font-size: 0.98rem;
-  color: #1a1a1a;
+  color: #1C1712;
   font-weight: 400;
   text-transform: capitalize;
 }
@@ -202,7 +202,7 @@
   font-variant-numeric: tabular-nums;
   font-size: 1rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1C1712;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -222,7 +222,7 @@
 }
 
 .qv__line-save {
-  color: #c5a47e;
+  color: #A9885C;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -247,7 +247,7 @@
 .qv__total-row span:last-child {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-variant-numeric: tabular-nums;
-  color: #1a1a1a;
+  color: #1C1712;
 }
 
 .qv__total-row--grand {
@@ -257,11 +257,11 @@
   font-family: Georgia, serif;
   font-size: 1.15rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #1C1712;
 }
 
 .qv__total-row--grand span:last-child {
-  color: #c5a47e;
+  color: #A9885C;
 }
 
 /* Deposit */
@@ -280,7 +280,7 @@
   font-variant-numeric: tabular-nums;
   font-size: 2.1rem;
   font-weight: 600;
-  color: #c5a47e;
+  color: #A9885C;
   letter-spacing: 0.01em;
   line-height: 1;
   margin-bottom: 10px;
@@ -291,6 +291,26 @@
   font-family: Georgia, serif;
   font-size: 0.88rem;
   color: #5a5a5a;
+  line-height: 1.6;
+}
+
+.qv__deposit-paid {
+  margin: 4px 0 0;
+  padding: 14px 16px;
+  background: #eef7ef;
+  border: 1px solid #cfe8d2;
+  border-radius: 6px;
+  font-family: Georgia, serif;
+  font-size: 0.92rem;
+  color: #2f6f3a;
+  line-height: 1.6;
+}
+
+.qv__deposit-error {
+  margin: 0 0 16px;
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  color: #b42318;
   line-height: 1.6;
 }
 
@@ -316,9 +336,9 @@
 }
 
 .qv__btn--primary {
-  background: #1a1a1a;
+  background: #1C1712;
   color: #ffffff;
-  border: 1px solid #c5a47e;
+  border: 1px solid #A9885C;
 }
 
 .qv__btn--primary:hover {
@@ -327,13 +347,13 @@
 
 .qv__btn--secondary {
   background: #ffffff;
-  color: #1a1a1a;
+  color: #1C1712;
   border: 1px solid #eee5d4;
 }
 
 .qv__btn--secondary:hover {
   background: #faf7f2;
-  border-color: #c5a47e;
+  border-color: #A9885C;
 }
 
 /* Footer */
@@ -348,7 +368,7 @@
   margin: 0 0 8px;
   font-family: Georgia, serif;
   font-size: 0.72rem;
-  color: #c5a47e;
+  color: #A9885C;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
