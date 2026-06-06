@@ -21,6 +21,7 @@ export default function useDashboardStats() {
     complianceTasks: 0,
     newsletter: 0,
     tradeContacts: 0,
+    reviews: 0,
   });
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,6 +52,7 @@ export default function useDashboardStats() {
         complianceTasks: 0,
         newsletter: 0,
         tradeContacts: 0,
+        reviews: 0,
       };
 
       allLeads.forEach((l) => {
@@ -120,6 +122,11 @@ export default function useDashboardStats() {
         .select('*', { count: 'exact', head: true })
         .eq('active', true);
       c.tradeContacts = tradeCount || 0;
+
+      const { count: reviewsCount } = await supabase
+        .from('reviews')
+        .select('*', { count: 'exact', head: true });
+      c.reviews = reviewsCount || 0;
 
       setCounts(c);
 

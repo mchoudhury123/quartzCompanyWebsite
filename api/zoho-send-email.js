@@ -16,10 +16,10 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { to, subject, body } = req.body || {};
+  const { to, subject, body, html } = req.body || {};
 
-  if (!to || !subject || !body) {
-    return res.status(400).json({ error: 'Missing to, subject, or body' });
+  if (!to || !subject || (!body && !html)) {
+    return res.status(400).json({ error: 'Missing to, subject, or body/html' });
   }
 
   try {
@@ -42,7 +42,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const htmlBody = wrapInBrandTemplate({ subject, body, siteUrl: SITE_URL });
+    // If the caller supplied ready-made HTML, send it as-is; otherwise wrap
+    // the plain-text body in the standard branded template.
+    const htmlBody = html || wrapInBrandTemplate({ subject, body, siteUrl: SITE_URL });
 
     const sendRes = await fetch(
       `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages`,

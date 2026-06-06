@@ -30,13 +30,16 @@ import QuoteBuilderPage from './admin/pages/QuoteBuilderPage';
 import SamplesPage from './admin/pages/SamplesPage';
 import AppointmentsPage from './admin/pages/AppointmentsPage';
 import TradeContactsPage from './admin/pages/TradeContactsPage';
+import ReviewsPage from './admin/pages/ReviewsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
+import ReviewPage from './pages/ReviewPage';
 
 export default function App() {
   return (
     <Routes>
-      {/* Public quote view (standalone, no layout wrapper) */}
+      {/* Public quote view + review (standalone, no layout wrapper) */}
       <Route path="/quote/view/:quoteId" element={<QuoteViewPage />} />
+      <Route path="/review/:quoteId" element={<ReviewPage />} />
 
       {/* Public site */}
       <Route element={<PublicLayout />}>
@@ -73,6 +76,7 @@ export default function App() {
           <Route path="samples" element={<SamplesPage />} />
           <Route path="appointments" element={<AppointmentsPage />} />
           <Route path="trade-contacts" element={<TradeContactsPage />} />
+          <Route path="reviews" element={<ReviewsPage />} />
         </Route>
       </Route>
     </Routes>

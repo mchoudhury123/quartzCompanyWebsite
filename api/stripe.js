@@ -18,6 +18,7 @@ import {
   buildDepositConfirmationEmail,
   buildBalanceConfirmationEmail,
 } from '../src/utils/depositConfirmationEmail.js';
+import { buildBalanceReceiptEmailHtml } from '../src/utils/balanceReceiptEmail.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -202,7 +203,7 @@ async function handleWebhook(req, res) {
       const { data: quote } = await supabase
         .from('lead_quotes')
         .select(
-          'id, quote_number, deposit_confirmation_sent_at, balance_confirmation_sent_at, leads:lead_id(full_name, email)'
+          'id, quote_number, items, subtotal, vat, total, deposit_confirmation_sent_at, balance_confirmation_sent_at, leads:lead_id(full_name, email)'
         )
         .eq('id', quoteId)
         .single();
@@ -269,13 +270,30 @@ async function handleWebhook(req, res) {
           ? buildBalanceConfirmationEmail({ firstName, quoteNumber: quote?.quote_number || quoteNumber })
           : buildDepositConfirmationEmail({ firstName, quoteNumber: quote?.quote_number || quoteNumber });
 
+        // The balance (paid-in-full) email is sent as rich HTML with an order
+        // overview and a "Leave a Review" button.
+        let html;
+        if (isBalance) {
+          const SITE_URL = process.env.SITE_URL || `https://${req.headers.host}`;
+          html = buildBalanceReceiptEmailHtml({
+            firstName,
+            quoteNumber: quote?.quote_number || quoteNumber,
+            items: Array.isArray(quote?.items) ? quote.items : [],
+            subtotal: quote?.subtotal || 0,
+            vat: quote?.vat || 0,
+            total: quote?.total || 0,
+            reviewUrl: `${SITE_URL}/review/${quoteId}`,
+            logoUrl: `${SITE_URL}/logo.png`,
+          });
+        }
+
         try {
           const host = req.headers.host;
           const protocol = host?.includes('localhost') ? 'http' : 'https';
           const sendRes = await fetch(`${protocol}://${host}/api/zoho-send-email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ to: customerEmail, subject, body }),
+            body: JSON.stringify({ to: customerEmail, subject, body, ...(html ? { html } : {}) }),
           });
           const sendData = await sendRes.json();
 

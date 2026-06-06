@@ -5,7 +5,7 @@ import TaskCard from '../components/TaskCard';
 import {
   FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
   FiRepeat, FiCalendar, FiThumbsUp, FiMapPin, FiPhone,
-  FiClipboard, FiCrop, FiPhoneCall, FiHeart, FiBriefcase, FiCheckCircle
+  FiClipboard, FiCrop, FiPhoneCall, FiHeart, FiBriefcase, FiCheckCircle, FiStar
 } from 'react-icons/fi';
 import './AdminDashboard.css';
 
@@ -31,6 +31,7 @@ const ROW_2 = [
   { key: 'otherTasks', label: 'Other Tasks', icon: FiPhone, color: '#4a9e8e', filter: 'other_tasks' },
   { key: 'complianceTasks', label: 'Compliance\nTasks', icon: FiClipboard, color: '#6b8f71', filter: 'compliance_tasks' },
   { key: 'tradeContacts', label: 'Trade\nContacts', icon: FiBriefcase, color: '#5b8fd4', to: '/admin/trade-contacts' },
+  { key: 'reviews', label: 'Reviews', icon: FiStar, color: '#b08d57', to: '/admin/reviews' },
 ];
 
 export default function AdminDashboard() {
