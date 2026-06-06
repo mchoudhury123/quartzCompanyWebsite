@@ -11,6 +11,7 @@ export default function useDashboardStats() {
     deposits: 0,
     samples: 0,
     followUp: 0,
+    completed: 0,
     appointments: 0,
     templateMeasure: 0,
     followUpCall: 0,
@@ -78,6 +79,7 @@ export default function useDashboardStats() {
 
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
+        if (l.status === 'won') c.completed++;
         if (l.pending_action === 'chase_measurements') c.chaseMeasurements++;
       });
 

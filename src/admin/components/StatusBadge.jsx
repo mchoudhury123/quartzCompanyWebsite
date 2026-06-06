@@ -5,6 +5,8 @@ const statusConfig = {
   contacted: { label: 'Contacted', className: 'status-badge--contacted' },
   quoted: { label: 'Quoted', className: 'status-badge--quoted' },
   deposit: { label: 'Deposit', className: 'status-badge--deposit' },
+  won: { label: 'Completed', className: 'status-badge--completed' },
+  lost: { label: 'Lost', className: 'status-badge--rejected' },
   accepted: { label: 'Accepted', className: 'status-badge--accepted' },
   rejected: { label: 'Rejected', className: 'status-badge--rejected' },
   expired: { label: 'Expired', className: 'status-badge--expired' },

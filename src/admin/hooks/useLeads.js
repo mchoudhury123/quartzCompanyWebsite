@@ -9,6 +9,7 @@ const PRESET_FILTERS = {
   samples: { label: 'Samples' },
   follow_up: { label: 'Follow Up Quotes' },
   deposits: { label: 'Deposits' },
+  completed: { label: 'Completed' },
   appointments: { label: 'Appointments' },
   pro_welcome: { label: 'Pro Welcome' },
   chase_measurements: { label: 'Chase Measurements' },
@@ -61,6 +62,9 @@ export default function useLeads(initialFilter) {
             break;
           case 'deposits':
             query = query.eq('status', 'deposit');
+            break;
+          case 'completed':
+            query = query.eq('status', 'won');
             break;
           case 'chase_measurements':
             query = query.eq('pending_action', 'chase_measurements');

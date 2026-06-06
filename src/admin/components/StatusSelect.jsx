@@ -1,6 +1,13 @@
 import './StatusSelect.css';
 
-const statuses = ['new', 'contacted', 'quoted', 'deposit'];
+const statuses = ['new', 'contacted', 'quoted', 'deposit', 'won'];
+const LABELS = {
+  new: 'New',
+  contacted: 'Contacted',
+  quoted: 'Quoted',
+  deposit: 'Deposit',
+  won: 'Completed',
+};
 
 export default function StatusSelect({ value, onChange }) {
   return (
@@ -11,7 +18,7 @@ export default function StatusSelect({ value, onChange }) {
     >
       {statuses.map((s) => (
         <option key={s} value={s}>
-          {s.charAt(0).toUpperCase() + s.slice(1)}
+          {LABELS[s] || s.charAt(0).toUpperCase() + s.slice(1)}
         </option>
       ))}
     </select>

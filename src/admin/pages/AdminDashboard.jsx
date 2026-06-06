@@ -5,7 +5,7 @@ import TaskCard from '../components/TaskCard';
 import {
   FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
   FiRepeat, FiCalendar, FiThumbsUp, FiMapPin, FiPhone,
-  FiClipboard, FiCrop, FiPhoneCall, FiHeart, FiBriefcase
+  FiClipboard, FiCrop, FiPhoneCall, FiHeart, FiBriefcase, FiCheckCircle
 } from 'react-icons/fi';
 import './AdminDashboard.css';
 
@@ -17,6 +17,7 @@ const ROW_1 = [
   { key: 'repeatQuotesSelfServe', label: '1+ Quote\nRequests\nSelf Serve', icon: FiCopy, color: '#8b7fc7', filter: 'repeat_quotes_self_serve', highlightWhenActive: true },
   { key: 'emails', label: 'Emails', icon: FiMail, color: '#7c6dab', isEmail: true },
   { key: 'deposits', label: 'Deposits', icon: FiDollarSign, color: '#d4874e', filter: 'deposits' },
+  { key: 'completed', label: 'Completed', icon: FiCheckCircle, color: '#15803d', filter: 'completed' },
   { key: 'samples', label: 'Samples', icon: FiPackage, color: '#5ba4a4', to: '/admin/samples' },
   { key: 'followUp', label: 'Follow Up\nQuotes', icon: FiRepeat, color: '#9e9e9e', filter: 'follow_up' },
 ];

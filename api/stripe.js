@@ -14,7 +14,10 @@
 
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
-import { buildDepositConfirmationEmail } from '../src/utils/depositConfirmationEmail.js';
+import {
+  buildDepositConfirmationEmail,
+  buildBalanceConfirmationEmail,
+} from '../src/utils/depositConfirmationEmail.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -49,15 +52,18 @@ async function handleCheckout(req, res) {
   const SITE_URL = process.env.SITE_URL || `https://${req.headers.host}`;
 
   let quoteId = req.query.quoteId;
+  let type = req.query.type;
   if (!isGet) {
     try {
       const raw = await readRawBody(req);
       const parsed = raw.length ? JSON.parse(raw.toString('utf8')) : {};
       quoteId = quoteId || parsed.quoteId;
+      type = type || parsed.type;
     } catch (_) {
       /* ignore */
     }
   }
+  const isBalance = type === 'balance';
 
   const fail = (status, message) => {
     if (isGet) {
@@ -77,26 +83,55 @@ async function handleCheckout(req, res) {
     const { data: quote, error } = await supabase
       .from('lead_quotes')
       .select(
-        'id, lead_id, quote_number, title, total, deposit_amount, deposit_paid, leads:lead_id(full_name, email)'
+        'id, lead_id, quote_number, title, total, deposit_amount, deposit_paid, balance_paid, leads:lead_id(full_name, email)'
       )
       .eq('id', quoteId)
       .single();
 
     if (error || !quote) return fail(404, 'Quote not found');
 
-    if (quote.deposit_paid) {
-      if (isGet) return res.redirect(303, `${SITE_URL}/quote/view/${quoteId}?paid=1`);
-      return res.status(200).json({ url: `${SITE_URL}/quote/view/${quoteId}?paid=1`, alreadyPaid: true });
+    const total = Number(quote.total) || 0;
+    const depositAmount = Number(quote.deposit_amount) || 0;
+
+    let amount;
+    let productName;
+    let paymentType;
+    let successFlag;
+    let sessionField;
+
+    if (isBalance) {
+      if (!quote.deposit_paid) return fail(400, 'Deposit must be paid before the balance');
+      if (quote.balance_paid) {
+        const url = `${SITE_URL}/quote/view/${quoteId}?balancepaid=1`;
+        if (isGet) return res.redirect(303, url);
+        return res.status(200).json({ url, alreadyPaid: true });
+      }
+      amount = Math.max(0, total - depositAmount);
+      productName = `Balance — Quote ${quote.quote_number || ''}`.trim();
+      paymentType = 'balance';
+      successFlag = 'balancepaid=1';
+      sessionField = 'balance_session_id';
+    } else {
+      if (quote.deposit_paid) {
+        const url = `${SITE_URL}/quote/view/${quoteId}?paid=1`;
+        if (isGet) return res.redirect(303, url);
+        return res.status(200).json({ url, alreadyPaid: true });
+      }
+      amount = depositAmount;
+      productName = `Deposit — Quote ${quote.quote_number || ''}`.trim();
+      paymentType = 'deposit';
+      successFlag = 'paid=1';
+      sessionField = 'stripe_session_id';
     }
 
-    const deposit = Number(quote.deposit_amount) || 0;
-    if (deposit <= 0) return fail(400, 'No deposit amount set on this quote');
+    if (amount <= 0) return fail(400, 'Nothing to pay on this quote');
 
     const stripe = new Stripe(STRIPE_SECRET_KEY);
     const metadata = {
       quoteId: quote.id,
       quote_number: quote.quote_number || '',
       lead_id: quote.lead_id || '',
+      payment_type: paymentType,
     };
 
     const session = await stripe.checkout.sessions.create({
@@ -107,22 +142,22 @@ async function handleCheckout(req, res) {
           quantity: 1,
           price_data: {
             currency: 'gbp',
-            unit_amount: Math.round(deposit * 100),
+            unit_amount: Math.round(amount * 100),
             product_data: {
-              name: `Deposit — Quote ${quote.quote_number || ''}`.trim(),
+              name: productName,
               description: quote.title || undefined,
             },
           },
         },
       ],
       customer_email: quote.leads?.email || undefined,
-      success_url: `${SITE_URL}/quote/view/${quoteId}?paid=1`,
+      success_url: `${SITE_URL}/quote/view/${quoteId}?${successFlag}`,
       cancel_url: `${SITE_URL}/quote/view/${quoteId}`,
       metadata,
       payment_intent_data: { metadata },
     });
 
-    await supabase.from('lead_quotes').update({ stripe_session_id: session.id }).eq('id', quoteId);
+    await supabase.from('lead_quotes').update({ [sessionField]: session.id }).eq('id', quoteId);
 
     if (isGet) return res.redirect(303, session.url);
     return res.status(200).json({ url: session.url });
@@ -157,6 +192,8 @@ async function handleWebhook(req, res) {
     const quoteId = session.metadata?.quoteId;
     const leadId = session.metadata?.lead_id;
     const quoteNumber = session.metadata?.quote_number || '';
+    const paymentType = session.metadata?.payment_type || 'deposit';
+    const isBalance = paymentType === 'balance';
 
     if (quoteId && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
       const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
@@ -164,32 +201,53 @@ async function handleWebhook(req, res) {
 
       const { data: quote } = await supabase
         .from('lead_quotes')
-        .select('id, quote_number, deposit_confirmation_sent_at, leads:lead_id(full_name, email)')
+        .select(
+          'id, quote_number, deposit_confirmation_sent_at, balance_confirmation_sent_at, leads:lead_id(full_name, email)'
+        )
         .eq('id', quoteId)
         .single();
 
-      await supabase
-        .from('lead_quotes')
-        .update({
-          deposit_paid: true,
-          deposit_paid_at: nowIso,
-          stripe_payment_intent: session.payment_intent || null,
-          status: 'accepted',
-        })
-        .eq('id', quoteId);
+      if (isBalance) {
+        await supabase
+          .from('lead_quotes')
+          .update({
+            balance_paid: true,
+            balance_paid_at: nowIso,
+            balance_payment_intent: session.payment_intent || null,
+          })
+          .eq('id', quoteId);
+      } else {
+        await supabase
+          .from('lead_quotes')
+          .update({
+            deposit_paid: true,
+            deposit_paid_at: nowIso,
+            stripe_payment_intent: session.payment_intent || null,
+            status: 'accepted',
+          })
+          .eq('id', quoteId);
+      }
 
       if (leadId) {
-        await supabase.from('leads').update({ status: 'deposit' }).eq('id', leadId);
+        // Balance paid -> order complete ('won', shown as "Completed");
+        // deposit paid -> 'deposit' stage.
+        await supabase
+          .from('leads')
+          .update({ status: isBalance ? 'won' : 'deposit' })
+          .eq('id', leadId);
         try {
           await supabase.from('lead_activities').insert({
             lead_id: leadId,
-            activity_type: 'deposit_paid',
-            title: `Deposit paid${quoteNumber ? ` — ${quoteNumber}` : ''}`,
+            activity_type: isBalance ? 'balance_paid' : 'deposit_paid',
+            title: `${isBalance ? 'Balance paid — paid in full' : 'Deposit paid'}${
+              quoteNumber ? ` — ${quoteNumber}` : ''
+            }`,
             description: `£${((session.amount_total || 0) / 100).toFixed(2)} received via Stripe`,
             metadata: {
               session_id: session.id,
               payment_intent: session.payment_intent || null,
               quote_id: quoteId,
+              payment_type: paymentType,
             },
             author: 'System',
           });
@@ -198,16 +256,18 @@ async function handleWebhook(req, res) {
         }
       }
 
+      const alreadySent = isBalance
+        ? quote?.balance_confirmation_sent_at
+        : quote?.deposit_confirmation_sent_at;
       const customerEmail =
         quote?.leads?.email || session.customer_details?.email || session.customer_email;
 
-      if (customerEmail && !quote?.deposit_confirmation_sent_at) {
+      if (customerEmail && !alreadySent) {
         const firstName =
           (quote?.leads?.full_name || session.customer_details?.name || '').split(' ')[0] || 'there';
-        const { subject, body } = buildDepositConfirmationEmail({
-          firstName,
-          quoteNumber: quote?.quote_number || quoteNumber,
-        });
+        const { subject, body } = isBalance
+          ? buildBalanceConfirmationEmail({ firstName, quoteNumber: quote?.quote_number || quoteNumber })
+          : buildDepositConfirmationEmail({ firstName, quoteNumber: quote?.quote_number || quoteNumber });
 
         try {
           const host = req.headers.host;
@@ -222,7 +282,11 @@ async function handleWebhook(req, res) {
           if (!sendData.error) {
             await supabase
               .from('lead_quotes')
-              .update({ deposit_confirmation_sent_at: nowIso })
+              .update(
+                isBalance
+                  ? { balance_confirmation_sent_at: nowIso }
+                  : { deposit_confirmation_sent_at: nowIso }
+              )
               .eq('id', quoteId);
 
             if (leadId) {

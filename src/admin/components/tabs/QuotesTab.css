@@ -5,6 +5,41 @@
   margin-bottom: 1rem;
 }
 
+.quotes-tab__payments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.85rem;
+  margin: 0.5rem 0 0.25rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+}
+
+.quotes-tab__pay-tag {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.quotes-tab__pay-tag--full {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.quotes-tab__pay-due {
+  color: var(--admin-text-light, #777);
+  font-weight: 600;
+}
+
+.quotes-tab__action--balance {
+  border-color: #b08d57;
+  color: #8a6c3e;
+}
+
+.quotes-tab__action--balance:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .quotes-tab__title {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.95rem;
