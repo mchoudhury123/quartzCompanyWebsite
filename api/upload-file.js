@@ -22,7 +22,12 @@ export default async function handler(req, res) {
 
   const storagePath = `${leadId}/${Date.now()}-${fileName}`;
 
-  // Create a signed upload URL (valid for 120 seconds)
+  // Create a signed upload URL (valid for 2 hours).
+  // We return the token so the client can upload via the Supabase SDK
+  // (uploadToSignedUrl), which sends the file in the multipart form the
+  // storage server expects. The client inserts the lead_files DB record
+  // only after the upload actually succeeds — this avoids "ghost" file
+  // rows that point at nothing in storage.
   const { data: urlData, error: urlError } = await supabase.storage
     .from('lead-files')
     .createSignedUploadUrl(storagePath);
@@ -32,25 +37,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: urlError.message });
   }
 
-  // Insert file record in database
-  const { error: dbError } = await supabase.from('lead_files').insert({
-    lead_id: leadId,
-    file_name: fileName,
-    file_type: fileType || 'application/octet-stream',
-    file_size: fileSize || 0,
-    storage_path: storagePath,
-    category: 'plan',
-    uploaded_by: 'Customer',
-  });
-
-  if (dbError) {
-    console.error('File record insert error:', dbError);
-    return res.status(500).json({ error: dbError.message });
-  }
-
   return res.status(200).json({
     success: true,
     signedUrl: urlData.signedUrl,
+    token: urlData.token,
     storagePath,
     fileName,
   });

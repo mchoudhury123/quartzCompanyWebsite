@@ -28,8 +28,22 @@ export default function FilesTab({ leadId, onUploadFile }) {
   const [deleting, setDeleting] = useState(null);
 
   const handleDownload = async (file) => {
-    const url = await getDownloadUrl(file.storage_path);
-    if (url) window.open(url, '_blank');
+    const { url, error } = await getDownloadUrl(file.storage_path);
+    if (url) {
+      window.open(url, '_blank');
+      return;
+    }
+    // No URL means the signed-link request failed — tell the user why
+    // instead of silently doing nothing.
+    const msg = error?.message || '';
+    if (/not.?found|does not exist|404/i.test(msg)) {
+      alert(
+        `Couldn't open "${file.file_name}" — the file is not in storage. ` +
+        `It may have failed to upload. Please ask the customer to re-send it.`
+      );
+    } else {
+      alert(`Couldn't open "${file.file_name}". ${msg || 'Please try again.'}`);
+    }
   };
 
   const handleDelete = async (fileId) => {

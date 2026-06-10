@@ -267,17 +267,34 @@ export default function QuotePage() {
           if (!urlResult.success) {
             console.error('Failed to get upload URL:', urlResult.error);
           } else {
-            // Step 2: Upload file directly to Supabase storage using signed URL
-            const uploadRes = await fetch(urlResult.signedUrl, {
-              method: 'PUT',
-              headers: { 'Content-Type': uploadedFile.type },
-              body: uploadedFile,
-            });
+            // Step 2: Upload the file using the Supabase SDK, which sends it
+            // in the multipart form the storage server expects (a plain PUT of
+            // the raw file can store an unreadable object).
+            const { error: uploadError } = await supabase.storage
+              .from('lead-files')
+              .uploadToSignedUrl(urlResult.storagePath, urlResult.token, uploadedFile, {
+                contentType: uploadedFile.type || 'application/octet-stream',
+              });
 
-            if (uploadRes.ok) {
-              uploadedFileName = uploadedFile.name;
+            if (uploadError) {
+              console.error('Direct upload failed:', uploadError.message);
             } else {
-              console.error('Direct upload failed:', uploadRes.status);
+              // Step 3: Only now that the file is really in storage, record it
+              // in the database so the admin never sees a file they can't open.
+              const { error: dbError } = await supabase.from('lead_files').insert({
+                lead_id: leadId,
+                file_name: uploadedFile.name,
+                file_type: uploadedFile.type || 'application/octet-stream',
+                file_size: uploadedFile.size || 0,
+                storage_path: urlResult.storagePath,
+                category: 'plan',
+                uploaded_by: 'Customer',
+              });
+              if (dbError) {
+                console.error('File record insert failed:', dbError.message);
+              } else {
+                uploadedFileName = uploadedFile.name;
+              }
             }
           }
         } catch (fileErr) {

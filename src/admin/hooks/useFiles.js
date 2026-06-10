@@ -70,10 +70,10 @@ export default function useFiles(leadId) {
   };
 
   const getDownloadUrl = async (storagePath) => {
-    const { data } = await supabase.storage
+    const { data, error } = await supabase.storage
       .from('lead-files')
       .createSignedUrl(storagePath, 3600);
-    return data?.signedUrl;
+    return { url: data?.signedUrl, error };
   };
 
   return { files, loading, uploadFile, deleteFile, getDownloadUrl, refetch: fetch };
