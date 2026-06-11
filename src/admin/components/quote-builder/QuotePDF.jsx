@@ -1,7 +1,17 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { BANK_DETAILS } from '../../../utils/bankDetails';
 import './QuotePDF.css';
+
+// Static company letterhead (matches the quote email supplier block).
+const SUPPLIER = {
+  name: 'The Quartz Company',
+  lines: ['Unit 303/2  K2 House', 'Business Centre,', 'Heathfield Way,', 'Northampton'],
+  postcode: 'NN5 7QP',
+  email: 'sales@thequartzcompany.co.uk',
+  phone: '07375 303 416',
+};
 
 const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
   const containerRef = useRef(null);
@@ -19,8 +29,19 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
   const totalDiscount = items.reduce((s, i) => s + (i.discount || 0), 0);
   const vat = subtotal * 0.2;
   const grandTotal = subtotal + vat;
-  const depositPct = data?.depositPercent != null ? data.depositPercent : 20;
+  const depositPct = data?.depositPercent != null ? data.depositPercent : 50;
   const deposit = grandTotal * (depositPct / 100);
+
+  const quoteNumber = data?.quoteNumber || '';
+  const reference = quoteNumber && quoteNumber !== 'Draft' ? quoteNumber : '(your quote number)';
+
+  // Customer address lines (skip blanks)
+  const customerLines = [
+    data?.customerCompany,
+    data?.customerAddress,
+    data?.customerCity,
+    data?.customerPostcode,
+  ].filter((l) => l && String(l).trim());
 
   useImperativeHandle(ref, () => ({
     generate: async (savedQuote) => {
@@ -83,23 +104,46 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
       className="qpdf"
       style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
     >
-      {/* Header */}
-      <div className="qpdf__header">
-        <div className="qpdf__logo">THE QUARTZ COMPANY</div>
-        <div className="qpdf__header-right">
-          <div className="qpdf__qnum">{data?.quoteNumber || ''}</div>
-          <div className="qpdf__date">{data?.date || ''}</div>
+      <div className="qpdf__accent" />
+
+      {/* Letterhead: supplier · logo · customer */}
+      <div className="qpdf__top">
+        <div className="qpdf__party">
+          <div className="qpdf__party-label">Supplier</div>
+          <div className="qpdf__party-name">{SUPPLIER.name}</div>
+          {SUPPLIER.lines.map((l, i) => (
+            <div key={i} className="qpdf__party-line">{l}</div>
+          ))}
+          <div className="qpdf__party-line">{SUPPLIER.postcode}</div>
+        </div>
+
+        <div className="qpdf__brand">
+          <img src="/logo.png" alt="The Quartz Company" className="qpdf__brand-logo" />
+        </div>
+
+        <div className="qpdf__party qpdf__party--right">
+          <div className="qpdf__party-label">Customer</div>
+          {data?.customerName && <div className="qpdf__party-name">{data.customerName}</div>}
+          {customerLines.map((l, i) => (
+            <div key={i} className="qpdf__party-line">{l}</div>
+          ))}
         </div>
       </div>
 
-      <div className="qpdf__divider" />
+      {/* Quotation heading */}
+      <div className="qpdf__quote-head">
+        <span className="qpdf__quote-eyebrow">Your Quotation</span>
+        <span className="qpdf__quote-number">{quoteNumber || 'Draft'}</span>
+      </div>
 
-      {/* Material info */}
-      {data?.materialName && (
-        <div className="qpdf__material">
-          <span className="qpdf__material-label">Material:</span> {data.materialName} ({data.thickness})
-        </div>
-      )}
+      <div className="qpdf__meta">
+        <span>Date: <strong>{data?.date || ''}</strong></span>
+        {data?.materialName && (
+          <span>Material: <strong>{data.materialName}{data?.thickness ? ` (${data.thickness})` : ''}</strong></span>
+        )}
+      </div>
+
+      <div className="qpdf__divider" />
 
       {/* Items table */}
       <table className="qpdf__table">
@@ -154,17 +198,33 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
           <span>Grand Total</span>
           <span>{fmt(grandTotal)}</span>
         </div>
-        <div className="qpdf__divider" />
-        <div className="qpdf__total-row qpdf__total-row--deposit">
-          <span>Deposit ({depositPct}%)</span>
-          <span>{fmt(deposit)}</span>
+      </div>
+
+      {/* Deposit + bank transfer */}
+      <div className="qpdf__deposit">
+        <div className="qpdf__deposit-head">
+          <span className="qpdf__deposit-label">Deposit to Secure ({depositPct}%)</span>
+          <span className="qpdf__deposit-amount">{fmt(deposit)}</span>
         </div>
+        <p className="qpdf__deposit-note">
+          A {depositPct}% deposit of {fmt(deposit)} is required to secure your order. Please pay by
+          bank transfer using the details below.
+        </p>
+        <table className="qpdf__bank">
+          <tbody>
+            <tr><td>Account name</td><td>{BANK_DETAILS.accountName}</td></tr>
+            <tr><td>Sort code</td><td>{BANK_DETAILS.sortCode}</td></tr>
+            <tr><td>Account number</td><td>{BANK_DETAILS.accountNumber}</td></tr>
+            <tr><td>Bank</td><td>{BANK_DETAILS.bankName}</td></tr>
+            <tr><td>Reference</td><td>{reference}</td></tr>
+          </tbody>
+        </table>
       </div>
 
       {/* Footer */}
       <div className="qpdf__footer">
-        <p>The Quartz Company</p>
-        <p>sales@thequartzcompany.co.uk | www.thequartzcompany.co.uk</p>
+        <p>{SUPPLIER.name}</p>
+        <p>{SUPPLIER.email} &nbsp;·&nbsp; {SUPPLIER.phone}</p>
       </div>
     </div>
   );

@@ -36,6 +36,7 @@ export default function QuoteBuilderPage() {
   const [initialized, setInitialized] = useState(!isEditMode);
   const [showEmailPreview, setShowEmailPreview] = useState(false);
   const [emailPreviewData, setEmailPreviewData] = useState(null);
+  const [savedQuote, setSavedQuote] = useState(null);
 
   // Load existing quote data in edit mode
   useEffect(() => {
@@ -345,10 +346,14 @@ export default function QuoteBuilderPage() {
     if (saving) return;
     setSaving(true);
     const { data, error } = await saveQuote('sent');
-    setSaving(false);
-    if (!error && pdfRef.current) {
-      pdfRef.current.generate(data);
+    if (!error) {
+      // Push the saved quote (with its real number) into the PDF before
+      // capturing, so the document and bank reference show it — not "Draft".
+      setSavedQuote(data);
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      if (pdfRef.current) pdfRef.current.generate(data);
     }
+    setSaving(false);
   };
 
   // --- Send Email (opens preview first) ---
@@ -442,13 +447,18 @@ export default function QuoteBuilderPage() {
 
   // Build PDF data
   const pdfData = {
-    quoteNumber: existingQuote?.quote_number || 'Draft',
+    quoteNumber: savedQuote?.quote_number || existingQuote?.quote_number || 'Draft',
     date: today,
     materialName: selectedMaterial?.name || '',
     thickness,
     items: allItems,
     allItems,
     depositPercent,
+    customerName: lead?.full_name || '',
+    customerCompany: lead?.company || '',
+    customerAddress: lead?.address || '',
+    customerCity: lead?.city || '',
+    customerPostcode: lead?.postcode || '',
   };
 
   return (
