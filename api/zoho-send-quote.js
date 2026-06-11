@@ -76,7 +76,6 @@ export default async function handler(req, res) {
       customerAddressLines: [clientAddress, clientCity],
       customerPostcode: clientPostcode || '',
       logoUrl: `${SITE_URL}/logo.png`,
-      payUrl: `${SITE_URL}/api/stripe-create-checkout?quoteId=${quoteId}`,
     });
 
     const sendRes = await fetch(

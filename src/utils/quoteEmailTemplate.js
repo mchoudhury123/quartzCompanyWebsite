@@ -22,6 +22,15 @@ const BUSINESS_PHONE = '07375 303 416';
 const BUSINESS_PHONE_TEL = '+447375303416';
 const BUSINESS_EMAIL = 'sales@thequartzcompany.co.uk';
 
+// Deposits are paid by bank transfer. The reference is the quote number
+// (passed in per quote), so payments can be matched to the right order.
+const BANK = {
+  accountName: 'The Quartz Company',
+  sortCode: '30-54-66',
+  accountNumber: '88375960',
+  bankName: 'Lloyds Bank',
+};
+
 // Brand colours pulled from the quotation design
 const GOLD = '#b08d57'; // grand total, deposit amount, accent bars
 const TAN = '#b89a72'; // eyebrow / section labels
@@ -71,7 +80,6 @@ export function buildQuoteEmailHtml({
   customerAddressLines = [],
   customerPostcode = '',
   logoUrl = '',
-  payUrl = '',
 }) {
   const fmtCurrency = (v) =>
     `£${Number(v || 0).toLocaleString('en-GB', {
@@ -88,6 +96,25 @@ export function buildQuoteEmailHtml({
     : '';
 
   const depositPct = total > 0 ? Math.round((deposit / total) * 100) : 0;
+
+  // Bank transfer details block (replaces online card payment). The payment
+  // reference is the quote number so we can match the deposit to the order.
+  const bankReference = quoteNumber || '—';
+  const bankRow = (label, value) =>
+    `<tr>
+      <td style="padding:9px 0;border-bottom:1px solid ${LINE};font-family:Arial,sans-serif;font-size:13px;color:${MUTED};">${label}</td>
+      <td style="padding:9px 0;border-bottom:1px solid ${LINE};text-align:right;font-family:${PRICE_FONT};font-size:15px;font-weight:700;color:${INK};letter-spacing:0.04em;">${escapeHtml(
+        value
+      )}</td>
+    </tr>`;
+  const bankDetailsHtml = `
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${bankRow('Account name', BANK.accountName)}
+      ${bankRow('Sort code', BANK.sortCode)}
+      ${bankRow('Account number', BANK.accountNumber)}
+      ${bankRow('Bank', BANK.bankName)}
+      ${bankRow('Reference', bankReference)}
+    </table>`;
 
   // Customer block order matches the quotation: first + last name (bold),
   // then optional company, then each address line, then postcode.
@@ -272,27 +299,14 @@ export function buildQuoteEmailHtml({
         <p style="margin:0 0 6px;font-family:${PRICE_FONT};font-size:38px;font-weight:700;color:${GOLD};line-height:1.1;">${fmtCurrency(
           deposit
         )}</p>
-        <p style="margin:0 0 24px;font-family:Georgia,serif;font-size:15px;color:#5a5a5a;">A ${depositPct}% deposit secures your quote.</p>
+        <p style="margin:0 0 22px;font-family:Georgia,serif;font-size:15px;color:#5a5a5a;">A ${depositPct}% deposit secures your quote. Please pay by bank transfer using the details below.</p>
 
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            ${
-              payUrl
-                ? `<td width="50%" style="padding-right:8px;">
-              <a href="${payUrl}" style="display:block;padding:16px 10px;background:${INK};color:#ffffff;font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;">Pay Deposit</a>
-            </td>
-            <td width="50%" style="padding-left:8px;">
-              <a href="tel:${BUSINESS_PHONE_TEL}" style="display:block;padding:15px 10px;background:#ffffff;color:${INK};font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid ${INK};">Contact to Pay</a>
-            </td>`
-                : `<td width="50%" style="padding-right:8px;">
-              <a href="tel:${BUSINESS_PHONE_TEL}" style="display:block;padding:16px 10px;background:${INK};color:#ffffff;font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;">Contact to Pay</a>
-            </td>
-            <td width="50%" style="padding-left:8px;">
-              <a href="mailto:${BUSINESS_EMAIL}" style="display:block;padding:15px 10px;background:#ffffff;color:${INK};font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;text-align:center;border:1px solid ${INK};">Email Us</a>
-            </td>`
-            }
-          </tr>
-        </table>
+        <p style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:0.2em;color:${TAN};text-transform:uppercase;">Pay by Bank Transfer</p>
+        ${bankDetailsHtml}
+
+        <p style="margin:20px 0 0;font-family:Georgia,serif;font-size:13px;line-height:1.55;color:${MUTED};">Please use <strong style="color:${INK};">${escapeHtml(
+          bankReference
+        )}</strong> as your payment reference. Once you've sent the transfer, reply to this email or call <a href="tel:${BUSINESS_PHONE_TEL}" style="color:${INK};text-decoration:none;font-weight:700;">${BUSINESS_PHONE}</a> and we'll confirm your order.</p>
       </td></tr>
     </table>
   </td></tr>

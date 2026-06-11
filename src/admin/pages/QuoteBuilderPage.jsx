@@ -448,6 +448,7 @@ export default function QuoteBuilderPage() {
     thickness,
     items: allItems,
     allItems,
+    depositPercent,
   };
 
   return (

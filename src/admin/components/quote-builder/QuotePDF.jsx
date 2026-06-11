@@ -19,7 +19,8 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
   const totalDiscount = items.reduce((s, i) => s + (i.discount || 0), 0);
   const vat = subtotal * 0.2;
   const grandTotal = subtotal + vat;
-  const deposit = grandTotal * 0.2;
+  const depositPct = data?.depositPercent != null ? data.depositPercent : 20;
+  const deposit = grandTotal * (depositPct / 100);
 
   useImperativeHandle(ref, () => ({
     generate: async (savedQuote) => {
@@ -155,7 +156,7 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
         </div>
         <div className="qpdf__divider" />
         <div className="qpdf__total-row qpdf__total-row--deposit">
-          <span>Deposit (20%)</span>
+          <span>Deposit ({depositPct}%)</span>
           <span>{fmt(deposit)}</span>
         </div>
       </div>

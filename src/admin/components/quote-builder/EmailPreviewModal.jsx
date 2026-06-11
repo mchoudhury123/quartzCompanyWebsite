@@ -40,7 +40,6 @@ export default function EmailPreviewModal({
         customerAddressLines: [clientAddress, clientCity],
         customerPostcode: clientPostcode || '',
         logoUrl: `${origin}/LOGO%20IDEA%20BIG%20QUARTZ%20ARIAL.png`,
-        payUrl: `${origin}/api/stripe-create-checkout?quoteId=preview`,
       }),
     [clientName, clientCompany, clientAddress, clientCity, clientPostcode, quoteNumber, description, items, subtotal, vat, total, deposit, date, origin]
   );
