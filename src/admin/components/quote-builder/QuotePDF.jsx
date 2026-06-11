@@ -87,16 +87,24 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
   }));
 
   const renderItemRows = (itemList) =>
-    itemList.map((item, i) => (
-      <tr key={i} className="qpdf__row">
-        <td className="qpdf__cell">{item.product_name}</td>
-        <td className="qpdf__cell qpdf__cell--right">{fmt(item.original_price)}</td>
-        <td className="qpdf__cell qpdf__cell--right qpdf__cell--discount">
-          {item.discount > 0 ? `-${fmt(item.discount)}` : '—'}
-        </td>
-        <td className="qpdf__cell qpdf__cell--right qpdf__cell--bold">{fmt(item.line_total)}</td>
-      </tr>
-    ));
+    itemList.map((item, i) => {
+      const dims = item.x_mm && item.y_mm ? `${item.x_mm}×${item.y_mm}mm` : '';
+      const qty = item.quantity != null ? item.quantity : 1;
+      return (
+        <tr key={i} className="qpdf__row">
+          <td className="qpdf__cell">
+            <div className="qpdf__item-name">{item.product_name}</div>
+            {dims && <div className="qpdf__item-sub">{dims}</div>}
+          </td>
+          <td className="qpdf__cell qpdf__cell--center">{qty}</td>
+          <td className="qpdf__cell qpdf__cell--right">{fmt(item.original_price)}</td>
+          <td className="qpdf__cell qpdf__cell--right qpdf__cell--discount">
+            {item.discount > 0 ? `-${fmt(item.discount)}` : '—'}
+          </td>
+          <td className="qpdf__cell qpdf__cell--right qpdf__cell--bold">{fmt(item.line_total)}</td>
+        </tr>
+      );
+    });
 
   return (
     <div
@@ -105,6 +113,9 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
       style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
     >
       <div className="qpdf__accent" />
+
+      {/* Date — kept near the top */}
+      <div className="qpdf__datebar">Date: <strong>{data?.date || ''}</strong></div>
 
       {/* Letterhead: supplier · logo · customer */}
       <div className="qpdf__top">
@@ -136,13 +147,6 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
         <span className="qpdf__quote-number">{quoteNumber || 'Draft'}</span>
       </div>
 
-      <div className="qpdf__meta">
-        <span>Date: <strong>{data?.date || ''}</strong></span>
-        {data?.materialName && (
-          <span>Material: <strong>{data.materialName}{data?.thickness ? ` (${data.thickness})` : ''}</strong></span>
-        )}
-      </div>
-
       <div className="qpdf__divider" />
 
       {/* Items table */}
@@ -150,6 +154,7 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
         <thead>
           <tr>
             <th className="qpdf__th">Item</th>
+            <th className="qpdf__th qpdf__th--center">Qty</th>
             <th className="qpdf__th qpdf__th--right">Price</th>
             <th className="qpdf__th qpdf__th--right">Discount</th>
             <th className="qpdf__th qpdf__th--right">Total</th>
@@ -158,19 +163,19 @@ const QuotePDF = forwardRef(function QuotePDF({ data }, ref) {
         <tbody>
           {materials.length > 0 && (
             <>
-              <tr><td colSpan={4} className="qpdf__section">Materials</td></tr>
+              <tr><td colSpan={5} className="qpdf__section">Materials</td></tr>
               {renderItemRows(materials)}
             </>
           )}
           {processes.length > 0 && (
             <>
-              <tr><td colSpan={4} className="qpdf__section">Processes</td></tr>
+              <tr><td colSpan={5} className="qpdf__section">Processes</td></tr>
               {renderItemRows(processes)}
             </>
           )}
           {products.length > 0 && (
             <>
-              <tr><td colSpan={4} className="qpdf__section">Products</td></tr>
+              <tr><td colSpan={5} className="qpdf__section">Products</td></tr>
               {renderItemRows(products)}
             </>
           )}
