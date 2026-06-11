@@ -87,5 +87,52 @@ export default function useQuotes(leadId) {
     return { error };
   };
 
-  return { quotes, loading, createQuote, updateQuote, updateQuoteStatus, refetch: fetch };
+  // Manually mark a deposit/balance as received (bank transfer). Mirrors what
+  // the Stripe webhook used to do: sets the paid flags + timestamps, advances
+  // the lead stage, and logs the payment. The confirmation email to the
+  // customer is sent by the caller (it needs the lead's email address).
+  const markDepositPaid = async (quoteId) => {
+    const nowIso = new Date().toISOString();
+    const { data, error } = await supabase
+      .from('lead_quotes')
+      .update({ deposit_paid: true, deposit_paid_at: nowIso, status: 'accepted' })
+      .eq('id', quoteId)
+      .select()
+      .single();
+    if (!error) {
+      await supabase.from('leads').update({ status: 'deposit' }).eq('id', leadId);
+      await logActivity(leadId, {
+        type: 'deposit_paid',
+        title: `Deposit paid${data?.quote_number ? ` — ${data.quote_number}` : ''}`,
+        description: `£${Number(data?.deposit_amount || 0).toFixed(2)} received via bank transfer`,
+        metadata: { quote_id: quoteId, payment_method: 'bank_transfer' },
+      });
+      await fetch();
+    }
+    return { data, error };
+  };
+
+  const markBalancePaid = async (quoteId) => {
+    const nowIso = new Date().toISOString();
+    const { data, error } = await supabase
+      .from('lead_quotes')
+      .update({ balance_paid: true, balance_paid_at: nowIso })
+      .eq('id', quoteId)
+      .select()
+      .single();
+    if (!error) {
+      const balance = Math.max(0, Number(data?.total || 0) - Number(data?.deposit_amount || 0));
+      await supabase.from('leads').update({ status: 'won' }).eq('id', leadId);
+      await logActivity(leadId, {
+        type: 'balance_paid',
+        title: `Balance paid — paid in full${data?.quote_number ? ` — ${data.quote_number}` : ''}`,
+        description: `£${balance.toFixed(2)} received via bank transfer`,
+        metadata: { quote_id: quoteId, payment_method: 'bank_transfer' },
+      });
+      await fetch();
+    }
+    return { data, error };
+  };
+
+  return { quotes, loading, createQuote, updateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid, refetch: fetch };
 }

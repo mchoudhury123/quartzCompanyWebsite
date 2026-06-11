@@ -18,18 +18,11 @@ const SUPPLIER = {
   postcode: 'NN5 7QP',
 };
 
+import { BANK_DETAILS as BANK } from './bankDetails.js';
+
 const BUSINESS_PHONE = '07375 303 416';
 const BUSINESS_PHONE_TEL = '+447375303416';
 const BUSINESS_EMAIL = 'sales@thequartzcompany.co.uk';
-
-// Deposits are paid by bank transfer. The reference is the quote number
-// (passed in per quote), so payments can be matched to the right order.
-const BANK = {
-  accountName: 'The Quartz Company',
-  sortCode: '30-54-66',
-  accountNumber: '88375960',
-  bankName: 'Lloyds Bank',
-};
 
 // Brand colours pulled from the quotation design
 const GOLD = '#b08d57'; // grand total, deposit amount, accent bars

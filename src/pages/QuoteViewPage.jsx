@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { BANK_DETAILS } from '../utils/bankDetails';
 import './QuoteViewPage.css';
 
 export default function QuoteViewPage() {
@@ -8,7 +9,6 @@ export default function QuoteViewPage() {
   const [searchParams] = useSearchParams();
   const justPaid = searchParams.get('paid') === '1';
   const justBalancePaid = searchParams.get('balancepaid') === '1';
-  const payError = searchParams.get('payerror') === '1';
   const [quote, setQuote] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -84,6 +84,25 @@ export default function QuoteViewPage() {
     if (item.original_price !== undefined) return item.original_price;
     return (item.material_cost || 0) + (item.features_total || 0) + (item.discount || 0);
   };
+
+  const reference = quote.quote_number || '';
+  const bankBox = (
+    <div className="qv__bank">
+      <p className="qv__bank-title">Pay by Bank Transfer</p>
+      <dl className="qv__bank-list">
+        <div className="qv__bank-row"><dt>Account name</dt><dd>{BANK_DETAILS.accountName}</dd></div>
+        <div className="qv__bank-row"><dt>Sort code</dt><dd>{BANK_DETAILS.sortCode}</dd></div>
+        <div className="qv__bank-row"><dt>Account number</dt><dd>{BANK_DETAILS.accountNumber}</dd></div>
+        <div className="qv__bank-row"><dt>Bank</dt><dd>{BANK_DETAILS.bankName}</dd></div>
+        <div className="qv__bank-row"><dt>Reference</dt><dd>{reference}</dd></div>
+      </dl>
+      <p className="qv__bank-note">
+        Please use <strong>{reference}</strong> as your payment reference. Once you've sent the
+        transfer, reply to your quote email or call <a href="tel:+447375303416">07375 303 416</a> and
+        we'll confirm your order.
+      </p>
+    </div>
+  );
 
   return (
     <div className="qv">
@@ -213,22 +232,7 @@ export default function QuoteViewPage() {
               <div className="qv__deposit-amount">{fmt(balance)}</div>
               <p className="qv__deposit-paid">✓ Deposit of {fmt(deposit)} received — thank you!</p>
               <p className="qv__deposit-note">Pay the remaining balance to complete your order.</p>
-              {payError && (
-                <p className="qv__deposit-error">
-                  Sorry, we couldn't start your payment. Please try again or call us on 07375 303 416.
-                </p>
-              )}
-              <div className="qv__cta">
-                <a
-                  href={`/api/stripe-create-checkout?quoteId=${quote.id}&type=balance`}
-                  className="qv__btn qv__btn--primary"
-                >
-                  Pay Remaining Balance
-                </a>
-                <a href="tel:+447375303416" className="qv__btn qv__btn--secondary">
-                  Contact to Pay
-                </a>
-              </div>
+              {bankBox}
             </>
           ) : (
             <>
@@ -237,24 +241,7 @@ export default function QuoteViewPage() {
               <p className="qv__deposit-note">
                 A {depositPct}% deposit secures your quote{validDate ? ` until ${validDate}` : ''}.
               </p>
-              {payError && (
-                <p className="qv__deposit-error">
-                  Sorry, we couldn't start your payment. Please try again or call us on 07375 303 416.
-                </p>
-              )}
-              {!isExpired && (
-                <div className="qv__cta">
-                  <a
-                    href={`/api/stripe-create-checkout?quoteId=${quote.id}`}
-                    className="qv__btn qv__btn--primary"
-                  >
-                    Pay Deposit
-                  </a>
-                  <a href="tel:+447375303416" className="qv__btn qv__btn--secondary">
-                    Contact to Pay
-                  </a>
-                </div>
-              )}
+              {!isExpired && bankBox}
             </>
           )}
         </div>

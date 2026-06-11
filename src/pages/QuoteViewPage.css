@@ -314,6 +314,76 @@
   line-height: 1.6;
 }
 
+/* Bank transfer details box */
+.qv__bank {
+  background: #faf7f2;
+  border: 1px solid #eee5d4;
+  border-radius: 6px;
+  padding: 22px 22px 18px;
+}
+
+.qv__bank-title {
+  margin: 0 0 14px;
+  font-family: Georgia, serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #A9885C;
+}
+
+.qv__bank-list {
+  margin: 0;
+}
+
+.qv__bank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid #eee5d4;
+}
+
+.qv__bank-row:last-child {
+  border-bottom: none;
+}
+
+.qv__bank-row dt {
+  font-family: Georgia, serif;
+  font-size: 0.85rem;
+  color: #5a5a5a;
+}
+
+.qv__bank-row dd {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #1C1712;
+  text-align: right;
+}
+
+.qv__bank-note {
+  margin: 16px 0 0;
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+.qv__bank-note strong {
+  color: #1C1712;
+}
+
+.qv__bank-note a {
+  color: #1C1712;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .qv__cta {
   display: flex;
   gap: 10px;

@@ -40,6 +40,16 @@
   cursor: default;
 }
 
+.quotes-tab__action--paid {
+  border-color: #2f8a46;
+  color: #2f6f3a;
+}
+
+.quotes-tab__action--paid:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .quotes-tab__title {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.95rem;

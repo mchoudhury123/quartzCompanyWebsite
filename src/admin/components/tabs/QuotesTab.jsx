@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useQuotes from '../../hooks/useQuotes';
 import { supabase } from '../../../lib/supabase';
-import { buildBalanceDueEmail } from '../../../utils/depositConfirmationEmail';
+import {
+  buildBalanceDueEmail,
+  buildDepositConfirmationEmail,
+  buildBalanceConfirmationEmail,
+} from '../../../utils/depositConfirmationEmail';
 import StatusBadge from '../StatusBadge';
-import { FiPlus, FiEdit2, FiEye, FiSend } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -17,8 +21,9 @@ const QUOTE_STATUS_MAP = {
 
 export default function QuotesTab({ leadId, onCreateQuote }) {
   const navigate = useNavigate();
-  const { quotes, loading, updateQuoteStatus } = useQuotes(leadId);
+  const { quotes, loading, updateQuoteStatus, markDepositPaid, markBalancePaid } = useQuotes(leadId);
   const [balanceState, setBalanceState] = useState({}); // { [quoteId]: 'sending'|'sent'|'error' }
+  const [paidState, setPaidState] = useState({}); // { [quoteId]: 'saving'|'done'|'error' }
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric',
@@ -42,12 +47,10 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
 
     const balance = Math.max(0, Number(q.total || 0) - Number(q.deposit_amount || 0));
     const firstName = (lead.full_name || '').split(' ')[0] || 'there';
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const { subject, body } = buildBalanceDueEmail({
       firstName,
       quoteNumber: q.quote_number,
       balanceText: formatCurrency(balance),
-      payUrl: `${origin}/quote/view/${q.id}`,
     });
 
     try {
@@ -70,6 +73,47 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
       case 'error': return 'Failed — retry';
       default: return 'Request Balance Payment';
     }
+  };
+
+  // Mark a deposit/balance as received via bank transfer, then email the
+  // customer their confirmation.
+  const markPaid = async (q, type) => {
+    const isBalance = type === 'balance';
+    const confirmMsg = isBalance
+      ? `Mark the balance for ${q.quote_number} as received? This completes the order and emails the customer a paid-in-full confirmation.`
+      : `Mark the deposit for ${q.quote_number} as received? This confirms the order and emails the customer a deposit confirmation.`;
+    if (!window.confirm(confirmMsg)) return;
+
+    setPaidState((s) => ({ ...s, [q.id]: 'saving' }));
+    const { error } = isBalance ? await markBalancePaid(q.id) : await markDepositPaid(q.id);
+    if (error) {
+      setPaidState((s) => ({ ...s, [q.id]: 'error' }));
+      window.alert(`Couldn't record the payment: ${error.message || 'please try again.'}`);
+      return;
+    }
+
+    // Best-effort confirmation email — the payment is already recorded.
+    try {
+      const { data: lead } = await supabase
+        .from('leads')
+        .select('full_name, email')
+        .eq('id', leadId)
+        .single();
+      if (lead?.email) {
+        const firstName = (lead.full_name || '').split(' ')[0] || 'there';
+        const { subject, body } = isBalance
+          ? buildBalanceConfirmationEmail({ firstName, quoteNumber: q.quote_number })
+          : buildDepositConfirmationEmail({ firstName, quoteNumber: q.quote_number });
+        await fetch('/api/zoho-send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: lead.email, subject, body }),
+        });
+      }
+    } catch (_) {
+      /* email is best-effort */
+    }
+    setPaidState((s) => ({ ...s, [q.id]: 'done' }));
   };
 
   if (loading) return <div className="quotes-tab__loading">Loading quotes...</div>;
@@ -142,14 +186,32 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                     <button className="quotes-tab__action quotes-tab__action--reject" onClick={() => updateQuoteStatus(q.id, 'rejected')}>Reject</button>
                   </>
                 )}
-                {q.deposit_paid && !q.balance_paid && (
+                {q.status !== 'draft' && q.status !== 'rejected' && !q.deposit_paid && (
                   <button
-                    className="quotes-tab__action quotes-tab__action--balance"
-                    onClick={() => requestBalance(q)}
-                    disabled={balanceState[q.id] === 'sending'}
+                    className="quotes-tab__action quotes-tab__action--paid"
+                    onClick={() => markPaid(q, 'deposit')}
+                    disabled={paidState[q.id] === 'saving'}
                   >
-                    <FiSend /> {balanceLabel(q.id)}
+                    <FiCheckCircle /> {paidState[q.id] === 'saving' ? 'Saving…' : 'Mark Deposit Paid'}
                   </button>
+                )}
+                {q.deposit_paid && !q.balance_paid && (
+                  <>
+                    <button
+                      className="quotes-tab__action quotes-tab__action--balance"
+                      onClick={() => requestBalance(q)}
+                      disabled={balanceState[q.id] === 'sending'}
+                    >
+                      <FiSend /> {balanceLabel(q.id)}
+                    </button>
+                    <button
+                      className="quotes-tab__action quotes-tab__action--paid"
+                      onClick={() => markPaid(q, 'balance')}
+                      disabled={paidState[q.id] === 'saving'}
+                    >
+                      <FiCheckCircle /> {paidState[q.id] === 'saving' ? 'Saving…' : 'Mark Balance Paid'}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

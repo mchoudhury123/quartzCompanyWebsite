@@ -3,6 +3,17 @@
 // action so the wording stays in one place. The plain-text body is wrapped in
 // the branded template by api/zoho-send-email.js (logo, gold accents, footer).
 
+import { BANK_DETAILS } from './bankDetails.js';
+
+// Plain-text bank transfer block for emails. The reference is the quote number.
+function bankTransferText(reference) {
+  return `Account name: ${BANK_DETAILS.accountName}
+Sort code: ${BANK_DETAILS.sortCode}
+Account number: ${BANK_DETAILS.accountNumber}
+Bank: ${BANK_DETAILS.bankName}
+Reference: ${reference || '(your quote number)'}`;
+}
+
 export function buildDepositConfirmationEmail({ firstName = 'there', quoteNumber = '' } = {}) {
   const ref = quoteNumber ? ` (${quoteNumber})` : '';
 
@@ -45,9 +56,8 @@ The Quartz Company`,
 }
 
 // Sent by the admin to ask the customer to pay the remaining balance.
-// payUrl is the customer's online quote page, where the "Pay remaining
-// balance" button lives.
-export function buildBalanceDueEmail({ firstName = 'there', quoteNumber = '', balanceText = '', payUrl = '' } = {}) {
+// The balance is paid by bank transfer using the quote number as reference.
+export function buildBalanceDueEmail({ firstName = 'there', quoteNumber = '', balanceText = '' } = {}) {
   const ref = quoteNumber ? ` ${quoteNumber}` : '';
   const amount = balanceText ? ` of ${balanceText}` : '';
 
@@ -57,9 +67,9 @@ export function buildBalanceDueEmail({ firstName = 'there', quoteNumber = '', ba
 
 Great news — your worktops${ref} are progressing, and the remaining balance${amount} is now due.
 
-You can pay securely online here:
+Please pay the balance by bank transfer:
 
-${payUrl}
+${bankTransferText(quoteNumber)}
 
 Once your balance is settled we'll confirm your final installation details. If you'd prefer to pay over the phone or have any questions, just reply to this email or call us on 07375 303 416.
 
