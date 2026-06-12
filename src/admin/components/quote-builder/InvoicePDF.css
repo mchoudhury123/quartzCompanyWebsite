@@ -109,6 +109,7 @@
 .inv__table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   margin-bottom: 4px;
 }
 
@@ -134,12 +135,6 @@
   color: #b08d57;
   padding: 10px 12px 4px;
   background: #faf7f2;
-}
-
-.inv__section--po {
-  text-align: right;
-  color: #1a1a1a;
-  letter-spacing: 0.04em;
 }
 
 .inv__cell {

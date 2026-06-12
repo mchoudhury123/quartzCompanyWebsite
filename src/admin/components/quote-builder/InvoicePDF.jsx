@@ -94,6 +94,7 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
             <div className="inv__item-name">{item.product_name}</div>
             {dims && <div className="inv__item-sub">{dims}</div>}
           </td>
+          <td className="inv__cell">{poNumber || '—'}</td>
           <td className="inv__cell inv__cell--center">{qty}</td>
           <td className="inv__cell inv__cell--right inv__cell--bold">{fmt(item.line_total)}</td>
         </tr>
@@ -146,9 +147,16 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
 
       {/* Line items */}
       <table className="inv__table">
+        <colgroup>
+          <col style={{ width: 'auto' }} />
+          <col style={{ width: '190px' }} />
+          <col style={{ width: '70px' }} />
+          <col style={{ width: '130px' }} />
+        </colgroup>
         <thead>
           <tr>
             <th className="inv__th">Description</th>
+            <th className="inv__th">PO Number</th>
             <th className="inv__th inv__th--center">Qty</th>
             <th className="inv__th inv__th--right">Amount</th>
           </tr>
@@ -156,22 +164,19 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
         <tbody>
           {materials.length > 0 && (
             <>
-              <tr>
-                <td className="inv__section" colSpan={2}>Materials</td>
-                <td className="inv__section inv__section--po">{poNumber ? `PO: ${poNumber}` : ''}</td>
-              </tr>
+              <tr><td colSpan={4} className="inv__section">Materials</td></tr>
               {renderItemRows(materials)}
             </>
           )}
           {processes.length > 0 && (
             <>
-              <tr><td colSpan={3} className="inv__section">Processes</td></tr>
+              <tr><td colSpan={4} className="inv__section">Processes</td></tr>
               {renderItemRows(processes)}
             </>
           )}
           {products.length > 0 && (
             <>
-              <tr><td colSpan={3} className="inv__section">Products</td></tr>
+              <tr><td colSpan={4} className="inv__section">Products</td></tr>
               {renderItemRows(products)}
             </>
           )}
