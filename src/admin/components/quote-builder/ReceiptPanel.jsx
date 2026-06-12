@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { FiSave, FiDownload, FiMail } from 'react-icons/fi';
+import { FiSave, FiDownload, FiMail, FiFileText } from 'react-icons/fi';
 import './ReceiptPanel.css';
 
 function getCategoryLabel(cat) {
@@ -25,6 +25,7 @@ export default function ReceiptPanel({
   onDepositPercentChange,
   onSaveDraft,
   onDownloadPDF,
+  onDownloadInvoice,
   onSendEmail,
   saving,
 }) {
@@ -195,7 +196,14 @@ export default function ReceiptPanel({
           onClick={onDownloadPDF}
           disabled={saving || items.length === 0}
         >
-          <FiDownload /> Download PDF
+          <FiDownload /> Download Quote PDF
+        </button>
+        <button
+          className="rp__btn rp__btn--invoice"
+          onClick={onDownloadInvoice}
+          disabled={saving || items.length === 0}
+        >
+          <FiFileText /> Download Invoice
         </button>
         <button
           className="rp__btn rp__btn--email"

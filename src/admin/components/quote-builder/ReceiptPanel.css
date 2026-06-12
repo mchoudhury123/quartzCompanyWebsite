@@ -270,6 +270,16 @@
   background: #2a2a2a;
 }
 
+.rp__btn--invoice {
+  background: #1C1712;
+  color: #fff;
+  border: 1px solid #b08d57;
+}
+
+.rp__btn--invoice:hover:not(:disabled) {
+  background: #2a2118;
+}
+
 .rp__btn--email {
   background: var(--color-gold, #c5a47e);
   color: #fff;

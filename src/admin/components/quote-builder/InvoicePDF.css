@@ -1,0 +1,255 @@
+.inv {
+  width: 794px;
+  padding: 44px 48px 36px;
+  background: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #1a1a1a;
+  box-sizing: border-box;
+}
+
+/* Header */
+.inv__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.inv__logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.inv__head-right {
+  text-align: right;
+  min-width: 250px;
+}
+
+.inv__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #1C1712;
+  margin-bottom: 12px;
+}
+
+.inv__meta {
+  margin-left: auto;
+  border-collapse: collapse;
+}
+
+.inv__meta td {
+  padding: 3px 0;
+  font-size: 12px;
+}
+
+.inv__meta td:first-child {
+  text-align: right;
+  color: #888;
+  padding-right: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+}
+
+.inv__meta td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Gold band separator */
+.inv__band {
+  height: 3px;
+  background: #b08d57;
+  margin: 22px 0 26px;
+}
+
+/* Parties */
+.inv__parties {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.inv__party {
+  width: 48%;
+}
+
+.inv__party--right {
+  text-align: right;
+}
+
+.inv__party-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #b89a72;
+  margin-bottom: 8px;
+}
+
+.inv__party-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+.inv__party-line {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3a3a3a;
+}
+
+/* Line items table */
+.inv__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4px;
+}
+
+.inv__th {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: #1C1712;
+  padding: 11px 12px;
+  text-align: left;
+}
+
+.inv__th--right { text-align: right; }
+.inv__th--center { text-align: center; }
+
+.inv__section {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #b08d57;
+  padding: 10px 12px 4px;
+  background: #faf7f2;
+}
+
+.inv__cell {
+  font-size: 12px;
+  padding: 9px 12px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.inv__cell--right { text-align: right; }
+.inv__cell--center { text-align: center; }
+.inv__cell--bold { font-weight: 600; color: #1a1a1a; }
+
+.inv__item-name { color: #1a1a1a; }
+
+.inv__item-sub {
+  font-size: 11px;
+  color: #888;
+  margin-top: 3px;
+}
+
+/* Totals */
+.inv__totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 300px;
+  margin: 18px 0 0 auto;
+}
+
+.inv__total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+}
+
+.inv__total-row--grand {
+  font-size: 17px;
+  font-weight: 800;
+  color: #1C1712;
+  padding-top: 8px;
+  border-top: 2px solid #1C1712;
+  margin-top: 4px;
+}
+
+/* Amount due now */
+.inv__due {
+  margin-top: 30px;
+  padding: 24px 26px;
+  background: #f7f3ec;
+  border: 1px solid #e7ddcb;
+  border-left: 4px solid #b08d57;
+}
+
+.inv__due-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.inv__due-label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a6c3e;
+  font-weight: 700;
+}
+
+.inv__due-amount {
+  font-size: 30px;
+  font-weight: 800;
+  color: #b08d57;
+}
+
+.inv__due-note {
+  margin: 12px 0 18px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #5a5a5a;
+}
+
+.inv__bank {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inv__bank td {
+  padding: 8px 0;
+  border-bottom: 1px solid #e7ddcb;
+  font-size: 13px;
+}
+
+.inv__bank tr:last-child td { border-bottom: none; }
+
+.inv__bank td:first-child {
+  color: #777;
+  font-family: Georgia, serif;
+}
+
+.inv__bank td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.04em;
+}
+
+/* Footer */
+.inv__footer {
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.inv__footer p { margin: 3px 0; }

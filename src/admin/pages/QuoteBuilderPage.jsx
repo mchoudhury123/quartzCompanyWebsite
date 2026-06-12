@@ -8,6 +8,7 @@ import PieceEditor from '../components/quote-builder/PieceEditor';
 import ProductPicker from '../components/quote-builder/ProductPicker';
 import ReceiptPanel from '../components/quote-builder/ReceiptPanel';
 import QuotePDF from '../components/quote-builder/QuotePDF';
+import InvoicePDF from '../components/quote-builder/InvoicePDF';
 import EmailPreviewModal from '../components/quote-builder/EmailPreviewModal';
 import useLeadDetail from '../hooks/useLeadDetail';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -22,6 +23,7 @@ export default function QuoteBuilderPage() {
   const { createQuote, updateQuote } = useQuotes(leadId);
   const { quote: existingQuote, loading: quoteLoading } = useQuoteDetail(quoteId);
   const pdfRef = useRef(null);
+  const invoiceRef = useRef(null);
   const { lead } = useLeadDetail(leadId);
 
   const isEditMode = !!quoteId;
@@ -37,6 +39,7 @@ export default function QuoteBuilderPage() {
   const [showEmailPreview, setShowEmailPreview] = useState(false);
   const [emailPreviewData, setEmailPreviewData] = useState(null);
   const [savedQuote, setSavedQuote] = useState(null);
+  const [poNumber, setPoNumber] = useState('');
 
   // Load existing quote data in edit mode
   useEffect(() => {
@@ -361,6 +364,34 @@ export default function QuoteBuilderPage() {
     setSaving(false);
   };
 
+  // --- Download Invoice ---
+  const handleDownloadInvoice = async () => {
+    if (saving) return;
+    const po = window.prompt('PO number for this invoice (leave blank if none):', poNumber || '');
+    if (po === null) return; // cancelled
+    setPoNumber(po.trim());
+
+    // Reuse the existing saved quote if there is one — generating an invoice
+    // must not change the quote's status. Only save when it's a brand-new quote
+    // that doesn't have a number yet.
+    let quoteData = savedQuote || existingQuote;
+    if (!quoteData?.quote_number) {
+      setSaving(true);
+      const { data, error } = await saveQuote('sent');
+      setSaving(false);
+      if (error) return;
+      quoteData = data;
+      setSavedQuote(data);
+    }
+
+    // Wait for the invoice template to re-render with the number + PO.
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    if (invoiceRef.current) {
+      const invNum = (quoteData?.quote_number || '').replace(/^QC[-_]?/i, 'INV-');
+      invoiceRef.current.generate(invNum || 'invoice');
+    }
+  };
+
   // --- Send Email (opens preview first) ---
   const handleSendEmail = () => {
     if (saving || allItems.length === 0) return;
@@ -466,6 +497,8 @@ export default function QuoteBuilderPage() {
     customerPostcode: lead?.postcode || '',
   };
 
+  const invoiceData = { ...pdfData, poNumber };
+
   return (
     <div className="quote-builder">
       <div className="quote-builder__topbar">
@@ -525,14 +558,16 @@ export default function QuoteBuilderPage() {
             onDepositPercentChange={setDepositPercent}
             onSaveDraft={handleSaveDraft}
             onDownloadPDF={handleDownloadPDF}
+            onDownloadInvoice={handleDownloadInvoice}
             onSendEmail={handleSendEmail}
             saving={saving}
           />
         </div>
       </div>
 
-      {/* Hidden PDF render target */}
+      {/* Hidden PDF render targets */}
       <QuotePDF ref={pdfRef} data={pdfData} />
+      <InvoicePDF ref={invoiceRef} data={invoiceData} />
 
       {/* Email preview modal */}
       {showEmailPreview && emailPreviewData && (
