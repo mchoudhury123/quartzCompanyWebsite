@@ -136,6 +136,12 @@
   background: #faf7f2;
 }
 
+.inv__section--po {
+  text-align: right;
+  color: #1a1a1a;
+  letter-spacing: 0.04em;
+}
+
 .inv__cell {
   font-size: 12px;
   padding: 9px 12px;

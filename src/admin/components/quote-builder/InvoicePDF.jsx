@@ -156,7 +156,10 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
         <tbody>
           {materials.length > 0 && (
             <>
-              <tr><td colSpan={3} className="inv__section">Materials</td></tr>
+              <tr>
+                <td className="inv__section" colSpan={2}>Materials</td>
+                <td className="inv__section inv__section--po">{poNumber ? `PO: ${poNumber}` : ''}</td>
+              </tr>
               {renderItemRows(materials)}
             </>
           )}
