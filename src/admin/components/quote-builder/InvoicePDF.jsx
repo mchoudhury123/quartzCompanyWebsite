@@ -207,7 +207,7 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
             <tr><td>Sort code</td><td>{BANK_DETAILS.sortCode}</td></tr>
             <tr><td>Account number</td><td>{BANK_DETAILS.accountNumber}</td></tr>
             <tr><td>Bank</td><td>{BANK_DETAILS.bankName}</td></tr>
-            <tr><td>Reference</td><td>{poNumber || invoiceNumber || '—'}</td></tr>
+            <tr><td>Reference</td><td>{data?.quoteNumber && data.quoteNumber !== 'Draft' ? data.quoteNumber : '—'}</td></tr>
           </tbody>
         </table>
       </div>
