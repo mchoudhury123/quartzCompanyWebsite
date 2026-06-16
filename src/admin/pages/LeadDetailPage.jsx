@@ -16,6 +16,7 @@ import CallsTab from '../components/tabs/CallsTab';
 import SmsTab from '../components/tabs/SmsTab';
 import EmailsTab from '../components/tabs/EmailsTab';
 import NotesTab from '../components/tabs/NotesTab';
+import ReviewsTab from '../components/tabs/ReviewsTab';
 import SampleCreateModal from '../components/modals/SampleCreateModal';
 import FileUploadModal from '../components/modals/FileUploadModal';
 import SmsModal from '../components/modals/SmsModal';
@@ -105,6 +106,7 @@ export default function LeadDetailPage() {
       case 'sms': return <SmsTab leadId={id} onSendSms={() => setModal('sms')} highlightId={highlightId} />;
       case 'emails': return <EmailsTab leadId={id} onSendEmail={() => setModal('email')} highlightId={highlightId} />;
       case 'notes': return <NotesTab notes={notes} onAddNote={addNote} onDeleteNote={deleteNote} highlightId={highlightId} />;
+      case 'reviews': return <ReviewsTab leadId={id} lead={lead} />;
       default: return <ActivityTab leadId={id} />;
     }
   };

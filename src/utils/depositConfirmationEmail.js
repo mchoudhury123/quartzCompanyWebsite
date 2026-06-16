@@ -1,7 +1,7 @@
 // Shared content for the deposit/balance payment emails.
-// Used by the Stripe handler (api/stripe.js) and the admin "request balance"
-// action so the wording stays in one place. The plain-text body is wrapped in
-// the branded template by api/zoho-send-email.js (logo, gold accents, footer).
+// Used by the admin payment actions (Quotes tab) so the wording stays in one
+// place. The plain-text body is wrapped in the branded template by
+// api/zoho-send-email.js (logo, gold accents, footer).
 
 import { BANK_DETAILS } from './bankDetails.js';
 

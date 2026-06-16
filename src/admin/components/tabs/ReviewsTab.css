@@ -1,0 +1,117 @@
+.reviews-tab__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviews-tab__title {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  margin: 0;
+}
+
+.reviews-tab__send {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.95rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-gold, #c5a47e);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.reviews-tab__send:hover {
+  background: #b08e66;
+}
+
+.reviews-tab__send:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.reviews-tab__hint {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  color: var(--admin-text-light, #777);
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+}
+
+.reviews-tab__empty {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text-light, #777);
+  text-align: center;
+  padding: 1.75rem 1rem;
+  line-height: 1.55;
+}
+
+.reviews-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.reviews-tab__card {
+  background: #f9fafb;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1rem 1.15rem;
+}
+
+.reviews-tab__stars {
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+.reviews-tab__star {
+  color: #d8d2c5;
+}
+
+.reviews-tab__star--on {
+  color: var(--color-gold, #c5a47e);
+}
+
+.reviews-tab__comment {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.9rem;
+  color: var(--admin-text);
+  line-height: 1.6;
+  margin: 0.55rem 0 0.65rem;
+  font-style: italic;
+}
+
+.reviews-tab__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.76rem;
+  color: var(--admin-text-light, #777);
+}
+
+.reviews-tab__name {
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.reviews-tab__dot {
+  color: #c9c2b4;
+}
+
+.reviews-tab__quote {
+  font-weight: 600;
+  color: var(--color-gold, #c5a47e);
+}

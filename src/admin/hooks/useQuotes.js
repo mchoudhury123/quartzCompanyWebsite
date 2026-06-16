@@ -87,10 +87,9 @@ export default function useQuotes(leadId) {
     return { error };
   };
 
-  // Manually mark a deposit/balance as received (bank transfer). Mirrors what
-  // the Stripe webhook used to do: sets the paid flags + timestamps, advances
-  // the lead stage, and logs the payment. The confirmation email to the
-  // customer is sent by the caller (it needs the lead's email address).
+  // Mark a deposit/balance as received via bank transfer: sets the paid flags +
+  // timestamps, advances the lead stage, and logs the payment. The confirmation
+  // email to the customer is sent by the caller (it needs the lead's email).
   const markDepositPaid = async (quoteId) => {
     const nowIso = new Date().toISOString();
     const { data, error } = await supabase

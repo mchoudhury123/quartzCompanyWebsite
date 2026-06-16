@@ -11,6 +11,7 @@ const TABS = [
   { key: 'sms', label: 'SMS' },
   { key: 'emails', label: 'Emails' },
   { key: 'notes', label: 'Notes' },
+  { key: 'reviews', label: 'Reviews' },
 ];
 
 export default function ClientDetailTabs({ children, highlights = {} }) {
