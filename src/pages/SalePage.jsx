@@ -33,14 +33,14 @@ export default function SalePage() {
                 Summer Sale &mdash; <span className="sale-hero__highlight">40% Off</span> All Worktops
               </h1>
               <p className="sale-hero__subtitle">
-                As part of our summer sale, every worktop in our collection is 40% off &mdash; transform your kitchen for less.
+                As part of our summer sale, every worktop in our collection is 40% off &mdash; transform your kitchen for less. Hurry, the sale ends 1st July.
               </p>
             </div>
             <div className="sale-hero__right">
               <div className="sale-hero__countdown">
-                <span className="sale-hero__countdown-label">Summer Sale</span>
-                <span className="sale-hero__countdown-date">Now On</span>
-                <span className="sale-hero__countdown-note">Limited time only &mdash; don&rsquo;t miss out</span>
+                <span className="sale-hero__countdown-label">Sale Ends</span>
+                <span className="sale-hero__countdown-date">1st July</span>
+                <span className="sale-hero__countdown-note">Hurry &mdash; don&rsquo;t miss out</span>
               </div>
             </div>
           </div>

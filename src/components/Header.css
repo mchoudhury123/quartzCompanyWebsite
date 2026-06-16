@@ -63,8 +63,8 @@
    Ticker / Marquee Announcement Bar
    ============================================================ */
 .ticker-bar {
-  background-color: var(--color-cream);
-  color: #1c1712;
+  background-color: #c0392b;
+  color: #fdeede;
   font-family: var(--font-body);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
@@ -103,7 +103,7 @@
 }
 
 .ticker-bar__link {
-  color: #1c1712;
+  color: #ffffff;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -112,7 +112,7 @@
 }
 
 .ticker-bar__link:hover {
-  color: var(--color-gold);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .ticker-bar__separator {
