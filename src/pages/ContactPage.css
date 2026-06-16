@@ -5,7 +5,7 @@
 
 /* ── Hero ── */
 .contact-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #252525 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #251F19 100%);
   color: var(--color-white);
   text-align: center;
   padding: 5rem 1.5rem 4.5rem;
@@ -130,24 +130,21 @@
   border-color: var(--color-gold);
 }
 
-/* Map placeholder in sidebar */
+/* Embedded Google map in sidebar */
 .contact-sidebar__map {
   width: 100%;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
   margin-top: auto;
 }
 
-.contact-sidebar__map span {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+.contact-sidebar__map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
 /* ── Right: Form + Inline FAQ ── */

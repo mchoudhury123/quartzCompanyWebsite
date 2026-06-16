@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import usePageMeta from '../hooks/usePageMeta';
 import './TermsPage.css';
 
 const TermsPage = () => {
+  usePageMeta('Terms & Conditions | The Quartz Company', 'The terms and conditions for ordering premium quartz kitchen worktops from The Quartz Company.');
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -519,7 +521,7 @@ const TermsPage = () => {
             <p>
               <strong>The Quartz Company Ltd</strong><br />
               Northampton, Northamptonshire<br />
-              Email: <a href="mailto:info@thequartzcompany.co.uk">info@thequartzcompany.co.uk</a> |
+              Email: <a href="mailto:admin@thequartzcompany.co.uk">admin@thequartzcompany.co.uk</a> |
               Tel: <a href="tel:+447375303416">07375 303 416</a>
             </p>
           </div>

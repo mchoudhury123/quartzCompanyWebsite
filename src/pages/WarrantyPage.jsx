@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './WarrantyPage.css';
 
 const claimSteps = [
@@ -26,6 +27,7 @@ const claimSteps = [
 ];
 
 export default function WarrantyPage() {
+  usePageMeta("25-Year Quartz Worktop Warranty | The Quartz Company", "Every quartz worktop from The Quartz Company is backed by a 25-year surface warranty. Read what's covered and how our guarantee gives you peace of mind.");
   const [activeTab, setActiveTab] = useState('material');
 
   return (
@@ -34,7 +36,7 @@ export default function WarrantyPage() {
       <section className="war-hero">
         <div className="war-hero__overlay" />
         <div className="war-hero__content container">
-          <span className="war-hero__badge">Peace of Mind</span>
+          <span className="eyebrow">Peace of Mind</span>
           <h1 className="war-hero__title">Our Warranty Promise</h1>
           <p className="war-hero__subtitle">
             We stand behind every worktop we fabricate and install. Our comprehensive warranty
@@ -203,39 +205,6 @@ export default function WarrantyPage() {
                 </div>
                 <h4 className="war-cert__name">ISO 9001</h4>
                 <p className="war-cert__desc">Quality management system certified for consistent excellence.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Download — even section (right-aligned) */}
-      <section className="war-download section section--cream">
-        <div className="container">
-          <div className="war-download__block war-download__block--right">
-            <div className="war-download__card">
-              <div className="war-download__info">
-                <h2 className="war-download__heading">Warranty Documentation</h2>
-                <p className="war-download__text">
-                  Download the full terms and conditions of our material and installation warranties.
-                  Your specific warranty certificate will be provided upon completion of your installation.
-                </p>
-              </div>
-              <div className="war-download__actions">
-                <a
-                  href="#download-material"
-                  className="btn btn--primary"
-                  onClick={(e) => { e.preventDefault(); alert('Download placeholder — Material warranty PDF would be here.'); }}
-                >
-                  Material Warranty (PDF)
-                </a>
-                <a
-                  href="#download-installation"
-                  className="btn btn--outline"
-                  onClick={(e) => { e.preventDefault(); alert('Download placeholder — Installation warranty PDF would be here.'); }}
-                >
-                  Installation Warranty (PDF)
-                </a>
               </div>
             </div>
           </div>

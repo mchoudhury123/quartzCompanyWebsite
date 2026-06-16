@@ -4,17 +4,17 @@
    ============================================================ */
 
 :root {
-  --color-primary: #3B3B3B;
-  --color-primary-dark: #252525;
-  --color-primary-light: #6B8F71;
-  --color-gold: #c5a47e;
-  --color-gold-hover: #b08e66;
+  --color-primary: #3A322B;
+  --color-primary-dark: #251F19;
+  --color-primary-light: #8A7860;
+  --color-gold: #A9885C;
+  --color-gold-hover: #94734C;
   --color-white: #ffffff;
-  --color-off-white: #f9f8f6;
-  --color-text: #2c2c2c;
-  --color-text-light: #666666;
-  --color-border: #e8e4df;
-  --color-sale: #b93131;
+  --color-off-white: #F8F3EB;
+  --color-text: #33302B;
+  --color-text-light: #837B70;
+  --color-border: #E6DDCF;
+  --color-sale: #9C3B2E;
 
   --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -43,21 +43,31 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  transition: box-shadow var(--transition-base);
+  transition: transform 0.35s ease, box-shadow var(--transition-base);
 }
 
 .site-header--scrolled {
   box-shadow: var(--shadow-md);
 }
 
+.site-header--hidden {
+  transform: translateY(-100%);
+}
+
+/* Scrolling up (not at top): reveal nav only, keep ticker tucked away */
+.site-header--nav-only {
+  transform: translateY(calc(-1 * var(--ticker-height)));
+}
+
 /* ============================================================
    Ticker / Marquee Announcement Bar
    ============================================================ */
 .ticker-bar {
-  background-color: #c41e3a;
-  color: var(--color-white);
+  background-color: var(--color-cream);
+  color: #1c1712;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
   line-height: 1.4;
   height: var(--ticker-height);
   display: flex;
@@ -93,8 +103,8 @@
 }
 
 .ticker-bar__link {
-  color: var(--color-gold);
-  font-weight: 600;
+  color: #1c1712;
+  font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 2px;
   margin-left: 0.5rem;
@@ -102,7 +112,7 @@
 }
 
 .ticker-bar__link:hover {
-  color: var(--color-white);
+  color: var(--color-gold);
 }
 
 .ticker-bar__separator {
@@ -151,8 +161,8 @@
    Split Navigation (centered logo)
    ============================================================ */
 .split-nav {
-  background-color: var(--color-white);
-  border-bottom: 1px solid var(--color-border);
+  background-color: #1c1712;
+  border-bottom: 1px solid rgba(169, 136, 92, 0.55);
   font-family: var(--font-body);
   position: relative;
 }
@@ -178,17 +188,18 @@
 
 .split-nav__logo-text {
   font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  letter-spacing: 0.14em;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   line-height: 1;
   transition: color var(--transition-base);
 }
 
 .split-nav__logo:hover .split-nav__logo-text,
 .split-nav__logo:focus-visible .split-nav__logo-text {
-  color: var(--color-primary-light);
+  color: var(--color-gold-light);
 }
 
 /* Nav Links */
@@ -221,7 +232,7 @@
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-text);
+  color: rgba(245, 239, 230, 0.88);
   text-decoration: none;
   letter-spacing: 0.01em;
   border-radius: 6px;
@@ -232,19 +243,19 @@
 
 .split-nav__link:hover,
 .split-nav__link:focus-visible {
-  color: var(--color-primary);
-  background-color: var(--color-off-white);
+  color: #ffffff;
+  background-color: rgba(245, 239, 230, 0.1);
 }
 
 .split-nav__link--sale {
-  color: var(--color-sale);
+  color: #d23b2c;
   font-weight: 700;
 }
 
 .split-nav__link--sale:hover,
 .split-nav__link--sale:focus-visible {
-  color: var(--color-sale);
-  background-color: #fdf0f0;
+  color: #e84b39;
+  background-color: rgba(210, 59, 44, 0.15);
 }
 
 .split-nav__link--dropdown-toggle {
@@ -318,7 +329,7 @@
 .btn--gold:focus-visible {
   background-color: var(--color-gold-hover);
   border-color: var(--color-gold-hover);
-  box-shadow: 0 2px 10px rgba(197, 164, 126, 0.35);
+  box-shadow: 0 2px 10px rgba(169, 136, 92, 0.35);
 }
 
 .btn--outline {
@@ -348,7 +359,7 @@
   border: none;
   padding: 0.5rem;
   font-size: 1.5rem;
-  color: var(--color-primary);
+  color: rgba(245, 239, 230, 0.9);
   cursor: pointer;
   border-radius: 6px;
   transition: background-color var(--transition-base);
@@ -356,7 +367,7 @@
 
 .split-nav__hamburger:hover,
 .split-nav__hamburger:focus-visible {
-  background-color: var(--color-off-white);
+  background-color: rgba(245, 239, 230, 0.1);
 }
 
 /* ============================================================
@@ -395,13 +406,14 @@
 
 .mega-menu__heading {
   font-family: var(--font-display);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
   color: var(--color-primary);
   margin: 0 0 0.75rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--color-gold);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .mega-menu__list {

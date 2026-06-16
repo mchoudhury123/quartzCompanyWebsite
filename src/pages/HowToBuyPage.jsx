@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './HowToBuyPage.css';
 
 const stages = [
@@ -86,6 +87,7 @@ const stages = [
 ];
 
 export default function HowToBuyPage() {
+  usePageMeta('How to Buy Quartz Worktops | The Quartz Company', 'From free samples to final installation — see how easy it is to buy premium engineered and printed quartz worktops from The Quartz Company.');
   const [expandedStage, setExpandedStage] = useState(1);
 
   const toggleStage = (id) => {
@@ -98,7 +100,7 @@ export default function HowToBuyPage() {
       <section className="htb-hero">
         <div className="htb-hero__overlay" />
         <div className="htb-hero__content container">
-          <span className="htb-hero__badge">Buying Guide</span>
+          <span className="eyebrow">Buying Guide</span>
           <h1 className="htb-hero__title">How to Buy Your Worktops</h1>
           <p className="htb-hero__subtitle">
             From your first enquiry to installation day and beyond — here is exactly what to

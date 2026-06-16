@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './CareersPage.css';
 
 const benefits = [
@@ -68,6 +69,7 @@ const initialApplication = {
 };
 
 function CareersPage() {
+  usePageMeta('Careers | Join The Quartz Company', 'Join The Quartz Company — a growing Northampton-based team crafting premium quartz kitchen worktops. View current opportunities and get in touch.');
   const [application, setApplication] = useState(initialApplication);
   const [applicationErrors, setApplicationErrors] = useState({});
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);

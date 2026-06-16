@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import products from '../data/products.json';
 import testimonials from '../data/testimonials.json';
@@ -32,6 +33,7 @@ function AnimatedSection({ children, className = '', id }) {
 }
 
 export default function HomePage() {
+  usePageMeta('Affordable Quartz Worktops UK | The Quartz Company', 'Affordable engineered & printed quartz kitchen worktops, handcrafted in Britain. Free samples, fixed-price quotes, 25-year warranty. UK delivery and fitting.');
   /* ── Featured products ── */
   const featuredProducts = products.filter((p) => p.popular).slice(0, 6);
   if (featuredProducts.length < 6) {
@@ -107,6 +109,15 @@ export default function HomePage() {
     { icon: '\uD83D\uDE9A', text: 'Free Local Delivery' },
   ];
 
+  /* ── Price formatter ── */
+  const formatPrice = (value) =>
+    new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+
   return (
     <div className="hp">
       {/* ═══════════════════════════════════════
@@ -119,7 +130,7 @@ export default function HomePage() {
               Premium Quartz Worktops, Delivered Direct to Your Door
             </h1>
             <p className="hp-hero__subtitle">
-              Engineered quartz &amp; full body printed quartz &mdash; up to 40% off this spring
+              Engineered quartz &amp; full body printed quartz &mdash; up to 40% off this summer
             </p>
             <div className="hp-hero__ctas">
               <Link to="/quote" className="btn btn--gold btn--lg hp-hero__btn">
@@ -134,38 +145,40 @@ export default function HomePage() {
         <div className="hp-hero__right">
           <div className="hp-hero__visual" />
         </div>
+      </section>
 
-        {/* Floating Trust Bar */}
-        <div className="hp-trust">
-          <div className="hp-trust__inner container">
-            {trustItems.map((item, i) => (
-              <div className="hp-trust__item" key={i}>
-                <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
-                <span className="hp-trust__text">{item.text}</span>
-              </div>
-            ))}
-          </div>
-          {/* Mobile scrolling version */}
-          <div className="hp-trust__track">
-            <div className="hp-trust__track-content">
-              {trustItems.map((item, i) => (
-                <div className="hp-trust__item" key={i}>
-                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
-                  <span className="hp-trust__text">{item.text}</span>
-                </div>
-              ))}
+      {/* ═══════════════════════════════════════
+          1b. PHILOSOPHY — editorial two-column intro
+          ═══════════════════════════════════════ */}
+      <AnimatedSection className="section hp-philosophy" id="philosophy">
+        <div className="container">
+          <div className="hp-philosophy__layout">
+            <div className="hp-philosophy__intro">
+              <span className="eyebrow">Our Philosophy</span>
+              <h2 className="hp-philosophy__heading">
+                Premium surfaces, priced with honesty.
+              </h2>
             </div>
-            <div className="hp-trust__track-content" aria-hidden="true">
-              {trustItems.map((item, i) => (
-                <div className="hp-trust__item" key={`dup-${i}`}>
-                  <span className="hp-trust__icon" aria-hidden="true">{item.icon}</span>
-                  <span className="hp-trust__text">{item.text}</span>
-                </div>
-              ))}
+            <div className="hp-philosophy__body">
+              <p className="hp-philosophy__text">
+                The Quartz Company was founded on a simple belief &mdash; that a
+                beautiful, hard-wearing worktop shouldn&rsquo;t carry a designer
+                price tag. We engineer and hand-finish every surface in Britain,
+                then sell direct to you, cutting out the showroom mark-ups.
+              </p>
+              <p className="hp-philosophy__text">
+                From free samples and fixed-price quotes to a 25-year warranty,
+                every detail is designed to give you confidence &mdash; no
+                pressure, no hidden costs, just exceptional quartz delivered to
+                your door.
+              </p>
+              <Link to="/about" className="hp-philosophy__link">
+                Discover our story &rarr;
+              </Link>
             </div>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* ═══════════════════════════════════════
           2. FEATURED PRODUCTS (horizontal scroll)
@@ -176,14 +189,37 @@ export default function HomePage() {
           <p className="section-subtitle">
             Our most-loved surfaces, chosen by thousands of homeowners
           </p>
-          <div className="hp-featured__scroll">
-            {featuredProducts.map((product) => (
-              <div className="hp-featured__scroll-item" key={product.id}>
-                <ProductCard product={product} />
-              </div>
+          <div className="hp-featured__grid">
+            {featuredProducts.slice(0, 4).map((product) => (
+              <Link
+                to={`/product/${product.slug}`}
+                className="hp-product"
+                key={product.id}
+              >
+                <div className="hp-product__frame">
+                  <img
+                    src={product.swatch}
+                    alt={product.name}
+                    className="hp-product__img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="hp-product__caption">
+                  <h3 className="hp-product__name">{product.name}</h3>
+                  <p className="hp-product__sub">
+                    {product.material} &mdash; {product.collection}
+                  </p>
+                  <p className="hp-product__price">
+                    From {formatPrice(product.pricePerSqm)} /m&sup2;
+                  </p>
+                </div>
+              </Link>
             ))}
-            <Link to="/colours" className="hp-featured__view-all">
-              <span className="hp-featured__view-all-text">View All Colours &rarr;</span>
+          </div>
+          <div className="hp-featured__cta">
+            <Link to="/colours" className="btn btn--gold btn--lg">
+              View All Colours
             </Link>
           </div>
         </div>
@@ -275,15 +311,12 @@ export default function HomePage() {
       <AnimatedSection className="section section--cream hp-steps" id="how-it-works">
         <div className="container">
           <h2 className="section-title">Four Simple Steps to Your Dream Kitchen</h2>
-          <div className="hp-steps__timeline">
+          <div className="hp-steps__row">
             {stepsData.map((step, i) => (
-              <div className={`hp-steps__item ${i % 2 === 0 ? 'hp-steps__item--left' : 'hp-steps__item--right'}`} key={i}>
-                <div className="hp-steps__content">
-                  <div className="hp-steps__number">{step.num}</div>
-                  <h3 className="hp-steps__title">{step.title}</h3>
-                  <p className="hp-steps__desc">{step.desc}</p>
-                </div>
-                <div className="hp-steps__marker" />
+              <div className="hp-step" key={i}>
+                <span className="hp-step__num">{step.num}</span>
+                <h3 className="hp-step__title">{step.title}</h3>
+                <p className="hp-step__desc">{step.desc}</p>
               </div>
             ))}
           </div>

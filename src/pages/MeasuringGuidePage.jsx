@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './MeasuringGuidePage.css';
 
 const measuringSteps = [
@@ -101,6 +102,7 @@ const measuringSteps = [
 ];
 
 export default function MeasuringGuidePage() {
+  usePageMeta('How to Measure for Quartz Worktops | The Quartz Company', 'A simple step-by-step guide to measuring your kitchen for new quartz worktops, so you can get an accurate fixed-price quote from The Quartz Company.');
   const [activeSection, setActiveSection] = useState(null);
 
   const toggleSection = (id) => {
@@ -113,7 +115,7 @@ export default function MeasuringGuidePage() {
       <section className="mg-hero">
         <div className="mg-hero__overlay" />
         <div className="mg-hero__content container">
-          <span className="mg-hero__badge">Resources</span>
+          <span className="eyebrow">Resources</span>
           <h1 className="mg-hero__title">How to Measure Your Worktops</h1>
           <p className="mg-hero__subtitle">
             A comprehensive guide to measuring your kitchen for stone worktops.
@@ -214,23 +216,6 @@ export default function MeasuringGuidePage() {
                       </ul>
                     </div>
                   </div>
-
-                  {/* Diagram Placeholder */}
-                  <div className="mg-step__diagram">
-                    <div className="mg-diagram-placeholder">
-                      <div className="mg-diagram-placeholder__icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                          <rect x="4" y="8" width="40" height="28" rx="2" stroke="currentColor" strokeWidth="2" fill="none" />
-                          <line x1="4" y1="36" x2="44" y2="36" stroke="currentColor" strokeWidth="2" />
-                          <line x1="4" y1="8" x2="24" y2="24" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
-                          <line x1="44" y1="8" x2="24" y2="24" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
-                          <text x="24" y="44" textAnchor="middle" fontSize="6" fill="currentColor">DIAGRAM</text>
-                        </svg>
-                      </div>
-                      <p className="mg-diagram-placeholder__label">{step.diagramLabel}</p>
-                      <p className="mg-diagram-placeholder__desc">{step.diagramDesc}</p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -262,28 +247,6 @@ export default function MeasuringGuidePage() {
                 The template visit typically takes 30-60 minutes and is arranged once your base
                 units and cabinets are fully fitted and level.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Download Section */}
-      <section className="mg-download section">
-        <div className="container">
-          <div className="mg-download__card">
-            <div className="mg-download__info">
-              <h2 className="mg-download__heading">Printable Measuring Sheet</h2>
-              <p className="mg-download__text">
-                Download our free measuring template to record your dimensions neatly.
-                It includes a grid for sketching your layout and spaces for all the measurements
-                we need to provide your quote.
-              </p>
-            </div>
-            <div className="mg-download__action">
-              <a href="#download" className="btn btn--primary btn--lg" onClick={(e) => { e.preventDefault(); alert('Download link placeholder — PDF measuring sheet would be here.'); }}>
-                Download Measuring Sheet (PDF)
-              </a>
-              <span className="mg-download__meta">Free download — No sign-up required</span>
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './PrivacyPage.css';
 
 const PrivacyPage = () => {
+  usePageMeta('Privacy Policy | The Quartz Company', 'How The Quartz Company collects, uses and protects your personal data.');
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -392,7 +394,7 @@ const PrivacyPage = () => {
             <p>Northampton, Northamptonshire</p>
             <p>
               Email:{' '}
-              <a href="mailto:privacy@thequartzcompany.co.uk">privacy@thequartzcompany.co.uk</a>
+              <a href="mailto:admin@thequartzcompany.co.uk">admin@thequartzcompany.co.uk</a>
             </p>
             <p>
               Telephone:{' '}

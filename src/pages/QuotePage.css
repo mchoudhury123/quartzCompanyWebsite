@@ -118,7 +118,7 @@
   background: var(--color-gold);
   color: var(--color-white);
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 4px rgba(197, 164, 126, 0.2);
+  box-shadow: 0 0 0 4px rgba(169, 136, 92, 0.2);
 }
 
 /* Completed step circle */
@@ -250,7 +250,7 @@
 
 .quote-page__swatch-tile--selected {
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.25);
+  box-shadow: 0 0 0 3px rgba(169, 136, 92, 0.25);
 }
 
 .quote-page__swatch-image {
@@ -377,7 +377,7 @@
 .quote-page__plan-card--active {
   border-color: var(--color-gold);
   background: var(--color-cream);
-  box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.2);
+  box-shadow: 0 0 0 3px rgba(169, 136, 92, 0.2);
 }
 
 .quote-page__plan-card-icon {
@@ -507,7 +507,7 @@
 .quote-page__dropzone:hover,
 .quote-page__dropzone--over {
   border-color: var(--color-gold);
-  background: rgba(197, 164, 126, 0.05);
+  background: rgba(169, 136, 92, 0.05);
 }
 
 .quote-page__dropzone--uploaded {
@@ -794,7 +794,7 @@
   }
 
   .quote-page__progress-step--active .quote-page__progress-circle {
-    box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.2);
+    box-shadow: 0 0 0 3px rgba(169, 136, 92, 0.2);
   }
 
   .quote-page__progress-label {

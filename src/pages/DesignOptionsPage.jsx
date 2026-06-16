@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './DesignOptionsPage.css';
 
 const designCategories = [
@@ -178,117 +179,66 @@ const designCategories = [
 ];
 
 export default function DesignOptionsPage() {
+  usePageMeta('Worktop Design Options & Customisation | The Quartz Company', 'Explore edge profiles, drainage grooves, sink cut-outs, waterfall edges and more. Every quartz worktop from The Quartz Company is made to your exact specifications.');
   return (
     <div className="design-options-page">
       {/* Hero */}
       <section className="do-hero">
         <div className="do-hero__overlay" />
         <div className="do-hero__content container">
-          <span className="do-hero__badge">Customisation</span>
+          <span className="eyebrow">Customisation</span>
           <h1 className="do-hero__title">Design Options &amp; Customisation</h1>
           <p className="do-hero__subtitle">
-            Every worktop we create is made to your exact specifications. Explore the range of
-            design options available to make your kitchen truly yours.
+            Every worktop we create is made to your exact specifications &mdash; explore the
+            details that make your kitchen unmistakably yours.
           </p>
         </div>
       </section>
 
-      {/* Intro */}
-      <section className="do-intro section">
+      {/* Design Categories */}
+      <section className="do-categories section">
         <div className="container">
-          <div className="do-intro__content">
-            <h2 className="do-intro__heading">Tailored to You</h2>
-            <p className="do-intro__text">
-              From the edge profile to the sink cut-out method, every detail of your worktop can be
-              customised. Browse our design options below and let us know what catches your eye — our
-              team will guide you through every decision.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Design Categories – Offset Grid */}
-      <section className="do-categories section section--cream">
-        <div className="container">
-          <div className="do-categories__list">
-            {designCategories.map((cat, index) => (
-              <div
-                key={cat.id}
-                className={`do-category ${index % 2 === 0 ? 'do-category--left' : 'do-category--right'}`}
-                id={cat.id}
-              >
-                <div className="do-card">
-                  <div className="do-card__header">
-                    <h2 className="do-card__title">{cat.title}</h2>
-                  </div>
-                  <div className="do-card__body">
-                    <p className="do-card__description">{cat.description}</p>
-
-                    <div className="do-card__options">
-                      {cat.options.map((option, idx) => (
-                        <div key={idx} className="do-option">
-                          {/* Diagram placeholder */}
-                          <div className="do-option__diagram">
-                            <div className="do-option__diagram-inner">
-                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <rect x="2" y="2" width="28" height="28" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                                <path d="M8 24L14 16L18 20L24 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                            </div>
-                          </div>
-                          <div className="do-option__info">
-                            <h4 className="do-option__name">{option.name}</h4>
-                            <p className="do-option__desc">{option.desc}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+          {designCategories.map((cat, index) => (
+            <div className="do-cat" id={cat.id} key={cat.id}>
+              <div className="do-cat__head">
+                <span className="do-cat__num">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h2 className="do-cat__title">{cat.title}</h2>
+                <p className="do-cat__desc">{cat.description}</p>
               </div>
-            ))}
-          </div>
+              <div className="do-cat__options">
+                {cat.options.map((option, idx) => (
+                  <div key={idx} className="do-opt">
+                    <h3 className="do-opt__name">{option.name}</h3>
+                    <p className="do-opt__desc">{option.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Mid-page CTA */}
-      <section className="do-mid-cta section">
-        <div className="container">
-          <div className="do-mid-cta__card">
-            <h2 className="do-mid-cta__heading">Not Sure Which Options to Choose?</h2>
-            <p className="do-mid-cta__text">
-              Our design team is here to help. We'll talk you through every option, show you
-              real samples, and help you create the perfect worktop for your kitchen.
-            </p>
-            <Link to="/contact" className="btn btn--gold btn--lg">
-              Discuss Your Design With Our Team
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
+      {/* CTA */}
       <section className="do-cta section">
-        <div className="container">
-          <div className="do-cta__card">
-            <div className="do-cta__text-block">
-              <h2 className="do-cta__heading">Ready to Design Your Dream Kitchen?</h2>
-              <p className="do-cta__text">
-                Combine any of these options to create a worktop that's uniquely yours. Start with a
-                free quote and we'll guide you through every choice.
-              </p>
-            </div>
-            <div className="do-cta__actions">
-              <Link to="/contact" className="btn btn--primary btn--lg">
-                Get a Free Quote
-              </Link>
-              <Link to="/measuring-guide" className="btn btn--outline btn--lg">
-                Measuring Guide
-              </Link>
-              <Link to="/how-to-buy" className="btn btn--outline btn--lg">
-                How to Buy
-              </Link>
-            </div>
+        <div className="container do-cta__inner">
+          <span className="eyebrow">Bespoke Worktops</span>
+          <h2 className="do-cta__heading">Ready to Design Your Dream Kitchen?</h2>
+          <p className="do-cta__text">
+            Combine any of these options to create a worktop that&rsquo;s uniquely yours.
+            Start with a free quote and we&rsquo;ll guide you through every choice.
+          </p>
+          <div className="do-cta__actions">
+            <Link to="/quote" className="btn btn--gold btn--lg">
+              Get a Free Quote
+            </Link>
+            <Link to="/measuring-guide" className="btn do-cta__btn-outline btn--lg">
+              Measuring Guide
+            </Link>
+            <Link to="/how-to-buy" className="btn do-cta__btn-outline btn--lg">
+              How to Buy
+            </Link>
           </div>
         </div>
       </section>

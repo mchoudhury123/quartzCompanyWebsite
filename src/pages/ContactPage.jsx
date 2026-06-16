@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
 import './ContactPage.css';
@@ -27,7 +28,7 @@ const faqs = [
   {
     question: 'What areas do you cover for installation?',
     answer:
-      'We provide installation services across Northamptonshire and the surrounding counties. Our team is based in Northampton, ensuring prompt and reliable service for your project.',
+      'As a company based in Northampton, we cover most places in the UK. Contact us to find out if we install in your area.',
   },
   {
     question: 'What warranty do you offer?',
@@ -45,6 +46,7 @@ const initialForm = {
 };
 
 function ContactPage() {
+  usePageMeta('Contact Us | Quartz Worktops in Northampton | The Quartz Company', 'Get in touch with The Quartz Company for premium quartz kitchen worktops in Northamptonshire and the Midlands. Free samples, fixed-price quotes and friendly local advice.');
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -165,11 +167,13 @@ function ContactPage() {
               <div className="contact-sidebar__block">
                 <h4 className="contact-sidebar__label">Address</h4>
                 <p className="contact-sidebar__value">
-                  The Quartz Company Ltd
+                  The Quartz Company
                   <br />
-                  Northampton
+                  Unit 303/2, K2 House Business Centre
                   <br />
-                  Northamptonshire
+                  Heathfield Way
+                  <br />
+                  Northampton NN5 7QP
                 </p>
               </div>
 
@@ -207,7 +211,14 @@ function ContactPage() {
               </div>
 
               <div className="contact-sidebar__map">
-                <span>Map &mdash; The Quartz Company HQ</span>
+                <iframe
+                  title="The Quartz Company location — K2 House Business Centre, Heathfield Way, Northampton NN5 7QP"
+                  src="https://www.google.com/maps?q=K2%20House%20Business%20Centre%2C%20Heathfield%20Way%2C%20Northampton%20NN5%207QP&output=embed"
+                  className="contact-sidebar__map-frame"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
               </div>
             </aside>
 

@@ -234,7 +234,7 @@
   margin-bottom: 0.9rem;
   padding: 0.25rem;
   background: var(--color-off-white, #f5f3f0);
-  border: 1px solid var(--color-border, #e8e4df);
+  border: 1px solid var(--color-border, #E6DDCF);
   border-radius: var(--radius-md, 8px);
 }
 
@@ -253,12 +253,12 @@
 }
 
 .pdp__thickness-btn:hover {
-  color: var(--color-dark, #1a1a1a);
+  color: var(--color-dark, #1C1712);
 }
 
 .pdp__thickness-btn--active {
   background: var(--color-white, #fff);
-  color: var(--color-dark, #1a1a1a);
+  color: var(--color-dark, #1C1712);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 

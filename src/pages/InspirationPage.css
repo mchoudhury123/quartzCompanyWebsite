@@ -1,0 +1,187 @@
+/* ============================================
+   Inspiration / The Quartz Edit – editorial lookbook
+   ============================================ */
+
+/* ── Hero ── */
+.insp-hero {
+  background:
+    radial-gradient(ellipse at 78% 25%, rgba(169, 136, 92, 0.2) 0%, transparent 55%),
+    linear-gradient(140deg, #16110c 0%, #221a12 45%, #2e241a 100%);
+  text-align: center;
+  padding: 4.5rem 0 4rem;
+}
+
+.insp-hero__title {
+  color: #f7f1e8;
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  margin-bottom: 1.1rem;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.insp-hero__subtitle {
+  color: rgba(245, 239, 230, 0.72);
+  font-size: 1.1rem;
+  line-height: 1.75;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ── Gallery ── */
+.insp-gallery {
+  background: var(--color-cream);
+}
+
+.insp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem 2.5rem;
+}
+
+.insp-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.insp-card__cover {
+  display: block;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(40, 32, 24, 0.12);
+  border: 1px solid rgba(28, 23, 18, 0.06);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.insp-card__cover:hover,
+.insp-card__cover:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 48px rgba(40, 32, 24, 0.2);
+}
+
+.insp-card__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.insp-card__body {
+  padding-top: 1.4rem;
+}
+
+.insp-card__issue {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+}
+
+.insp-card__name {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin: 0.5rem 0 0.55rem;
+  line-height: 1.15;
+}
+
+.insp-card__blurb {
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.insp-card__link {
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-gold);
+  padding-bottom: 4px;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.insp-card__link:hover {
+  color: var(--color-gold);
+  border-color: var(--color-primary);
+}
+
+/* ── CTA (dark band, centered) ── */
+.insp-cta {
+  background: #1c1712;
+}
+
+.insp-cta__inner {
+  text-align: center;
+  max-width: 660px;
+}
+
+.insp-cta__heading {
+  color: #f7f1e8;
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  margin-bottom: 1rem;
+}
+
+.insp-cta__text {
+  color: rgba(245, 239, 230, 0.7);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+.insp-cta__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.insp-cta__btn-outline {
+  background: transparent;
+  color: #f7f1e8;
+  border: 1px solid rgba(245, 239, 230, 0.4);
+}
+
+.insp-cta__btn-outline:hover {
+  background: rgba(245, 239, 230, 0.12);
+  border-color: var(--color-gold);
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .insp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .insp-hero {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .insp-cta__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .insp-cta__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 540px) {
+  .insp-grid {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}

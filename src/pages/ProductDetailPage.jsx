@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
+import ColourCard from '../components/ColourCard';
 import products from '../data/products.json';
 import './ProductDetailPage.css';
 
@@ -506,7 +506,7 @@ function ProductDetailPage() {
             <div className="pdp__related-scroll" ref={relatedScrollRef}>
               {relatedProducts.map((p) => (
                 <div className="pdp__related-card" key={p.id}>
-                  <ProductCard product={p} />
+                  <ColourCard product={p} />
                 </div>
               ))}
             </div>

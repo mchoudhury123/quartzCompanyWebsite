@@ -12,8 +12,8 @@ import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
 import MeasuringGuidePage from './pages/MeasuringGuidePage';
 import DesignOptionsPage from './pages/DesignOptionsPage';
+import InspirationPage from './pages/InspirationPage';
 import HowToBuyPage from './pages/HowToBuyPage';
-import InstallationCoveragePage from './pages/InstallationCoveragePage';
 import WarrantyPage from './pages/WarrantyPage';
 import SalePage from './pages/SalePage';
 import QuotePage from './pages/QuotePage';
@@ -53,8 +53,8 @@ export default function App() {
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/measuring-guide" element={<MeasuringGuidePage />} />
         <Route path="/design-options" element={<DesignOptionsPage />} />
+        <Route path="/inspiration" element={<InspirationPage />} />
         <Route path="/how-to-buy" element={<HowToBuyPage />} />
-        <Route path="/installation-coverage" element={<InstallationCoveragePage />} />
         <Route path="/warranty" element={<WarrantyPage />} />
         <Route path="/sale" element={<SalePage />} />
         <Route path="/quote" element={<QuotePage />} />

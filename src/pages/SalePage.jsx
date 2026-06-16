@@ -1,49 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
-import ProductCard from '../components/ProductCard';
+import ColourCard from '../components/ColourCard';
 import './SalePage.css';
 
 const offers = [
   {
     id: 1,
-    badge: 'Up to 40% Off',
-    title: 'Up to 40% Off Quartz Worktops',
+    badge: '40% Off',
+    title: '40% Off All Worktops',
     description:
-      'Our entire quartz collection is reduced this spring. From classic whites to bold statement colours, find your perfect surface at an exceptional price. Engineered for durability, designed for beauty.',
-    link: '/colours/quartz',
-    linkText: 'Shop Quartz',
-  },
-  {
-    id: 2,
-    badge: '20% Off',
-    title: '20% Off Premium Quartz Collection',
-    description:
-      'Discover the timeless beauty of premium engineered quartz at 20% off. Each surface is expertly crafted and ready to bring character and prestige to your kitchen.',
-    link: '/colours/quartz',
-    linkText: 'Shop Premium Quartz',
-  },
-  {
-    id: 3,
-    badge: 'Free Gift',
-    title: 'Free Undermount Sink',
-    description:
-      'Place any worktop order over \u00a32,000 and receive a premium stainless steel undermount sink completely free. A seamless addition worth up to \u00a3450 — on us.',
-    link: null,
-    linkText: null,
-  },
-  {
-    id: 4,
-    badge: '10% Off',
-    title: '10% Off Accessories',
-    description:
-      'Complete your kitchen with matching upstands, splashbacks and window cills at 10% off. Coordinated finishes for a polished, professional result throughout your space.',
-    link: '/design-options',
-    linkText: 'View Accessories',
+      'As part of our summer sale, every worktop in our collection is 40% off. From classic whites to bold statement colours, find your perfect surface at an exceptional price — engineered for durability, designed for beauty.',
+    link: '/colours',
+    linkText: 'Shop All Worktops',
   },
 ];
 
 export default function SalePage() {
+  usePageMeta('Summer Sale — 40% Off All Quartz Worktops | The Quartz Company', 'Our summer sale is on — 40% off every engineered and printed quartz kitchen worktop. Premium surfaces at exceptional prices, with free samples and fixed-price quotes.');
   const saleProducts = products.filter((p) => p.onSale);
 
   return (
@@ -55,17 +30,17 @@ export default function SalePage() {
             <div className="sale-hero__left">
               <span className="sale-hero__badge">Limited Time</span>
               <h1 className="sale-hero__title">
-                Grand Opening Sale &mdash; Up to <span className="sale-hero__highlight">40% Off</span>
+                Summer Sale &mdash; <span className="sale-hero__highlight">40% Off</span> All Worktops
               </h1>
               <p className="sale-hero__subtitle">
-                Premium kitchen worktops at exceptional prices. Transform your kitchen for less this spring.
+                As part of our summer sale, every worktop in our collection is 40% off &mdash; transform your kitchen for less.
               </p>
             </div>
             <div className="sale-hero__right">
               <div className="sale-hero__countdown">
-                <span className="sale-hero__countdown-label">Offer ends</span>
-                <span className="sale-hero__countdown-date">30th April 2025</span>
-                <span className="sale-hero__countdown-note">Don&rsquo;t miss out on these savings</span>
+                <span className="sale-hero__countdown-label">Summer Sale</span>
+                <span className="sale-hero__countdown-date">Now On</span>
+                <span className="sale-hero__countdown-note">Limited time only &mdash; don&rsquo;t miss out</span>
               </div>
             </div>
           </div>
@@ -77,7 +52,7 @@ export default function SalePage() {
         <div className="container">
           <h2 className="section-title">Current Offers</h2>
           <p className="section-subtitle">
-            Exclusive spring savings across our entire range
+            Celebrating our summer sale
           </p>
           <div className="sale-offers__list">
             {offers.map((offer) => (
@@ -111,7 +86,7 @@ export default function SalePage() {
           </p>
           <div className="sale-products__grid">
             {saleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ColourCard key={product.id} product={product} />
             ))}
           </div>
         </div>
@@ -122,8 +97,8 @@ export default function SalePage() {
         <div className="container sale-cta__inner">
           <h2>Don&rsquo;t Miss Out</h2>
           <p>
-            Our spring sale prices are available for a limited time only. Get a
-            personalised quote today and lock in your savings.
+            Our summer sale prices are available for a limited time only. Get a
+            personalised quote today and lock in your 40% saving.
           </p>
           <Link to="/quote" className="btn btn--gold btn--lg">
             Get Your Sale Quote
@@ -137,33 +112,25 @@ export default function SalePage() {
           <h4 className="sale-terms__heading">Terms &amp; Conditions</h4>
           <ul className="sale-terms__list">
             <li>
-              Sale prices apply to new orders placed between 1st March 2025 and
-              30th April 2025 inclusive.
+              Sale prices apply to new orders placed during the summer sale
+              promotional period.
             </li>
             <li>
-              Discounts are calculated from the standard retail price and cannot
-              be combined with other promotions, voucher codes or trade pricing.
-            </li>
-            <li>
-              Free undermount sink offer applies to orders with a total value of
-              &pound;2,000 or more before VAT. Sink model at The Quartz Company's
-              discretion.
-            </li>
-            <li>
-              10% accessories discount applies to upstands, splashbacks and
-              window cills ordered alongside a worktop purchase.
+              The 40% discount is calculated from the standard retail price and
+              cannot be combined with other promotions, voucher codes or trade
+              pricing.
             </li>
             <li>
               All prices include VAT at the current rate. Installation and
               templating are charged separately unless otherwise stated.
             </li>
             <li>
-              The Quartz Company reserves the right to withdraw or amend any offer
+              The Quartz Company reserves the right to withdraw or amend this offer
               at any time without prior notice.
             </li>
             <li>
-              Offers are subject to availability. Some colours and finishes may
-              have limited stock during the sale period.
+              This offer is subject to availability. Some colours and finishes may
+              have limited stock during the promotional period.
             </li>
           </ul>
         </div>

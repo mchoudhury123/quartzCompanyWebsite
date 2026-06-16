@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import './CookiesPage.css';
 
 const CookiesPage = () => {
+  usePageMeta('Cookie Policy | The Quartz Company', 'How The Quartz Company uses cookies to improve your experience on our website.');
   const [preferences, setPreferences] = useState({
     essential: true,
     analytics: true,
@@ -475,7 +477,7 @@ const CookiesPage = () => {
             <p>Northamptonshire</p>
             <p>
               Email:{' '}
-              <a href="mailto:privacy@thequartzcompany.co.uk">privacy@thequartzcompany.co.uk</a>
+              <a href="mailto:admin@thequartzcompany.co.uk">admin@thequartzcompany.co.uk</a>
             </p>
             <p>
               Telephone:{' '}

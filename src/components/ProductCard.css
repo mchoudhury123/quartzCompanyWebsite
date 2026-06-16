@@ -109,8 +109,8 @@
   z-index: 3;
   background: linear-gradient(
     to top,
-    rgba(26, 26, 26, 0.92) 0%,
-    rgba(26, 26, 26, 0.7) 60%,
+    rgba(28, 23, 18, 0.92) 0%,
+    rgba(28, 23, 18, 0.7) 60%,
     transparent 100%
   );
   padding: 2.5rem 1rem 1rem;
@@ -212,9 +212,9 @@
 /* Product name */
 .product-card__name {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.2;
   margin-bottom: 0.25rem;
   color: var(--color-dark);
   transition: color var(--transition);

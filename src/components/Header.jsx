@@ -25,7 +25,8 @@ const quickLinks = [
 ];
 
 const navLinksLeft = [
-  { label: "Our Worktops", path: "/colours", hasDropdown: true },
+  { label: "Our Worktops", path: "/colours" },
+  { label: "Inspiration", path: "/inspiration" },
   { label: "Design Options", path: "/design-options" },
 ];
 
@@ -40,12 +41,31 @@ function Header() {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [navOnly, setNavOnly] = useState(false);
   const megaMenuRef = useRef(null);
   const megaMenuTimerRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const currentY = window.scrollY;
+      setScrolled(currentY > 10);
+
+      if (currentY <= 10) {
+        // At the top — show the full header (ticker + nav)
+        setHidden(false);
+        setNavOnly(false);
+      } else if (currentY > lastScrollY.current + 4) {
+        // Scrolling down — hide everything
+        setHidden(true);
+        setNavOnly(false);
+      } else if (currentY < lastScrollY.current - 4) {
+        // Scrolling up — reveal nav only; ticker stays hidden until the top
+        setHidden(false);
+        setNavOnly(true);
+      }
+      lastScrollY.current = currentY;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -168,26 +188,26 @@ function Header() {
     );
 
   return (
-    <header className={`site-header${scrolled ? " site-header--scrolled" : ""}`}>
+    <header className={`site-header${scrolled ? " site-header--scrolled" : ""}${hidden ? " site-header--hidden" : ""}${navOnly ? " site-header--nav-only" : ""}`}>
       {/* Marquee Announcement Bar */}
       <div className="ticker-bar" role="banner">
         <div className="ticker-bar__track">
           <span className="ticker-bar__content">
-            <span className="ticker-bar__highlight">Grand Opening Sale</span>
+            <span className="ticker-bar__highlight">Summer Sale</span>
             {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Grand Opening Sale</span>
+            <span className="ticker-bar__highlight">Summer Sale</span>
             {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
           <span className="ticker-bar__content" aria-hidden="true">
-            <span className="ticker-bar__highlight">Grand Opening Sale</span>
+            <span className="ticker-bar__highlight">Summer Sale</span>
             {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Grand Opening Sale</span>
+            <span className="ticker-bar__highlight">Summer Sale</span>
             {" — Up to 40% off all worktops. Free local delivery. "}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>

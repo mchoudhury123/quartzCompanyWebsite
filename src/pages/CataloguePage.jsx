@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import products from '../data/products.json';
 import categories from '../data/categories.json';
@@ -44,6 +45,7 @@ const SORT_OPTIONS = [
 ];
 
 function CataloguePage() {
+  usePageMeta('Quartz Worktop Colours | Browse the Full Range | The Quartz Company', 'Browse our full collection of premium engineered and printed quartz worktop colours, from bright Calacatta whites to bold Nero Sparkle. Free samples, fixed-price quotes and a 25-year warranty.');
   const { category } = useParams();
   const navigate = useNavigate();
 
@@ -304,46 +306,25 @@ function CataloguePage() {
     </div>
   );
 
+  /* ── Price formatter ── */
+  const formatPrice = (value) =>
+    new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+
   return (
     <section className="catalogue">
       {/* ── Page Header (cream, not dark) ── */}
       <div className="catalogue__header">
         <div className="container">
-          <nav className="catalogue__breadcrumbs" aria-label="Breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="catalogue__breadcrumb-sep">/</span>
-            <Link to="/colours">Browse Colours</Link>
-            {breadcrumbLabel && (
-              <>
-                <span className="catalogue__breadcrumb-sep">/</span>
-                <span className="catalogue__breadcrumb-current">{breadcrumbLabel}</span>
-              </>
-            )}
-          </nav>
+          <span className="eyebrow catalogue__eyebrow">The Collection</span>
           <h1 className="catalogue__title">
             {activeCategory === 'all' ? 'Browse Our Colours' : activeCategoryObj.name}
           </h1>
           <p className="catalogue__description">{activeCategoryObj.description}</p>
-        </div>
-      </div>
-
-      {/* ── Category Pills (horizontal chips with counts) ── */}
-      <div className="catalogue__tabs-wrapper">
-        <div className="container">
-          <div className="catalogue__tabs" role="tablist">
-            {categories.map((cat) => (
-              <button
-                key={cat.slug}
-                role="tab"
-                aria-selected={activeCategory === cat.slug}
-                className={`catalogue__pill${activeCategory === cat.slug ? ' catalogue__pill--active' : ''}`}
-                onClick={() => handleCategoryChange(cat.slug)}
-              >
-                {cat.slug === 'all' ? 'All' : cat.slug.charAt(0).toUpperCase() + cat.slug.slice(1)}
-                <span className="catalogue__pill-count">{categoryCounts[cat.slug] || 0}</span>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -584,7 +565,47 @@ function CataloguePage() {
                   </Link>
                 );
               }
-              return <ProductCard key={item.key} product={item.data} />;
+              const product = item.data;
+              return (
+                <Link
+                  to={`/product/${product.slug}`}
+                  className="cat-product"
+                  key={item.key}
+                >
+                  <div className="cat-product__frame">
+                    {product.onSale && product.discount > 0 && (
+                      <span className="cat-product__badge">{product.discount}% Off</span>
+                    )}
+                    <img
+                      src={product.swatch}
+                      alt={product.name}
+                      className="cat-product__img"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="cat-product__caption">
+                    <h3 className="cat-product__name">{product.name}</h3>
+                    <p className="cat-product__sub">
+                      {product.material} &mdash; {product.collection}
+                    </p>
+                    <p className="cat-product__price">
+                      {product.onSale && product.originalPrice ? (
+                        <>
+                          <span className="cat-product__price-old">
+                            {formatPrice(product.originalPrice)}
+                          </span>
+                          <span className="cat-product__price-sale">
+                            From {formatPrice(product.pricePerSqm)} /m&sup2;
+                          </span>
+                        </>
+                      ) : (
+                        <>From {formatPrice(product.pricePerSqm)} /m&sup2;</>
+                      )}
+                    </p>
+                  </div>
+                </Link>
+              );
             })}
           </div>
         )}

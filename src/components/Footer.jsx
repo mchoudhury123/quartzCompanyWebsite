@@ -61,7 +61,6 @@ const Footer = () => {
 
   const browseLinks = [
     { label: 'Quartz Worktops', path: '/materials/quartz' },
-    { label: 'Printed Quartz', path: '/materials/printed-quartz' },
     { label: 'All Colours', path: '/colours' },
     { label: 'Measuring Guide', path: '/measuring-guide' },
     { label: 'How to Buy', path: '/how-to-buy' },

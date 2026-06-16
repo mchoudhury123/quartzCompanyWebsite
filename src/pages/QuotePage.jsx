@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { FiCheck, FiUploadCloud, FiX, FiPlus, FiCalendar } from 'react-icons/fi';
+import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
@@ -24,6 +25,7 @@ const STEPS = [
 ];
 
 export default function QuotePage() {
+  usePageMeta('Get a Free Quote | Quartz Kitchen Worktops | The Quartz Company', 'Request a free, fixed-price quote for premium engineered or printed quartz kitchen worktops. Fast same-day pricing, free samples and expert fitting across the Midlands.');
   const [searchParams] = useSearchParams();
   const preselectedSlug = searchParams.get('product');
 
