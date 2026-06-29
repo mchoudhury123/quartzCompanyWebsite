@@ -5,7 +5,7 @@ import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
-import { trackLead } from '../lib/metaTracking';
+import { trackLead, trackQuoteStep } from '../lib/metaTracking';
 import './QuotePage.css';
 
 /* Validation helpers */
@@ -110,6 +110,15 @@ export default function QuotePage() {
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* ── Meta: QuoteStep1/2/3 analytics, each fired once as the visitor
+     progresses through the quote funnel ── */
+  const firedSteps = useRef(new Set());
+  useEffect(() => {
+    if (firedSteps.current.has(activeStep)) return;
+    firedSteps.current.add(activeStep);
+    trackQuoteStep(activeStep);
+  }, [activeStep]);
 
   /* Refs for scroll-to-error */
   const sectionRefs = {

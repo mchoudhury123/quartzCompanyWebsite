@@ -47,6 +47,7 @@ export default async function handler(req, res) {
   const {
     eventName,
     eventId,
+    eventTime, // unix seconds from the browser — shared so timestamps match for dedup
     eventSourceUrl,
     customData = {},
     userData = {},
@@ -82,7 +83,9 @@ export default async function handler(req, res) {
 
   const event = {
     event_name: eventName,
-    event_time: Math.floor(Date.now() / 1000),
+    // Prefer the browser's timestamp so the Pixel and server copies match
+    // exactly; fall back to now if it wasn't supplied.
+    event_time: Number.isFinite(eventTime) ? eventTime : Math.floor(Date.now() / 1000),
     event_id: eventId, // shared with the browser Pixel → dedup
     action_source: 'website',
     event_source_url: eventSourceUrl,

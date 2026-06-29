@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { trackPageView, trackContact } from './lib/metaTracking';
+import { trackPageView } from './lib/metaTracking';
+import { initClickTracking } from './lib/interactionTracking';
+import usePageEngagement from './hooks/usePageEngagement';
+import CookieConsent from './components/CookieConsent';
 import PublicLayout from './components/PublicLayout';
 import AdminLayout from './admin/components/AdminLayout';
 import ProtectedRoute from './admin/components/ProtectedRoute';
@@ -36,39 +39,24 @@ import ReviewsPage from './admin/pages/ReviewsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 import ReviewPage from './pages/ReviewPage';
 
-// Fires a Meta PageView (Pixel + CAPI) on the initial load and on every
-// client-side route change, and tracks phone/WhatsApp clicks as Contact.
+// Drives all site-wide Meta tracking: PageView on every route, scroll-depth and
+// time-on-page engagement, and a single delegated click listener for Contact /
+// CTA / InitiateCheckout. Every event is consent-gated inside trackEvent().
 function MetaPixelTracker() {
   const location = useLocation();
 
   // PageView on first load + every navigation. index.html no longer fires
-  // PageView itself, so this is the single source of PageViews (each with an
-  // event_id for browser↔server deduplication).
+  // PageView, so this is the single source of PageViews (each with an event_id
+  // for browser↔server deduplication).
   useEffect(() => {
     trackPageView();
   }, [location.pathname]);
 
-  // Delegated listener: any click on a phone or WhatsApp link counts as Contact.
-  // One listener covers the whole site without touching each link. Admin CRM
-  // clicks (e.g. calling a lead) are excluded so they don't pollute ad data.
-  useEffect(() => {
-    const onClick = (e) => {
-      const link = e.target.closest && e.target.closest('a[href]');
-      if (!link) return;
-      if (window.location.pathname.startsWith('/admin')) return;
+  // Scroll-depth + time-on-page, reset per page.
+  usePageEngagement(location.pathname);
 
-      const href = link.getAttribute('href') || '';
-      let method = null;
-      if (href.startsWith('tel:')) method = 'phone';
-      else if (/wa\.me|api\.whatsapp\.com|whatsapp:/i.test(href)) method = 'whatsapp';
-      if (!method) return;
-
-      trackContact({ contact_method: method });
-    };
-
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
-  }, []);
+  // One delegated click listener for Contact / CTA / InitiateCheckout.
+  useEffect(() => initClickTracking(), []);
 
   return null;
 }
@@ -77,6 +65,7 @@ export default function App() {
   return (
     <>
       <MetaPixelTracker />
+      <CookieConsent />
       <Routes>
       {/* Public quote view + review (standalone, no layout wrapper) */}
       <Route path="/quote/view/:quoteId" element={<QuoteViewPage />} />

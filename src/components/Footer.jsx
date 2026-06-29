@@ -4,6 +4,8 @@ import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
 import { supabase } from '../lib/supabase';
+import { openCookiePreferences } from './CookieConsent';
+import { trackSubscribe } from '../lib/metaTracking';
 import './Footer.css';
 
 const Footer = () => {
@@ -38,11 +40,10 @@ const Footer = () => {
     setEmail('');
     setTimeout(() => setSubscribed(false), 4000);
 
-    // Track newsletter signup as a Meta Pixel Subscribe event (kept separate
-    // from Lead so it doesn't inflate the sales-enquiry conversion count)
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'Subscribe');
-    }
+    // Track newsletter signup as a Subscribe event (Pixel + CAPI, consent-gated
+    // and deduped). Kept separate from Lead so it doesn't inflate the
+    // sales-enquiry conversion count.
+    trackSubscribe({ email: trimmed }, { content_name: 'Newsletter Signup' });
 
     // Fire-and-forget welcome email — failure doesn't block the UX, the
     // subscription itself has already landed in Supabase.
@@ -206,6 +207,15 @@ const Footer = () => {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <button
+                    type="button"
+                    className="footer-link cookie-prefs-link"
+                    onClick={openCookiePreferences}
+                  >
+                    Cookie Preferences
+                  </button>
+                </li>
               </ul>
               <div className="footer-trust-badges">
                 {trustBadges.map((badge) => (

@@ -49,9 +49,9 @@ function ProductDetailPage() {
     if (!product) return;
     trackViewContent({
       content_name: product.name,
-      content_ids: [product.slug],
+      content_category: 'Engineered Quartz',
       content_type: 'product',
-      content_category: product.category || product.material || undefined,
+      content_ids: [product.slug],
       value: product.price20mm || product.pricePerSqm || undefined,
       currency: 'GBP',
     });

@@ -1,9 +1,10 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import products from '../data/products.json';
 import categories from '../data/categories.json';
+import { trackSearch } from '../lib/metaTracking';
 import './CataloguePage.css';
 
 /* ── Promotional banners that appear every 8th position ── */
@@ -110,6 +111,42 @@ function CataloguePage() {
     brandFilters.length > 0 ||
     priceMin !== '' ||
     priceMax !== '';
+
+  /* ── Meta: Search event when filters/sort change (debounced) ── */
+  const searchDebounce = useRef(null);
+  const firstFilterRun = useRef(true);
+  useEffect(() => {
+    // Skip the initial render so landing on the page isn't a "search".
+    if (firstFilterRun.current) {
+      firstFilterRun.current = false;
+      return;
+    }
+    clearTimeout(searchDebounce.current);
+    searchDebounce.current = setTimeout(() => {
+      const selected_filters = {
+        collection: activeCategory !== 'all' ? activeCategory : undefined,
+        colour: colourFilters.length ? colourFilters : undefined,
+        finish: patternFilters.length ? patternFilters : undefined,
+        brand: brandFilters.length ? brandFilters : undefined,
+        price: priceMin || priceMax ? { min: priceMin || null, max: priceMax || null } : undefined,
+        sort: sortBy !== 'popular' ? sortBy : undefined,
+      };
+      const search_string = [
+        activeCategory !== 'all' ? activeCategory : null,
+        ...colourFilters,
+        ...patternFilters,
+        ...brandFilters,
+        priceMin ? `min £${priceMin}` : null,
+        priceMax ? `max £${priceMax}` : null,
+      ]
+        .filter(Boolean)
+        .join(', ');
+
+      trackSearch({ search_string, selected_filters });
+    }, 600);
+
+    return () => clearTimeout(searchDebounce.current);
+  }, [activeCategory, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
 
   /* ── Build active chips ── */
   const activeChips = useMemo(() => {

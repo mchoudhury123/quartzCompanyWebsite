@@ -122,9 +122,9 @@ export default function MaterialPage() {
     if (!material) return;
     trackViewContent({
       content_name: `${material.name} Worktops`,
+      content_category: 'Engineered Quartz',
+      content_type: 'product',
       content_ids: [type],
-      content_type: 'product_group',
-      content_category: material.name,
     });
   }, [type, material]);
 
