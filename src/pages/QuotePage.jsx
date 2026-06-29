@@ -328,6 +328,11 @@ export default function QuotePage() {
       console.error('Failed to submit quote:', err);
     }
 
+    // Track the quote request as a Meta Pixel conversion (Lead)
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead');
+    }
+
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

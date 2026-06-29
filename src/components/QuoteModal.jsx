@@ -225,6 +225,11 @@ function QuoteModal({ product = null, onClose }) {
       } catch (err) {
         console.error('Failed to submit lead:', err);
       }
+
+      // Track the quote request as a Meta Pixel conversion (Lead)
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead');
+      }
     }
 
     setStep((prev) => Math.min(prev + 1, 3));

@@ -38,6 +38,12 @@ const Footer = () => {
     setEmail('');
     setTimeout(() => setSubscribed(false), 4000);
 
+    // Track newsletter signup as a Meta Pixel Subscribe event (kept separate
+    // from Lead so it doesn't inflate the sales-enquiry conversion count)
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Subscribe');
+    }
+
     // Fire-and-forget welcome email — failure doesn't block the UX, the
     // subscription itself has already landed in Supabase.
     const welcomeBody =

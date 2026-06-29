@@ -115,6 +115,12 @@ function ContactPage() {
     } catch (err) {
       console.error('Failed to submit contact lead:', err);
     }
+
+    // Track the enquiry as a Meta Pixel conversion (Lead)
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead');
+    }
+
     setSubmitted(true);
     setForm(initialForm);
   };

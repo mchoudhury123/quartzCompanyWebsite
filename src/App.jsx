@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import PublicLayout from './components/PublicLayout';
 import AdminLayout from './admin/components/AdminLayout';
 import ProtectedRoute from './admin/components/ProtectedRoute';
@@ -34,9 +35,31 @@ import ReviewsPage from './admin/pages/ReviewsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 import ReviewPage from './pages/ReviewPage';
 
+// Fires a Meta Pixel PageView on each client-side route change.
+// The initial page load is already tracked by the inline pixel in index.html,
+// so we skip the first render to avoid double-counting it.
+function MetaPixelTracker() {
+  const location = useLocation();
+  const isInitialLoad = useRef(true);
+
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
+    }
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'PageView');
+    }
+  }, [location.pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
-    <Routes>
+    <>
+      <MetaPixelTracker />
+      <Routes>
       {/* Public quote view + review (standalone, no layout wrapper) */}
       <Route path="/quote/view/:quoteId" element={<QuoteViewPage />} />
       <Route path="/review/:quoteId" element={<ReviewPage />} />
@@ -80,5 +103,6 @@ export default function App() {
         </Route>
       </Route>
     </Routes>
+    </>
   );
 }
