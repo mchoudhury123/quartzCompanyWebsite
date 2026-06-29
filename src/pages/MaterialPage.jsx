@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import products from '../data/products.json';
 import ProductCard from '../components/ProductCard';
+import { trackViewContent } from '../lib/metaTracking';
 import './MaterialPage.css';
 
 /* ── Material-specific content ── */
@@ -115,6 +116,17 @@ export default function MaterialPage() {
   const [openFaq, setOpenFaq] = useState(null);
 
   const material = materialData[type];
+
+  /* ── Meta: ViewContent when a worktop material page is viewed ── */
+  useEffect(() => {
+    if (!material) return;
+    trackViewContent({
+      content_name: `${material.name} Worktops`,
+      content_ids: [type],
+      content_type: 'product_group',
+      content_category: material.name,
+    });
+  }, [type, material]);
 
   const filteredProducts = useMemo(() => {
     if (!type) return [];

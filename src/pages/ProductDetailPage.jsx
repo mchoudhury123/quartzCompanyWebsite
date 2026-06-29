@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import ColourCard from '../components/ColourCard';
 import products from '../data/products.json';
+import { trackViewContent } from '../lib/metaTracking';
 import './ProductDetailPage.css';
 
 /* ── Feature icon map (unicode) ── */
@@ -42,6 +43,19 @@ function buildFaqs(name) {
 function ProductDetailPage() {
   const { slug } = useParams();
   const product = products.find((p) => p.slug === slug);
+
+  /* ── Meta: ViewContent when a worktop product is viewed ── */
+  useEffect(() => {
+    if (!product) return;
+    trackViewContent({
+      content_name: product.name,
+      content_ids: [product.slug],
+      content_type: 'product',
+      content_category: product.category || product.material || undefined,
+      value: product.price20mm || product.pricePerSqm || undefined,
+      currency: 'GBP',
+    });
+  }, [product]);
 
   /* ── Image gallery state ── */
   const [activeImageIndex, setActiveImageIndex] = useState(0);

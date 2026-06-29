@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
+import { trackLead } from '../lib/metaTracking';
 import './ContactPage.css';
 
 const subjectOptions = [
@@ -88,9 +89,10 @@ function ContactPage() {
       return;
     }
     setErrors({});
+    let leadSaved = false;
     try {
       const leadId = crypto.randomUUID();
-      await supabase.from('leads').insert({
+      const { error: leadError } = await supabase.from('leads').insert({
         id: leadId,
         full_name: form.name,
         email: form.email,
@@ -100,6 +102,7 @@ function ContactPage() {
         message: form.message,
         pending_action: 'call_new',
       });
+      leadSaved = !leadError;
 
       await logActivity(leadId, {
         type: 'enquiry_received',
@@ -116,9 +119,19 @@ function ContactPage() {
       console.error('Failed to submit contact lead:', err);
     }
 
-    // Track the enquiry as a Meta Pixel conversion (Lead)
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead');
+    // Track the enquiry as a conversion (Lead) — Pixel + CAPI, deduped.
+    // Only fires after the lead was actually saved.
+    if (leadSaved) {
+      const [firstName, ...rest] = (form.name || '').trim().split(/\s+/);
+      trackLead(
+        {
+          email: form.email,
+          phone: form.phone,
+          firstName,
+          lastName: rest.join(' '),
+        },
+        { content_name: form.subject || 'Contact Enquiry' }
+      );
     }
 
     setSubmitted(true);

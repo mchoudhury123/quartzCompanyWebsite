@@ -3,6 +3,7 @@ import { FiX, FiUploadCloud, FiCheck, FiChevronLeft, FiChevronRight } from 'reac
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
+import { trackLead } from '../lib/metaTracking';
 import './QuoteModal.css';
 
 /**
@@ -172,9 +173,10 @@ function QuoteModal({ product = null, onClose }) {
     }
 
     if (step === 2) {
+      let leadSaved = false;
       try {
         const leadId = crypto.randomUUID();
-        await supabase.from('leads').insert({
+        const { error: leadError } = await supabase.from('leads').insert({
           id: leadId,
           full_name: fullName,
           email,
@@ -193,6 +195,7 @@ function QuoteModal({ product = null, onClose }) {
           callback_time: wantCallback ? callbackTime : null,
           pending_action: 'call_new',
         });
+        leadSaved = !leadError;
 
         // Auto-create sample record if customer wants samples
         if (wantSamples && selectedProduct) {
@@ -226,9 +229,17 @@ function QuoteModal({ product = null, onClose }) {
         console.error('Failed to submit lead:', err);
       }
 
-      // Track the quote request as a Meta Pixel conversion (Lead)
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead');
+      // Track the quote request as a conversion (Lead) — Pixel + CAPI, deduped.
+      // Only fires after the lead was actually saved.
+      if (leadSaved) {
+        const [firstName, ...rest] = fullName.trim().split(/\s+/);
+        trackLead(
+          { email, phone, firstName, lastName: rest.join(' '), postcode },
+          {
+            content_name: 'Quote Request',
+            content_category: selectedProduct?.material || undefined,
+          }
+        );
       }
     }
 

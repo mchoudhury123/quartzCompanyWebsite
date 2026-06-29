@@ -5,6 +5,7 @@ import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
 import { logActivity } from '../admin/utils/activityLogger';
+import { trackLead } from '../lib/metaTracking';
 import './QuotePage.css';
 
 /* Validation helpers */
@@ -219,9 +220,10 @@ export default function QuotePage() {
       return { id: p.id, slug: p.slug, name: p.name, material: p.material };
     });
 
+    let leadSaved = false;
     try {
       const leadId = crypto.randomUUID();
-      await supabase.from('leads').insert({
+      const { error: leadError } = await supabase.from('leads').insert({
         id: leadId,
         full_name: `${form.firstName} ${form.lastName}`.trim(),
         email: form.email,
@@ -236,6 +238,7 @@ export default function QuotePage() {
           ? `Worktop runs: ${worktopRuns.map((r, i) => `Run ${i + 1}: ${r.length}mm x ${r.width}mm`).join(', ')}`
           : null,
       });
+      leadSaved = !leadError;
 
       // Auto-create sample records for each selected product
       if (wantSamples && selectedProducts.length > 0) {
@@ -328,9 +331,22 @@ export default function QuotePage() {
       console.error('Failed to submit quote:', err);
     }
 
-    // Track the quote request as a Meta Pixel conversion (Lead)
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead');
+    // Track the quote request as a conversion (Lead) — Pixel + CAPI, deduped.
+    // Only fires after the lead was actually saved.
+    if (leadSaved) {
+      trackLead(
+        {
+          email: form.email,
+          phone: form.phone,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          postcode: form.postcode,
+        },
+        {
+          content_name: 'Quote Request',
+          content_category: selectedProducts[0]?.material || undefined,
+        }
+      );
     }
 
     setSubmitted(true);

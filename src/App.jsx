@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { trackPageView, trackContact } from './lib/metaTracking';
 import PublicLayout from './components/PublicLayout';
 import AdminLayout from './admin/components/AdminLayout';
 import ProtectedRoute from './admin/components/ProtectedRoute';
@@ -35,22 +36,39 @@ import ReviewsPage from './admin/pages/ReviewsPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 import ReviewPage from './pages/ReviewPage';
 
-// Fires a Meta Pixel PageView on each client-side route change.
-// The initial page load is already tracked by the inline pixel in index.html,
-// so we skip the first render to avoid double-counting it.
+// Fires a Meta PageView (Pixel + CAPI) on the initial load and on every
+// client-side route change, and tracks phone/WhatsApp clicks as Contact.
 function MetaPixelTracker() {
   const location = useLocation();
-  const isInitialLoad = useRef(true);
 
+  // PageView on first load + every navigation. index.html no longer fires
+  // PageView itself, so this is the single source of PageViews (each with an
+  // event_id for browser↔server deduplication).
   useEffect(() => {
-    if (isInitialLoad.current) {
-      isInitialLoad.current = false;
-      return;
-    }
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'PageView');
-    }
+    trackPageView();
   }, [location.pathname]);
+
+  // Delegated listener: any click on a phone or WhatsApp link counts as Contact.
+  // One listener covers the whole site without touching each link. Admin CRM
+  // clicks (e.g. calling a lead) are excluded so they don't pollute ad data.
+  useEffect(() => {
+    const onClick = (e) => {
+      const link = e.target.closest && e.target.closest('a[href]');
+      if (!link) return;
+      if (window.location.pathname.startsWith('/admin')) return;
+
+      const href = link.getAttribute('href') || '';
+      let method = null;
+      if (href.startsWith('tel:')) method = 'phone';
+      else if (/wa\.me|api\.whatsapp\.com|whatsapp:/i.test(href)) method = 'whatsapp';
+      if (!method) return;
+
+      trackContact({ contact_method: method });
+    };
+
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
 
   return null;
 }
