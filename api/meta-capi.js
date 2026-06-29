@@ -50,6 +50,7 @@ export default async function handler(req, res) {
     eventSourceUrl,
     customData = {},
     userData = {},
+    testEventCode, // optional — routes the event to the Test Events tab for debugging
   } = req.body || {};
 
   if (!eventName || !eventId) {
@@ -93,19 +94,26 @@ export default async function handler(req, res) {
 
   try {
     const url = `https://graph.facebook.com/${GRAPH_VERSION}/${PIXEL_ID}/events?access_token=${encodeURIComponent(ACCESS_TOKEN)}`;
+    const body = { data: [event] };
+    // When testing, this makes the server event appear in Events Manager →
+    // Test Events (alongside the browser Pixel) instead of only live data.
+    if (testEventCode) body.test_event_code = testEventCode;
+
     const fbRes = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: [event] }),
+      body: JSON.stringify(body),
     });
     const result = await fbRes.json();
 
     if (!fbRes.ok) {
-      console.error('Meta CAPI rejected event:', JSON.stringify(result));
-      return res.status(200).json({ success: false, error: result });
+      console.error(`Meta CAPI rejected ${eventName} (${fbRes.status}):`, JSON.stringify(result));
+      return res.status(200).json({ success: false, status: fbRes.status, error: result });
     }
 
-    return res.status(200).json({ success: true, result });
+    // Logged so production logs show successful server sends, not just failures
+    console.log(`Meta CAPI sent ${eventName} (event_id=${eventId}):`, JSON.stringify(result));
+    return res.status(200).json({ success: true, status: fbRes.status, result });
   } catch (err) {
     console.error('Meta CAPI request failed:', err);
     return res.status(200).json({ success: false, error: String(err) });

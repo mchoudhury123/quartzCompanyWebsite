@@ -19,6 +19,20 @@ function getCookie(name) {
   return match ? decodeURIComponent(match[1]) : undefined;
 }
 
+// Debug helper: append ?meta_test=YOUR_CODE (from Events Manager → Test Events)
+// to any page URL to route server events to the Test Events tab. The code is
+// kept for the rest of the browser session so it survives navigation.
+function getTestEventCode() {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('meta_test');
+    if (fromUrl) sessionStorage.setItem('meta_test_event_code', fromUrl);
+    return sessionStorage.getItem('meta_test_event_code') || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /**
  * Fire one event to both the browser Pixel and the server CAPI with a shared
  * event_id for deduplication.
@@ -53,6 +67,7 @@ export function trackEvent(eventName, { customData = {}, userData = {} } = {}) {
         fbp: getCookie('_fbp'),
         fbc: getCookie('_fbc'),
       },
+      testEventCode: getTestEventCode(),
     };
 
     fetch(CAPI_ENDPOINT, {
