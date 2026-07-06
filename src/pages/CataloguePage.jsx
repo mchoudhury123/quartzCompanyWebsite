@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import products from '../data/products.json';
@@ -9,6 +9,21 @@ import './CataloguePage.css';
 
 /* ── Filter constants ── */
 const RANGES = [...new Set(products.map((p) => p.range).filter(Boolean))];
+const slugifyRange = (s) => s.toLowerCase().replace(/\s+/g, '-');
+
+/* Intro copy shown at the top of the catalogue when a single range is selected */
+const RANGE_INFO = {
+  'Petra Core': {
+    eyebrow: 'Our Worktops',
+    description:
+      'Our signature engineered quartz range. Hard-wearing, non-porous and virtually maintenance-free, Petra Core surfaces bring timeless marble-inspired and contemporary looks to any kitchen — the everyday luxury our customers know us for.',
+  },
+  Sculptura: {
+    eyebrow: 'Our Worktops',
+    description:
+      'Our premium full-body printed quartz range. The pattern and veining run right through the entire slab, so mitred edges, waterfall islands and cut-outs match seamlessly for a true natural-stone effect — each backed by a 25-year manufacturer warranty.',
+  },
+};
 const COLOUR_TONES = ['White', 'Cream', 'Grey', 'Black'];
 const PATTERN_TYPES = ['Veined', 'Plain', 'Speckled'];
 const BRANDS = ['The Quartz Company'];
@@ -25,6 +40,8 @@ function CataloguePage() {
   usePageMeta('Quartz Worktop Colours | Browse the Full Range | The Quartz Company', 'Browse our full collection of premium engineered and printed quartz worktop colours, from bright Calacatta whites to bold Nero Sparkle. Free samples, fixed-price quotes and a 25-year warranty.');
   const { category } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rangeParam = searchParams.get('range');
 
   /* ── State ── */
   const [activeCategory, setActiveCategory] = useState(category || 'all');
@@ -45,6 +62,16 @@ function CataloguePage() {
   useEffect(() => {
     setActiveCategory(category || 'all');
   }, [category]);
+
+  /* Sync ?range= query param → range filter (from the nav dropdown) */
+  useEffect(() => {
+    if (!rangeParam) {
+      setRangeFilters([]);
+      return;
+    }
+    const match = RANGES.find((r) => slugifyRange(r) === rangeParam.toLowerCase());
+    setRangeFilters(match ? [match] : []);
+  }, [rangeParam]);
 
   /* ── Category navigation ── */
   const handleCategoryChange = useCallback(
@@ -206,6 +233,10 @@ function CataloguePage() {
   /* ── Active category object ── */
   const activeCategoryObj = categories.find((c) => c.slug === activeCategory) || categories[0];
 
+  /* ── Active range (drives the intro copy at the top) ── */
+  const activeRange =
+    rangeFilters.length === 1 && RANGE_INFO[rangeFilters[0]] ? rangeFilters[0] : null;
+
   /* ── Breadcrumb label ── */
   const breadcrumbLabel = activeCategory !== 'all' ? activeCategoryObj.name : null;
 
@@ -351,11 +382,19 @@ function CataloguePage() {
       {/* ── Page Header (cream, not dark) ── */}
       <div className="catalogue__header">
         <div className="container">
-          <span className="eyebrow catalogue__eyebrow">The Collection</span>
+          <span className="eyebrow catalogue__eyebrow">
+            {activeRange ? RANGE_INFO[activeRange].eyebrow : 'The Collection'}
+          </span>
           <h1 className="catalogue__title">
-            {activeCategory === 'all' ? 'Browse Our Colours' : activeCategoryObj.name}
+            {activeRange
+              ? activeRange
+              : activeCategory === 'all'
+                ? 'Browse Our Colours'
+                : activeCategoryObj.name}
           </h1>
-          <p className="catalogue__description">{activeCategoryObj.description}</p>
+          <p className="catalogue__description">
+            {activeRange ? RANGE_INFO[activeRange].description : activeCategoryObj.description}
+          </p>
         </div>
       </div>
 

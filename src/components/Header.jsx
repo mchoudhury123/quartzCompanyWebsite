@@ -3,29 +3,14 @@ import { Link } from "react-router-dom";
 import { FiMenu, FiX, FiChevronDown, FiPhone } from "react-icons/fi";
 import "./Header.css";
 
-const worktopsDropdown = [
-  { label: "Quartz Worktops", path: "/materials/quartz" },
-  { label: "Full Body Printed Quartz", path: "/materials/printed-quartz" },
-  { label: "All Colours", path: "/colours" },
-  { label: "Veined", path: "/colours/veined" },
-  { label: "Plain & Speckled", path: "/colours/plain" },
-];
-
-const popularColours = [
-  { label: "Calacatta Gold", path: "/colours/veined" },
-  { label: "Statuario White", path: "/colours/veined" },
-  { label: "Concrete Grey", path: "/colours" },
-];
-
-const quickLinks = [
-  { label: "Measuring Guide", path: "/measuring-guide" },
-  { label: "How to Buy", path: "/how-to-buy" },
-  { label: "Design Options", path: "/design-options" },
-  { label: "Request Brochure", path: "/quote" },
+const worktopsMenu = [
+  { label: "Browse all worktops", path: "/colours" },
+  { label: "Petra Core", path: "/colours?range=petra-core" },
+  { label: "Sculptura", path: "/colours?range=sculptura" },
 ];
 
 const navLinksLeft = [
-  { label: "Our Worktops", path: "/colours" },
+  { label: "Our Worktops", path: "/colours", hasDropdown: true },
   { label: "Inspiration", path: "/inspiration" },
   { label: "Design Options", path: "/design-options" },
 ];
@@ -133,46 +118,17 @@ function Header() {
           />
         </button>
 
-        {/* Mega Menu */}
-        <div className={`mega-menu${megaMenuOpen ? " mega-menu--open" : ""}`} role="menu" aria-label="Our Worktops submenu">
-          <div className="mega-menu__inner">
-            <div className="mega-menu__column">
-              <h4 className="mega-menu__heading">Worktop Types</h4>
-              <ul className="mega-menu__list">
-                {worktopsDropdown.map((sub) => (
-                  <li key={sub.label}>
-                    <Link to={sub.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
-                      {sub.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mega-menu__column">
-              <h4 className="mega-menu__heading">Popular Colours</h4>
-              <ul className="mega-menu__list">
-                {popularColours.map((item) => (
-                  <li key={item.label}>
-                    <Link to={item.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mega-menu__column">
-              <h4 className="mega-menu__heading">Quick Links</h4>
-              <ul className="mega-menu__list">
-                {quickLinks.map((item) => (
-                  <li key={item.label}>
-                    <Link to={item.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        {/* Dropdown */}
+        <div className={`mega-menu mega-menu--compact${megaMenuOpen ? " mega-menu--open" : ""}`} role="menu" aria-label="Our Worktops submenu">
+          <ul className="mega-menu__list">
+            {worktopsMenu.map((sub) => (
+              <li key={sub.label}>
+                <Link to={sub.path} className="mega-menu__link" role="menuitem" onClick={() => setMegaMenuOpen(false)}>
+                  {sub.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </li>
     ) : (
@@ -285,7 +241,7 @@ function Header() {
                     />
                   </button>
                   <ul className={`mobile-overlay__dropdown${mobileDropdownOpen ? " mobile-overlay__dropdown--open" : ""}`} role="menu">
-                    {worktopsDropdown.map((sub) => (
+                    {worktopsMenu.map((sub) => (
                       <li key={sub.label} role="none">
                         <Link to={sub.path} className="mobile-overlay__dropdown-link" role="menuitem" onClick={closeMobileMenu}>
                           {sub.label}
