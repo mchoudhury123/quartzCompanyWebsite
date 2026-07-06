@@ -9,7 +9,6 @@ import categories from '../../src/data/categories.json';
 import '../../src/pages/CataloguePage.css';
 
 const PROMO_BANNERS = [
-  { id: 'promo-1', headline: 'Free Design Consultation', cta: 'Book Now', link: '/contact', variant: 'teal' },
   { id: 'promo-2', headline: 'Order Free Samples', cta: 'Delivered in 48hrs', link: '/colours', variant: 'gold' },
   { id: 'promo-3', headline: '25 Year Warranty', cta: 'Peace of Mind', link: '/warranty', variant: 'teal' },
 ];

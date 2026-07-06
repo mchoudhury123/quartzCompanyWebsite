@@ -270,7 +270,7 @@ function ProductDetailPage() {
             <h1 className="pdp__name">{product.name}</h1>
 
             <span className="pdp__collection-badge">
-              {product.range} &mdash; {product.collection}
+              {product.range}
             </span>
 
             <div className="pdp__rating">
@@ -423,10 +423,6 @@ function ProductDetailPage() {
                   <tr>
                     <th>Range</th>
                     <td>{product.range}</td>
-                  </tr>
-                  <tr>
-                    <th>Collection</th>
-                    <td>{product.collection}</td>
                   </tr>
                   <tr>
                     <th>Thicknesses</th>

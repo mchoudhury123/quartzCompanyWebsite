@@ -10,13 +10,6 @@ import './CataloguePage.css';
 /* ── Promotional banners that appear every 8th position ── */
 const PROMO_BANNERS = [
   {
-    id: 'promo-1',
-    headline: 'Free Design Consultation',
-    cta: 'Book Now',
-    link: '/contact',
-    variant: 'teal',
-  },
-  {
     id: 'promo-2',
     headline: 'Order Free Samples',
     cta: 'Delivered in 48hrs',
@@ -624,7 +617,7 @@ function CataloguePage() {
                   <div className="cat-product__caption">
                     <h3 className="cat-product__name">{product.name}</h3>
                     <p className="cat-product__sub">
-                      {product.range} &mdash; {product.collection}
+                      {product.range}
                     </p>
                     <p className="cat-product__price">
                       {product.onSale && product.originalPrice ? (
