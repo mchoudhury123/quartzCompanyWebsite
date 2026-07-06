@@ -245,7 +245,7 @@ export default function KitchensPage() {
             <div className="lp-card">
               <h3>For wood or oak cabinets</h3>
               <p>
-                Warm-toned veined quartz like Calacatta Lusso bridges the wood tones
+                Warm-toned veined quartz like Calacatta Nuvo bridges the wood tones
                 without competing. For a more contemporary look, Bianco Galaxy adds subtle
                 metallic flecks that pick up oak grain beautifully.
               </p>

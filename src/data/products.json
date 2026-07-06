@@ -51,8 +51,8 @@
   },
   {
     "id": 2,
-    "slug": "calacatta-lusso",
-    "name": "Calacatta Lusso",
+    "slug": "calacatta-nuvo",
+    "name": "Calacatta Nuvo",
     "category": "quartz",
     "collection": "Heritage Series",
     "material": "Engineered Quartz",
@@ -69,8 +69,8 @@
     "colorTone": "white",
     "patternType": "veined",
     "brand": "The Quartz Company",
-    "shortDesc": "A luxurious white surface with elegant warm-toned veining, capturing the essence of premium Italian marble.",
-    "description": "Calacatta Lusso represents the pinnacle of marble-inspired engineered quartz. Its luminous white base is enhanced by graceful warm veining that cascades across the surface, creating a sense of movement and opulence. Perfect for those who desire the grandeur of natural Calacatta marble without the maintenance demands, this surface delivers consistent beauty from slab to slab.",
+    "shortDesc": "A bright white surface with soft flowing grey veining and delicate warm gold undertones, capturing the essence of premium Italian marble.",
+    "description": "Calacatta Nuvo pairs a luminous white base with soft, cloud-like grey veining threaded with delicate warm gold accents. The result is a surface with genuine depth and movement that brings light and elegance to any space. For those who want the timeless beauty of natural Calacatta marble without the upkeep, Nuvo delivers refined, consistent character from slab to slab.",
     "features": [
       "Classic marble aesthetic",
       "Consistent veining",
@@ -87,18 +87,19 @@
       "leadTime": "10\u201315 working days"
     },
     "images": [
-      "/Calacatta Lusso/Calacatta Lusso Close up 1.JPG",
-      "/Calacatta Lusso/Calacatta Lusso Close up 2.JPG",
-      "/Calacatta Lusso/Calacatta Lusso Full Slab.JPG",
-      "/Calacatta Lusso/Calacatta Lusso Fitted 1.jpg",
-      "/Calacatta Lusso/Calacatta Lusso Fitted 2.jpg"
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen.jpg",
+      "/Calacatta Nuvo/20240214_100342.jpg",
+      "/Calacatta Nuvo/CAlacatta Nuvo Kitchen 2.jpg",
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen 3.jpg",
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen 4.jpg"
     ],
     "fittedImages": [
-      "/Calacatta Lusso/Calacatta Lusso Fitted 1.jpg",
-      "/Calacatta Lusso/Calacatta Lusso Fitted 2.jpg"
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen.jpg",
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen 3.jpg",
+      "/Calacatta Nuvo/Calacatta Nuvo Kitchen 4.jpg"
     ],
-    "fullSlabImage": "/Calacatta Lusso/Calacatta Lusso Full Slab.JPG",
-    "swatch": "/Calacatta Lusso/Calacatta Lusso Close up 1.JPG"
+    "fullSlabImage": "/Calacatta Nuvo/20240214_100342.jpg",
+    "swatch": "/Calacatta Nuvo/20240214_100411.jpg"
   },
   {
     "id": 3,

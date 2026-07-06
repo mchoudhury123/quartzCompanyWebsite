@@ -48,10 +48,10 @@ const issues = [
   {
     n: '06',
     src: '/ISSUE%206.jpg',
-    name: 'Calacatta Lusso',
-    slug: 'calacatta-lusso',
+    name: 'Calacatta Nuvo',
+    slug: 'calacatta-nuvo',
     blurb:
-      'Where elegance meets impact. Sophisticated veining and unmistakable presence.',
+      'Soft flowing grey veining with warm gold undertones — refined, luminous and full of movement.',
   },
   {
     n: '07',

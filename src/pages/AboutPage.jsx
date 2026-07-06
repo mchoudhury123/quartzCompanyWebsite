@@ -69,9 +69,9 @@ const gallery = [
     alt: 'Statuario Gold quartz worktop with warm gold veining shown in a modern kitchen',
   },
   {
-    src: '/Calacatta%20Lusso/Calacatta%20Lusso%20Fitted%202.jpg',
-    name: 'Calacatta Lusso',
-    alt: 'Calacatta Lusso quartz island worktop shown in a contemporary kitchen',
+    src: '/Calacatta%20Nuvo/Calacatta%20Nuvo%20Kitchen.jpg',
+    name: 'Calacatta Nuvo',
+    alt: 'Calacatta Nuvo quartz island worktop shown in a contemporary kitchen',
   },
   {
     src: '/Nero%20Sparkle/nero%20sparkle%20example.jpg',
@@ -172,8 +172,8 @@ function AboutPage() {
           <div className="about-story__layout">
             <div className="about-story__media">
               <img
-                src="/Calacatta%20Lusso/Calacatta%20Lusso%20Fitted%201.jpg"
-                alt="Calacatta Lusso quartz worktop and island shown in a modern Northamptonshire kitchen"
+                src="/Calacatta%20Nuvo/Calacatta%20Nuvo%20Kitchen%203.jpg"
+                alt="Calacatta Nuvo quartz worktop and island shown in a modern Northamptonshire kitchen"
                 className="about-story__img"
                 loading="lazy"
               />
