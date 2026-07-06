@@ -7,24 +7,6 @@ import categories from '../data/categories.json';
 import { trackSearch } from '../lib/metaTracking';
 import './CataloguePage.css';
 
-/* ── Promotional banners that appear every 8th position ── */
-const PROMO_BANNERS = [
-  {
-    id: 'promo-2',
-    headline: 'Order Free Samples',
-    cta: 'Delivered in 48hrs',
-    link: '/colours',
-    variant: 'gold',
-  },
-  {
-    id: 'promo-3',
-    headline: '25 Year Warranty',
-    cta: 'Peace of Mind',
-    link: '/warranty',
-    variant: 'teal',
-  },
-];
-
 /* ── Filter constants ── */
 const RANGES = [...new Set(products.map((p) => p.range).filter(Boolean))];
 const COLOUR_TONES = ['White', 'Cream', 'Grey', 'Black'];
@@ -210,23 +192,16 @@ function CataloguePage() {
     return list;
   }, [activeCategory, rangeFilters, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
 
-  /* ── Build grid with full-width promo banners every 8 products ── */
-  const gridItems = useMemo(() => {
-    const items = [];
-    let promoIndex = 0;
-
-    filteredProducts.forEach((product, i) => {
-      items.push({ type: 'product', data: product, key: `product-${product.id}` });
-
-      if ((i + 1) % 8 === 0) {
-        const promo = PROMO_BANNERS[promoIndex % PROMO_BANNERS.length];
-        items.push({ type: 'promo', data: promo, key: promo.id + '-' + promoIndex });
-        promoIndex++;
-      }
-    });
-
-    return items;
-  }, [filteredProducts]);
+  /* ── Build grid (products only) ── */
+  const gridItems = useMemo(
+    () =>
+      filteredProducts.map((product) => ({
+        type: 'product',
+        data: product,
+        key: `product-${product.id}`,
+      })),
+    [filteredProducts]
+  );
 
   /* ── Active category object ── */
   const activeCategoryObj = categories.find((c) => c.slug === activeCategory) || categories[0];
@@ -633,23 +608,6 @@ function CataloguePage() {
         ) : (
           <div className="catalogue__grid">
             {gridItems.map((item) => {
-              if (item.type === 'promo') {
-                return (
-                  <Link
-                    to={item.data.link}
-                    className={`promo-banner promo-banner--${item.data.variant}`}
-                    key={item.key}
-                  >
-                    <span className="promo-banner__icon" aria-hidden="true">
-                      {item.data.variant === 'teal' ? '\u2666' : '\u2605'}
-                    </span>
-                    <h3 className="promo-banner__headline">{item.data.headline}</h3>
-                    <span className="promo-banner__cta">
-                      {item.data.cta} &rarr;
-                    </span>
-                  </Link>
-                );
-              }
               const product = item.data;
               return (
                 <Link
