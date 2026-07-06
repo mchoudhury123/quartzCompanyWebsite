@@ -350,7 +350,7 @@ function QuoteModal({ product = null, onClose }) {
                     <div>
                       <strong>{product.name}</strong>
                       <span className="quote-modal__selected-product-info">
-                        {product.material} &mdash; {product.collection}
+                        {product.range}
                       </span>
                       {product.onSale ? (
                         <span className="quote-modal__selected-product-price">

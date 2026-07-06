@@ -34,12 +34,11 @@ function AnimatedSection({ children, className = '', id }) {
 
 export default function HomePage() {
   usePageMeta('Affordable Quartz Worktops UK | The Quartz Company', 'Affordable engineered & printed quartz kitchen worktops, handcrafted in Britain. Free samples, fixed-price quotes, 25-year warranty. UK delivery and fitting.');
-  /* ── Featured products ── */
-  const featuredProducts = products.filter((p) => p.popular).slice(0, 6);
-  if (featuredProducts.length < 6) {
-    const remaining = products.filter((p) => !p.popular);
-    featuredProducts.push(...remaining.slice(0, 6 - featuredProducts.length));
-  }
+  /* ── Trending products (fixed, ordered selection) ── */
+  const TRENDING_SLUGS = ['taj-mahal', 'calacatta-verona', 'calacatta-classico', 'calacatta-nuvo'];
+  const featuredProducts = TRENDING_SLUGS
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter(Boolean);
 
   /* ── Testimonials: show 3 or all ── */
   const [showAllTestimonials, setShowAllTestimonials] = useState(false);
@@ -208,7 +207,7 @@ export default function HomePage() {
                 <div className="hp-product__caption">
                   <h3 className="hp-product__name">{product.name}</h3>
                   <p className="hp-product__sub">
-                    {product.material} &mdash; {product.collection}
+                    {product.range}
                   </p>
                   <p className="hp-product__price">
                     From {formatPrice(product.pricePerSqm)} /m&sup2;

@@ -19,8 +19,7 @@ function ColourCard({ product }) {
   const {
     slug,
     name,
-    material,
-    collection,
+    range,
     swatch,
     pricePerSqm,
     originalPrice,
@@ -45,7 +44,7 @@ function ColourCard({ product }) {
       <div className="colour-card__caption">
         <h3 className="colour-card__name">{name}</h3>
         <p className="colour-card__sub">
-          {material} &mdash; {collection}
+          {range}
         </p>
         <p className="colour-card__price">
           {onSale && originalPrice ? (
