@@ -587,5 +587,362 @@
     ],
     "fullSlabImage": "/Misterio Oro/Misterio Oro.jpg",
     "swatch": "/Misterio Oro/zoom Misterio Oro 145.jpg"
+  },
+  {
+    "id": 13,
+    "slug": "bianco-eclipsia",
+    "name": "Bianco Eclipsia",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 74,
+    "popular": false,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A striking white surface shattered with bold charcoal-grey veining — full-body printed for seamless, edge-matching drama.",
+    "description": "Bianco Eclipsia makes a statement. Bold, storm-like grey and charcoal veins fracture dramatically across a cool white base, giving islands and worktops genuine gallery presence. Because it is full-body printed, the pattern runs right through the slab — so mitred edges, upstands and cut-outs flow seamlessly with no dark core to interrupt the look. Backed by a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Bold, dramatic grey veining",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Bianco Eclipsia/02 Bianco Eclipsia.jpg",
+      "/Bianco Eclipsia/Bianco Eclipsia PQ.JPG",
+      "/Bianco Eclipsia/Bianco Eclipsia Bookmatched.JPG"
+    ],
+    "fittedImages": [],
+    "fullSlabImage": "/Bianco Eclipsia/Bianco Eclipsia PQ.JPG",
+    "swatch": "/Bianco Eclipsia/02 Bianco Eclipsia.jpg"
+  },
+  {
+    "id": 14,
+    "slug": "calacatta-aspen",
+    "name": "Calacatta Aspen",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 96,
+    "popular": false,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A bright, clean white with crisp soft-grey veining — full-body printed for flawless, continuous cut edges.",
+    "description": "Calacatta Aspen delivers the pure, sought-after Calacatta look: a bright white canvas crossed by crisp, elegant grey veins that feel calm and timeless. As a full-body printed surface, the veining carries all the way through the slab, so mitred edges and joins match seamlessly for that solid-marble feel. All the beauty of natural Calacatta with the durability of quartz and a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Crisp, elegant grey veining",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Calacatta Aspen/Calacatta Aspen.jpg",
+      "/Calacatta Aspen/Calacatta Aspen PQ.jpg",
+      "/Calacatta Aspen/Calacatta Aspen Bookmatched.JPG"
+    ],
+    "fittedImages": [],
+    "fullSlabImage": "/Calacatta Aspen/Calacatta Aspen PQ.jpg",
+    "swatch": "/Calacatta Aspen/Calacatta Aspen.jpg"
+  },
+  {
+    "id": 15,
+    "slug": "calacatta-mystic",
+    "name": "Calacatta Mystic",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 88,
+    "popular": false,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A luminous white laced with warm gold and grey veining — full-body printed for edge-to-edge continuity.",
+    "description": "Calacatta Mystic wraps a luminous white base in flowing veins of warm gold, amber and soft grey, creating a surface with real depth and movement. Full-body printing carries the pattern through the entire slab, so worktops, waterfall islands and upstands flow together with seamless, matching edges. A luxurious centrepiece for any kitchen, protected by a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Warm gold & grey veining",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Calacatta Mystic/03 Calacatta Mystic.jpg",
+      "/Calacatta Mystic/calacatta mystic PQ.jpg",
+      "/Calacatta Mystic/03 Calacatta Mystic Bookmatched.JPG"
+    ],
+    "fittedImages": [],
+    "fullSlabImage": "/Calacatta Mystic/calacatta mystic PQ.jpg",
+    "swatch": "/Calacatta Mystic/03 Calacatta Mystic.jpg"
+  },
+  {
+    "id": 16,
+    "slug": "lux-grey",
+    "name": "Lux Grey",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.8,
+    "reviewCount": 63,
+    "popular": false,
+    "new": true,
+    "colorTone": "grey",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A refined white-grey marble look with soft grey and gold veining — full-body printed for continuous cut edges.",
+    "description": "Lux Grey balances a cool white-grey base with soft, flowing grey veining and delicate warm gold accents — understated luxury that suits both contemporary and classic kitchens. Because the pattern is printed through the full body of the slab, mitred edges and joins match seamlessly with no dark core showing. Elegant, hard-wearing and backed by a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Soft grey & gold veining",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Lux Grey/04 Lux Grey.jpg",
+      "/Lux Grey/Lux Grey PQ.jpg",
+      "/Lux Grey/04 Lux Grey Bookmatched.JPG"
+    ],
+    "fittedImages": [],
+    "fullSlabImage": "/Lux Grey/Lux Grey PQ.jpg",
+    "swatch": "/Lux Grey/04 Lux Grey.jpg"
+  },
+  {
+    "id": 17,
+    "slug": "taj-mahal",
+    "name": "Taj Mahal",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 112,
+    "popular": false,
+    "new": true,
+    "colorTone": "cream",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A warm cream quartzite look with soft, flowing golden-beige movement — full-body printed for seamless edges.",
+    "description": "Taj Mahal captures the serene warmth of the prized quartzite of the same name: a soft cream and ivory base with gentle, flowing bands of golden-beige. It brings a calm, luxurious glow to kitchens and pairs beautifully with warm timber and matt-black fixtures. Full-body printed so the pattern runs through the slab for seamless, matching edges — and covered by a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Warm, flowing beige tones",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Taj Mahal/Taj Mahal.jpg",
+      "/Taj Mahal/Taj Mahal kitchen.png"
+    ],
+    "fittedImages": [
+      "/Taj Mahal/Taj Mahal kitchen.png"
+    ],
+    "fullSlabImage": "/Taj Mahal/Taj Mahal.jpg",
+    "swatch": "/Taj Mahal/Taj Mahal.jpg"
+  },
+  {
+    "id": 18,
+    "slug": "calacatta-verona",
+    "name": "Calacatta Verona",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.8,
+    "reviewCount": 57,
+    "popular": false,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A bright white marble look with grey and warm gold veining — full-body printed for edge-matching continuity.",
+    "description": "Calacatta Verona sweeps soft grey and warm golden-brown veins across a bright white base, striking a refined balance between cool and warm tones. As a full-body printed surface, the veining runs through the whole slab, so mitred edges and cut lines match seamlessly for a true solid-marble effect. Timeless elegance with the resilience of quartz and a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Grey & warm gold veining",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Calacatta Verona/calacatta verona.jpeg"
+    ],
+    "fittedImages": [],
+    "fullSlabImage": "/Calacatta Verona/calacatta verona.jpeg",
+    "swatch": "/Calacatta Verona/calacatta verona.jpeg"
+  },
+  {
+    "id": 19,
+    "slug": "taj-mahal-supreme",
+    "name": "Taj Mahal Supreme",
+    "category": "quartz",
+    "collection": "Sculptura Series",
+    "range": "Sculptura",
+    "material": "Full-Body Printed Quartz",
+    "pricePerSqm": 250,
+    "price20mm": 250,
+    "price30mm": 300,
+    "originalPrice": 417,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 81,
+    "popular": false,
+    "new": true,
+    "colorTone": "cream",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A soft ivory-cream surface with gentle greige striations — full-body printed for flawless continuous edges.",
+    "description": "Taj Mahal Supreme is a more refined, subtly cooler take on the classic Taj Mahal look — a soft ivory and cream base with gentle greige striations that read as understated and effortlessly elegant. Full-body printing carries the pattern through the entire slab, so islands, worktops and upstands join with seamless, matching edges. A quietly luxurious surface backed by a 25-year manufacturer warranty.",
+    "features": [
+      "Full-body print — pattern runs right through the slab",
+      "Seamless mitred edges & matching cut lines",
+      "Soft ivory & greige tones",
+      "Heat & scratch resistant",
+      "Non-porous & low maintenance",
+      "25-year manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "Full-Body Printed Quartz",
+      "finish": "Polished",
+      "thicknesses": [
+        "20mm",
+        "30mm"
+      ],
+      "slabSize": "3200 × 1600 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Taj Mahal Supreme/01 Taj Mahal Supreme.jpg",
+      "/Taj Mahal Supreme/01 Taj Mahal Supreme K.jpg"
+    ],
+    "fittedImages": [
+      "/Taj Mahal Supreme/01 Taj Mahal Supreme K.jpg"
+    ],
+    "fullSlabImage": "/Taj Mahal Supreme/01 Taj Mahal Supreme.jpg",
+    "swatch": "/Taj Mahal Supreme/01 Taj Mahal Supreme.jpg"
   }
 ]

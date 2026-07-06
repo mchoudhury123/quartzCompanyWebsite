@@ -26,6 +26,7 @@ const PROMO_BANNERS = [
 ];
 
 /* ── Filter constants ── */
+const RANGES = [...new Set(products.map((p) => p.range).filter(Boolean))];
 const COLOUR_TONES = ['White', 'Cream', 'Grey', 'Black'];
 const PATTERN_TYPES = ['Veined', 'Plain', 'Speckled'];
 const BRANDS = ['The Quartz Company'];
@@ -48,6 +49,7 @@ function CataloguePage() {
   const [sortBy, setSortBy] = useState('popular');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const [rangeFilters, setRangeFilters] = useState([]);
   const [colourFilters, setColourFilters] = useState([]);
   const [patternFilters, setPatternFilters] = useState([]);
   const [brandFilters, setBrandFilters] = useState([]);
@@ -82,6 +84,7 @@ function CataloguePage() {
 
   /* ── Remove a single active filter chip ── */
   const removeChip = (type, value) => {
+    if (type === 'range') setRangeFilters((prev) => prev.filter((v) => v !== value));
     if (type === 'colour') setColourFilters((prev) => prev.filter((v) => v !== value));
     if (type === 'pattern') setPatternFilters((prev) => prev.filter((v) => v !== value));
     if (type === 'brand') setBrandFilters((prev) => prev.filter((v) => v !== value));
@@ -91,6 +94,7 @@ function CataloguePage() {
 
   /* ── Clear all filters ── */
   const clearFilters = () => {
+    setRangeFilters([]);
     setColourFilters([]);
     setPatternFilters([]);
     setBrandFilters([]);
@@ -99,6 +103,7 @@ function CataloguePage() {
   };
 
   const hasActiveFilters =
+    rangeFilters.length > 0 ||
     colourFilters.length > 0 ||
     patternFilters.length > 0 ||
     brandFilters.length > 0 ||
@@ -118,6 +123,7 @@ function CataloguePage() {
     searchDebounce.current = setTimeout(() => {
       const selected_filters = {
         collection: activeCategory !== 'all' ? activeCategory : undefined,
+        range: rangeFilters.length ? rangeFilters : undefined,
         colour: colourFilters.length ? colourFilters : undefined,
         finish: patternFilters.length ? patternFilters : undefined,
         brand: brandFilters.length ? brandFilters : undefined,
@@ -126,6 +132,7 @@ function CataloguePage() {
       };
       const search_string = [
         activeCategory !== 'all' ? activeCategory : null,
+        ...rangeFilters,
         ...colourFilters,
         ...patternFilters,
         ...brandFilters,
@@ -139,18 +146,19 @@ function CataloguePage() {
     }, 600);
 
     return () => clearTimeout(searchDebounce.current);
-  }, [activeCategory, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
+  }, [activeCategory, rangeFilters, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
 
   /* ── Build active chips ── */
   const activeChips = useMemo(() => {
     const chips = [];
+    rangeFilters.forEach((v) => chips.push({ type: 'range', value: v, label: v }));
     colourFilters.forEach((v) => chips.push({ type: 'colour', value: v, label: v }));
     patternFilters.forEach((v) => chips.push({ type: 'pattern', value: v, label: v }));
     brandFilters.forEach((v) => chips.push({ type: 'brand', value: v, label: v }));
     if (priceMin) chips.push({ type: 'priceMin', value: priceMin, label: `Min £${priceMin}` });
     if (priceMax) chips.push({ type: 'priceMax', value: priceMax, label: `Max £${priceMax}` });
     return chips;
-  }, [colourFilters, patternFilters, brandFilters, priceMin, priceMax]);
+  }, [rangeFilters, colourFilters, patternFilters, brandFilters, priceMin, priceMax]);
 
   /* ── Filtered + sorted products ── */
   const filteredProducts = useMemo(() => {
@@ -158,6 +166,9 @@ function CataloguePage() {
 
     if (activeCategory !== 'all') {
       list = list.filter((p) => p.patternType === activeCategory);
+    }
+    if (rangeFilters.length > 0) {
+      list = list.filter((p) => rangeFilters.includes(p.range));
     }
     if (colourFilters.length > 0) {
       const lower = colourFilters.map((c) => c.toLowerCase());
@@ -197,7 +208,7 @@ function CataloguePage() {
     }
 
     return list;
-  }, [activeCategory, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
+  }, [activeCategory, rangeFilters, colourFilters, patternFilters, brandFilters, priceMin, priceMax, sortBy]);
 
   /* ── Build grid with full-width promo banners every 8 products ── */
   const gridItems = useMemo(() => {
@@ -260,6 +271,21 @@ function CataloguePage() {
   /* ── Filter sidebar JSX (mobile) ── */
   const renderFilterContent = () => (
     <div className="catalogue__filter-content">
+      <div className="filter-group">
+        <h4 className="filter-group__title">Range</h4>
+        {RANGES.map((r) => (
+          <label key={r} className="filter-group__checkbox">
+            <input
+              type="checkbox"
+              checked={rangeFilters.includes(r)}
+              onChange={() => toggle(rangeFilters, setRangeFilters, r)}
+            />
+            <span className="filter-group__checkmark" />
+            {r}
+          </label>
+        ))}
+      </div>
+
       <div className="filter-group">
         <h4 className="filter-group__title">Colour Tone</h4>
         {COLOUR_TONES.map((tone) => (
@@ -363,6 +389,35 @@ function CataloguePage() {
         <div className="container">
           <div className="cat-filter-bar__inner">
             <div className="cat-filter-bar__groups">
+              {/* Range filter */}
+              <div className="cat-filter-bar__group">
+                <button
+                  className={`cat-filter-bar__trigger${openFilterPanel === 'range' ? ' cat-filter-bar__trigger--open' : ''}${rangeFilters.length > 0 ? ' cat-filter-bar__trigger--has-active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenFilterPanel(openFilterPanel === 'range' ? null : 'range');
+                  }}
+                >
+                  Range {rangeFilters.length > 0 && <span className="cat-filter-bar__badge">{rangeFilters.length}</span>}
+                  <span className="cat-filter-bar__arrow">&#9662;</span>
+                </button>
+                {openFilterPanel === 'range' && (
+                  <div className="cat-filter-bar__dropdown" onClick={(e) => e.stopPropagation()}>
+                    {RANGES.map((r) => (
+                      <label key={r} className="cat-filter-bar__option">
+                        <input
+                          type="checkbox"
+                          checked={rangeFilters.includes(r)}
+                          onChange={() => toggle(rangeFilters, setRangeFilters, r)}
+                        />
+                        <span className="cat-filter-bar__check" />
+                        {r}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Colour filter */}
               <div className="cat-filter-bar__group">
                 <button
