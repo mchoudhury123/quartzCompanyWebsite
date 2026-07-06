@@ -624,7 +624,7 @@ function CataloguePage() {
                   <div className="cat-product__caption">
                     <h3 className="cat-product__name">{product.name}</h3>
                     <p className="cat-product__sub">
-                      {product.material} &mdash; {product.collection}
+                      {product.range} &mdash; {product.collection}
                     </p>
                     <p className="cat-product__price">
                       {product.onSale && product.originalPrice ? (

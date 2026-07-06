@@ -17,7 +17,7 @@ function ProductCard({ product }) {
   const {
     slug,
     name,
-    material,
+    range,
     collection,
     swatch,
     images,
@@ -181,9 +181,9 @@ function ProductCard({ product }) {
           {/* Name */}
           <h3 className="product-card__name">{name}</h3>
 
-          {/* Subtitle: material / collection */}
+          {/* Subtitle: range / collection */}
           <p className="product-card__subtitle">
-            {material} &mdash; {collection}
+            {range} &mdash; {collection}
           </p>
 
           {/* Rating */}
