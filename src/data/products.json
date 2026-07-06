@@ -579,7 +579,6 @@
     "images": [
       "/Misterio Oro/zoom Misterio Oro 145.jpg",
       "/Misterio Oro/Misterio Oro.jpg",
-      "/Misterio Oro/Misterio Oro..jpg",
       "/Misterio Oro/145- Misterio Oro kitchen.jpg"
     ],
     "fittedImages": [
@@ -632,8 +631,7 @@
     },
     "images": [
       "/Bianco Eclipsia/02 Bianco Eclipsia.jpg",
-      "/Bianco Eclipsia/Bianco Eclipsia PQ.JPG",
-      "/Bianco Eclipsia/Bianco Eclipsia Bookmatched.JPG"
+      "/Bianco Eclipsia/Bianco Eclipsia PQ.JPG"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Bianco Eclipsia/Bianco Eclipsia PQ.JPG",
@@ -683,8 +681,7 @@
     },
     "images": [
       "/Calacatta Aspen/Calacatta Aspen.jpg",
-      "/Calacatta Aspen/Calacatta Aspen PQ.jpg",
-      "/Calacatta Aspen/Calacatta Aspen Bookmatched.JPG"
+      "/Calacatta Aspen/Calacatta Aspen PQ.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Calacatta Aspen/Calacatta Aspen PQ.jpg",
@@ -734,8 +731,7 @@
     },
     "images": [
       "/Calacatta Mystic/03 Calacatta Mystic.jpg",
-      "/Calacatta Mystic/calacatta mystic PQ.jpg",
-      "/Calacatta Mystic/03 Calacatta Mystic Bookmatched.JPG"
+      "/Calacatta Mystic/calacatta mystic PQ.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Calacatta Mystic/calacatta mystic PQ.jpg",
@@ -785,8 +781,7 @@
     },
     "images": [
       "/Lux Grey/04 Lux Grey.jpg",
-      "/Lux Grey/Lux Grey PQ.jpg",
-      "/Lux Grey/04 Lux Grey Bookmatched.JPG"
+      "/Lux Grey/Lux Grey PQ.jpg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Lux Grey/Lux Grey PQ.jpg",
@@ -835,6 +830,7 @@
       "leadTime": "10–15 working days"
     },
     "images": [
+      "/Taj Mahal/close.jpg",
       "/Taj Mahal/Taj Mahal.jpg",
       "/Taj Mahal/Taj Mahal kitchen.jpg"
     ],
@@ -842,7 +838,7 @@
       "/Taj Mahal/Taj Mahal kitchen.jpg"
     ],
     "fullSlabImage": "/Taj Mahal/Taj Mahal.jpg",
-    "swatch": "/Taj Mahal/Taj Mahal.jpg"
+    "swatch": "/Taj Mahal/close.jpg"
   },
   {
     "id": 18,
@@ -887,11 +883,12 @@
       "leadTime": "10–15 working days"
     },
     "images": [
+      "/Calacatta Verona/verona.jpg",
       "/Calacatta Verona/calacatta verona.jpeg"
     ],
     "fittedImages": [],
     "fullSlabImage": "/Calacatta Verona/calacatta verona.jpeg",
-    "swatch": "/Calacatta Verona/calacatta verona.jpeg"
+    "swatch": "/Calacatta Verona/verona.jpg"
   },
   {
     "id": 19,
