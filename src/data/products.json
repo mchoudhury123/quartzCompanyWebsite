@@ -478,5 +478,102 @@
     ],
     "fullSlabImage": "/Golden Veil/726 Golden Veil.jpg",
     "swatch": "/Golden Veil/726 Golden Veil.jpg"
+  },
+  {
+    "id": 11,
+    "slug": "concrete-terreno",
+    "name": "Concrete Terreno",
+    "category": "quartz",
+    "collection": "Urban Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 214,
+    "price20mm": 214,
+    "price30mm": 257,
+    "originalPrice": 357,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.8,
+    "reviewCount": 108,
+    "popular": false,
+    "new": true,
+    "colorTone": "grey",
+    "patternType": "speckled",
+    "brand": "The Quartz Company",
+    "shortDesc": "A cool urban grey with a soft concrete-inspired texture, bringing industrial calm and contemporary edge.",
+    "description": "Concrete Terreno captures the raw, understated beauty of polished concrete in a durable engineered quartz. Its cool grey surface is softened by subtle tonal clouding and fine mineral speckling, bringing an industrial, contemporary calm to modern kitchens and utility spaces. Pair it with handleless cabinetry and matt black fixtures for a boldly minimalist look — all with the resilience and easy upkeep of premium quartz.",
+    "features": [
+      "Concrete-inspired matte look",
+      "Cool neutral grey tone",
+      "Non-porous surface",
+      "Scratch & stain resistant",
+      "Lifetime manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": ["20mm", "30mm"],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Concrete Terreno/pattern image Concrete Terreno 785.jpg",
+      "/Concrete Terreno/20240214_113421.jpg",
+      "/Concrete Terreno/Concrete Terreno Kitchen.jpg"
+    ],
+    "fittedImages": [
+      "/Concrete Terreno/Concrete Terreno Kitchen.jpg"
+    ],
+    "fullSlabImage": "/Concrete Terreno/20240214_113421.jpg",
+    "swatch": "/Concrete Terreno/pattern image Concrete Terreno 785.jpg"
+  },
+  {
+    "id": 12,
+    "slug": "misterio-oro",
+    "name": "Misterio Oro",
+    "category": "quartz",
+    "collection": "Heritage Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 207,
+    "price20mm": 207,
+    "price30mm": 248,
+    "originalPrice": 345,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 131,
+    "popular": false,
+    "new": true,
+    "colorTone": "cream",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A warm cream surface laced with delicate golden veining, radiating soft, understated luxury.",
+    "description": "Misterio Oro blends a warm, creamy base with fine, mysterious threads of gold and caramel veining. Understated yet luxurious, it lends a soft, inviting glow to kitchens and bathrooms while offering the timeless character of natural stone. Engineered for everyday living, it delivers refined warmth and consistent beauty from slab to slab, pairing beautifully with brushed brass fixtures and warm timber tones.",
+    "features": [
+      "Delicate golden veining",
+      "Warm cream tone",
+      "Non-porous surface",
+      "Low maintenance",
+      "Lifetime manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": ["20mm", "30mm"],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Misterio Oro/zoom Misterio Oro 145.jpg",
+      "/Misterio Oro/Misterio Oro.jpg",
+      "/Misterio Oro/Misterio Oro..jpg",
+      "/Misterio Oro/145- Misterio Oro kitchen.jpg"
+    ],
+    "fittedImages": [
+      "/Misterio Oro/145- Misterio Oro kitchen.jpg"
+    ],
+    "fullSlabImage": "/Misterio Oro/Misterio Oro.jpg",
+    "swatch": "/Misterio Oro/zoom Misterio Oro 145.jpg"
   }
 ]
