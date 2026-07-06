@@ -44,7 +44,7 @@ export default function QuotePage() {
   /* ── Step 2: Kitchen Plan ── */
   const [planMode, setPlanMode] = useState(null);
   const [worktopRuns, setWorktopRuns] = useState([{ length: '', width: '' }]);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -161,21 +161,40 @@ export default function QuotePage() {
     }
   };
 
-  const handleFileSelect = useCallback((file) => {
-    if (!file) return;
-    if (file.size > MAX_FILE_SIZE) {
-      alert('File must be under 10 MB.');
-      return;
+  const handleFileSelect = useCallback((fileList) => {
+    const incoming = Array.from(fileList || []);
+    if (incoming.length === 0) return;
+
+    const tooBig = incoming.filter((f) => f.size > MAX_FILE_SIZE);
+    if (tooBig.length > 0) {
+      alert(
+        `${tooBig.map((f) => f.name).join(', ')} ${
+          tooBig.length > 1 ? 'are each' : 'is'
+        } over 10 MB and ${tooBig.length > 1 ? "weren't" : "wasn't"} added.`
+      );
     }
-    setUploadedFile(file);
+    const valid = incoming.filter((f) => f.size <= MAX_FILE_SIZE);
+    if (valid.length === 0) return;
+
+    setUploadedFiles((prev) => {
+      const seen = new Set(prev.map((f) => `${f.name}_${f.size}`));
+      const merged = [...prev];
+      valid.forEach((f) => {
+        if (!seen.has(`${f.name}_${f.size}`)) merged.push(f);
+      });
+      return merged;
+    });
+  }, []);
+
+  const removeFile = useCallback((index) => {
+    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
       setDragOver(false);
-      const file = e.dataTransfer.files[0];
-      handleFileSelect(file);
+      handleFileSelect(e.dataTransfer.files);
     },
     [handleFileSelect]
   );
@@ -261,58 +280,63 @@ export default function QuotePage() {
         );
       }
 
-      // Upload kitchen plan file: get signed URL from API, then upload directly to storage
-      let uploadedFileName = null;
-      if (planMode === 'upload' && uploadedFile) {
-        try {
-          // Step 1: Get a signed upload URL from our API (also creates the file record)
-          const urlRes = await fetch('/api/upload-file', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              leadId,
-              fileName: uploadedFile.name,
-              fileType: uploadedFile.type,
-              fileSize: uploadedFile.size,
-            }),
-          });
-          const urlResult = await urlRes.json();
+      // Upload kitchen plan files: for each, get a signed URL, upload, then record it.
+      const uploadedFileNames = [];
+      if (planMode === 'upload' && uploadedFiles.length > 0) {
+        for (const file of uploadedFiles) {
+          try {
+            // Step 1: Get a signed upload URL from our API (also creates the file record)
+            const urlRes = await fetch('/api/upload-file', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                leadId,
+                fileName: file.name,
+                fileType: file.type,
+                fileSize: file.size,
+              }),
+            });
+            const urlResult = await urlRes.json();
 
-          if (!urlResult.success) {
-            console.error('Failed to get upload URL:', urlResult.error);
-          } else {
+            if (!urlResult.success) {
+              console.error('Failed to get upload URL:', urlResult.error);
+              continue;
+            }
+
             // Step 2: Upload the file using the Supabase SDK, which sends it
             // in the multipart form the storage server expects (a plain PUT of
             // the raw file can store an unreadable object).
             const { error: uploadError } = await supabase.storage
               .from('lead-files')
-              .uploadToSignedUrl(urlResult.storagePath, urlResult.token, uploadedFile, {
-                contentType: uploadedFile.type || 'application/octet-stream',
+              .uploadToSignedUrl(urlResult.storagePath, urlResult.token, file, {
+                contentType: file.type || 'application/octet-stream',
               });
 
             if (uploadError) {
               console.error('Direct upload failed:', uploadError.message);
-            } else {
-              // Step 3: Only now that the file is really in storage, record it
-              // in the database so the admin never sees a file they can't open.
-              const { error: dbError } = await supabase.from('lead_files').insert({
-                lead_id: leadId,
-                file_name: uploadedFile.name,
-                file_type: uploadedFile.type || 'application/octet-stream',
-                file_size: uploadedFile.size || 0,
-                storage_path: urlResult.storagePath,
-                category: 'plan',
-                uploaded_by: 'Customer',
-              });
-              if (dbError) {
-                console.error('File record insert failed:', dbError.message);
-              } else {
-                uploadedFileName = uploadedFile.name;
-              }
+              continue;
             }
+
+            // Step 3: Only now that the file is really in storage, record it
+            // in the database so the admin never sees a file they can't open.
+            const { error: dbError } = await supabase.from('lead_files').insert({
+              lead_id: leadId,
+              file_name: file.name,
+              file_type: file.type || 'application/octet-stream',
+              file_size: file.size || 0,
+              storage_path: urlResult.storagePath,
+              category: 'plan',
+              uploaded_by: 'Customer',
+            });
+            if (dbError) {
+              console.error('File record insert failed:', dbError.message);
+              continue;
+            }
+
+            uploadedFileNames.push(file.name);
+          } catch (fileErr) {
+            console.error('File upload error:', fileErr);
           }
-        } catch (fileErr) {
-          console.error('File upload error:', fileErr);
         }
       }
 
@@ -329,8 +353,9 @@ export default function QuotePage() {
           kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
             ? { worktop_runs: filledRuns }
             : null,
-          kitchen_plan_uploaded: !!uploadedFileName,
-          kitchen_plan_file: uploadedFileName,
+          kitchen_plan_uploaded: uploadedFileNames.length > 0,
+          kitchen_plan_file: uploadedFileNames.join(', ') || null,
+          kitchen_plan_files: uploadedFileNames,
           install_date: form.installDate || null,
           postcode: form.postcode,
         },
@@ -741,7 +766,7 @@ export default function QuotePage() {
                   <div
                     className={`quote-page__dropzone${
                       dragOver ? ' quote-page__dropzone--over' : ''
-                    }${uploadedFile ? ' quote-page__dropzone--uploaded' : ''}`}
+                    }`}
                     onDragOver={(e) => {
                       e.preventDefault();
                       setDragOver(true);
@@ -757,37 +782,56 @@ export default function QuotePage() {
                         fileInputRef.current?.click();
                       }
                     }}
-                    aria-label="Upload kitchen plan file"
+                    aria-label="Upload kitchen plan files"
                   >
                     <input
                       ref={fileInputRef}
                       type="file"
+                      multiple
                       accept={ACCEPTED_TYPES}
                       className="quote-page__file-input"
-                      onChange={(e) => handleFileSelect(e.target.files[0])}
+                      onChange={(e) => {
+                        handleFileSelect(e.target.files);
+                        e.target.value = '';
+                      }}
                     />
-                    {uploadedFile ? (
-                      <>
-                        <FiCheck className="quote-page__dropzone-icon quote-page__dropzone-icon--done" />
-                        <span className="quote-page__dropzone-filename">
-                          {uploadedFile.name}
-                        </span>
-                        <span className="quote-page__dropzone-hint">
-                          Click or drop to replace
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <FiUploadCloud className="quote-page__dropzone-icon" />
-                        <span className="quote-page__dropzone-text">
-                          Drag &amp; drop your file here, or click to browse
-                        </span>
-                        <span className="quote-page__dropzone-hint">
-                          JPG, PNG or PDF &mdash; max 10 MB
-                        </span>
-                      </>
-                    )}
+                    <FiUploadCloud className="quote-page__dropzone-icon" />
+                    <span className="quote-page__dropzone-text">
+                      Drag &amp; drop your files here, or click to browse
+                    </span>
+                    <span className="quote-page__dropzone-hint">
+                      JPG, PNG or PDF &mdash; max 10 MB each. You can add several.
+                    </span>
                   </div>
+
+                  {uploadedFiles.length > 0 && (
+                    <ul className="quote-page__file-list">
+                      {uploadedFiles.map((file, i) => (
+                        <li key={`${file.name}_${i}`} className="quote-page__file-item">
+                          <FiCheck className="quote-page__file-item-icon" aria-hidden="true" />
+                          <span className="quote-page__file-item-name">{file.name}</span>
+                          <button
+                            type="button"
+                            className="quote-page__file-remove"
+                            onClick={() => removeFile(i)}
+                            aria-label={`Remove ${file.name}`}
+                          >
+                            <FiX aria-hidden="true" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {uploadedFiles.length > 0 && (
+                    <button
+                      type="button"
+                      className="quote-page__file-add-more"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <FiPlus aria-hidden="true" /> Add more attachments
+                    </button>
+                  )}
                 </div>
               )}
             </div>
