@@ -431,5 +431,52 @@
     "fittedImages": [],
     "fullSlabImage": "/Nero Sparkle/Nero Sparkle Full Slab.JPG",
     "swatch": "/Nero Sparkle/Nero Sparkle Close Up 1.JPG"
+  },
+  {
+    "id": 10,
+    "slug": "golden-veil",
+    "name": "Golden Veil",
+    "category": "quartz",
+    "collection": "Heritage Series",
+    "material": "Engineered Quartz",
+    "pricePerSqm": 214,
+    "price20mm": 214,
+    "price30mm": 257,
+    "originalPrice": 357,
+    "onSale": true,
+    "discount": 40,
+    "rating": 4.9,
+    "reviewCount": 142,
+    "popular": false,
+    "new": true,
+    "colorTone": "white",
+    "patternType": "veined",
+    "brand": "The Quartz Company",
+    "shortDesc": "A soft white surface threaded with delicate golden veining, radiating warmth and understated luxury.",
+    "description": "Golden Veil drapes a warm, creamy white base in fine, flowing veins of gold and soft taupe. The effect is gentle and luminous — luxury that whispers rather than shouts, bringing a sense of warmth and light to kitchens and bathrooms alike. Engineered for everyday living, it offers the timeless elegance of veined marble with the durability and low maintenance of premium quartz, delivering consistent character from slab to slab.",
+    "features": [
+      "Delicate gold veining",
+      "Warm white tone",
+      "Non-porous surface",
+      "Low maintenance",
+      "Lifetime manufacturer warranty"
+    ],
+    "specifications": {
+      "material": "93% Natural Quartz, 7% Polymer Resin",
+      "finish": "Polished",
+      "thicknesses": ["20mm", "30mm"],
+      "slabSize": "3050 × 1440 mm",
+      "weight": "~47 kg/m² (20mm)",
+      "leadTime": "10–15 working days"
+    },
+    "images": [
+      "/Golden Veil/726 Golden Veil.jpg",
+      "/Golden Veil/Golden Veil  K.jpg"
+    ],
+    "fittedImages": [
+      "/Golden Veil/Golden Veil  K.jpg"
+    ],
+    "fullSlabImage": "/Golden Veil/726 Golden Veil.jpg",
+    "swatch": "/Golden Veil/726 Golden Veil.jpg"
   }
 ]
