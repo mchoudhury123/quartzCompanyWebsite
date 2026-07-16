@@ -215,3 +215,14 @@
 .quotes-tab__action--edit:hover {
   background: #fefce8;
 }
+
+.quotes-tab__action--copy {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.quotes-tab__action--copy:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

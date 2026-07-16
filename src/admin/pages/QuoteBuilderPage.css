@@ -51,6 +51,25 @@
   color: var(--admin-text-light);
 }
 
+.quote-builder__expiry {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text-light);
+}
+
+.quote-builder__expiry input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--admin-border, #e2e2e2);
+  border-radius: 6px;
+  color: var(--admin-text);
+  background: #fff;
+}
+
 /* Two-column layout */
 .quote-builder__layout {
   display: grid;

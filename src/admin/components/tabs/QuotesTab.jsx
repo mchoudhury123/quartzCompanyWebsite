@@ -8,7 +8,7 @@ import {
   buildBalanceConfirmationEmail,
 } from '../../../utils/depositConfirmationEmail';
 import StatusBadge from '../StatusBadge';
-import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle, FiCopy } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -21,9 +21,23 @@ const QUOTE_STATUS_MAP = {
 
 export default function QuotesTab({ leadId, onCreateQuote }) {
   const navigate = useNavigate();
-  const { quotes, loading, updateQuoteStatus, markDepositPaid, markBalancePaid } = useQuotes(leadId);
+  const { quotes, loading, duplicateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid } = useQuotes(leadId);
   const [balanceState, setBalanceState] = useState({}); // { [quoteId]: 'sending'|'sent'|'error' }
   const [paidState, setPaidState] = useState({}); // { [quoteId]: 'saving'|'done'|'error' }
+  const [copyState, setCopyState] = useState({}); // { [quoteId]: 'copying' }
+
+  // Copy a quote into a new draft (same sizes), then open it for editing so the
+  // admin can change the material/price.
+  const copyQuote = async (q) => {
+    setCopyState((s) => ({ ...s, [q.id]: 'copying' }));
+    const { data, error } = await duplicateQuote(q.id);
+    setCopyState((s) => ({ ...s, [q.id]: undefined }));
+    if (error || !data) {
+      window.alert(`Couldn't copy the quote: ${error?.message || 'please try again.'}`);
+      return;
+    }
+    navigate(`/admin/leads/${leadId}/quote/${data.id}`);
+  };
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-GB', {
     day: 'numeric', month: 'short', year: 'numeric',
@@ -169,16 +183,21 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                 >
                   <FiEye /> View
                 </a>
+                <button
+                  className="quotes-tab__action quotes-tab__action--edit"
+                  onClick={() => navigate(`/admin/leads/${leadId}/quote/${q.id}`)}
+                >
+                  <FiEdit2 /> Edit
+                </button>
+                <button
+                  className="quotes-tab__action quotes-tab__action--copy"
+                  onClick={() => copyQuote(q)}
+                  disabled={copyState[q.id] === 'copying'}
+                >
+                  <FiCopy /> {copyState[q.id] === 'copying' ? 'Copying…' : 'Copy'}
+                </button>
                 {q.status === 'draft' && (
-                  <>
-                    <button
-                      className="quotes-tab__action quotes-tab__action--edit"
-                      onClick={() => navigate(`/admin/leads/${leadId}/quote/${q.id}`)}
-                    >
-                      <FiEdit2 /> Edit
-                    </button>
-                    <button className="quotes-tab__action" onClick={() => updateQuoteStatus(q.id, 'sent')}>Mark Sent</button>
-                  </>
+                  <button className="quotes-tab__action" onClick={() => updateQuoteStatus(q.id, 'sent')}>Mark Sent</button>
                 )}
                 {q.status === 'sent' && (
                   <>

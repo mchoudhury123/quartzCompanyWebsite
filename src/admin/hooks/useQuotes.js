@@ -51,6 +51,25 @@ export default function useQuotes(leadId) {
     return { data, error };
   };
 
+  // Duplicate an existing quote: copies its pieces/sizes/prices into a brand-new
+  // draft quote (fresh number, no expiry). The admin can then open it and swap
+  // the material/price while keeping all the sizes.
+  const duplicateQuote = async (sourceId) => {
+    const source = quotes.find((q) => q.id === sourceId);
+    if (!source) return { data: null, error: new Error('Quote not found') };
+    return createQuote({
+      title: source.title,
+      description: source.description,
+      items: source.items,
+      subtotal: source.subtotal,
+      vat: source.vat,
+      total: source.total,
+      validUntil: null,
+      depositAmount: source.deposit_amount,
+      selectedThickness: source.selected_thickness,
+    });
+  };
+
   const updateQuote = async (quoteId, updates) => {
     const { data, error } = await supabase
       .from('lead_quotes')
@@ -133,5 +152,5 @@ export default function useQuotes(leadId) {
     return { data, error };
   };
 
-  return { quotes, loading, createQuote, updateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid, refetch: fetch };
+  return { quotes, loading, createQuote, duplicateQuote, updateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid, refetch: fetch };
 }

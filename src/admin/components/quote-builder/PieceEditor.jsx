@@ -131,7 +131,10 @@ export default function PieceEditor({
           const featuresTotal = calcFeaturesTotal(piece);
           // Price/Discount/Sale shown are line totals (unit × quantity)
           const price = (isSpecialist ? manualPrice : originalMaterial + featuresTotal) * qty;
-          const sale = (isSpecialist ? manualPrice : saleMaterial + featuresTotal) * qty;
+          const computedSale = (isSpecialist ? manualPrice : saleMaterial + featuresTotal) * qty;
+          // A manually overridden sale price wins over the auto-calculated one.
+          const hasOverride = !isSpecialist && piece.price_override != null && piece.price_override !== '';
+          const sale = hasOverride ? Number(piece.price_override) : computedSale;
           const discount = isSpecialist ? 0 : Math.max(0, price - sale);
           const isExpanded = expandedId === piece.id;
 
@@ -218,7 +221,25 @@ export default function PieceEditor({
                 <span className="piece-editor__discount">
                   {isSpecialist ? '—' : fmt(discount)}
                 </span>
-                <span className="piece-editor__sale">{fmt(sale)}</span>
+                {isSpecialist ? (
+                  <span className="piece-editor__sale">{fmt(sale)}</span>
+                ) : (
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={hasOverride ? piece.price_override : computedSale.toFixed(2)}
+                    onChange={(e) =>
+                      onUpdatePiece(
+                        piece.id,
+                        'price_override',
+                        e.target.value === '' ? null : parseFloat(e.target.value)
+                      )
+                    }
+                    className={`piece-editor__input piece-editor__input--center piece-editor__sale-input ${hasOverride ? 'is-override' : ''}`}
+                    title={hasOverride ? 'Manual price — clear to auto-calculate' : 'Auto-calculated sale price — type to override'}
+                  />
+                )}
                 <button
                   className="piece-editor__remove"
                   onClick={() => onRemovePiece(piece.id)}

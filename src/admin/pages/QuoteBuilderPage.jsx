@@ -40,6 +40,7 @@ export default function QuoteBuilderPage() {
   const [emailPreviewData, setEmailPreviewData] = useState(null);
   const [savedQuote, setSavedQuote] = useState(null);
   const [poNumber, setPoNumber] = useState('');
+  const [validUntil, setValidUntil] = useState(''); // YYYY-MM-DD; blank = no expiry
 
   // Load existing quote data in edit mode
   useEffect(() => {
@@ -48,6 +49,11 @@ export default function QuoteBuilderPage() {
     // Restore thickness
     if (existingQuote.selected_thickness) {
       setThickness(existingQuote.selected_thickness);
+    }
+
+    // Restore expiry date (stored as a date, e.g. "2026-07-18")
+    if (existingQuote.valid_until) {
+      setValidUntil(String(existingQuote.valid_until).split('T')[0]);
     }
 
     // Restore deposit percentage (derived from stored deposit / total)
@@ -84,6 +90,7 @@ export default function QuoteBuilderPage() {
           comments: item.comments || '',
           features: item.features || [],
           manual_price: item.manual_price || 0,
+          price_override: item.price_override ?? null,
         });
       } else if (item.type === 'accessory') {
         restoredAccessories.push({
@@ -127,6 +134,7 @@ export default function QuoteBuilderPage() {
         comments: '',
         features: [],
         manual_price: 0,
+        price_override: null,
       },
     ]);
   }, []);
@@ -195,7 +203,8 @@ export default function QuoteBuilderPage() {
       const saleMaterial = areaSqm * pricePerSqm;
       const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
       const originalPrice = (originalMaterial + featuresTotal) * qty;
-      const linePrice = (saleMaterial + featuresTotal) * qty;
+      const hasOverride = p.price_override != null && p.price_override !== '';
+      const linePrice = hasOverride ? Number(p.price_override) : (saleMaterial + featuresTotal) * qty;
       const discount = Math.max(0, originalPrice - linePrice);
 
       return {
@@ -270,7 +279,8 @@ export default function QuoteBuilderPage() {
         const saleMaterial = areaSqm * pricePerSqm;
         const featuresTotal = (p.features || []).reduce((s, f) => s + (f.price || 0), 0);
         const originalPrice = (originalMaterial + featuresTotal) * qty;
-        const linePrice = (saleMaterial + featuresTotal) * qty;
+        const hasOverride = p.price_override != null && p.price_override !== '';
+        const linePrice = hasOverride ? Number(p.price_override) : (saleMaterial + featuresTotal) * qty;
         const discount = Math.max(0, originalPrice - linePrice);
         return {
           type: 'piece',
@@ -283,6 +293,7 @@ export default function QuoteBuilderPage() {
           edge_mm: p.edge_mm,
           comments: p.comments || '',
           features: p.features || [],
+          price_override: hasOverride ? Number(p.price_override) : null,
           material_cost: saleMaterial * qty,
           original_material_cost: originalMaterial * qty,
           features_total: featuresTotal * qty,
@@ -342,7 +353,7 @@ export default function QuoteBuilderPage() {
   const handleSaveDraft = async () => {
     if (saving) return;
     setSaving(true);
-    const { error } = await saveQuote('draft');
+    const { error } = await saveQuote('draft', validUntil || null);
     setSaving(false);
     if (!error) {
       navigate(`/admin/leads/${leadId}?tab=quotes`);
@@ -353,7 +364,7 @@ export default function QuoteBuilderPage() {
   const handleDownloadPDF = async () => {
     if (saving) return;
     setSaving(true);
-    const { data, error } = await saveQuote('sent');
+    const { data, error } = await saveQuote('sent', validUntil || null);
     if (!error) {
       // Push the saved quote (with its real number) into the PDF before
       // capturing, so the document and bank reference show it — not "Draft".
@@ -395,9 +406,13 @@ export default function QuoteBuilderPage() {
   // --- Send Email (opens preview first) ---
   const handleSendEmail = () => {
     if (saving || allItems.length === 0) return;
-    const validUntil = new Date();
-    validUntil.setDate(validUntil.getDate() + 2);
-    const validUntilStr = validUntil.toISOString().split('T')[0];
+    // Use the admin-set expiry if there is one; otherwise default to 2 days out.
+    let validUntilStr = validUntil;
+    if (!validUntilStr) {
+      const d = new Date();
+      d.setDate(d.getDate() + 2);
+      validUntilStr = d.toISOString().split('T')[0];
+    }
     const payload = buildPayload('sent', validUntilStr);
 
     setEmailPreviewData({
@@ -512,6 +527,14 @@ export default function QuoteBuilderPage() {
           {isEditMode && existingQuote?.quote_number && (
             <span className="quote-builder__qnum">{existingQuote.quote_number}</span>
           )}
+          <label className="quote-builder__expiry">
+            <span>Valid until</span>
+            <input
+              type="date"
+              value={validUntil}
+              onChange={(e) => setValidUntil(e.target.value)}
+            />
+          </label>
           <span className="quote-builder__date">{today}</span>
         </div>
       </div>

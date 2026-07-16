@@ -183,6 +183,17 @@
   color: var(--admin-text);
 }
 
+/* Editable sale price (auto-calculated, overridable) */
+.piece-editor__sale-input {
+  font-weight: 600;
+}
+
+.piece-editor__sale-input.is-override {
+  color: var(--color-gold, #c5a47e);
+  border-color: var(--color-gold, #c5a47e);
+  font-weight: 700;
+}
+
 /* Remove button */
 .piece-editor__remove {
   background: none;
