@@ -445,14 +445,15 @@
   left: 0.85rem;
   z-index: 2;
   padding: 0.32rem 0.7rem;
-  background: #1c1712;
-  color: #f5efe6;
+  background: #e11900;
+  color: #fff;
   font-family: var(--font-body);
   font-size: 0.62rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   border-radius: 2px;
+  box-shadow: 0 4px 10px rgba(225, 25, 0, 0.28);
 }
 
 .cat-product__caption {
@@ -502,6 +503,68 @@
 .cat-product__price-sale {
   color: var(--color-sale);
   font-weight: 600;
+}
+
+.cat-product__price-off {
+  color: #e11900;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cat-product__price-off::before {
+  content: '·';
+  margin-right: 0.5rem;
+  color: var(--color-text-light);
+  font-weight: 400;
+}
+
+/* ── Summer sale banner (under filters) ── */
+.cat-sale-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 0 0 2rem;
+  padding: 1rem 1.75rem;
+  border-radius: var(--radius-md);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0.06) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    linear-gradient(135deg, #b0392a 0%, #9c3b2e 100%);
+  box-shadow: 0 12px 28px -14px rgba(156, 59, 46, 0.55);
+}
+
+.cat-sale-banner__tag {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #9c3b2e;
+  background: #fff;
+  padding: 0.4rem 0.85rem;
+  border-radius: 100px;
+}
+
+.cat-sale-banner__text {
+  margin: 0;
+  color: #fff;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+}
+
+.cat-sale-banner__text strong {
+  font-weight: 800;
 }
 
 /* ── Full-width Promo Banners (contrast bands on ivory) ── */
@@ -806,5 +869,210 @@
 @media (max-width: 480px) {
   .catalogue__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ── Customer review carousel ── */
+.cat-reviews {
+  margin-top: 4rem;
+  padding: 3.5rem 0;
+  text-align: center;
+  background:
+    radial-gradient(
+      70% 120% at 50% 0%,
+      rgba(169, 136, 92, 0.08) 0%,
+      rgba(169, 136, 92, 0) 60%
+    ),
+    linear-gradient(180deg, var(--color-cream) 0%, #fbf8f2 100%);
+}
+
+.cat-reviews__overline {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.6rem;
+}
+
+.cat-reviews__overline::before,
+.cat-reviews__overline::after {
+  content: '';
+  display: inline-block;
+  width: 26px;
+  height: 1px;
+  background: var(--color-gold);
+  vertical-align: middle;
+  margin: 0 0.7rem;
+  opacity: 0.6;
+}
+
+.cat-reviews__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  color: var(--color-dark);
+  margin: 0 0 2rem;
+}
+
+.cat-reviews__carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.cat-reviews__arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(169, 136, 92, 0.45);
+  background: var(--color-white);
+  color: var(--color-gold);
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.cat-reviews__arrow:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-white);
+  transform: scale(1.06);
+}
+
+.cat-reviews__card {
+  position: relative;
+  flex: 1;
+  min-height: 190px;
+  background: var(--color-white);
+  border: 1px solid rgba(169, 136, 92, 0.16);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.25rem 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  box-shadow: 0 24px 48px -30px rgba(28, 23, 18, 0.4);
+  overflow: hidden;
+  animation: cat-review-fade 0.45s ease;
+}
+
+@keyframes cat-review-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cat-reviews__mark {
+  position: absolute;
+  top: 0.5rem;
+  left: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--color-gold);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.cat-reviews__stars {
+  color: var(--color-gold);
+  font-size: 1.05rem;
+  letter-spacing: 4px;
+}
+
+.cat-review__star--empty {
+  color: rgba(169, 136, 92, 0.3);
+}
+
+.cat-reviews__text {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-dark);
+  max-width: 580px;
+}
+
+.cat-reviews__author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.4rem;
+}
+
+.cat-reviews__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-dark);
+}
+
+.cat-reviews__loc {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.cat-reviews__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.cat-reviews__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(169, 136, 92, 0.3);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.cat-reviews__dot:hover {
+  background: rgba(169, 136, 92, 0.6);
+}
+
+.cat-reviews__dot--active {
+  width: 28px;
+  border-radius: 5px;
+  background: var(--color-gold);
+}
+
+@media (max-width: 768px) {
+  .cat-reviews__carousel {
+    gap: 0.5rem;
+  }
+
+  .cat-reviews__arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cat-reviews__card {
+    padding: 2.75rem 1.5rem 2.25rem;
+    min-height: 0;
   }
 }

@@ -1,6 +1,14 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { FiCheck, FiUploadCloud, FiX, FiPlus, FiCalendar } from 'react-icons/fi';
+import {
+  FiCheck,
+  FiUploadCloud,
+  FiX,
+  FiPlus,
+  FiCalendar,
+  FiChevronLeft,
+  FiChevronRight,
+} from 'react-icons/fi';
 import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
 import { supabase } from '../lib/supabase';
@@ -14,6 +22,74 @@ const isValidEmail = (email) =>
 
 const isValidUKPostcode = (pc) =>
   /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i.test(pc.trim());
+
+/* Render a 5-star rating row (filled/empty) */
+const renderStars = (count) => {
+  const stars = [];
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <span
+        key={i}
+        className={
+          i < count
+            ? 'quote-page__trust-star--filled'
+            : 'quote-page__trust-star--empty'
+        }
+      >
+        {i < count ? '★' : '☆'}
+      </span>
+    );
+  }
+  return stars;
+};
+
+/* Reviews shown in the quote-page carousel.
+   NOTE: placeholder copy — replace with genuine customer reviews
+   (e.g. exported from Google) before relying on these. */
+const QUOTE_REVIEWS = [
+  {
+    id: 'r1',
+    name: 'Rebecca H.',
+    location: 'Rugby',
+    rating: 5,
+    text: 'Faultless from start to finish — our worktops are absolutely stunning.',
+  },
+  {
+    id: 'r2',
+    name: 'Mark Sanders',
+    location: 'Leicester',
+    rating: 5,
+    text: 'From the first phone call to the final polish, the team were exceptional. The templating was spot on, the fitters were tidy and professional, and our island is now the centrepiece of the whole kitchen. I couldn’t recommend them more highly.',
+  },
+  {
+    id: 'r3',
+    name: 'Priya & Anil',
+    location: 'Loughborough',
+    rating: 5,
+    text: 'We agonised over colours for weeks, but the samples made it easy. The finish is flawless and looks even better than we imagined.',
+  },
+  {
+    id: 'r4',
+    name: 'Gemma W.',
+    location: 'Market Harborough',
+    rating: 5,
+    text: 'Beautiful quartz, brilliant service, worth every penny.',
+  },
+  {
+    id: 'r5',
+    name: 'Jonathan Reeve',
+    location: 'Oakham',
+    rating: 5,
+    text: 'I’ve had kitchens fitted before and nothing came close to this. Communication was superb throughout, the quote was clear with no surprises, and the quality of the stone is exceptional. A genuinely first-class company from enquiry to installation.',
+  },
+  {
+    id: 'r6',
+    name: 'Claire T.',
+    location: 'Bedford',
+    rating: 4,
+    text: 'Professional, friendly and meticulous. Our new worktops have completely transformed the room.',
+  },
+];
 
 const MAX_COLOURS = 3;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -39,7 +115,7 @@ export default function QuotePage() {
     return [];
   });
   const [selectionWarning, setSelectionWarning] = useState(false);
-  const [wantSamples, setWantSamples] = useState(null);
+  const [undecided, setUndecided] = useState(false);
 
   /* ── Step 2: Kitchen Plan ── */
   const [planMode, setPlanMode] = useState(null);
@@ -55,13 +131,20 @@ export default function QuotePage() {
     email: '',
     phone: '',
     postcode: '',
-    installDate: '',
   });
   const [honeypot, setHoneypot] = useState('');
 
   /* ── Validation & Submission ── */
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+
+  /* ── Reviews carousel ── */
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const reviewCount = QUOTE_REVIEWS.length;
+  const nextReview = () => setReviewIndex((i) => (i + 1) % reviewCount);
+  const prevReview = () =>
+    setReviewIndex((i) => (i - 1 + reviewCount) % reviewCount);
+  const activeReview = QUOTE_REVIEWS[reviewIndex];
 
   /* ── Active step tracking (IntersectionObserver) ── */
   const [activeStep, setActiveStep] = useState(1);
@@ -127,19 +210,37 @@ export default function QuotePage() {
   };
 
   /* ── Handlers: Step 1 ── */
+  const scrollToKitchenPlan = () => {
+    stepRefs[2].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const toggleProduct = (id) => {
-    setSelectedIds((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((x) => x !== id);
-      }
-      if (prev.length >= MAX_COLOURS) {
-        setSelectionWarning(true);
-        setTimeout(() => setSelectionWarning(false), 3000);
-        return prev;
-      }
-      return [...prev, id];
-    });
+    /* Picking a real colour clears the "undecided" choice */
+    setUndecided(false);
+
+    const alreadySelected = selectedIds.includes(id);
+    if (!alreadySelected && selectedIds.length >= MAX_COLOURS) {
+      setSelectionWarning(true);
+      setTimeout(() => setSelectionWarning(false), 3000);
+      return;
+    }
+
+    const next = alreadySelected
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    setSelectedIds(next);
+
+    /* Reaching the max of three colours advances to the kitchen plan */
+    if (next.length === MAX_COLOURS) scrollToKitchenPlan();
+
     if (errors.products) setErrors((prev) => ({ ...prev, products: '' }));
+  };
+
+  const handleUndecided = () => {
+    setUndecided(true);
+    setSelectedIds([]);
+    if (errors.products) setErrors((prev) => ({ ...prev, products: '' }));
+    scrollToKitchenPlan();
   };
 
   /* ── Handlers: Step 2 ── */
@@ -209,7 +310,8 @@ export default function QuotePage() {
   /* ── Validation ── */
   const validate = () => {
     const errs = {};
-    if (selectedIds.length === 0) errs.products = 'Please select at least one colour.';
+    if (selectedIds.length === 0 && !undecided)
+      errs.products = 'Please select at least one colour, or choose “Undecided”.';
     if (!form.firstName.trim()) errs.firstName = 'First name is required.';
     if (!form.lastName.trim()) errs.lastName = 'Last name is required.';
     if (!form.email.trim()) errs.email = 'Email address is required.';
@@ -218,7 +320,6 @@ export default function QuotePage() {
     if (!form.postcode.trim()) errs.postcode = 'Postcode is required.';
     else if (!isValidUKPostcode(form.postcode))
       errs.postcode = 'Please enter a valid UK postcode.';
-    if (!form.installDate) errs.installDate = 'Please select an estimated installation date.';
     setErrors(errs);
 
     /* Scroll to first error */
@@ -258,27 +359,17 @@ export default function QuotePage() {
         phone: form.phone,
         postcode: form.postcode,
         source: 'quote_page',
-        product_name: selectedProducts.map((p) => p.name).join(', '),
+        product_name: undecided
+          ? 'Undecided'
+          : selectedProducts.map((p) => p.name).join(', '),
         product_material: selectedProducts[0]?.material || null,
-        want_samples: wantSamples === true,
+        want_samples: false,
         pending_action: 'call_new',
         comments: planMode === 'dimensions'
           ? `Worktop runs: ${worktopRuns.map((r, i) => `Run ${i + 1}: ${r.length}mm x ${r.width}mm`).join(', ')}`
           : null,
       });
       leadSaved = !leadError;
-
-      // Auto-create sample records for each selected product
-      if (wantSamples && selectedProducts.length > 0) {
-        await supabase.from('lead_samples').insert(
-          selectedProducts.map((p) => ({
-            lead_id: leadId,
-            product_name: p.name,
-            colour: p.name,
-            material: p.material || null,
-          }))
-        );
-      }
 
       // Upload kitchen plan files: for each, get a signed URL, upload, then record it.
       const uploadedFileNames = [];
@@ -345,18 +436,18 @@ export default function QuotePage() {
       await logActivity(leadId, {
         type: 'enquiry_received',
         title: 'Enquiry received',
-        description: selectedProducts.map((p) => p.name).join(', '),
+        description: undecided
+          ? 'Undecided (colour to be confirmed)'
+          : selectedProducts.map((p) => p.name).join(', '),
         metadata: {
           source: 'quote_page',
           products: selectedProducts.map((p) => ({ name: p.name, material: p.material })),
-          want_samples: wantSamples === true,
           kitchen_plan: planMode === 'dimensions' && filledRuns.length > 0
             ? { worktop_runs: filledRuns }
             : null,
           kitchen_plan_uploaded: uploadedFileNames.length > 0,
           kitchen_plan_file: uploadedFileNames.join(', ') || null,
           kitchen_plan_files: uploadedFileNames,
-          install_date: form.installDate || null,
           postcode: form.postcode,
         },
         author: 'Customer',
@@ -421,11 +512,6 @@ export default function QuotePage() {
                 personalised quote and send it to{' '}
                 <strong>{form.email || 'your email'}</strong> within 24 hours.
               </p>
-              {wantSamples && (
-                <p className="quote-page__confirmation-text">
-                  Your free samples will be posted within 2&ndash;3 working days.
-                </p>
-              )}
               <div className="quote-page__confirmation-actions">
                 <Link to="/" className="btn btn--primary btn--lg">
                   Back to Home
@@ -546,6 +632,35 @@ export default function QuotePage() {
 
               {/* Swatch Grid */}
               <div className="quote-page__swatch-grid">
+                {/* Undecided option — for visitors who haven't chosen a colour */}
+                <button
+                  type="button"
+                  className={`quote-page__swatch-tile quote-page__swatch-tile--undecided${
+                    undecided ? ' quote-page__swatch-tile--selected' : ''
+                  }`}
+                  onClick={handleUndecided}
+                  aria-pressed={undecided}
+                  aria-label={`I'm undecided about the colour${
+                    undecided ? ' (selected)' : ''
+                  }`}
+                >
+                  <div className="quote-page__swatch-undecided" aria-hidden="true">
+                    <span className="quote-page__swatch-undecided-mark">?</span>
+                  </div>
+                  <div className="quote-page__swatch-info">
+                    <span className="quote-page__swatch-name">Undecided</span>
+                    <span className="quote-page__swatch-material">
+                      Help me choose later
+                    </span>
+                  </div>
+                  <span
+                    className="quote-page__swatch-check"
+                    aria-hidden="true"
+                  >
+                    <FiCheck />
+                  </span>
+                </button>
+
                 {products.map((p) => {
                   const isSelected = selectedIds.includes(p.id);
                   return (
@@ -582,39 +697,6 @@ export default function QuotePage() {
                     </button>
                   );
                 })}
-              </div>
-
-              {/* Sample Toggle */}
-              <div className="quote-page__sample-section">
-                <p className="quote-page__sample-question">
-                  Would you like us to post free samples of your chosen colours?
-                </p>
-                <div className="quote-page__sample-toggle">
-                  <button
-                    type="button"
-                    className={`quote-page__toggle-btn${
-                      wantSamples === true
-                        ? ' quote-page__toggle-btn--active'
-                        : ''
-                    }`}
-                    onClick={() => setWantSamples(true)}
-                    aria-pressed={wantSamples === true}
-                  >
-                    Yes, send me samples
-                  </button>
-                  <button
-                    type="button"
-                    className={`quote-page__toggle-btn${
-                      wantSamples === false
-                        ? ' quote-page__toggle-btn--active'
-                        : ''
-                    }`}
-                    onClick={() => setWantSamples(false)}
-                    aria-pressed={wantSamples === false}
-                  >
-                    No thanks
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -687,7 +769,42 @@ export default function QuotePage() {
                     Upload a PDF or image of your kitchen layout
                   </span>
                 </button>
+
+                <button
+                  type="button"
+                  className={`quote-page__plan-card${
+                    planMode === 'none' ? ' quote-page__plan-card--active' : ''
+                  }`}
+                  onClick={() => {
+                    const next = planMode === 'none' ? null : 'none';
+                    setPlanMode(next);
+                    /* Selecting "Not yet" advances to the details stage */
+                    if (next === 'none') {
+                      stepRefs[3].current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      });
+                    }
+                  }}
+                  aria-pressed={planMode === 'none'}
+                >
+                  <FiCalendar className="quote-page__plan-card-fi-icon" />
+                  <span className="quote-page__plan-card-title">
+                    Not Yet
+                  </span>
+                  <span className="quote-page__plan-card-desc">
+                    I don&rsquo;t have my kitchen plans yet
+                  </span>
+                </button>
               </div>
+
+              {/* No plans yet — reassurance message */}
+              {planMode === 'none' && (
+                <p className="quote-page__plan-note">
+                  No problem &mdash; we&rsquo;ll arrange a free template visit to
+                  measure everything for you once you&rsquo;re ready.
+                </p>
+              )}
 
               {/* Dimensions Sub-form */}
               {planMode === 'dimensions' && (
@@ -858,6 +975,7 @@ export default function QuotePage() {
                 </div>
               </div>
 
+              <div className="quote-page__details-layout">
               <div className="quote-page__details-form">
                 {/* First / Last Name */}
                 <div className="quote-page__row">
@@ -973,34 +1091,6 @@ export default function QuotePage() {
                   </div>
                 </div>
 
-                {/* Installation Date */}
-                <div className="quote-page__group">
-                  <label htmlFor="qp-installDate" className="quote-page__label">
-                    Estimated Kitchen Installation Date{' '}
-                    <span className="quote-page__required">*</span>
-                  </label>
-                  <input
-                    id="qp-installDate"
-                    name="installDate"
-                    type="date"
-                    className={`quote-page__input${
-                      errors.installDate ? ' quote-page__input--error' : ''
-                    }`}
-                    value={form.installDate}
-                    onChange={handleChange}
-                  />
-                  {errors.installDate && (
-                    <span className="quote-page__error">
-                      {errors.installDate}
-                    </span>
-                  )}
-                  <span className="quote-page__helper">
-                    Please provide an estimated date for when your cabinetry will
-                    be installed. We schedule templating and installation after
-                    this date.
-                  </span>
-                </div>
-
                 {/* Honeypot */}
                 <div className="quote-page__hp" aria-hidden="true">
                   <label htmlFor="qp-company-website">Company Website</label>
@@ -1027,10 +1117,138 @@ export default function QuotePage() {
                   Submit Quote Request
                 </button>
               </div>
+
+              {/* Reassuring customer quote beside the form */}
+              <aside className="quote-page__details-quote" aria-label="Customer review">
+                <span className="quote-page__details-quote-mark" aria-hidden="true">
+                  &ldquo;
+                </span>
+                <blockquote className="quote-page__details-quote-text">
+                  The process from the initial quote right through to completing
+                  my kitchen was incredible &mdash; I&rsquo;ve never seen anything
+                  like it.
+                </blockquote>
+                <div className="quote-page__details-quote-stars" aria-hidden="true">
+                  ★★★★★
+                </div>
+                <p className="quote-page__details-quote-author">
+                  Adrian
+                </p>
+              </aside>
+              </div>
             </div>
           </div>
         </section>
       </form>
+
+      {/* ════════════════════════════════════════
+          Trust / Social Proof
+         ════════════════════════════════════════ */}
+      <section className="section quote-page__trust">
+        <div className="container">
+          <span className="quote-page__trust-overline">
+            The Quartz Company
+          </span>
+          <h2 className="quote-page__trust-title">
+            You&rsquo;re in Safe Hands
+          </h2>
+          <p className="quote-page__trust-subtitle">
+            Homeowners across the Midlands trust us to craft and fit their
+            dream kitchen worktops &mdash; and love the result.
+          </p>
+
+          {/* Trust badges */}
+          <div className="quote-page__trust-badges">
+            <div className="quote-page__trust-badge">
+              <span className="quote-page__trust-badge-value">25 Year</span>
+              <span className="quote-page__trust-badge-label">
+                Surface Warranty
+              </span>
+            </div>
+            <div className="quote-page__trust-badge">
+              <span className="quote-page__trust-badge-value">
+                <span className="quote-page__trust-badge-stars">★★★★★</span>
+              </span>
+              <span className="quote-page__trust-badge-label">
+                Rated by our customers
+              </span>
+            </div>
+            <div className="quote-page__trust-badge">
+              <span className="quote-page__trust-badge-value">Free</span>
+              <span className="quote-page__trust-badge-label">
+                Template &amp; Design Visit
+              </span>
+            </div>
+            <div className="quote-page__trust-badge">
+              <span className="quote-page__trust-badge-value">10&ndash;20</span>
+              <span className="quote-page__trust-badge-label">
+                Days Quick Turnaround
+              </span>
+            </div>
+          </div>
+
+          {/* Customer review carousel */}
+          <div className="quote-page__carousel">
+            <button
+              type="button"
+              className="quote-page__carousel-arrow quote-page__carousel-arrow--prev"
+              onClick={prevReview}
+              aria-label="Previous review"
+            >
+              <FiChevronLeft />
+            </button>
+
+            <figure className="quote-page__carousel-card" key={activeReview.id}>
+              <span className="quote-page__carousel-mark" aria-hidden="true">
+                &ldquo;
+              </span>
+              <div
+                className="quote-page__carousel-stars"
+                aria-label={`${activeReview.rating} out of 5 stars`}
+              >
+                {renderStars(activeReview.rating)}
+              </div>
+              <blockquote className="quote-page__carousel-text">
+                {activeReview.text}
+              </blockquote>
+              <figcaption className="quote-page__carousel-author">
+                <span className="quote-page__carousel-name">
+                  {activeReview.name}
+                </span>
+                <span className="quote-page__carousel-meta">
+                  {activeReview.location}
+                  {activeReview.product ? ` · ${activeReview.product}` : ''}
+                </span>
+              </figcaption>
+            </figure>
+
+            <button
+              type="button"
+              className="quote-page__carousel-arrow quote-page__carousel-arrow--next"
+              onClick={nextReview}
+              aria-label="Next review"
+            >
+              <FiChevronRight />
+            </button>
+          </div>
+
+          {/* Carousel dots */}
+          <div className="quote-page__carousel-dots">
+            {QUOTE_REVIEWS.map((t, i) => (
+              <button
+                key={t.id}
+                type="button"
+                className={`quote-page__carousel-dot${
+                  i === reviewIndex ? ' quote-page__carousel-dot--active' : ''
+                }`}
+                onClick={() => setReviewIndex(i)}
+                aria-label={`Go to review ${i + 1} of ${reviewCount}`}
+                aria-current={i === reviewIndex ? 'true' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

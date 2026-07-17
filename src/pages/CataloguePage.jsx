@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
+import TrustStrip from '../components/TrustStrip';
 import products from '../data/products.json';
 import categories from '../data/categories.json';
 import { trackSearch } from '../lib/metaTracking';
@@ -36,6 +37,72 @@ const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest' },
 ];
 
+/* Render a 5-star rating row (filled/empty) */
+const renderStars = (count) => {
+  const stars = [];
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <span
+        key={i}
+        className={
+          i < count ? 'cat-review__star--filled' : 'cat-review__star--empty'
+        }
+      >
+        {i < count ? '★' : '☆'}
+      </span>
+    );
+  }
+  return stars;
+};
+
+/* Reviews shown in the worktops-page carousel.
+   NOTE: placeholder copy — replace with genuine customer reviews
+   (e.g. exported from Google) before relying on these. */
+const CATALOGUE_REVIEWS = [
+  {
+    id: 'c1',
+    name: 'Hannah B.',
+    location: 'Coventry',
+    rating: 5,
+    text: 'The quality of the material is outstanding — it feels far more expensive than what we paid. A flawless finish and beautifully designed.',
+  },
+  {
+    id: 'c2',
+    name: 'Daniel O.',
+    location: 'Nuneaton',
+    rating: 5,
+    text: 'We compared quotes everywhere and nothing came close on price for this quality of quartz. The design advice was spot on too.',
+  },
+  {
+    id: 'c3',
+    name: 'Sophie L.',
+    location: 'Warwick',
+    rating: 5,
+    text: 'The veining and finish are stunning — genuinely looks like natural marble but without the upkeep. Incredible value for the quality.',
+  },
+  {
+    id: 'c4',
+    name: 'The Prentice Family',
+    location: 'Solihull',
+    rating: 5,
+    text: 'From the design consultation to the final worktop, the attention to detail was superb. Premium-quality material at a genuinely fair price.',
+  },
+  {
+    id: 'c5',
+    name: 'Raj P.',
+    location: 'Hinckley',
+    rating: 4,
+    text: 'Exceptional materials and a faultless finish. You simply don’t get this level of quality at this price point anywhere else.',
+  },
+  {
+    id: 'c6',
+    name: 'Megan F.',
+    location: 'Stratford-upon-Avon',
+    rating: 5,
+    text: 'Beautiful design, top-tier quartz and honest pricing — exactly what they promised.',
+  },
+];
+
 function CataloguePage() {
   usePageMeta('Quartz Worktop Colours | Browse the Full Range | The Quartz Company', 'Browse our full collection of premium engineered and printed quartz worktop colours, from bright Calacatta whites to bold Nero Sparkle. Free samples, fixed-price quotes and a 25-year warranty.');
   const { category } = useParams();
@@ -46,6 +113,14 @@ function CataloguePage() {
   /* ── State ── */
   const [activeCategory, setActiveCategory] = useState(category || 'all');
   const [sortBy, setSortBy] = useState('popular');
+
+  /* ── Reviews carousel ── */
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const reviewCount = CATALOGUE_REVIEWS.length;
+  const nextReview = () => setReviewIndex((i) => (i + 1) % reviewCount);
+  const prevReview = () =>
+    setReviewIndex((i) => (i - 1 + reviewCount) % reviewCount);
+  const activeReview = CATALOGUE_REVIEWS[reviewIndex];
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const [rangeFilters, setRangeFilters] = useState([]);
@@ -637,6 +712,15 @@ function CataloguePage() {
 
       {/* ── Product Grid (full-width 4 col) ── */}
       <div className="container">
+        {/* Summer sale banner */}
+        <div className="cat-sale-banner" role="note">
+          <span className="cat-sale-banner__tag">Summer Sale</span>
+          <p className="cat-sale-banner__text">
+            <strong>40% off</strong> every worktop this summer &mdash; ends 22nd
+            July
+          </p>
+        </div>
+
         {filteredProducts.length === 0 ? (
           <div className="catalogue__empty">
             <p>No products match your current filters.</p>
@@ -680,6 +764,11 @@ function CataloguePage() {
                           <span className="cat-product__price-sale">
                             From {formatPrice(product.pricePerSqm)} /m&sup2;
                           </span>
+                          {product.discount > 0 && (
+                            <span className="cat-product__price-off">
+                              {product.discount}% off
+                            </span>
+                          )}
                         </>
                       ) : (
                         <>From {formatPrice(product.pricePerSqm)} /m&sup2;</>
@@ -691,6 +780,71 @@ function CataloguePage() {
             })}
           </div>
         )}
+      </div>
+
+      {/* Trust reassurance strip */}
+      <TrustStrip />
+
+      {/* ── Customer review carousel ── */}
+      <div className="cat-reviews">
+        <div className="container">
+          <span className="cat-reviews__overline">Loved by our customers</span>
+          <h2 className="cat-reviews__title">Quality You Can Feel</h2>
+
+          <div className="cat-reviews__carousel">
+            <button
+              type="button"
+              className="cat-reviews__arrow"
+              onClick={prevReview}
+              aria-label="Previous review"
+            >
+              &#8249;
+            </button>
+
+            <figure className="cat-reviews__card" key={activeReview.id}>
+              <span className="cat-reviews__mark" aria-hidden="true">
+                &ldquo;
+              </span>
+              <div
+                className="cat-reviews__stars"
+                aria-label={`${activeReview.rating} out of 5 stars`}
+              >
+                {renderStars(activeReview.rating)}
+              </div>
+              <blockquote className="cat-reviews__text">
+                {activeReview.text}
+              </blockquote>
+              <figcaption className="cat-reviews__author">
+                <span className="cat-reviews__name">{activeReview.name}</span>
+                <span className="cat-reviews__loc">{activeReview.location}</span>
+              </figcaption>
+            </figure>
+
+            <button
+              type="button"
+              className="cat-reviews__arrow"
+              onClick={nextReview}
+              aria-label="Next review"
+            >
+              &#8250;
+            </button>
+          </div>
+
+          <div className="cat-reviews__dots">
+            {CATALOGUE_REVIEWS.map((r, i) => (
+              <button
+                key={r.id}
+                type="button"
+                className={`cat-reviews__dot${
+                  i === reviewIndex ? ' cat-reviews__dot--active' : ''
+                }`}
+                onClick={() => setReviewIndex(i)}
+                aria-label={`Go to review ${i + 1} of ${reviewCount}`}
+                aria-current={i === reviewIndex ? 'true' : undefined}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

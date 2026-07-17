@@ -341,6 +341,10 @@ function ProductDetailPage() {
                 <span>25yr Warranty</span>
               </div>
               <div className="pdp__proof-item">
+                <span className="pdp__proof-icon" aria-hidden="true">&#9201;</span>
+                <span>Quick Turnaround</span>
+              </div>
+              <div className="pdp__proof-item">
                 <span className="pdp__proof-icon" aria-hidden="true">&#9742;</span>
                 <span>Free Consultation</span>
               </div>

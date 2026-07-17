@@ -260,6 +260,29 @@
   display: block;
 }
 
+/* Undecided tile — same footprint as a swatch, but a placeholder mark
+   instead of a colour image */
+.quote-page__swatch-undecided {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-cream, #f6f2ec);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.quote-page__swatch-undecided-mark {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.quote-page__swatch-tile--undecided:hover .quote-page__swatch-undecided {
+  background: var(--color-white);
+}
+
 .quote-page__swatch-info {
   padding: 0.6rem 0.75rem;
   display: flex;
@@ -349,7 +372,7 @@
 /* ── Plan Cards ── */
 .quote-page__plan-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 0.5rem;
 }
@@ -404,6 +427,16 @@
   font-size: 0.85rem;
   color: var(--color-text-light);
   line-height: 1.5;
+}
+
+.quote-page__plan-note {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-cream);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
 /* ── Dimensions Sub-form ── */
@@ -627,8 +660,89 @@
 }
 
 /* ── Details Form ── */
+.quote-page__details-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 640px) 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
 .quote-page__details-form {
   max-width: 640px;
+}
+
+/* Customer quote beside the details form */
+.quote-page__details-quote {
+  background:
+    radial-gradient(
+      120% 90% at 100% 0%,
+      rgba(169, 136, 92, 0.28) 0%,
+      rgba(169, 136, 92, 0) 55%
+    ),
+    linear-gradient(160deg, #2a231b 0%, var(--color-dark) 60%);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.25rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  border: 1px solid rgba(201, 174, 134, 0.28);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.quote-page__details-quote-mark {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 0.5;
+  color: var(--color-gold);
+  opacity: 0.55;
+}
+
+.quote-page__details-quote-text {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: #fbf8f2;
+  font-weight: 500;
+}
+
+.quote-page__details-quote-stars {
+  color: var(--color-gold-light);
+  letter-spacing: 4px;
+  font-size: 1.1rem;
+}
+
+.quote-page__details-quote-author {
+  position: relative;
+  margin: 0.35rem 0 0;
+  padding-top: 1.15rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-gold-light);
+}
+
+.quote-page__details-quote-author::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42px;
+  height: 2px;
+  background: var(--color-gold);
+}
+
+@media (max-width: 900px) {
+  .quote-page__details-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .quote-page__details-quote {
+    position: static;
+  }
 }
 
 .quote-page__row {
@@ -896,5 +1010,286 @@
     padding: 1.5rem 1rem 1.25rem;
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-sm);
+  }
+}
+
+/* ── Trust / Social Proof ── */
+.quote-page__trust {
+  position: relative;
+  text-align: center;
+  padding: 3.5rem 0;
+  background:
+    radial-gradient(
+      80% 60% at 50% 0%,
+      rgba(169, 136, 92, 0.08) 0%,
+      rgba(169, 136, 92, 0) 60%
+    ),
+    linear-gradient(180deg, var(--color-cream) 0%, #fbf8f2 100%);
+}
+
+.quote-page__trust-overline {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.6rem;
+}
+
+.quote-page__trust-overline::before,
+.quote-page__trust-overline::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--color-gold);
+  vertical-align: middle;
+  margin: 0 0.75rem;
+  opacity: 0.6;
+}
+
+.quote-page__trust-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  color: var(--color-dark);
+  margin-bottom: 0.6rem;
+}
+
+.quote-page__trust-subtitle {
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  color: var(--color-text-light);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.quote-page__trust-badges {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.quote-page__trust-badge {
+  position: relative;
+  background: var(--color-white);
+  border: 1px solid rgba(169, 136, 92, 0.18);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 12px 30px -18px rgba(28, 23, 18, 0.35);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.quote-page__trust-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-light),
+    var(--color-gold)
+  );
+}
+
+.quote-page__trust-badge:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -20px rgba(28, 23, 18, 0.45);
+}
+
+.quote-page__trust-badge-value {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1.1;
+}
+
+.quote-page__trust-badge-stars {
+  letter-spacing: 3px;
+  font-size: 1.2rem;
+}
+
+.quote-page__trust-badge-label {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+/* ── Review carousel ── */
+.quote-page__carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.quote-page__carousel-arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(169, 136, 92, 0.45);
+  background: var(--color-white);
+  color: var(--color-gold);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.quote-page__carousel-arrow:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-white);
+  transform: scale(1.06);
+}
+
+.quote-page__carousel-card {
+  position: relative;
+  flex: 1;
+  min-height: 190px;
+  background: var(--color-white);
+  border: 1px solid rgba(169, 136, 92, 0.16);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.25rem 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  box-shadow: 0 24px 48px -30px rgba(28, 23, 18, 0.4);
+  overflow: hidden;
+  animation: qp-review-fade 0.45s ease;
+}
+
+@keyframes qp-review-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quote-page__carousel-mark {
+  position: absolute;
+  top: 0.5rem;
+  left: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--color-gold);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.quote-page__carousel-stars {
+  color: var(--color-gold);
+  font-size: 1.05rem;
+  letter-spacing: 4px;
+  position: relative;
+}
+
+.quote-page__trust-star--empty {
+  color: rgba(169, 136, 92, 0.3);
+}
+
+.quote-page__carousel-text {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-dark);
+  max-width: 580px;
+  position: relative;
+}
+
+.quote-page__carousel-author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.quote-page__carousel-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-dark);
+}
+
+.quote-page__carousel-meta {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.quote-page__carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.quote-page__carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(169, 136, 92, 0.3);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.quote-page__carousel-dot:hover {
+  background: rgba(169, 136, 92, 0.6);
+}
+
+.quote-page__carousel-dot--active {
+  width: 28px;
+  border-radius: 5px;
+  background: var(--color-gold);
+}
+
+@media (max-width: 768px) {
+  .quote-page__trust-badges {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quote-page__carousel {
+    gap: 0.5rem;
+  }
+
+  .quote-page__carousel-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+
+  .quote-page__carousel-card {
+    padding: 2.75rem 1.5rem 2.25rem;
+    min-height: 0;
   }
 }

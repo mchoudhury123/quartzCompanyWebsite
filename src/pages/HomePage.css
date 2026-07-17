@@ -136,60 +136,157 @@
    1b. PHILOSOPHY — editorial two-column intro
    (sits directly under hero; clears floating trust bar)
    ════════════════════════════════════════════ */
-.hp-philosophy {
-  background: var(--color-white);
-  padding-top: 6rem;
-  padding-bottom: 6.5rem;
+/* ── Summer Sale banner (bold, attention-grabbing) ── */
+.hp-sale {
+  position: relative;
+  overflow: hidden;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  text-align: center;
+  background:
+    radial-gradient(
+      70% 120% at 50% 0%,
+      rgba(156, 59, 46, 0.06) 0%,
+      rgba(156, 59, 46, 0) 55%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(169, 136, 92, 0.07) 0px,
+      rgba(169, 136, 92, 0.07) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    linear-gradient(160deg, #fcf8f1 0%, #f3ebdc 100%);
 }
 
-.hp-philosophy__layout {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 4.5rem;
-  align-items: start;
+/* Soft warm accent glow for subtle depth */
+.hp-sale::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -8%;
+  width: 42%;
+  height: 180%;
+  background: radial-gradient(
+    circle,
+    rgba(156, 59, 46, 0.1) 0%,
+    rgba(156, 59, 46, 0) 70%
+  );
+  pointer-events: none;
 }
 
-.hp-philosophy__heading {
-  font-family: var(--font-heading);
-  font-size: clamp(2rem, 3.4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
-  color: var(--color-dark);
-  margin: 0;
-  max-width: 16ch;
+.hp-sale__inner {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.hp-philosophy__text {
-  font-size: 1.06rem;
-  line-height: 1.9;
-  color: var(--color-text-light);
+.hp-sale__eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: #9c3b2e;
+  background: rgba(156, 59, 46, 0.08);
+  border: 1px solid rgba(156, 59, 46, 0.3);
+  padding: 0.5rem 1.1rem;
+  border-radius: 100px;
   margin-bottom: 1.5rem;
 }
 
-.hp-philosophy__text:last-of-type {
-  margin-bottom: 2rem;
-}
-
-.hp-philosophy__link {
-  display: inline-flex;
+.hp-sale__headline {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.76rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-primary);
-  padding-bottom: 5px;
-  border-bottom: 1px solid var(--color-gold);
-  transition: color var(--transition), border-color var(--transition), gap var(--transition);
+  line-height: 0.95;
 }
 
-.hp-philosophy__link:hover {
-  color: var(--color-gold);
-  border-color: var(--color-primary);
-  gap: 0.85rem;
+.hp-sale__percent {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(3.5rem, 11vw, 7rem);
+  color: #9c3b2e;
+  text-shadow: 0 6px 22px rgba(156, 59, 46, 0.18);
+  letter-spacing: -0.02em;
+}
+
+.hp-sale__all {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 4vw, 2.25rem);
+  letter-spacing: 0.22em;
+  color: var(--color-primary);
+  margin-top: 1.1rem;
+}
+
+.hp-sale__sub {
+  max-width: 540px;
+  margin: 1.5rem auto 0;
+  color: var(--color-text-light);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.hp-sale__actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.hp-sale__cta {
+  display: inline-block;
+  background: linear-gradient(135deg, #b0392a 0%, #9c3b2e 100%);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1rem 2.5rem;
+  border-radius: 100px;
+  text-decoration: none;
+  box-shadow: 0 14px 30px -12px rgba(156, 59, 46, 0.6);
+  transition: transform var(--transition), box-shadow var(--transition);
+  animation: hp-sale-pulse 2.4s ease-in-out infinite;
+}
+
+.hp-sale__cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 18px 38px -12px rgba(156, 59, 46, 0.7);
+}
+
+@keyframes hp-sale-pulse {
+  0%,
+  100% {
+    box-shadow: 0 14px 30px -12px rgba(156, 59, 46, 0.6),
+      0 0 0 0 rgba(156, 59, 46, 0.4);
+  }
+  50% {
+    box-shadow: 0 14px 30px -12px rgba(156, 59, 46, 0.6),
+      0 0 0 14px rgba(156, 59, 46, 0);
+  }
+}
+
+.hp-sale__deadline {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9c3b2e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-sale__cta {
+    animation: none;
+  }
 }
 
 .hp-featured {
@@ -234,6 +331,24 @@
   aspect-ratio: 4 / 5;
   background: #14100b;
   border-radius: var(--radius-sm);
+}
+
+/* Sale tag — top-left, red */
+.hp-product__sale-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  background: #e11900;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hp-product__img {
@@ -281,6 +396,24 @@
   font-size: 0.88rem;
   color: rgba(245, 239, 230, 0.82);
   margin: 0;
+}
+
+.hp-product__price--sale {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hp-product__price-old {
+  color: rgba(245, 239, 230, 0.5);
+  text-decoration: line-through;
+  font-size: 0.82rem;
+}
+
+.hp-product__price-new {
+  color: #f5efe6;
+  font-weight: 700;
 }
 
 .hp-featured__cta {
@@ -1030,14 +1163,9 @@
   .hp-cta-banner__text { font-size: 0.95rem; }
 }
 
-/* ── Philosophy responsive (trust bar is in-flow below 1024) ── */
-@media (max-width: 1024px) {
-  .hp-philosophy { padding-top: 4rem; padding-bottom: 4rem; }
-  .hp-philosophy__layout { grid-template-columns: 1fr; gap: 1.75rem; }
-  .hp-philosophy__heading { max-width: 22ch; }
-}
-
+/* ── Summer Sale banner responsive ── */
 @media (max-width: 768px) {
-  .hp-philosophy { padding-top: 3rem; padding-bottom: 3.25rem; }
-  .hp-philosophy__text { font-size: 1rem; line-height: 1.8; }
+  .hp-sale { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .hp-sale__sub { font-size: 1rem; }
+  .hp-sale__cta { width: 100%; max-width: 320px; }
 }

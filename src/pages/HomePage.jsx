@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
+import TrustStrip from '../components/TrustStrip';
 import products from '../data/products.json';
 import testimonials from '../data/testimonials.json';
 import './HomePage.css';
@@ -58,9 +59,9 @@ export default function HomePage() {
 
   /* ── Why Choose data ── */
   const whyChooseData = [
-    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M17 8c-1.5-1-3-1.5-5-1.5"/><path d="M8 3.5c1 2 1.5 4.5.5 7"/><path d="M14 10.5c-1 2.5-3 4-5.5 4.5"/><path d="M20 4l-2 2"/><path d="M22 2l-6 6"/></svg>), title: 'Sustainable Sourcing', desc: 'Responsibly sourced quartz and low-waste engineered manufacturing' },
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>), title: '25-Year Warranty', desc: 'Every quartz worktop backed by our 25-year surface warranty and dedicated after-care' },
+    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>), title: 'Quick Turnaround', desc: 'Most kitchens templated and fitted within 10–20 working days of your order' },
     { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="8" cy="18.5" r="2.5"/><circle cx="16" cy="18.5" r="2.5"/></svg>), title: 'Personalised Design', desc: 'Free consultations with our in-house kitchen designers' },
-    { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>), title: 'Lifetime Support', desc: 'Industry-leading warranties and dedicated after-care' },
     { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="hp-why__icon-svg"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>), title: 'Local Fitting', desc: 'Professional installation across Northamptonshire and surrounding areas' },
   ];
 
@@ -146,34 +147,31 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Trust reassurance strip */}
+      <TrustStrip />
+
       {/* ═══════════════════════════════════════
           1b. PHILOSOPHY — editorial two-column intro
           ═══════════════════════════════════════ */}
-      <AnimatedSection className="section hp-philosophy" id="philosophy">
+      <AnimatedSection className="section hp-sale" id="summer-sale">
         <div className="container">
-          <div className="hp-philosophy__layout">
-            <div className="hp-philosophy__intro">
-              <span className="eyebrow">Our Philosophy</span>
-              <h2 className="hp-philosophy__heading">
-                Premium surfaces, priced with honesty.
-              </h2>
-            </div>
-            <div className="hp-philosophy__body">
-              <p className="hp-philosophy__text">
-                The Quartz Company was founded on a simple belief &mdash; that a
-                beautiful, hard-wearing worktop shouldn&rsquo;t carry a designer
-                price tag. We engineer and hand-finish every surface in Britain,
-                then sell direct to you, cutting out the showroom mark-ups.
-              </p>
-              <p className="hp-philosophy__text">
-                From free samples and fixed-price quotes to a 25-year warranty,
-                every detail is designed to give you confidence &mdash; no
-                pressure, no hidden costs, just exceptional quartz delivered to
-                your door.
-              </p>
-              <Link to="/about" className="hp-philosophy__link">
-                Discover our story &rarr;
+          <div className="hp-sale__inner">
+            <span className="hp-sale__eyebrow">Summer Sale &middot; Limited Time</span>
+            <h2 className="hp-sale__headline">
+              <span className="hp-sale__percent">40% OFF</span>
+              <span className="hp-sale__all">ALL WORKTOPS</span>
+            </h2>
+            <p className="hp-sale__sub">
+              Our biggest saving of the year &mdash; every colour and finish,
+              engineered &amp; full-body printed quartz, fully fitted.
+            </p>
+            <div className="hp-sale__actions">
+              <Link to="/quote" className="hp-sale__cta">
+                Claim Your 40% Off
               </Link>
+              <span className="hp-sale__deadline">
+                Hurry &mdash; sale ends 22nd July
+              </span>
             </div>
           </div>
         </div>
@@ -196,6 +194,11 @@ export default function HomePage() {
                 key={product.id}
               >
                 <div className="hp-product__frame">
+                  {product.onSale && product.discount > 0 && (
+                    <span className="hp-product__sale-badge">
+                      {product.discount}% Off
+                    </span>
+                  )}
                   <img
                     src={product.swatch}
                     alt={product.name}
@@ -209,9 +212,20 @@ export default function HomePage() {
                   <p className="hp-product__sub">
                     {product.range}
                   </p>
-                  <p className="hp-product__price">
-                    From {formatPrice(product.pricePerSqm)} /m&sup2;
-                  </p>
+                  {product.onSale && product.originalPrice ? (
+                    <p className="hp-product__price hp-product__price--sale">
+                      <span className="hp-product__price-old">
+                        {formatPrice(product.originalPrice)}
+                      </span>
+                      <span className="hp-product__price-new">
+                        From {formatPrice(product.pricePerSqm)} /m&sup2;
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="hp-product__price">
+                      From {formatPrice(product.pricePerSqm)} /m&sup2;
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
