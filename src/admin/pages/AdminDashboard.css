@@ -26,11 +26,41 @@
   margin: 0;
 }
 
+.admin-dashboard__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.75rem;
+}
+
+.admin-dashboard__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-dashboard__side {
+  flex: 0 0 320px;
+  width: 320px;
+  position: sticky;
+  top: 1.5rem;
+}
+
 .admin-dashboard__tasks {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1.25rem;
   margin-bottom: 1.75rem;
+}
+
+/* Stack the to-do below the tiles on narrower screens */
+@media (max-width: 1000px) {
+  .admin-dashboard__body {
+    flex-direction: column;
+  }
+  .admin-dashboard__side {
+    flex: 1 1 auto;
+    width: 100%;
+    position: static;
+  }
 }
 
 /* Shared admin table styles (used by LeadsListPage) */

@@ -47,3 +47,8 @@
   background: #dcfce7;
   color: #15803d;
 }
+
+.status-badge--cold {
+  background: #e0e7ef;
+  color: #475d75;
+}

@@ -6,6 +6,7 @@ const statusConfig = {
   quoted: { label: 'Quoted', className: 'status-badge--quoted' },
   deposit: { label: 'Deposit', className: 'status-badge--deposit' },
   won: { label: 'Completed', className: 'status-badge--completed' },
+  cold: { label: 'Cold', className: 'status-badge--cold' },
   lost: { label: 'Lost', className: 'status-badge--rejected' },
   accepted: { label: 'Accepted', className: 'status-badge--accepted' },
   rejected: { label: 'Rejected', className: 'status-badge--rejected' },

@@ -8,7 +8,8 @@ import {
   buildBalanceConfirmationEmail,
 } from '../../../utils/depositConfirmationEmail';
 import StatusBadge from '../StatusBadge';
-import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle, FiCopy } from 'react-icons/fi';
+import ModalShell from '../modals/ModalShell';
+import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle, FiCopy, FiClock } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -21,10 +22,13 @@ const QUOTE_STATUS_MAP = {
 
 export default function QuotesTab({ leadId, onCreateQuote }) {
   const navigate = useNavigate();
-  const { quotes, loading, duplicateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid } = useQuotes(leadId);
+  const { quotes, loading, duplicateQuote, updateQuoteStatus, markDepositPending, markDepositPaid, markBalancePaid } = useQuotes(leadId);
   const [balanceState, setBalanceState] = useState({}); // { [quoteId]: 'sending'|'sent'|'error' }
   const [paidState, setPaidState] = useState({}); // { [quoteId]: 'saving'|'done'|'error' }
   const [copyState, setCopyState] = useState({}); // { [quoteId]: 'copying' }
+  const [pendingQuote, setPendingQuote] = useState(null); // quote being flagged as pending
+  const [expectedDate, setExpectedDate] = useState('');
+  const [savingPending, setSavingPending] = useState(false);
 
   // Copy a quote into a new draft (same sizes), then open it for editing so the
   // admin can change the material/price.
@@ -130,6 +134,26 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
     setPaidState((s) => ({ ...s, [q.id]: 'done' }));
   };
 
+  // Open the "predicted payment date" prompt for a quote.
+  const openPending = (q) => {
+    setExpectedDate(q.deposit_expected_date || '');
+    setPendingQuote(q);
+  };
+
+  // Save the predicted date and move the lead into Pending Deposit.
+  const savePending = async () => {
+    if (!expectedDate || !pendingQuote) return;
+    setSavingPending(true);
+    const { error } = await markDepositPending(pendingQuote.id, expectedDate);
+    setSavingPending(false);
+    if (error) {
+      window.alert(`Couldn't save the pending deposit: ${error.message || 'please try again.'}`);
+      return;
+    }
+    setPendingQuote(null);
+    setExpectedDate('');
+  };
+
   if (loading) return <div className="quotes-tab__loading">Loading quotes...</div>;
 
   return (
@@ -174,6 +198,14 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                 </div>
               )}
 
+              {q.deposit_expected_date && !q.deposit_paid && (
+                <div className="quotes-tab__payments">
+                  <span className="quotes-tab__pay-tag quotes-tab__pay-tag--pending">
+                    ⏳ Deposit pending — expected {formatDate(q.deposit_expected_date)}
+                  </span>
+                </div>
+              )}
+
               <div className="quotes-tab__card-actions">
                 <a
                   className="quotes-tab__action quotes-tab__action--view"
@@ -206,13 +238,21 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                   </>
                 )}
                 {q.status !== 'draft' && q.status !== 'rejected' && !q.deposit_paid && (
-                  <button
-                    className="quotes-tab__action quotes-tab__action--paid"
-                    onClick={() => markPaid(q, 'deposit')}
-                    disabled={paidState[q.id] === 'saving'}
-                  >
-                    <FiCheckCircle /> {paidState[q.id] === 'saving' ? 'Saving…' : 'Mark Deposit Paid'}
-                  </button>
+                  <>
+                    <button
+                      className="quotes-tab__action quotes-tab__action--pending"
+                      onClick={() => openPending(q)}
+                    >
+                      <FiClock /> {q.deposit_expected_date ? 'Update Pending Date' : 'Pending Deposit'}
+                    </button>
+                    <button
+                      className="quotes-tab__action quotes-tab__action--paid"
+                      onClick={() => markPaid(q, 'deposit')}
+                      disabled={paidState[q.id] === 'saving'}
+                    >
+                      <FiCheckCircle /> {paidState[q.id] === 'saving' ? 'Saving…' : 'Mark Deposit Paid'}
+                    </button>
+                  </>
                 )}
                 {q.deposit_paid && !q.balance_paid && (
                   <>
@@ -237,6 +277,43 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
             );
           })}
         </div>
+      )}
+
+      {pendingQuote && (
+        <ModalShell title="Pending Deposit" onClose={() => setPendingQuote(null)}>
+          <p className="quotes-tab__pending-prompt">
+            When is the customer expected to pay the deposit for{' '}
+            <strong>{pendingQuote.quote_number}</strong>?
+          </p>
+          <label className="quotes-tab__pending-label" htmlFor="deposit-expected-date">
+            Predicted payment date
+          </label>
+          <input
+            id="deposit-expected-date"
+            type="date"
+            className="modal-field__input"
+            value={expectedDate}
+            onChange={(e) => setExpectedDate(e.target.value)}
+            autoFocus
+          />
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="modal-actions__btn modal-actions__btn--cancel"
+              onClick={() => setPendingQuote(null)}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="quotes-tab__pending-save"
+              disabled={!expectedDate || savingPending}
+              onClick={savePending}
+            >
+              {savingPending ? 'Saving…' : 'Set as Pending'}
+            </button>
+          </div>
+        </ModalShell>
       )}
     </div>
   );

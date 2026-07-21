@@ -1,0 +1,32 @@
+.action-required-modal__hint {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  color: var(--admin-text-light, #6b7280);
+  margin: 0 0 0.5rem;
+}
+
+.action-required-modal__datetime {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-required-modal__datetime .modal-field__input {
+  flex: 1;
+}
+
+.action-required-modal__save {
+  padding: 0.55rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  background: #b93131;
+  color: #fff;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.action-required-modal__save:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

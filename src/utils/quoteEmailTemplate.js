@@ -307,7 +307,11 @@ export function buildQuoteEmailHtml({
   <!-- Footer -->
   <tr><td align="center" style="padding:28px 40px 44px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid ${LINE};">
-      <tr><td align="center" style="padding:26px 0 0;">
+      <tr><td align="center" style="padding:26px 0 14px;">
+        <a href="https://www.instagram.com/thequartzcompanyuk/" style="text-decoration:none;margin:0 5px;display:inline-block;"><img src="https://www.thequartzcompany.co.uk/email/instagram.png" alt="Instagram" width="24" height="24" style="border:0;display:inline-block;"></a>
+        <a href="https://www.facebook.com/profile.php?id=61587732770864" style="text-decoration:none;margin:0 5px;display:inline-block;"><img src="https://www.thequartzcompany.co.uk/email/facebook.png" alt="Facebook" width="24" height="24" style="border:0;display:inline-block;"></a>
+      </td></tr>
+      <tr><td align="center" style="padding:0 0 0;">
         <p style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:12px;letter-spacing:0.26em;color:${TAN};text-transform:uppercase;">The Quartz Company</p>
         <p style="margin:0;font-family:Arial,sans-serif;font-size:12px;color:#999;letter-spacing:0.02em;">${BUSINESS_EMAIL} &nbsp;·&nbsp; ${BUSINESS_PHONE}</p>
       </td></tr>

@@ -4,21 +4,17 @@ import { supabase } from '../../lib/supabase';
 export default function useDashboardStats() {
   const [counts, setCounts] = useState({
     newQuotes: 0,
-    repeatQuotes: 0,
-    newQuotesSelfServe: 0,
-    repeatQuotesSelfServe: 0,
+    contacted: 0,
     emails: 0,
     deposits: 0,
     samples: 0,
     followUp: 0,
     completed: 0,
+    coldLeads: 0,
     appointments: 0,
-    templateMeasure: 0,
     followUpCall: 0,
-    proWelcome: 0,
     chaseMeasurements: 0,
-    otherTasks: 0,
-    complianceTasks: 0,
+    actionRequired: 0,
     newsletter: 0,
     tradeContacts: 0,
     reviews: 0,
@@ -36,54 +32,39 @@ export default function useDashboardStats() {
 
       const c = {
         newQuotes: 0,
-        repeatQuotes: 0,
-        newQuotesSelfServe: 0,
-        repeatQuotesSelfServe: 0,
+        contacted: 0,
         emails: 0,
         deposits: 0,
         samples: 0,
         followUp: 0,
         completed: 0,
+        coldLeads: 0,
         appointments: 0,
-        templateMeasure: 0,
         followUpCall: 0,
-        proWelcome: 0,
         chaseMeasurements: 0,
-        otherTasks: 0,
-        complianceTasks: 0,
+        actionRequired: 0,
         newsletter: 0,
         tradeContacts: 0,
         reviews: 0,
       };
 
       allLeads.forEach((l) => {
-        // 1+ Quote Requests: status is still 'new' but pending_action was cleared
-        // (admin said "no answer" twice via action bar). Newsletter signups
-        // are tracked separately so they don't clutter the repeat buckets.
-        const isRepeat = l.status === 'new' && !l.pending_action && l.source !== 'newsletter';
+        // New Quote Requests: any lead whose status is 'new', except newsletter
+        // signups (tracked separately). Mirrors the list filter in useLeads.
+        if (l.status === 'new' && l.source !== 'newsletter') c.newQuotes++;
 
-        if (isRepeat) {
-          if (l.source === 'contact_form') {
-            c.repeatQuotesSelfServe++;
-          } else {
-            c.repeatQuotes++;
-          }
-        }
-
-        // New Quote Requests: new leads that still have a pending action (call_new or follow_up)
-        if ((l.source === 'quote_modal' || l.source === 'quote_page') && l.status === 'new' && l.pending_action) {
-          c.newQuotes++;
-        }
-        if (l.source === 'contact_form' && l.status === 'new' && l.pending_action) {
-          c.newQuotesSelfServe++;
-        }
+        // Contacted: leads that answered the phone and spoke to the sales team,
+        // marked by choosing "Contacted" on the lead's status dropdown.
+        if (l.status === 'contacted') c.contacted++;
 
         if (l.source === 'newsletter' && l.status === 'new') c.newsletter++;
 
         if (l.status === 'quoted') c.followUp++;
         if (l.status === 'deposit') c.deposits++;
         if (l.status === 'won') c.completed++;
+        if (l.status === 'cold') c.coldLeads++;
         if (l.pending_action === 'chase_measurements') c.chaseMeasurements++;
+        if (l.pending_action === 'action_required') c.actionRequired++;
       });
 
       // Count samples with status 'preparing' (shown on CRM Samples page)
@@ -114,8 +95,7 @@ export default function useDashboardStats() {
         .lte('date', cutoffStr);
 
       (upcomingAppts || []).forEach((a) => {
-        if (a.title === 'Template / Measure') c.templateMeasure++;
-        else if (a.title === 'Follow Up Call') c.followUpCall++;
+        if (a.title === 'Follow Up Call') c.followUpCall++;
       });
 
       const { count: tradeCount } = await supabase

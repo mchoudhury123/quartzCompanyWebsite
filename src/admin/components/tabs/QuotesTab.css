@@ -50,6 +50,49 @@
   cursor: default;
 }
 
+.quotes-tab__action--pending {
+  border-color: #d4874e;
+  color: #b3651f;
+}
+
+.quotes-tab__pay-tag--pending {
+  color: #b3651f;
+  font-weight: 600;
+}
+
+.quotes-tab__pending-prompt {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.9rem;
+  color: var(--admin-text, #2b2b2b);
+  margin: 0 0 1rem;
+}
+
+.quotes-tab__pending-label {
+  display: block;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--admin-text-light, #6b7280);
+  margin-bottom: 0.35rem;
+}
+
+.quotes-tab__pending-save {
+  padding: 0.55rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  background: #d4874e;
+  color: #fff;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quotes-tab__pending-save:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
 .quotes-tab__title {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.95rem;

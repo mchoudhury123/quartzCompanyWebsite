@@ -130,6 +130,10 @@ function wrapInBrandTemplate({ subject, body, siteUrl }) {
   </td></tr>
 
   <tr><td align="center" style="padding:0 48px 48px;">
+    <div style="margin:0 0 16px;">
+      <a href="https://www.instagram.com/thequartzcompanyuk/" style="text-decoration:none;margin:0 5px;display:inline-block;"><img src="${siteUrl}/email/instagram.png" alt="Instagram" width="24" height="24" style="border:0;display:inline-block;"></a>
+      <a href="https://www.facebook.com/profile.php?id=61587732770864" style="text-decoration:none;margin:0 5px;display:inline-block;"><img src="${siteUrl}/email/facebook.png" alt="Facebook" width="24" height="24" style="border:0;display:inline-block;"></a>
+    </div>
     <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:11px;letter-spacing:0.28em;color:#c5a47e;text-transform:uppercase;">The Quartz Company</p>
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
       sales@thequartzcompany.co.uk &nbsp;·&nbsp; 07375 303 416

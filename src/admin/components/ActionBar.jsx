@@ -17,20 +17,26 @@ const ACTION_CONFIG = {
     label: 'Call back to get kitchen measurements',
     btnText: 'Mark Complete',
   },
+  action_required: {
+    icon: FiAlertCircle,
+    label: 'Action required',
+    btnText: 'Mark Complete',
+  },
 };
 
-export default function ActionBar({ action, onComplete }) {
+export default function ActionBar({ action, note, onComplete }) {
   const config = ACTION_CONFIG[action];
   if (!config) return null;
 
   const Icon = config.icon;
+  const label = action === 'action_required' && note ? note : config.label;
 
   return (
     <div className="action-bar">
       <div className="action-bar__left">
         <FiAlertCircle className="action-bar__alert-icon" />
         <Icon className="action-bar__type-icon" />
-        <span className="action-bar__label">{config.label}</span>
+        <span className="action-bar__label">{label}</span>
       </div>
       <button className="action-bar__btn" onClick={onComplete}>
         <FiCheckCircle /> {config.btnText}

@@ -22,6 +22,7 @@ import FileUploadModal from '../components/modals/FileUploadModal';
 import SmsModal from '../components/modals/SmsModal';
 import EmailModal from '../components/modals/EmailModal';
 import ActionOutcomeModal from '../components/modals/ActionOutcomeModal';
+import ActionRequiredModal from '../components/modals/ActionRequiredModal';
 import ActionBar from '../components/ActionBar';
 import RetryBar from '../components/RetryBar';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -32,7 +33,7 @@ export default function LeadDetailPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get('highlight') || null;
-  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, retryCall } = useLeadDetail(id);
+  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
   const [tabHighlights, setTabHighlights] = useState({});
   const twilio = useTwilioDevice();
@@ -89,6 +90,9 @@ export default function LeadDetailPage() {
           },
         });
         break;
+      case 'action_required':
+        setModal('action_required');
+        break;
     }
   };
 
@@ -135,7 +139,14 @@ export default function LeadDetailPage() {
         </div>
         <div className="lead-detail__right">
           {lead.pending_action && (
-            <ActionBar action={lead.pending_action} onComplete={() => setModal('action_outcome')} />
+            <ActionBar
+              action={lead.pending_action}
+              note={lead.action_note}
+              onComplete={() => {
+                if (lead.pending_action === 'action_required') completeActionRequired();
+                else setModal('action_outcome');
+              }}
+            />
           )}
           {lead.status === 'new' && !lead.pending_action && (
             <RetryBar onAnswered={retryCall} />
@@ -176,6 +187,12 @@ export default function LeadDetailPage() {
         <ActionOutcomeModal
           action={lead.pending_action}
           onComplete={completeAction}
+          onClose={() => setModal(null)}
+        />
+      )}
+      {modal === 'action_required' && (
+        <ActionRequiredModal
+          onSave={setActionRequired}
           onClose={() => setModal(null)}
         />
       )}

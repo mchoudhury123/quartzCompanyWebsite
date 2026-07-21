@@ -94,6 +94,53 @@ export default function useLeadDetail(id) {
     return { error };
   };
 
+  // Flag the client with a free-text "action required" note. If a date is given,
+  // also book it as an appointment so it shows in the calendar / today's to-do.
+  const setActionRequired = async ({ note, date, time }) => {
+    const { error } = await supabase
+      .from('leads')
+      .update({ pending_action: 'action_required', action_note: note })
+      .eq('id', id);
+    if (error) return { error };
+    setLead((prev) => ({ ...prev, pending_action: 'action_required', action_note: note }));
+
+    if (date) {
+      await supabase.from('appointments').insert({
+        lead_id: id,
+        title: 'Action Required',
+        customer_name: lead?.full_name || null,
+        customer_phone: lead?.phone || null,
+        date,
+        time: time || '09:00',
+        duration_minutes: 60,
+        location: lead?.address || null,
+        notes: note,
+        status: 'scheduled',
+      });
+    }
+
+    await logActivity(id, {
+      type: 'lead_updated',
+      title: 'Action required flagged',
+      description: note,
+      metadata: { action: 'action_required', appointment_date: date || null },
+    });
+    return { error: null };
+  };
+
+  // Clear an "action required" flag once the admin has dealt with it.
+  const completeActionRequired = async () => {
+    const { error } = await supabase
+      .from('leads')
+      .update({ pending_action: null, action_note: null })
+      .eq('id', id);
+    if (!error) {
+      setLead((prev) => ({ ...prev, pending_action: null, action_note: null }));
+      await logActivity(id, { type: 'lead_updated', title: 'Action required completed', metadata: { action: 'action_required' } });
+    }
+    return { error };
+  };
+
   const completeAction = async (outcomes) => {
     const currentAction = lead?.pending_action;
     if (!currentAction) return;
@@ -203,5 +250,5 @@ export default function useLeadDetail(id) {
     }
   };
 
-  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, retryCall, refetchLead: fetchLead };
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall, refetchLead: fetchLead };
 }

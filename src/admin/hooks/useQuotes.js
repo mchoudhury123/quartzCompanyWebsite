@@ -118,6 +118,12 @@ export default function useQuotes(leadId) {
       .select()
       .single();
     if (!error) {
+      // Deposit is now actually paid — clear any "pending" prediction on this
+      // client's quotes so they move cleanly from Pending to Taken.
+      await supabase
+        .from('lead_quotes')
+        .update({ deposit_expected_date: null })
+        .eq('lead_id', leadId);
       await supabase.from('leads').update({ status: 'deposit' }).eq('id', leadId);
       await logActivity(leadId, {
         type: 'deposit_paid',
@@ -125,6 +131,38 @@ export default function useQuotes(leadId) {
         description: `£${Number(data?.deposit_amount || 0).toFixed(2)} received via bank transfer`,
         metadata: { quote_id: quoteId, payment_method: 'bank_transfer' },
       });
+      await fetch();
+    }
+    return { data, error };
+  };
+
+  // Flag a deposit as pending with a predicted payment date. Moves the lead to
+  // the "deposit" stage so it shows under Pending Deposit. Does NOT email the
+  // customer — this is an internal prediction, not a confirmed payment.
+  const markDepositPending = async (quoteId, expectedDate) => {
+    const { data, error } = await supabase
+      .from('lead_quotes')
+      .update({ deposit_expected_date: expectedDate })
+      .eq('id', quoteId)
+      .select()
+      .single();
+    if (!error) {
+      // A client pays a single deposit, so clear any "paid" flag on their other
+      // quotes — pressing "Pending Deposit" reliably moves them to Pending.
+      await supabase
+        .from('lead_quotes')
+        .update({ deposit_paid: false, deposit_paid_at: null })
+        .eq('lead_id', leadId)
+        .eq('deposit_paid', true);
+      await supabase.from('leads').update({ status: 'deposit' }).eq('id', leadId);
+      try {
+        await logActivity(leadId, {
+          type: 'deposit_pending',
+          title: `Deposit pending${data?.quote_number ? ` — ${data.quote_number}` : ''}`,
+          description: `Customer expected to pay deposit by ${expectedDate}`,
+          metadata: { quote_id: quoteId, expected_date: expectedDate },
+        });
+      } catch (_) { /* activity log is best-effort */ }
       await fetch();
     }
     return { data, error };
@@ -152,5 +190,5 @@ export default function useQuotes(leadId) {
     return { data, error };
   };
 
-  return { quotes, loading, createQuote, duplicateQuote, updateQuote, updateQuoteStatus, markDepositPaid, markBalancePaid, refetch: fetch };
+  return { quotes, loading, createQuote, duplicateQuote, updateQuote, updateQuoteStatus, markDepositPending, markDepositPaid, markBalancePaid, refetch: fetch };
 }

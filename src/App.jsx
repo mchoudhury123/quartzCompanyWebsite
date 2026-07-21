@@ -36,6 +36,7 @@ import SamplesPage from './admin/pages/SamplesPage';
 import AppointmentsPage from './admin/pages/AppointmentsPage';
 import TradeContactsPage from './admin/pages/TradeContactsPage';
 import ReviewsPage from './admin/pages/ReviewsPage';
+import EmailMarketingPage from './admin/pages/EmailMarketingPage';
 import QuoteViewPage from './pages/QuoteViewPage';
 import ReviewPage from './pages/ReviewPage';
 
@@ -105,6 +106,7 @@ export default function App() {
           <Route path="leads/:id/quote/:quoteId" element={<QuoteBuilderPage />} />
           <Route path="samples" element={<SamplesPage />} />
           <Route path="appointments" element={<AppointmentsPage />} />
+          <Route path="email-marketing" element={<EmailMarketingPage />} />
           <Route path="trade-contacts" element={<TradeContactsPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
         </Route>

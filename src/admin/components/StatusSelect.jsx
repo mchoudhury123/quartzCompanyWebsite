@@ -1,12 +1,13 @@
 import './StatusSelect.css';
 
-const statuses = ['new', 'contacted', 'quoted', 'deposit', 'won'];
+const statuses = ['new', 'contacted', 'quoted', 'deposit', 'won', 'cold'];
 const LABELS = {
   new: 'New',
   contacted: 'Contacted',
   quoted: 'Quoted',
   deposit: 'Deposit',
   won: 'Completed',
+  cold: 'Cold Leads',
 };
 
 export default function StatusSelect({ value, onChange }) {

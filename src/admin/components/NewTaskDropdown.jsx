@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiPlus, FiPhone, FiMessageSquare, FiMail, FiPackage, FiFileText, FiPaperclip, FiCalendar } from 'react-icons/fi';
+import { FiPlus, FiPhone, FiMessageSquare, FiMail, FiPackage, FiFileText, FiPaperclip, FiCalendar, FiAlertCircle } from 'react-icons/fi';
 import './NewTaskDropdown.css';
 
 const TASKS = [
@@ -10,6 +10,7 @@ const TASKS = [
   { key: 'quote', label: 'Create Quote', icon: FiFileText },
   { key: 'file', label: 'Add Files', icon: FiPaperclip },
   { key: 'appointment', label: 'Book Appointment', icon: FiCalendar },
+  { key: 'action_required', label: 'Action Required', icon: FiAlertCircle },
 ];
 
 export default function NewTaskDropdown({ onSelect }) {

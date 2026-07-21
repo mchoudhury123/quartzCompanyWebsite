@@ -2,34 +2,31 @@ import { useAuth } from '../../context/AuthContext';
 import useDashboardStats from '../hooks/useDashboardStats';
 import useZohoUnread from '../hooks/useZohoUnread';
 import TaskCard from '../components/TaskCard';
+import TodaysTodo from '../components/TodaysTodo';
 import {
-  FiFileText, FiCopy, FiMail, FiDollarSign, FiPackage,
-  FiRepeat, FiCalendar, FiThumbsUp, FiMapPin, FiPhone,
-  FiClipboard, FiCrop, FiPhoneCall, FiHeart, FiBriefcase, FiCheckCircle, FiStar
+  FiFileText, FiMail, FiDollarSign, FiPackage,
+  FiRepeat, FiCalendar, FiMapPin, FiPhoneCall,
+  FiHeart, FiBriefcase, FiCheckCircle, FiStar, FiUserCheck, FiAlertCircle, FiClock
 } from 'react-icons/fi';
 import './AdminDashboard.css';
 
 const ROW_1 = [
   { key: 'newQuotes', label: 'New Quote\nRequests', icon: FiFileText, color: '#3b3b3b', filter: 'new_quotes' },
-  { key: 'repeatQuotes', label: '1+ Quote\nRequests', icon: FiCopy, color: '#c5a47e', filter: 'repeat_quotes', highlightWhenActive: true },
-  { key: 'newsletter', label: 'Stay\nInspired', icon: FiHeart, color: '#b86f91', filter: 'newsletter' },
-  { key: 'newQuotesSelfServe', label: 'New Quote\nRequests\nSelf Serve', icon: FiFileText, color: '#6b8f71', filter: 'new_quotes_self_serve' },
-  { key: 'repeatQuotesSelfServe', label: '1+ Quote\nRequests\nSelf Serve', icon: FiCopy, color: '#8b7fc7', filter: 'repeat_quotes_self_serve', highlightWhenActive: true },
-  { key: 'emails', label: 'Emails', icon: FiMail, color: '#7c6dab', isEmail: true },
+  { key: 'contacted', label: 'Contacted', icon: FiUserCheck, color: '#4a9e8e', filter: 'contacted' },
+  { key: 'followUp', label: 'Quotes', icon: FiRepeat, color: '#8b7fc7', filter: 'follow_up' },
   { key: 'deposits', label: 'Deposits', icon: FiDollarSign, color: '#d4874e', filter: 'deposits' },
   { key: 'completed', label: 'Completed', icon: FiCheckCircle, color: '#15803d', filter: 'completed' },
+  { key: 'coldLeads', label: 'Cold Leads', icon: FiClock, color: '#6b8fb0', filter: 'cold' },
+  { key: 'newsletter', label: 'Stay\nInspired', icon: FiHeart, color: '#b86f91', filter: 'newsletter' },
+  { key: 'emails', label: 'Emails', icon: FiMail, color: '#7c6dab', isEmail: true },
   { key: 'samples', label: 'Samples', icon: FiPackage, color: '#5ba4a4', to: '/admin/samples' },
-  { key: 'followUp', label: 'Follow Up\nQuotes', icon: FiRepeat, color: '#9e9e9e', filter: 'follow_up' },
 ];
 
 const ROW_2 = [
   { key: 'appointments', label: 'Appointments', icon: FiCalendar, color: '#8b3a3a', to: '/admin/appointments' },
-  { key: 'templateMeasure', label: 'Template\n& Measure', icon: FiCrop, color: '#8b7fc7', to: '/admin/appointments?type=template_measure', showCountAsBadge: true },
   { key: 'followUpCall', label: 'Follow Up\nCall', icon: FiPhoneCall, color: '#d4874e', to: '/admin/appointments?type=follow_up_call', showCountAsBadge: true },
-  { key: 'proWelcome', label: 'Pro Welcome', icon: FiThumbsUp, color: '#d4748b', filter: 'pro_welcome' },
   { key: 'chaseMeasurements', label: 'Chase\nMeasurements', icon: FiMapPin, color: '#b93131', filter: 'chase_measurements' },
-  { key: 'otherTasks', label: 'Other Tasks', icon: FiPhone, color: '#4a9e8e', filter: 'other_tasks' },
-  { key: 'complianceTasks', label: 'Compliance\nTasks', icon: FiClipboard, color: '#6b8f71', filter: 'compliance_tasks' },
+  { key: 'actionRequired', label: 'Action\nRequired', icon: FiAlertCircle, color: '#e07b39', filter: 'action_required' },
   { key: 'tradeContacts', label: 'Trade\nContacts', icon: FiBriefcase, color: '#5b8fd4', to: '/admin/trade-contacts' },
   { key: 'reviews', label: 'Reviews', icon: FiStar, color: '#b08d57', to: '/admin/reviews' },
 ];
@@ -79,11 +76,18 @@ export default function AdminDashboard() {
         <p className="admin-dashboard__welcome-sub">Welcome back, {displayName}</p>
       </div>
 
-      <div className="admin-dashboard__tasks">
-        {ROW_1.map(renderCard)}
-      </div>
-      <div className="admin-dashboard__tasks">
-        {ROW_2.map(renderCard)}
+      <div className="admin-dashboard__body">
+        <div className="admin-dashboard__main">
+          <div className="admin-dashboard__tasks">
+            {ROW_1.map(renderCard)}
+          </div>
+          <div className="admin-dashboard__tasks">
+            {ROW_2.map(renderCard)}
+          </div>
+        </div>
+        <aside className="admin-dashboard__side">
+          <TodaysTodo />
+        </aside>
       </div>
     </div>
   );
