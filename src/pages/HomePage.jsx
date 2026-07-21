@@ -170,7 +170,7 @@ export default function HomePage() {
                 Claim Your 40% Off
               </Link>
               <span className="hp-sale__deadline">
-                Hurry &mdash; sale ends 22nd July
+                Hurry &mdash; sale ends 24th July
               </span>
             </div>
           </div>
