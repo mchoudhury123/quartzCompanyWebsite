@@ -83,28 +83,59 @@
   color: rgba(245, 239, 230, 0.6);
 }
 
-@media (max-width: 900px) {
+/* Keep all four points on a single straight line on tablet/mobile: stack the
+   icon over a short centred label, drop the descriptions and dividers so it
+   reads as one clean 4-across strip. */
+@media (max-width: 768px) {
   .trust-strip__inner {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
   }
 
-  /* Remove the divider on the right-hand column of each row */
-  .trust-strip__item:nth-child(2n)::after,
-  .trust-strip__item:nth-child(2n) {
-    border-right: none;
-    padding-right: 0;
-  }
-}
-
-@media (max-width: 520px) {
-  .trust-strip__inner {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .trust-strip__item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.15rem;
   }
 
-  .trust-strip__item,
   .trust-strip__item:not(:last-child) {
     border-right: none;
     padding-right: 0;
+  }
+
+  .trust-strip__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .trust-strip__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .trust-strip__text {
+    align-items: center;
+  }
+
+  .trust-strip__title {
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  .trust-strip__desc {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .trust-strip__inner {
+    gap: 0.45rem;
+  }
+
+  .trust-strip__title {
+    font-size: 0.66rem;
   }
 }
