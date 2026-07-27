@@ -107,13 +107,13 @@
   }
 
   .trust-strip__icon {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
 
   .trust-strip__icon svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 
   .trust-strip__text {
@@ -121,7 +121,7 @@
   }
 
   .trust-strip__title {
-    font-size: 0.72rem;
+    font-size: 0.64rem;
     line-height: 1.25;
   }
 
@@ -136,6 +136,6 @@
   }
 
   .trust-strip__title {
-    font-size: 0.66rem;
+    font-size: 0.6rem;
   }
 }
