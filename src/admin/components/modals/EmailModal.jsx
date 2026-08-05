@@ -2,8 +2,14 @@ import { useState } from 'react';
 import ModalShell from './ModalShell';
 import useEmails from '../../hooks/useEmails';
 
+const FROM_OPTIONS = [
+  'sales@thequartzcompany.co.uk',
+  'admin@thequartzcompany.co.uk',
+];
+
 export default function EmailModal({ leadId, leadEmail, leadName, onClose }) {
   const { sendEmail } = useEmails(leadId);
+  const [from, setFrom] = useState(FROM_OPTIONS[0]);
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [sending, setSending] = useState(false);
@@ -15,7 +21,7 @@ export default function EmailModal({ leadId, leadEmail, leadName, onClose }) {
     setSending(true);
     setError(null);
 
-    const result = await sendEmail({ to: leadEmail, subject: subject.trim(), body: body.trim() });
+    const result = await sendEmail({ from, to: leadEmail, subject: subject.trim(), body: body.trim() });
 
     if (result.error) {
       setError(typeof result.error === 'string' ? result.error : 'Failed to send email');
@@ -30,6 +36,18 @@ export default function EmailModal({ leadId, leadEmail, leadName, onClose }) {
   return (
     <ModalShell title={`Email to ${leadName}`} onClose={onClose}>
       <form onSubmit={handleSubmit}>
+        <div className="modal-field">
+          <label className="modal-field__label">From</label>
+          <select
+            className="modal-field__input"
+            value={from}
+            onChange={(e) => setFrom(e.target.value)}
+          >
+            {FROM_OPTIONS.map((addr) => (
+              <option key={addr} value={addr}>{addr}</option>
+            ))}
+          </select>
+        </div>
         <div className="modal-field">
           <label className="modal-field__label">To</label>
           <input className="modal-field__input" value={leadEmail || ''} disabled />

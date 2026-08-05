@@ -19,11 +19,11 @@ export default function useEmails(leadId) {
 
   useEffect(() => { fetchEmails(); }, [fetchEmails]);
 
-  const sendEmail = async ({ to, subject, body }) => {
+  const sendEmail = async ({ to, subject, body, from = 'sales@thequartzcompany.co.uk' }) => {
     const res = await window.fetch('/api/zoho-send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to, subject, body }),
+      body: JSON.stringify({ to, subject, body, from }),
     });
     const result = await res.json();
 
@@ -39,7 +39,7 @@ export default function useEmails(leadId) {
         subject,
         body,
         to_address: to,
-        from_address: 'sales@thequartzcompany.co.uk',
+        from_address: from,
         zoho_message_id: result.messageId || null,
         status: 'sent',
         sent_by: 'Admin',

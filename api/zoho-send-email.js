@@ -16,11 +16,21 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { to, subject, body, html } = req.body || {};
+  const { to, subject, body, html, from } = req.body || {};
 
   if (!to || !subject || (!body && !html)) {
     return res.status(400).json({ error: 'Missing to, subject, or body/html' });
   }
+
+  // Only these mailboxes may be used as the sender. Anything else (including
+  // an unknown value from the client) falls back to sales. Each address must
+  // exist as a "send mail as" address on the Zoho account, or Zoho rejects it.
+  const FROM_ADDRESSES = {
+    'sales@thequartzcompany.co.uk': '"The Quartz Company" <sales@thequartzcompany.co.uk>',
+    'admin@thequartzcompany.co.uk': '"The Quartz Company" <admin@thequartzcompany.co.uk>',
+  };
+  const fromEmail = FROM_ADDRESSES[from] ? from : 'sales@thequartzcompany.co.uk';
+  const fromAddress = FROM_ADDRESSES[fromEmail];
 
   try {
     const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
@@ -44,7 +54,7 @@ export default async function handler(req, res) {
 
     // If the caller supplied ready-made HTML, send it as-is; otherwise wrap
     // the plain-text body in the standard branded template.
-    const htmlBody = html || wrapInBrandTemplate({ subject, body, siteUrl: SITE_URL });
+    const htmlBody = html || wrapInBrandTemplate({ subject, body, siteUrl: SITE_URL, contactEmail: fromEmail });
 
     const sendRes = await fetch(
       `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages`,
@@ -55,7 +65,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fromAddress: '"The Quartz Company" <sales@thequartzcompany.co.uk>',
+          fromAddress,
           toAddress: to,
           subject,
           content: htmlBody,
@@ -83,7 +93,7 @@ export default async function handler(req, res) {
   }
 }
 
-function wrapInBrandTemplate({ subject, body, siteUrl }) {
+function wrapInBrandTemplate({ subject, body, siteUrl, contactEmail = 'sales@thequartzcompany.co.uk' }) {
   const logoUrl = `${siteUrl}/logo.png`;
   const paragraphs = body
     .split(/\n{2,}/)
@@ -136,7 +146,7 @@ function wrapInBrandTemplate({ subject, body, siteUrl }) {
     </div>
     <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:11px;letter-spacing:0.28em;color:#c5a47e;text-transform:uppercase;">The Quartz Company</p>
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
-      sales@thequartzcompany.co.uk &nbsp;·&nbsp; 07375 303 416
+      ${contactEmail} &nbsp;·&nbsp; 07375 303 416
     </p>
   </td></tr>
 </table>
