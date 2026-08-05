@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { logAppointmentStatus } from '../utils/appointmentActivity';
 import {
   FiUser, FiPhone, FiMapPin, FiClock, FiCheck, FiCheckCircle, FiCalendar,
 } from 'react-icons/fi';
@@ -57,6 +58,7 @@ export default function TodaysTodo() {
   useEffect(() => { fetchToday(); }, [fetchToday]);
 
   const markDone = async (id) => {
+    const appt = appointments.find((a) => a.id === id);
     // Optimistic update — only touches the internal appointments table
     setAppointments((prev) =>
       prev.map((a) => (a.id === id ? { ...a, status: 'completed' } : a))
@@ -68,7 +70,10 @@ export default function TodaysTodo() {
     if (error) {
       console.error('Failed to mark appointment done:', error.message);
       fetchToday(); // revert to server truth on failure
+      return;
     }
+    // Record completion in the linked customer's timeline.
+    if (appt) await logAppointmentStatus(appt, 'completed');
   };
 
   const dateLabel = new Date(todayStr() + 'T00:00:00').toLocaleDateString('en-GB', {

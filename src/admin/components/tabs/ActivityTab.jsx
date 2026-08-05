@@ -4,7 +4,7 @@ import useActivities from '../../hooks/useActivities';
 import {
   FiRefreshCw, FiMessageSquare, FiFileText, FiPackage,
   FiPhone, FiPaperclip, FiEdit, FiPlusCircle, FiArrowRight, FiExternalLink, FiMail,
-  FiClipboard, FiChevronDown, FiChevronUp,
+  FiClipboard, FiChevronDown, FiChevronUp, FiCalendar,
 } from 'react-icons/fi';
 import './ActivityTab.css';
 
@@ -26,6 +26,9 @@ const ICON_MAP = {
   lead_created: FiPlusCircle,
   lead_updated: FiEdit,
   enquiry_received: FiClipboard,
+  appointment_booked: FiCalendar,
+  appointment_updated: FiCalendar,
+  appointment_cancelled: FiCalendar,
 };
 
 /* Maps activity_type → { tab, idKey } so we can link to the right tab and highlight the item */
