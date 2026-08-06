@@ -160,6 +160,7 @@
 .tc-card {
   background: var(--admin-card-bg);
   border: 1px solid var(--admin-border);
+  border-left: 5px solid var(--card-color, var(--color-gold, #c5a47e));
   border-radius: 12px;
   padding: 1.15rem 1.15rem 0.9rem;
   display: flex;
@@ -169,7 +170,7 @@
 }
 
 .tc-card:hover {
-  border-color: var(--color-gold, #c5a47e);
+  border-color: var(--card-color, var(--color-gold, #c5a47e));
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
@@ -194,10 +195,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #faf7f2;
-  border: 1px solid #eee5d4;
+  background: var(--card-color, var(--color-gold, #c5a47e));
+  border: none;
   border-radius: 50%;
-  color: var(--color-gold, #c5a47e);
+  color: #ffffff;
   font-size: 1.05rem;
   flex-shrink: 0;
 }
@@ -328,4 +329,66 @@
   font-size: 0.82rem;
   color: var(--admin-text-light, #837b70);
   text-align: center;
+}
+
+/* ── Expandable card details (pricing) ── */
+.tc-card {
+  cursor: default;
+}
+
+.tc-card[role="button"] {
+  cursor: pointer;
+}
+
+.tc-card__expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  align-self: flex-start;
+  padding: 0.3rem 0;
+  border: none;
+  background: transparent;
+  color: var(--card-color, var(--color-gold, #a9885c));
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tc-card__details {
+  border-top: 1px solid var(--admin-border, #e6ddcf);
+  padding-top: 0.75rem;
+  margin-top: 0.1rem;
+}
+
+.tc-card__detail-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+  padding: 3px 0;
+  color: #33302b;
+}
+
+.tc-card__detail-line span {
+  color: var(--admin-text-light, #837b70);
+}
+
+.tc-card__detail-line strong {
+  color: #1c1712;
+  text-align: right;
+}
+
+.tc-card__prices {
+  margin-top: 0.5rem;
+  border-top: 1px dashed var(--admin-border, #e6ddcf);
+  padding-top: 0.5rem;
+}
+
+.tc-card__prices-title {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--card-color, #a9885c);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
 }

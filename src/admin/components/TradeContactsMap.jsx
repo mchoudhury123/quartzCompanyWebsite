@@ -1,12 +1,11 @@
 import { Fragment, useEffect } from 'react';
 import { MapContainer, TileLayer, Circle, CircleMarker, Popup, useMap } from 'react-leaflet';
+import { contactColor } from '../utils/tradeContactColor';
 import 'leaflet/dist/leaflet.css';
 import './TradeContactsMap.css';
 
 const UK_CENTER = [53.8, -2.2];
 const MILES_TO_M = 1609.34;
-const ACCENT = '#a9885c';
-const PIN = '#9c3b2e';
 
 // Recenter / zoom to fit whichever contacts are plotted.
 function FitBounds({ points }) {
@@ -46,6 +45,7 @@ export default function TradeContactsMap({ contacts }) {
         {located.map((c) => {
           const center = [c.latitude, c.longitude];
           const radiusM = (c.mile_radius || 0) * MILES_TO_M;
+          const color = contactColor(c.id || c.name);
           const services = [
             c.fabrication && 'Fabrication',
             c.templating && 'Templating',
@@ -57,13 +57,13 @@ export default function TradeContactsMap({ contacts }) {
                 <Circle
                   center={center}
                   radius={radiusM}
-                  pathOptions={{ color: ACCENT, fillColor: ACCENT, fillOpacity: 0.08, weight: 1 }}
+                  pathOptions={{ color, fillColor: color, fillOpacity: 0.1, weight: 1 }}
                 />
               )}
               <CircleMarker
                 center={center}
                 radius={9}
-                pathOptions={{ color: '#ffffff', weight: 2, fillColor: PIN, fillOpacity: 1 }}
+                pathOptions={{ color: '#ffffff', weight: 2, fillColor: color, fillOpacity: 1 }}
               >
                 <Popup>
                   <div className="tc-map-pop">
