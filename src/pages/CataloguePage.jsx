@@ -716,7 +716,7 @@ function CataloguePage() {
         <div className="cat-sale-banner" role="note">
           <span className="cat-sale-banner__tag">Summer Sale</span>
           <p className="cat-sale-banner__text">
-            <strong>40% off</strong> every worktop this summer &mdash; ends 4th
+            <strong>40% off</strong> every worktop this summer &mdash; ends 12th
             August
           </p>
         </div>
