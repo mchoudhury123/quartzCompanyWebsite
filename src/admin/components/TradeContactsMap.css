@@ -1,0 +1,90 @@
+.tc-map {
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.tc-map__canvas {
+  height: 480px;
+  width: 100%;
+}
+
+/* Leaflet popup — themed to the CRM */
+.tc-map-pop {
+  min-width: 190px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+.tc-map-pop__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1712;
+}
+
+.tc-map-pop__company {
+  font-size: 0.82rem;
+  color: #6b6156;
+  margin-top: 1px;
+}
+
+.tc-map-pop__loc {
+  font-size: 0.78rem;
+  color: #837b70;
+  margin-top: 4px;
+}
+
+.tc-map-pop__phone {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #9c3b2e !important;
+  text-decoration: none;
+}
+
+.tc-map-pop__services {
+  margin-top: 6px;
+  font-size: 0.76rem;
+  color: #6b6156;
+}
+
+.tc-map-pop__radius {
+  margin-top: 2px;
+  font-size: 0.76rem;
+  color: #a9885c;
+  font-weight: 600;
+}
+
+.tc-map-pop__prices {
+  margin-top: 10px;
+  border-top: 1px solid #eee5d4;
+  padding-top: 8px;
+}
+
+.tc-map-pop__prices-title {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a9885c;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.tc-map-pop__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.82rem;
+  padding: 2px 0;
+  color: #33302b;
+}
+
+.tc-map-pop__row-label {
+  color: #837b70;
+}
+
+.tc-map-pop__row-value {
+  color: #1c1712;
+  text-align: right;
+}

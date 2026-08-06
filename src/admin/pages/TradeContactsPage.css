@@ -322,3 +322,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+.tc-map-note {
+  margin: -0.75rem 0 1.5rem;
+  font-size: 0.82rem;
+  color: var(--admin-text-light, #837b70);
+  text-align: center;
+}

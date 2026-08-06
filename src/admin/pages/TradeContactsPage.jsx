@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import useTradeContacts from '../hooks/useTradeContacts';
 import TradeContactModal from '../components/modals/TradeContactModal';
+import TradeContactsMap from '../components/TradeContactsMap';
 import {
   FiPlus, FiSearch, FiUser, FiBriefcase, FiPhone, FiMail,
   FiMapPin, FiEdit2, FiTrash2, FiX,
@@ -122,6 +123,22 @@ export default function TradeContactsPage() {
           </div>
         )}
       </div>
+
+      {contacts.some((c) => c.latitude != null && c.longitude != null) && (
+        <>
+          <TradeContactsMap contacts={filtered} />
+          {(() => {
+            const located = filtered.filter((c) => c.latitude != null && c.longitude != null).length;
+            const missing = filtered.length - located;
+            return (
+              <p className="tc-map-note">
+                Showing {located} contact{located === 1 ? '' : 's'} on the map
+                {missing > 0 && ` · ${missing} need a postcode to appear`}. Click a pin for phone number and pricing.
+              </p>
+            );
+          })()}
+        </>
+      )}
 
       {filtered.length === 0 ? (
         <div className="tc-empty">

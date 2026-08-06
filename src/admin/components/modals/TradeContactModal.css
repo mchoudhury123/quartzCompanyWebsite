@@ -1,0 +1,38 @@
+.tc-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+
+.tc-form__hint {
+  font-weight: 400;
+  color: var(--admin-text-light, #837b70);
+  font-size: 0.78rem;
+}
+
+.tc-form__services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.4rem 0 0.2rem;
+}
+
+.tc-form__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: var(--admin-text, #33302b);
+  cursor: pointer;
+}
+
+.tc-form__check input {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 560px) {
+  .tc-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
