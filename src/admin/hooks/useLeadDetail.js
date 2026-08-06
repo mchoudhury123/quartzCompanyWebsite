@@ -256,5 +256,46 @@ export default function useLeadDetail(id) {
     }
   };
 
-  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall, refetchLead: fetchLead };
+  // Retry call went unanswered again — log the attempt, email the customer,
+  // and keep the lead in "1+ Quote Requests" so the admin can keep retrying.
+  const retryNoAnswer = async () => {
+    // Count prior unanswered outbound calls so we can label this attempt.
+    const { count } = await supabase
+      .from('lead_calls')
+      .select('id', { count: 'exact', head: true })
+      .eq('lead_id', id)
+      .eq('direction', 'outbound')
+      .eq('outcome', 'no_answer');
+    const attempt = (count || 0) + 1;
+
+    const summary = `No answer (attempt ${attempt})`;
+    const { data: callData } = await supabase
+      .from('lead_calls')
+      .insert({
+        lead_id: id,
+        direction: 'outbound',
+        outcome: 'no_answer',
+        summary,
+        called_by: 'Admin',
+      })
+      .select()
+      .single();
+
+    if (callData) {
+      await logActivity(id, {
+        type: 'call_logged',
+        title: summary,
+        metadata: { call_id: callData.id, outcome: 'no_answer', action: 'retry' },
+      });
+    }
+
+    await sendCallAttemptEmail({
+      leadId: id,
+      leadEmail: lead?.email,
+      leadName: lead?.full_name,
+      attempt,
+    });
+  };
+
+  return { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall, retryNoAnswer, refetchLead: fetchLead };
 }

@@ -33,7 +33,7 @@ export default function LeadDetailPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const highlightId = searchParams.get('highlight') || null;
-  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall } = useLeadDetail(id);
+  const { lead, notes, loading, updateStatus, updateLeadField, addNote, deleteNote, completeAction, setActionRequired, completeActionRequired, retryCall, retryNoAnswer } = useLeadDetail(id);
   const [modal, setModal] = useState(null);
   const [tabHighlights, setTabHighlights] = useState({});
   const twilio = useTwilioDevice();
@@ -149,7 +149,7 @@ export default function LeadDetailPage() {
             />
           )}
           {lead.status === 'new' && !lead.pending_action && (
-            <RetryBar onAnswered={retryCall} />
+            <RetryBar onAnswered={retryCall} onNoAnswer={retryNoAnswer} />
           )}
           <TwilioCallBar
             callState={twilio.callState}
