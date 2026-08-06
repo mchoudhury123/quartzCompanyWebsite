@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
+import SaleCountdownPopup from './SaleCountdownPopup';
 
 export default function PublicLayout() {
   return (
@@ -12,6 +13,7 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <SaleCountdownPopup />
     </>
   );
 }
