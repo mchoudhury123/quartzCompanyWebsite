@@ -181,7 +181,7 @@ export function buildSaleEmail(templateId, fields) {
 
 // Standard branded email for a plain custom message. Mirrors the server-side
 // template in api/zoho-send-email.js so the preview matches what's sent.
-export function buildBrandedEmail({ subject = '', body = '' }) {
+export function buildBrandedEmail({ subject = '', body = '', contactEmail = 'sales@thequartzcompany.co.uk' }) {
   const paras = String(body)
     .split(/\n{2,}/)
     .map(
@@ -230,7 +230,7 @@ export function buildBrandedEmail({ subject = '', body = '' }) {
     ${socialIcons()}
     <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:11px;letter-spacing:0.28em;color:#c5a47e;text-transform:uppercase;">The Quartz Company</p>
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
-      sales@thequartzcompany.co.uk &nbsp;&middot;&nbsp; 07375 303 416
+      ${esc(contactEmail)} &nbsp;&middot;&nbsp; 07375 303 416
     </p>
   </td></tr>
 </table>

@@ -19,6 +19,11 @@
   overflow-y: auto;
 }
 
+/* Wider variant — used by the email composer so the branded preview is easy to read. */
+.modal-shell--wide {
+  max-width: 760px;
+}
+
 .modal-shell__header {
   display: flex;
   align-items: center;
@@ -95,6 +100,53 @@
 .modal-field__textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+.email-modal__preview {
+  width: 100%;
+  height: 420px;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 8px;
+  background: #f4f1ea;
+}
+
+.email-modal__templates {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.email-modal__templates .modal-field__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.email-modal__tpl-btn {
+  flex-shrink: 0;
+  padding: 0 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--admin-text, #33302b);
+  background: var(--admin-bg, #f5f2ec);
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.email-modal__tpl-btn:hover {
+  background: #ece6da;
+}
+
+.email-modal__tpl-btn--danger {
+  color: #a0432f;
+  border-color: #e3c4bb;
+  background: #fbf1ee;
+}
+
+.email-modal__tpl-btn--danger:hover {
+  background: #f6e4de;
 }
 
 .modal-actions {
