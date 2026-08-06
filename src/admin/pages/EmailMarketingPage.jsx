@@ -39,7 +39,7 @@ export default function EmailMarketingPage() {
       setLoading(true);
       const { data } = await supabase
         .from('leads')
-        .select('id, full_name, email, source, status')
+        .select('id, full_name, email, source, status, unsubscribed')
         .order('full_name', { ascending: true });
       setClients(data || []);
       setLoading(false);
@@ -57,7 +57,8 @@ export default function EmailMarketingPage() {
     );
   }, [clients, search]);
 
-  const withEmail = (c) => !!(c.email && c.email.includes('@'));
+  // Only email people with an address who haven't unsubscribed.
+  const withEmail = (c) => !!(c.email && c.email.includes('@')) && !c.unsubscribed;
   const selectableFiltered = filtered.filter(withEmail);
   const allFilteredSelected =
     selectableFiltered.length > 0 && selectableFiltered.every((c) => selectedIds.has(c.id));
@@ -140,19 +141,21 @@ export default function EmailMarketingPage() {
       `Send this email to ${selectedClients.length} client${selectedClients.length === 1 ? '' : 's'}?`
     )) return;
 
-    const payload = isSale
-      ? { subject: saleSubjectFinal, html: saleHtml }
-      : { subject: subject.trim(), html: brandedHtml };
+    const emailSubject = isSale ? saleSubjectFinal : subject.trim();
 
     let sent = 0, failed = 0;
     setSending({ active: true, sent: 0, failed: 0, total: selectedClients.length });
 
     for (const c of selectedClients) {
       try {
+        // Build per-recipient so the unsubscribe link targets their address.
+        const html = isSale
+          ? buildSaleEmail(templateId, saleFields, c.email)
+          : buildBrandedEmail({ subject: subject.trim(), body, unsubscribeEmail: c.email });
         const res = await fetch('/api/zoho-send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: c.email, ...payload }),
+          body: JSON.stringify({ to: c.email, subject: emailSubject, html }),
         });
         const data = await res.json();
         if (data.error) failed++; else sent++;
@@ -247,7 +250,9 @@ export default function EmailMarketingPage() {
                       <StatusBadge status={c.status} />
                     </span>
                     <span className="email-marketing__row-email">
-                      {emailable ? c.email : 'no email on file'}
+                      {c.unsubscribed
+                        ? 'unsubscribed'
+                        : (c.email && c.email.includes('@') ? c.email : 'no email on file')}
                     </span>
                   </label>
                 );

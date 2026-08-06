@@ -44,7 +44,7 @@ export async function startReminderDrip({ leadId, leadEmail, leadName, reminderT
     const res = await fetch('/api/zoho-send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: leadEmail, subject, body }),
+      body: JSON.stringify({ to: leadEmail, subject, body, transactional: true }),
     });
     const result = await res.json().catch(() => ({ error: 'Invalid response' }));
     if (result.error) {
@@ -119,7 +119,7 @@ export async function sendCallAttemptEmail({ leadId, leadEmail, leadName, attemp
     const res = await fetch('/api/zoho-send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: leadEmail, subject, body }),
+      body: JSON.stringify({ to: leadEmail, subject, body, transactional: true }),
     });
     const result = await res.json().catch(() => ({ error: 'Invalid response' }));
     if (result.error) {

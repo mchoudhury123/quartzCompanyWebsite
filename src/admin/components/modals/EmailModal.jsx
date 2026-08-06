@@ -51,8 +51,8 @@ export default function EmailModal({ leadId, leadEmail, leadName, onClose }) {
   // Live preview of the branded email — mirrors what's actually sent, and the
   // footer reflects the selected "From" address.
   const previewHtml = useMemo(
-    () => buildBrandedEmail({ subject, body, contactEmail: from }),
-    [subject, body, from]
+    () => buildBrandedEmail({ subject, body, contactEmail: from, unsubscribeEmail: leadEmail }),
+    [subject, body, from, leadEmail]
   );
 
   const handleSubmit = async (e) => {

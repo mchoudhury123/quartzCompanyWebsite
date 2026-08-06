@@ -2,7 +2,21 @@
 // Each builder returns a full, email-client-safe HTML document (table layout,
 // inline styles) that is sent as-is via the `html` field of /api/zoho-send-email.
 
-const LOGO_URL = 'https://www.thequartzcompany.co.uk/logo.png';
+const SITE_URL = 'https://www.thequartzcompany.co.uk';
+const LOGO_URL = `${SITE_URL}/logo.png`;
+
+// Compliance/unsubscribe footer for marketing + general (non-transactional)
+// emails. Includes why they're receiving it and a one-click unsubscribe link
+// (per-recipient when the email is known).
+export function marketingFooterExtras(email) {
+  const base = `${SITE_URL}/api/unsubscribe`;
+  const url = email ? `${base}?email=${encodeURIComponent(email)}` : base;
+  return `<p style="margin:16px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#b3ab9f;">
+    The Quartz Company &middot; Unit 303/2, K2 House Business Centre, Heathfield Way, Northampton NN5 7QP<br>
+    You&rsquo;re receiving this email because you enquired with or are a customer of The Quartz Company.<br>
+    <a href="${url}" style="color:#b3ab9f;text-decoration:underline;">Unsubscribe</a> from marketing emails.
+  </p>`;
+}
 const INSTAGRAM_URL = 'https://www.instagram.com/thequartzcompanyuk/';
 const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61587732770864';
 const IG_ICON = 'https://www.thequartzcompany.co.uk/email/instagram.png';
@@ -107,7 +121,7 @@ function breakdownBlock(f, valueColor) {
   return `<div style="padding:6px 0 20px;">${title}<table align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>${cells}</tr></table></div>`;
 }
 
-function footer() {
+function footer(unsubEmail) {
   return `
   <tr><td align="center" style="padding:28px 48px 44px;background:#ffffff;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -119,6 +133,7 @@ function footer() {
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
       sales@thequartzcompany.co.uk &nbsp;&middot;&nbsp; 07375 303 416
     </p>
+    ${marketingFooterExtras(unsubEmail)}
   </td></tr>`;
 }
 
@@ -157,7 +172,7 @@ function bold(f) {
     ${breakdownBlock(f, f.accent)}
     <div style="padding:12px 0 20px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>
-  ${footer()}`;
+  ${footer(f.recipientEmail)}`;
   return shell(inner, `${f.saleName} — ${f.discount}`);
 }
 
@@ -178,7 +193,7 @@ function seasonal(f) {
     ${endsPill(f.endDate, '#f4efe6', '#7a5c33')}
     <div style="padding:22px 0 18px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>
-  ${footer()}`;
+  ${footer(f.recipientEmail)}`;
   return shell(inner, `${f.saleName} — ${f.discount}`);
 }
 
@@ -198,21 +213,21 @@ function elegant(f) {
     ${endsPill(f.endDate, '#f4efe6', '#7a5c33')}
     <div style="padding:24px 0 20px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>
-  ${footer()}`;
+  ${footer(f.recipientEmail)}`;
   return shell(inner, `${f.saleName} — ${f.discount}`);
 }
 
 const BUILDERS = { bold, seasonal, elegant };
 
-export function buildSaleEmail(templateId, fields) {
-  const f = { ...DEFAULT_SALE_FIELDS, ...fields };
+export function buildSaleEmail(templateId, fields, recipientEmail = '') {
+  const f = { ...DEFAULT_SALE_FIELDS, ...fields, recipientEmail };
   const builder = BUILDERS[templateId] || bold;
   return builder(f);
 }
 
 // Standard branded email for a plain custom message. Mirrors the server-side
 // template in api/zoho-send-email.js so the preview matches what's sent.
-export function buildBrandedEmail({ subject = '', body = '', contactEmail = 'sales@thequartzcompany.co.uk' }) {
+export function buildBrandedEmail({ subject = '', body = '', contactEmail = 'sales@thequartzcompany.co.uk', unsubscribeEmail = '' }) {
   const paras = String(body)
     .split(/\n{2,}/)
     .map(
@@ -263,6 +278,7 @@ export function buildBrandedEmail({ subject = '', body = '', contactEmail = 'sal
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
       ${esc(contactEmail)} &nbsp;&middot;&nbsp; 07375 303 416
     </p>
+    ${marketingFooterExtras(unsubscribeEmail)}
   </td></tr>
 </table>
 

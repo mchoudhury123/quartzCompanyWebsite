@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { to, subject, body, html, from } = req.body || {};
+  const { to, subject, body, html, from, transactional } = req.body || {};
 
   if (!to || !subject || (!body && !html)) {
     return res.status(400).json({ error: 'Missing to, subject, or body/html' });
@@ -54,7 +54,14 @@ export default async function handler(req, res) {
 
     // If the caller supplied ready-made HTML, send it as-is; otherwise wrap
     // the plain-text body in the standard branded template.
-    const htmlBody = html || wrapInBrandTemplate({ subject, body, siteUrl: SITE_URL, contactEmail: fromEmail });
+    const htmlBody = html || wrapInBrandTemplate({
+      subject,
+      body,
+      siteUrl: SITE_URL,
+      contactEmail: fromEmail,
+      // Transactional emails (quotes, "we tried to reach you") get no unsubscribe.
+      unsubscribeEmail: transactional ? '' : to,
+    });
 
     const sendRes = await fetch(
       `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages`,
@@ -93,7 +100,17 @@ export default async function handler(req, res) {
   }
 }
 
-function wrapInBrandTemplate({ subject, body, siteUrl, contactEmail = 'sales@thequartzcompany.co.uk' }) {
+function unsubscribeFooter(email, siteUrl) {
+  if (!email) return '';
+  const url = `${siteUrl}/api/unsubscribe?email=${encodeURIComponent(email)}`;
+  return `<p style="margin:16px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#b3ab9f;">
+      The Quartz Company &middot; Unit 303/2, K2 House Business Centre, Heathfield Way, Northampton NN5 7QP<br>
+      You&rsquo;re receiving this email because you enquired with or are a customer of The Quartz Company.<br>
+      <a href="${url}" style="color:#b3ab9f;text-decoration:underline;">Unsubscribe</a> from marketing emails.
+    </p>`;
+}
+
+function wrapInBrandTemplate({ subject, body, siteUrl, contactEmail = 'sales@thequartzcompany.co.uk', unsubscribeEmail = '' }) {
   const logoUrl = `${siteUrl}/logo.png`;
   const paragraphs = body
     .split(/\n{2,}/)
@@ -148,6 +165,7 @@ function wrapInBrandTemplate({ subject, body, siteUrl, contactEmail = 'sales@the
     <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#999999;letter-spacing:0.02em;">
       ${contactEmail} &nbsp;·&nbsp; 07375 303 416
     </p>
+    ${unsubscribeFooter(unsubscribeEmail, siteUrl)}
   </td></tr>
 </table>
 

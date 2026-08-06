@@ -487,6 +487,7 @@ export default function QuotePage() {
           to: form.email,
           subject: 'Thank you for your quote request — The Quartz Company',
           body: `${firstName ? `Hi ${firstName},` : 'Hello,'}\n\nThank you for requesting a quote with The Quartz Company. We've received your details and our team is already preparing a personalised, fixed-price quote for you.\n\nWe'll be in touch within 24 hours — there's no need to submit another request in the meantime.\n\nIf anything is urgent, simply reply to this email or call us on 07375 303 416 and we'll be happy to help.\n\nWarm regards,\nThe Quartz Company Team`,
+          transactional: true,
         }),
       }).catch((err) => console.error('Quote confirmation email failed:', err));
     }

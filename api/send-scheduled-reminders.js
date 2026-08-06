@@ -69,7 +69,7 @@ export default async function handler(req, res) {
       const sendRes = await fetch(sendUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.email, subject, body }),
+        body: JSON.stringify({ to: lead.email, subject, body, transactional: true }),
       });
       const sendData = await sendRes.json();
 
