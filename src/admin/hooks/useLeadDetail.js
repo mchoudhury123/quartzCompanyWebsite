@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import { logActivity } from '../utils/activityLogger';
-import { startReminderDrip, cancelReminders } from '../utils/emailReminders';
+import { startReminderDrip, cancelReminders, sendCallAttemptEmail } from '../utils/emailReminders';
 
 export default function useLeadDetail(id) {
   const [lead, setLead] = useState(null);
@@ -207,18 +207,24 @@ export default function useLeadDetail(id) {
     } else {
       // Customer didn't answer
       if (currentAction === 'call_new') {
-        // First attempt failed — schedule follow-up
+        // First attempt failed — email the customer, then schedule follow-up
         await supabase.from('leads').update({ pending_action: 'follow_up' }).eq('id', id);
         setLead((prev) => ({ ...prev, pending_action: 'follow_up' }));
-        await logActivity(id, { type: 'lead_updated', title: 'No answer — follow-up call scheduled', metadata: { old_action: 'call_new', new_action: 'follow_up' } });
-      } else {
-        // Second attempt failed — start the 2-day "we tried to reach you" drip
-        // Lead stays in current status; 2+ unanswered calls place it in "1+ Quote Requests"
-        await startReminderDrip({
+        await sendCallAttemptEmail({
           leadId: id,
           leadEmail: lead?.email,
           leadName: lead?.full_name,
-          reminderType: 'no_answer',
+          attempt: 1,
+        });
+        await logActivity(id, { type: 'lead_updated', title: 'No answer — follow-up call scheduled', metadata: { old_action: 'call_new', new_action: 'follow_up' } });
+      } else {
+        // Second attempt failed — email the customer again.
+        // Lead stays in current status; 2+ unanswered calls place it in "1+ Quote Requests"
+        await sendCallAttemptEmail({
+          leadId: id,
+          leadEmail: lead?.email,
+          leadName: lead?.full_name,
+          attempt: 2,
         });
 
         // Clear action — lead moves to "1+ Quote Requests" via unanswered call count

@@ -98,6 +98,66 @@ export async function startReminderDrip({ leadId, leadEmail, leadName, reminderT
   return { status: emailStatus };
 }
 
+// Sends a single "we tried to reach you" email immediately after a failed
+// call attempt and records it (lead_emails + timeline). Unlike startReminderDrip,
+// this fires once per attempt with no follow-up scheduling — so the customer
+// gets one email for every call attempt where they didn't answer.
+export async function sendCallAttemptEmail({ leadId, leadEmail, leadName, attempt }) {
+  if (!leadEmail) {
+    // No email on file — skip so the CRM call flow still completes.
+    return { skipped: 'no_email' };
+  }
+
+  const firstName = (leadName || '').split(' ')[0] || 'there';
+  const subject = SUBJECTS.no_answer;
+  const body = buildBody('no_answer', firstName);
+
+  let messageId = null;
+  let emailStatus = 'sent';
+  let sendError = null;
+  try {
+    const res = await fetch('/api/zoho-send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: leadEmail, subject, body }),
+    });
+    const result = await res.json().catch(() => ({ error: 'Invalid response' }));
+    if (result.error) {
+      emailStatus = 'failed';
+      sendError = result.error;
+    } else {
+      messageId = result.messageId || null;
+    }
+  } catch (err) {
+    emailStatus = 'failed';
+    sendError = err.message;
+  }
+
+  await supabase.from('lead_emails').insert({
+    lead_id: leadId,
+    direction: 'outbound',
+    subject,
+    body,
+    to_address: leadEmail,
+    from_address: 'sales@thequartzcompany.co.uk',
+    zoho_message_id: messageId,
+    status: emailStatus,
+    sent_by: 'System',
+  });
+
+  await logActivity(leadId, {
+    type: 'email_sent',
+    title: emailStatus === 'sent'
+      ? `Missed-call email sent (attempt ${attempt})`
+      : `Missed-call email failed (attempt ${attempt})`,
+    description: emailStatus === 'sent' ? subject : `Error: ${sendError}`,
+    metadata: { reminder_type: 'no_answer', attempt },
+    author: 'System',
+  });
+
+  return { status: emailStatus };
+}
+
 // Used when the admin has resolved the underlying situation (got measurements,
 // customer reached on retry, etc.) — stops any outstanding drip so the
 // customer doesn't receive further nudges.
