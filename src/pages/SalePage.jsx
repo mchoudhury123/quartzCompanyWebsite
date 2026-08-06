@@ -16,6 +16,24 @@ const offers = [
     link: '/colours',
     linkText: 'Shop All Worktops',
   },
+  {
+    id: 2,
+    badge: '40% Off',
+    title: '40% Off Processing',
+    description:
+      'Save 40% on all fabrication too — precision cutting, shaping and finishing of your worktops, including cut-outs for sinks, hobs and taps, all expertly prepared to fit your kitchen.',
+    link: '/quote',
+    linkText: 'Get Your Quote',
+  },
+  {
+    id: 3,
+    badge: '20% Off',
+    title: '20% Off Installation',
+    description:
+      'Enjoy 20% off professional installation — accurate templating and careful fitting by our experienced installers, so your new worktops are finished to perfection.',
+    link: '/quote',
+    linkText: 'Get Your Quote',
+  },
 ];
 
 export default function SalePage() {

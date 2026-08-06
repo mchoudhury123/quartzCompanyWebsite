@@ -167,6 +167,20 @@ export default function HomePage() {
               Our biggest saving of the year &mdash; every colour and finish,
               engineered &amp; full-body printed quartz, fully fitted.
             </p>
+            <ul className="sale-breakdown sale-breakdown--center">
+              <li className="sale-breakdown__item">
+                <span className="sale-breakdown__pct">40% off</span>
+                <span className="sale-breakdown__label">Materials</span>
+              </li>
+              <li className="sale-breakdown__item">
+                <span className="sale-breakdown__pct">40% off</span>
+                <span className="sale-breakdown__label">Processing</span>
+              </li>
+              <li className="sale-breakdown__item">
+                <span className="sale-breakdown__pct">20% off</span>
+                <span className="sale-breakdown__label">Installation</span>
+              </li>
+            </ul>
             <div className="hp-sale__actions">
               <Link to="/quote" className="hp-sale__cta">
                 Claim Your 40% Off

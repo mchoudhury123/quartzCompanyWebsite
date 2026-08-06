@@ -43,6 +43,14 @@ export const DEFAULT_SALE_FIELDS = {
   ctaLabel: 'Get Your Free Quote',
   ctaUrl: 'https://www.thequartzcompany.co.uk/quote',
   accent: '#c5a47e',
+  // Optional "what's discounted" breakdown — mirrors the sale page bars.
+  showBreakdown: true,
+  breakdownTitle: "What's included in the sale",
+  breakdown: [
+    { value: '40% off', label: 'Materials' },
+    { value: '40% off', label: 'Processing' },
+    { value: '20% off', label: 'Installation' },
+  ],
 };
 
 export function formatEndDate(iso) {
@@ -77,6 +85,26 @@ function endsPill(endDate, bg, fg) {
 
 function ctaButton(label, url, bg, fg) {
   return `<a href="${esc(url)}" style="display:inline-block;background:${bg};color:${fg};font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;letter-spacing:0.04em;text-decoration:none;padding:15px 34px;border-radius:6px;">${esc(label)}</a>`;
+}
+
+// Optional breakdown of what's discounted (materials / processing / installation).
+// Rendered as an email-safe row of cells; valueColor themes it to the template.
+function breakdownBlock(f, valueColor) {
+  if (!f.showBreakdown) return '';
+  const items = (f.breakdown || []).filter((it) => it && (it.value || it.label));
+  if (!items.length) return '';
+  const title = f.breakdownTitle
+    ? `<p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8a8178;">${esc(f.breakdownTitle)}</p>`
+    : '';
+  const cells = items
+    .map(
+      (it) => `<td align="center" valign="top" style="padding:14px 12px;border:1px solid #e6ddcf;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:800;line-height:1;color:${valueColor};text-transform:uppercase;">${esc(it.value)}</div>
+        <div style="margin-top:6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#8a8178;">${esc(it.label)}</div>
+      </td>`
+    )
+    .join('<td style="width:10px;font-size:0;line-height:0;">&nbsp;</td>');
+  return `<div style="padding:6px 0 20px;">${title}<table align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>${cells}</tr></table></div>`;
 }
 
 function footer() {
@@ -126,6 +154,7 @@ function bold(f) {
   </td></tr>
   <tr><td style="background:#ffffff;padding:40px 48px 8px;text-align:center;">
     ${paragraphs(f.message, '#3a3a3a')}
+    ${breakdownBlock(f, f.accent)}
     <div style="padding:12px 0 20px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>
   ${footer()}`;
@@ -145,6 +174,7 @@ function seasonal(f) {
   </td></tr>
   <tr><td style="background:#ffffff;padding:36px 48px 8px;text-align:center;">
     ${paragraphs(f.message, '#3a3a3a')}
+    ${breakdownBlock(f, f.accent)}
     ${endsPill(f.endDate, '#f4efe6', '#7a5c33')}
     <div style="padding:22px 0 18px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>
@@ -164,6 +194,7 @@ function elegant(f) {
   </td></tr>
   <tr><td style="background:#ffffff;padding:26px 56px 8px;text-align:center;">
     ${paragraphs(f.message, '#4a4a4a')}
+    ${breakdownBlock(f, f.accent)}
     ${endsPill(f.endDate, '#f4efe6', '#7a5c33')}
     <div style="padding:24px 0 20px;">${ctaButton(f.ctaLabel, f.ctaUrl, f.accent, '#ffffff')}</div>
   </td></tr>

@@ -359,3 +359,67 @@ ul { list-style: none; }
     radial-gradient(ellipse at 78% 25%, rgba(169, 136, 92, 0.2) 0%, transparent 55%),
     linear-gradient(140deg, #16110c 0%, #221a12 45%, #2e241a 100%) !important;
 }
+
+/* ── Sale discount breakdown (Sale page hero + homepage sale banner) ── */
+.sale-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+}
+
+.sale-breakdown--center {
+  justify-content: center;
+}
+
+.sale-breakdown__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 118px;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: rgba(156, 59, 46, 0.06);
+}
+
+.sale-breakdown__pct {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--color-sale);
+  text-transform: uppercase;
+}
+
+.sale-breakdown__label {
+  margin-top: 0.35rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+}
+
+@media (max-width: 520px) {
+  .sale-breakdown {
+    gap: 0.5rem;
+  }
+  .sale-breakdown__item {
+    flex: 1;
+    min-width: 0;
+    padding: 0.65rem 0.5rem;
+  }
+  .sale-breakdown__pct {
+    font-size: 1.1rem;
+  }
+  .sale-breakdown__label {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.sale-breakdown--offers {
+  margin: 0.5rem auto 2.5rem;
+}

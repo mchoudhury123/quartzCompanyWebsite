@@ -49,7 +49,13 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, o
   return (
     <div className="client-info">
       <div className="client-info__header">
-        <h2 className="client-info__name">{lead.full_name}</h2>
+        <h2 className="client-info__name">
+          <EditableField
+            value={lead.full_name}
+            onSave={(v) => onFieldUpdate('full_name', v)}
+            placeholder="Add name"
+          />
+        </h2>
         <StatusBadge status={lead.status} />
       </div>
 
@@ -77,18 +83,22 @@ export default function ClientInfoPanel({ lead, onStatusChange, onFieldUpdate, o
 
       <div className="client-info__section">
         <h4 className="client-info__section-title">Contact</h4>
-        {lead.email && (
-          <div className="client-info__field">
-            <FiMail className="client-info__field-icon" />
-            <a href={`mailto:${lead.email}`} className="client-info__link">{lead.email}</a>
-          </div>
-        )}
-        {lead.phone && (
-          <div className="client-info__field">
-            <FiPhone className="client-info__field-icon" />
-            <a href={`tel:${lead.phone}`} className="client-info__link">{lead.phone}</a>
-          </div>
-        )}
+        <div className="client-info__field">
+          <FiMail className="client-info__field-icon" />
+          <EditableField
+            value={lead.email}
+            onSave={(v) => onFieldUpdate('email', v)}
+            placeholder="Add email"
+          />
+        </div>
+        <div className="client-info__field">
+          <FiPhone className="client-info__field-icon" />
+          <EditableField
+            value={lead.phone}
+            onSave={(v) => onFieldUpdate('phone', v)}
+            placeholder="Add phone"
+          />
+        </div>
         <div className="client-info__field">
           <FiBriefcase className="client-info__field-icon" />
           <EditableField

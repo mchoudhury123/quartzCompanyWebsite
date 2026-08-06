@@ -27,6 +27,10 @@ export default function EmailMarketingPage() {
   const [saleFields, setSaleFields] = useState({ ...DEFAULT_SALE_FIELDS });
   const [saleSubject, setSaleSubject] = useState('');
   const setSaleField = (key, value) => setSaleFields((prev) => ({ ...prev, [key]: value }));
+  const setBreakdownItem = (i, key, value) => setSaleFields((prev) => ({
+    ...prev,
+    breakdown: (prev.breakdown || []).map((it, idx) => (idx === i ? { ...it, [key]: value } : it)),
+  }));
 
   const { groups, saveGroup, updateGroup, deleteGroup } = useEmailGroups();
 
@@ -365,6 +369,48 @@ export default function EmailMarketingPage() {
               <label className="email-marketing__label">Message</label>
               <textarea className="email-marketing__textarea" rows={5} value={saleFields.message}
                 onChange={(e) => setSaleField('message', e.target.value)} />
+
+              <label className="email-marketing__checkbox">
+                <input
+                  type="checkbox"
+                  checked={!!saleFields.showBreakdown}
+                  onChange={(e) => setSaleField('showBreakdown', e.target.checked)}
+                />
+                Show discount breakdown (materials, processing, installation)
+              </label>
+
+              {saleFields.showBreakdown && (
+                <div className="email-marketing__breakdown">
+                  <label className="email-marketing__label">Breakdown heading</label>
+                  <input
+                    className="email-marketing__input"
+                    type="text"
+                    value={saleFields.breakdownTitle}
+                    onChange={(e) => setSaleField('breakdownTitle', e.target.value)}
+                    placeholder="What's included in the sale"
+                  />
+                  {(saleFields.breakdown || []).map((it, i) => (
+                    <div className="email-marketing__breakdown-row" key={i}>
+                      <input
+                        className="email-marketing__input"
+                        type="text"
+                        value={it.value}
+                        onChange={(e) => setBreakdownItem(i, 'value', e.target.value)}
+                        placeholder="40% off"
+                        aria-label={`Discount ${i + 1}`}
+                      />
+                      <input
+                        className="email-marketing__input"
+                        type="text"
+                        value={it.label}
+                        onChange={(e) => setBreakdownItem(i, 'label', e.target.value)}
+                        placeholder="Materials"
+                        aria-label={`Label ${i + 1}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <label className="email-marketing__label">Subject line (optional)</label>
               <input className="email-marketing__input" type="text" value={saleSubject}

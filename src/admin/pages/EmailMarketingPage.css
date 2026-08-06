@@ -458,3 +458,35 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Sale email: discount breakdown controls ── */
+.email-marketing__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0.25rem;
+  font-size: 0.88rem;
+  color: var(--admin-text, #33302b);
+  cursor: pointer;
+}
+
+.email-marketing__checkbox input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.email-marketing__breakdown {
+  margin-top: 0.25rem;
+  padding: 0.9rem;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 8px;
+  background: var(--admin-bg, #fbfaf7);
+}
+
+.email-marketing__breakdown-row {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
