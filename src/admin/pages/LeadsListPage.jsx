@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import useLeads, { PRESET_FILTERS } from '../hooks/useLeads';
+import useSalePeriods from '../hooks/useSalePeriods';
 import StatusBadge from '../components/StatusBadge';
 import AddClientModal from '../components/modals/AddClientModal';
 import ModalShell from '../components/modals/ModalShell';
 import { sourceLabel } from '../utils/leadSource';
+import { assignLeadPeriod, periodCategory, categoryLabel } from '../utils/salePeriods';
 import { FiSearch, FiChevronUp, FiChevronDown, FiX, FiUserPlus, FiTrash2, FiCheckCircle } from 'react-icons/fi';
+import '../styles/salePeriodColors.css';
 import './LeadsListPage.css';
 
 export default function LeadsListPage() {
@@ -13,6 +16,9 @@ export default function LeadsListPage() {
   const navigate = useNavigate();
   const initialFilter = searchParams.get('filter') || '';
   const { leads, loading, statusFilter, setStatusFilter, presetFilter, clearPresetFilter, search, setSearch, sortField, sortAsc, toggleSort, deleteLead, markDepositTaken } = useLeads(initialFilter);
+  // Sale periods come newest-first — used to colour-code each lead by how many
+  // sale periods ago they came in.
+  const { periods: salePeriods } = useSalePeriods();
   const [showAddClient, setShowAddClient] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState('');
@@ -56,8 +62,11 @@ export default function LeadsListPage() {
     return sortAsc ? <FiChevronUp className="leads-sort-icon" /> : <FiChevronDown className="leads-sort-icon" />;
   };
 
-  const renderRow = (lead, showExpected) => (
-    <tr key={lead.id}>
+  const renderRow = (lead, showExpected) => {
+    const assigned = assignLeadPeriod(lead.created_at, salePeriods);
+    const cat = assigned ? periodCategory(assigned.periodsAgo) : null;
+    return (
+    <tr key={lead.id} className={cat ? `sp-row--${cat}` : ''}>
       <td>
         <Link to={`/admin/leads/${lead.id}`} className={`admin-table__link${lead.pending_action ? ' admin-table__link--action' : ''}`}>
           {lead.full_name}
@@ -68,6 +77,13 @@ export default function LeadsListPage() {
       <td><StatusBadge status={lead.status} /></td>
       <td className="admin-table__source">{sourceLabel(lead.source)}</td>
       <td className="admin-table__date">{formatDate(lead.created_at)}</td>
+      <td className="leads-list__period">
+        {assigned ? (
+          <span className={`sp-pill--${cat}`} title={categoryLabel(cat)}>{assigned.period.name}</span>
+        ) : (
+          <span className="leads-list__period-none">—</span>
+        )}
+      </td>
       {showExpected && (
         <td>
           <div className="leads-list__expected-wrap">
@@ -95,7 +111,8 @@ export default function LeadsListPage() {
         </button>
       </td>
     </tr>
-  );
+    );
+  };
 
   const renderTable = (rows, showExpected = false) => (
     <div className="admin-table-wrap">
@@ -112,6 +129,7 @@ export default function LeadsListPage() {
             <th className="admin-table__sortable" onClick={() => toggleSort('created_at')}>
               Date <SortIcon field="created_at" />
             </th>
+            <th>Sale Period</th>
             {showExpected && <th>Expected Deposit</th>}
             <th></th>
           </tr>
@@ -165,6 +183,16 @@ export default function LeadsListPage() {
           <FiUserPlus /> Add Client
         </button>
       </div>
+
+      {salePeriods.length > 0 && (
+        <div className="leads-list__legend">
+          <span className="leads-list__legend-label">Sale period:</span>
+          <span className="leads-list__legend-item"><span className="sp-dot sp-dot--current" /> This sale</span>
+          <span className="leads-list__legend-item"><span className="sp-dot sp-dot--last" /> Last sale</span>
+          <span className="leads-list__legend-item"><span className="sp-dot sp-dot--mid" /> 2 sales ago</span>
+          <span className="leads-list__legend-item"><span className="sp-dot sp-dot--old" /> 3+ sales ago</span>
+        </div>
+      )}
 
       {loading ? (
         <div className="admin-page-loading">Loading leads...</div>

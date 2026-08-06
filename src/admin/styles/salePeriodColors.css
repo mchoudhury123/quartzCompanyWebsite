@@ -1,0 +1,43 @@
+/* Sale-period colour categories — shared by the Sale Periods admin page and
+   the Clients list so the colours stay in sync.
+     current → green (rich)   this sale
+     last    → green (light)  last sale
+     mid     → orange         two periods ago
+     old     → red            three or more periods ago */
+
+.sp-pill--current,
+.sp-pill--last,
+.sp-pill--mid,
+.sp-pill--old {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.sp-pill--current { background: #1f7a44; color: #ffffff; }
+.sp-pill--last    { background: #9ad2aa; color: #16512e; }
+.sp-pill--mid     { background: #e08a3c; color: #ffffff; }
+.sp-pill--old     { background: #cf4326; color: #ffffff; }
+
+.sp-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.sp-dot--current { background: #1f7a44; }
+.sp-dot--last    { background: #9ad2aa; }
+.sp-dot--mid     { background: #e08a3c; }
+.sp-dot--old     { background: #cf4326; }
+
+.sp-border--current { border-left: 4px solid #1f7a44; }
+.sp-border--last    { border-left: 4px solid #9ad2aa; }
+.sp-border--mid     { border-left: 4px solid #e08a3c; }
+.sp-border--old     { border-left: 4px solid #cf4326; }

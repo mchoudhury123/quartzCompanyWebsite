@@ -1,0 +1,226 @@
+.sale-periods {
+  padding: 1.5rem 2rem 3rem;
+  max-width: 900px;
+}
+
+.sale-periods__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.sale-periods__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--admin-text, #33302b);
+  margin: 0 0 0.35rem;
+}
+
+.sale-periods__sub {
+  font-size: 0.9rem;
+  color: var(--admin-text-light, #837b70);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 620px;
+}
+
+.sale-periods__add-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--admin-accent, #a9885c);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.sale-periods__add-btn:hover { opacity: 0.9; }
+
+.sale-periods__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--admin-text-light, #837b70);
+}
+
+.sale-periods__legend-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sale-periods__form {
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.sale-periods__form-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.sale-periods__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sale-periods__field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-text, #33302b);
+}
+
+.sale-periods__opt {
+  font-weight: 400;
+  color: var(--admin-text-light, #837b70);
+}
+
+.sale-periods__field input {
+  padding: 0.55rem 0.7rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 7px;
+  background: var(--admin-bg, #fbfaf7);
+  color: var(--admin-text, #33302b);
+}
+
+.sale-periods__field input:focus {
+  outline: none;
+  border-color: var(--admin-accent, #a9885c);
+}
+
+.sale-periods__error {
+  margin: 0.85rem 0 0;
+  font-size: 0.82rem;
+  color: #b23320;
+}
+
+.sale-periods__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.sale-periods__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: 7px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.sale-periods__btn--ghost {
+  background: transparent;
+  border-color: var(--admin-border, #e6ddcf);
+  color: var(--admin-text, #33302b);
+}
+
+.sale-periods__btn--primary {
+  background: var(--admin-accent, #a9885c);
+  color: #fff;
+}
+
+.sale-periods__btn:disabled { opacity: 0.6; cursor: default; }
+
+.sale-periods__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.sale-periods__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 10px;
+}
+
+.sale-periods__card-main {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.sale-periods__name {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--admin-text, #33302b);
+}
+
+.sale-periods__dates {
+  font-size: 0.84rem;
+  color: var(--admin-text-light, #837b70);
+}
+
+.sale-periods__card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.sale-periods__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  background: var(--admin-bg, #fbfaf7);
+  border-radius: 7px;
+  color: var(--admin-text-light, #837b70);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sale-periods__icon-btn:hover { background: #efe9dd; color: var(--admin-text, #33302b); }
+.sale-periods__icon-btn--danger:hover { background: #fbe9e6; color: #b23320; }
+
+.sale-periods__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--admin-text-light, #837b70);
+}
+
+.sale-periods__empty svg {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.sale-periods__empty p {
+  margin: 0 auto;
+  max-width: 420px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .sale-periods { padding: 1.25rem 1rem 2.5rem; }
+  .sale-periods__head { flex-direction: column; }
+  .sale-periods__form-grid { grid-template-columns: 1fr; }
+}

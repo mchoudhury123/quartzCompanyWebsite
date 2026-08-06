@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import TrustStrip from '../components/TrustStrip';
+import { useSale } from '../components/SaleProvider';
 import products from '../data/products.json';
 import testimonials from '../data/testimonials.json';
 import './HomePage.css';
@@ -35,6 +36,7 @@ function AnimatedSection({ children, className = '', id }) {
 
 export default function HomePage() {
   usePageMeta('Affordable Quartz Worktops UK | The Quartz Company', 'Affordable engineered & printed quartz kitchen worktops, handcrafted in Britain. Free samples, fixed-price quotes, 25-year warranty. UK delivery and fitting.');
+  const { endLabel, name: saleName } = useSale();
   /* ── Trending products (fixed, ordered selection) ── */
   const TRENDING_SLUGS = ['taj-mahal', 'calacatta-verona', 'calacatta-classico', 'calacatta-nuvo'];
   const featuredProducts = TRENDING_SLUGS
@@ -156,7 +158,7 @@ export default function HomePage() {
       <AnimatedSection className="section hp-sale" id="summer-sale">
         <div className="container">
           <div className="hp-sale__inner">
-            <span className="hp-sale__eyebrow">Summer Sale &middot; Limited Time</span>
+            <span className="hp-sale__eyebrow">{saleName} &middot; Limited Time</span>
             <h2 className="hp-sale__headline">
               <span className="hp-sale__percent">40% OFF</span>
               <span className="hp-sale__all">ALL WORKTOPS</span>
@@ -170,7 +172,7 @@ export default function HomePage() {
                 Claim Your 40% Off
               </Link>
               <span className="hp-sale__deadline">
-                Hurry &mdash; sale ends 12th August
+                Hurry &mdash; sale ends {endLabel}
               </span>
             </div>
           </div>

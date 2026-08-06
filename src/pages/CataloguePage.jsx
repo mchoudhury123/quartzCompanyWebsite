@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import usePageMeta from '../hooks/usePageMeta';
 import ProductCard from '../components/ProductCard';
 import TrustStrip from '../components/TrustStrip';
+import { useSale } from '../components/SaleProvider';
 import products from '../data/products.json';
 import categories from '../data/categories.json';
 import { trackSearch } from '../lib/metaTracking';
@@ -105,6 +106,7 @@ const CATALOGUE_REVIEWS = [
 
 function CataloguePage() {
   usePageMeta('Quartz Worktop Colours | Browse the Full Range | The Quartz Company', 'Browse our full collection of premium engineered and printed quartz worktop colours, from bright Calacatta whites to bold Nero Sparkle. Free samples, fixed-price quotes and a 25-year warranty.');
+  const { endLabel, name: saleName } = useSale();
   const { category } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -714,10 +716,9 @@ function CataloguePage() {
       <div className="container">
         {/* Summer sale banner */}
         <div className="cat-sale-banner" role="note">
-          <span className="cat-sale-banner__tag">Summer Sale</span>
+          <span className="cat-sale-banner__tag">{saleName}</span>
           <p className="cat-sale-banner__text">
-            <strong>40% off</strong> every worktop this summer &mdash; ends 12th
-            August
+            <strong>40% off</strong> every worktop this summer &mdash; ends {endLabel}
           </p>
         </div>
 

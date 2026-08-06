@@ -254,3 +254,38 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* ── Sale-period colour coding ── */
+.leads-list__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: var(--admin-text-light, #837b70);
+}
+
+.leads-list__legend-label {
+  font-weight: 600;
+  color: var(--admin-text, #33302b);
+}
+
+.leads-list__legend-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.leads-list__period-none {
+  color: var(--admin-text-light, #a79f93);
+}
+
+.admin-table tr.sp-row--current { background: #eef7f1; }
+.admin-table tr.sp-row--last    { background: #f4faf6; }
+.admin-table tr.sp-row--mid     { background: #fdf3ea; }
+.admin-table tr.sp-row--old     { background: #fcebe7; }
+
+.admin-table tr.sp-row--current td:first-child { border-left: 4px solid #1f7a44; }
+.admin-table tr.sp-row--last    td:first-child { border-left: 4px solid #9ad2aa; }
+.admin-table tr.sp-row--mid     td:first-child { border-left: 4px solid #e08a3c; }
+.admin-table tr.sp-row--old     td:first-child { border-left: 4px solid #cf4326; }

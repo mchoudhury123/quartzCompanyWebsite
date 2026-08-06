@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX, FiChevronDown, FiPhone } from "react-icons/fi";
+import { useSale } from "./SaleProvider";
 import "./Header.css";
 
 const worktopsMenu = [
@@ -22,6 +23,7 @@ const navLinksRight = [
 ];
 
 function Header() {
+  const { endLabel, name: saleName } = useSale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
@@ -149,22 +151,22 @@ function Header() {
       <div className="ticker-bar" role="banner">
         <div className="ticker-bar__track">
           <span className="ticker-bar__content">
-            <span className="ticker-bar__highlight">Summer Sale</span>
-            {" — Up to 40% off all worktops. Hurry, sale ends 12th August. "}
+            <span className="ticker-bar__highlight">{saleName}</span>
+            {` — Up to 40% off all worktops. Hurry, sale ends ${endLabel}. `}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Summer Sale</span>
-            {" — Up to 40% off all worktops. Hurry, sale ends 12th August. "}
+            <span className="ticker-bar__highlight">{saleName}</span>
+            {` — Up to 40% off all worktops. Hurry, sale ends ${endLabel}. `}
             <Link to="/sale" className="ticker-bar__link">Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>
           <span className="ticker-bar__content" aria-hidden="true">
-            <span className="ticker-bar__highlight">Summer Sale</span>
-            {" — Up to 40% off all worktops. Hurry, sale ends 12th August. "}
+            <span className="ticker-bar__highlight">{saleName}</span>
+            {` — Up to 40% off all worktops. Hurry, sale ends ${endLabel}. `}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
-            <span className="ticker-bar__highlight">Summer Sale</span>
-            {" — Up to 40% off all worktops. Hurry, sale ends 12th August. "}
+            <span className="ticker-bar__highlight">{saleName}</span>
+            {` — Up to 40% off all worktops. Hurry, sale ends ${endLabel}. `}
             <Link to="/sale" className="ticker-bar__link" tabIndex={-1}>Shop Now</Link>
             <span className="ticker-bar__separator">|</span>
           </span>

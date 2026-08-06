@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import usePageMeta from '../hooks/usePageMeta';
 import products from '../data/products.json';
 import ColourCard from '../components/ColourCard';
+import { useSale } from '../components/SaleProvider';
 import './SalePage.css';
 
 const offers = [
@@ -11,7 +12,7 @@ const offers = [
     badge: '40% Off',
     title: '40% Off All Worktops',
     description:
-      'As part of our summer sale, every worktop in our collection is 40% off. From classic whites to bold statement colours, find your perfect surface at an exceptional price — engineered for durability, designed for beauty.',
+      'As part of our sale, every worktop in our collection is 40% off. From classic whites to bold statement colours, find your perfect surface at an exceptional price — engineered for durability, designed for beauty.',
     link: '/colours',
     linkText: 'Shop All Worktops',
   },
@@ -19,6 +20,7 @@ const offers = [
 
 export default function SalePage() {
   usePageMeta('Summer Sale — 40% Off All Quartz Worktops | The Quartz Company', 'Our summer sale is on — 40% off every engineered and printed quartz kitchen worktop. Premium surfaces at exceptional prices, with free samples and fixed-price quotes.');
+  const { endLabel, name: saleName } = useSale();
   const saleProducts = products.filter((p) => p.onSale);
 
   return (
@@ -30,16 +32,16 @@ export default function SalePage() {
             <div className="sale-hero__left">
               <span className="sale-hero__badge">Limited Time</span>
               <h1 className="sale-hero__title">
-                Summer Sale &mdash; <span className="sale-hero__highlight">40% Off</span> All Worktops
+                {saleName} &mdash; <span className="sale-hero__highlight">40% Off</span> All Worktops
               </h1>
               <p className="sale-hero__subtitle">
-                As part of our summer sale, every worktop in our collection is 40% off &mdash; transform your kitchen for less. Hurry, the sale ends 12th August.
+                As part of our sale, every worktop in our collection is 40% off &mdash; transform your kitchen for less. Hurry, the sale ends {endLabel}.
               </p>
             </div>
             <div className="sale-hero__right">
               <div className="sale-hero__countdown">
                 <span className="sale-hero__countdown-label">Sale Ends</span>
-                <span className="sale-hero__countdown-date">12th August</span>
+                <span className="sale-hero__countdown-date">{endLabel}</span>
                 <span className="sale-hero__countdown-note">Hurry &mdash; don&rsquo;t miss out</span>
               </div>
             </div>
@@ -52,7 +54,7 @@ export default function SalePage() {
         <div className="container">
           <h2 className="section-title">Current Offers</h2>
           <p className="section-subtitle">
-            Celebrating our summer sale
+            Celebrating our sale
           </p>
           <div className="sale-offers__list">
             {offers.map((offer) => (
@@ -97,7 +99,7 @@ export default function SalePage() {
         <div className="container sale-cta__inner">
           <h2>Don&rsquo;t Miss Out</h2>
           <p>
-            Our summer sale prices are available for a limited time only. Get a
+            Our sale prices are available for a limited time only. Get a
             personalised quote today and lock in your 40% saving.
           </p>
           <Link to="/quote" className="btn btn--gold btn--lg">
@@ -112,7 +114,7 @@ export default function SalePage() {
           <h4 className="sale-terms__heading">Terms &amp; Conditions</h4>
           <ul className="sale-terms__list">
             <li>
-              Sale prices apply to new orders placed during the summer sale
+              Sale prices apply to new orders placed during the sale
               promotional period.
             </li>
             <li>
