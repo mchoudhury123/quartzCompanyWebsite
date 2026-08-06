@@ -47,14 +47,6 @@ export default function SaleCountdownPopup() {
     return () => clearInterval(id);
   }, [visible, endDate]);
 
-  // Close on Escape.
-  useEffect(() => {
-    if (!visible) return undefined;
-    const onKey = (e) => { if (e.key === 'Escape') close(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [visible, close]);
-
   if (!visible || !remaining) return null;
 
   const units = [
@@ -70,9 +62,8 @@ export default function SaleCountdownPopup() {
       role="dialog"
       aria-modal="true"
       aria-label="Summer sale offer"
-      onClick={close}
     >
-      <div className="sale-popup__card" onClick={(e) => e.stopPropagation()}>
+      <div className="sale-popup__card">
         <button className="sale-popup__close" onClick={close} aria-label="Close">
           <FiX />
         </button>
