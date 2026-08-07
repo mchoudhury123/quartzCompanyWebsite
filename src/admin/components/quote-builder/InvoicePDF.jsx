@@ -1,8 +1,9 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Fragment, forwardRef, useImperativeHandle, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { BANK_DETAILS } from '../../../utils/bankDetails';
 import { GOOGLE_REVIEW_URL } from '../../../utils/reviewRequestEmail';
+import { itemTitle, itemDims, groupItems } from '../../../utils/quoteItems';
 import './InvoicePDF.css';
 
 // Static company letterhead (matches the quote documents).
@@ -39,9 +40,7 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
   const fmt = (n) => `£${Number(n || 0).toFixed(2)}`;
 
   const items = data?.allItems || [];
-  const materials = items.filter((i) => i.category === 'stones');
-  const processes = items.filter((i) => i.category === 'processes');
-  const products = items.filter((i) => i.category !== 'stones' && i.category !== 'processes');
+  const groups = groupItems(items);
 
   // Prefer the totals stored on the quote so the invoice can never drift from
   // what the customer was quoted; fall back to recomputing from the line items.
@@ -87,27 +86,12 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
     data?.customerPostcode,
   ].filter((l) => l && String(l).trim());
 
-  useImperativeHandle(ref, () => ({
-    // How the document will land on A4, so the builder can show the fit before
-    // anyone downloads. Works while the element is parked offscreen — it's
-    // still laid out, just invisible.
-    measure: () => {
+  // Render the document to a jsPDF instance. Shared by the download and the
+  // email attachment, so the customer's copy is byte-for-byte what the admin
+  // sees when they hit Download.
+  const buildPdf = async () => {
       const el = containerRef.current;
       if (!el) return null;
-      const heightPx = el.offsetHeight;
-      const onePagePx = (el.offsetWidth || RENDER_WIDTH) * A4_RATIO;
-      if (!heightPx || !onePagePx) return null;
-      const scale = heightPx > onePagePx ? onePagePx / heightPx : 1;
-      return {
-        scale,
-        singlePage: scale >= MIN_FIT_SCALE,
-        pages: Math.max(1, Math.ceil(heightPx / onePagePx - 0.001)),
-      };
-    },
-
-    generate: async (filenameBase) => {
-      const el = containerRef.current;
-      if (!el) return;
 
       el.style.position = 'fixed';
       el.style.left = '0';
@@ -182,7 +166,7 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
         });
         pdf.setPage(1);
 
-        pdf.save(`${filenameBase || invoiceNumber || 'invoice'}.pdf`);
+        return pdf;
       } finally {
         el.style.position = 'absolute';
         el.style.left = '-9999px';
@@ -190,17 +174,53 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
         el.style.pointerEvents = 'none';
         el.style.zIndex = '-1';
       }
+  };
+
+  const fileName = (base) => `${base || invoiceNumber || 'invoice'}.pdf`;
+
+  useImperativeHandle(ref, () => ({
+    // How the document will land on A4, so the builder can show the fit before
+    // anyone downloads. Works while the element is parked offscreen — it's
+    // still laid out, just invisible.
+    measure: () => {
+      const el = containerRef.current;
+      if (!el) return null;
+      const heightPx = el.offsetHeight;
+      const onePagePx = (el.offsetWidth || RENDER_WIDTH) * A4_RATIO;
+      if (!heightPx || !onePagePx) return null;
+      const scale = heightPx > onePagePx ? onePagePx / heightPx : 1;
+      return {
+        scale,
+        singlePage: scale >= MIN_FIT_SCALE,
+        pages: Math.max(1, Math.ceil(heightPx / onePagePx - 0.001)),
+      };
+    },
+
+    generate: async (filenameBase) => {
+      const pdf = await buildPdf();
+      if (pdf) pdf.save(fileName(filenameBase));
+    },
+
+    // Base64 PDF (no data: prefix) for emailing as an attachment.
+    getBase64: async (filenameBase) => {
+      const pdf = await buildPdf();
+      if (!pdf) return null;
+      const uri = pdf.output('datauristring');
+      const marker = 'base64,';
+      const at = uri.indexOf(marker);
+      if (at === -1) return null;
+      return { base64: uri.slice(at + marker.length), fileName: fileName(filenameBase) };
     },
   }));
 
-  const renderItemRows = (itemList) =>
+  const renderItemRows = (itemList, keyPrefix) =>
     itemList.map((item, i) => {
-      const dims = item.x_mm && item.y_mm ? `${item.x_mm}×${item.y_mm}mm` : '';
+      const dims = itemDims(item);
       const qty = item.quantity != null ? item.quantity : 1;
       return (
-        <tr key={i}>
+        <tr key={`${keyPrefix}-${i}`}>
           <td className="inv__cell">
-            <div className="inv__item-name">{item.product_name}</div>
+            <div className="inv__item-name">{itemTitle(item)}</div>
             {dims && <div className="inv__item-sub">{dims}</div>}
           </td>
           <td className="inv__cell">{poNumber || '—'}</td>
@@ -277,24 +297,14 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
           </tr>
         </thead>
         <tbody>
-          {materials.length > 0 && (
-            <>
-              <tr><td colSpan={4} className="inv__section">Materials</td></tr>
-              {renderItemRows(materials)}
-            </>
-          )}
-          {processes.length > 0 && (
-            <>
-              <tr><td colSpan={4} className="inv__section">Processes</td></tr>
-              {renderItemRows(processes)}
-            </>
-          )}
-          {products.length > 0 && (
-            <>
-              <tr><td colSpan={4} className="inv__section">Products</td></tr>
-              {renderItemRows(products)}
-            </>
-          )}
+          {groups.map((group, gi) => (
+            <Fragment key={group.label || `group-${gi}`}>
+              {group.label && (
+                <tr><td colSpan={4} className="inv__section">{group.label}</td></tr>
+              )}
+              {renderItemRows(group.items, gi)}
+            </Fragment>
+          ))}
         </tbody>
       </table>
 

@@ -151,6 +151,18 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
 
     setSendState('sending');
     setSendError('');
+
+    // Build the same PDF the Download button produces and send it along as an
+    // attachment. If it can't be built, the email still goes — the HTML body
+    // is a complete invoice on its own.
+    let pdf = null;
+    try {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      if (invoiceRef.current?.getBase64) pdf = await invoiceRef.current.getBase64(invoiceNumber);
+    } catch (_) {
+      pdf = null;
+    }
+
     const firstName = (lead.full_name || '').split(' ')[0] || 'there';
     const { subject, html } = buildInvoiceEmail({
       firstName,
@@ -162,18 +174,34 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
       vat,
       total,
       depositPaidAmount,
+      depositPaidDate: prettyDate(depositDate),
       amountDue,
+      invoiceDate: prettyDate(invoiceDate),
       dueDate: prettyDate(dueDate),
+      poNumber,
+      customerName: lead.full_name || '',
+      customerCompany: lead.company || '',
+      customerAddress: lead.address || '',
+      customerCity: lead.city || '',
+      customerPostcode: lead.postcode || '',
       showReview,
       reviewMessage,
+      hasAttachment: Boolean(pdf?.base64),
+      attachmentName: pdf?.fileName || '',
       logoUrl: `${window.location.origin}/logo.png`,
     });
 
     try {
-      const res = await fetch('/api/zoho-send-email', {
+      const res = await fetch('/api/zoho-send-invoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.email, subject, body: subject, html, transactional: true }),
+        body: JSON.stringify({
+          to: lead.email,
+          subject,
+          html,
+          pdfBase64: pdf?.base64 || '',
+          fileName: pdf?.fileName || '',
+        }),
       });
       // The /api routes are Vercel serverless functions — they don't exist
       // under `vite dev`, which is by far the most common reason this fails.
@@ -198,6 +226,9 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
         return;
       }
       setSendState('sent');
+      // Sent, but Zoho wouldn't take the PDF — say so rather than let the
+      // admin assume the customer got an attachment.
+      if (data.attachWarning) setSendError(data.attachWarning);
 
       // Log it against the lead so the Emails tab shows the invoice was sent.
       try {
@@ -205,7 +236,9 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
           lead_id: leadId,
           direction: 'outbound',
           subject,
-          body: `Invoice ${invoiceNumber} — ${money(amountDue)} due`,
+          body: `Invoice ${invoiceNumber} — ${money(amountDue)} due${
+            data.attached ? ` (PDF attached: ${pdf?.fileName})` : ''
+          }`,
           to_address: lead.email,
           from_address: 'sales@thequartzcompany.co.uk',
           zoho_message_id: data.messageId || null,
@@ -459,8 +492,14 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
               <span className="inv-modal__summary-amount">{money(amountDue)}</span>
             </div>
 
-            {sendState === 'error' && sendError && (
-              <p className="inv-modal__warn inv-modal__warn--send">{sendError}</p>
+            {sendError && (
+              <p
+                className={`inv-modal__warn inv-modal__warn--send${
+                  sendState === 'sent' ? ' inv-modal__warn--notice' : ''
+                }`}
+              >
+                {sendError}
+              </p>
             )}
 
             <div className="modal-actions">

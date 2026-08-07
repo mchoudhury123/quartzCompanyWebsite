@@ -171,6 +171,14 @@
   margin: 1rem 0 0;
 }
 
+/* Sent, but with a caveat (e.g. the PDF wouldn't attach) — a notice, not a
+   failure. */
+.inv-modal__warn--notice {
+  color: #8a6c3e;
+  background: #fdf6e8;
+  border-color: #e7d6b0;
+}
+
 .inv-modal__summary {
   display: flex;
   align-items: baseline;
