@@ -1,5 +1,15 @@
 // Vercel Serverless Function — sends email via Zoho Mail
 // Env vars needed: ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN, ZOHO_ACCOUNT_ID, SITE_URL
+//
+// Optionally attaches a PDF: pass `pdfBase64` + `fileName` and it gets uploaded
+// to Zoho and referenced on the message. This lives here rather than in its own
+// endpoint because the Hobby plan caps a deployment at 12 Serverless Functions
+// and api/ is already at that limit — a 13th file fails the build.
+
+// Vercel's Node runtime caps the request body at 4.5MB and that isn't
+// configurable; base64 inflates bytes by ~33%. Refuse a PDF that wouldn't
+// survive the trip and send without it rather than losing the whole email.
+const MAX_PDF_BASE64_BYTES = 3_500_000;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,7 +26,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ error: 'Zoho credentials not configured' });
   }
 
-  const { to, subject, body, html, from, transactional } = req.body || {};
+  const { to, subject, body, html, from, transactional, pdfBase64, fileName } = req.body || {};
 
   if (!to || !subject || (!body && !html)) {
     return res.status(400).json({ error: 'Missing to, subject, or body/html' });
@@ -63,6 +73,55 @@ export default async function handler(req, res) {
       unsubscribeEmail: transactional ? '' : to,
     });
 
+    // Upload the attachment, if there is one. A failed upload must not lose the
+    // email — fall back to sending without it and tell the caller.
+    let attachments = [];
+    let attachWarning = '';
+
+    if (pdfBase64) {
+      if (pdfBase64.length > MAX_PDF_BASE64_BYTES) {
+        attachWarning = 'The PDF was too large to attach; the email was sent without it.';
+      } else {
+        try {
+          const name = fileName || 'attachment.pdf';
+          const uploadRes = await fetch(
+            `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages/attachments?fileName=${encodeURIComponent(
+              name
+            )}`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Zoho-oauthtoken ${tokenData.access_token}`,
+                'Content-Type': 'application/octet-stream',
+              },
+              body: Buffer.from(pdfBase64, 'base64'),
+            }
+          );
+          const uploadData = await uploadRes.json();
+
+          // The raw-upload form returns a single object; the multipart form
+          // returns an array. Accept either.
+          const entry = Array.isArray(uploadData?.data) ? uploadData.data[0] : uploadData?.data;
+
+          if (entry?.storeName && entry?.attachmentPath) {
+            attachments = [
+              {
+                storeName: entry.storeName,
+                attachmentPath: entry.attachmentPath,
+                attachmentName: entry.attachmentName || name,
+              },
+            ];
+          } else {
+            attachWarning = `Couldn't attach the PDF (${
+              uploadData?.status?.description || uploadData?.message || 'upload rejected'
+            }); the email was sent without it.`;
+          }
+        } catch (err) {
+          attachWarning = `Couldn't attach the PDF (${err.message}); the email was sent without it.`;
+        }
+      }
+    }
+
     const sendRes = await fetch(
       `https://mail.zoho.eu/api/accounts/${ZOHO_ACCOUNT_ID}/messages`,
       {
@@ -77,6 +136,7 @@ export default async function handler(req, res) {
           subject,
           content: htmlBody,
           mailFormat: 'html',
+          ...(attachments.length ? { attachments } : {}),
         }),
       }
     );
@@ -94,7 +154,12 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({ success: true, messageId: sendData.data?.messageId });
+    return res.status(200).json({
+      success: true,
+      messageId: sendData.data?.messageId,
+      attached: attachments.length > 0,
+      attachWarning,
+    });
   } catch (err) {
     return res.status(200).json({ error: err.message });
   }

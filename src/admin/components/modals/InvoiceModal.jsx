@@ -192,13 +192,15 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
     });
 
     try {
-      const res = await fetch('/api/zoho-send-invoice', {
+      const res = await fetch('/api/zoho-send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           to: lead.email,
           subject,
+          body: subject,
           html,
+          transactional: true,
           pdfBase64: pdf?.base64 || '',
           fileName: pdf?.fileName || '',
         }),
