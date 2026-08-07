@@ -29,6 +29,11 @@ const money = (n) => `£${Number(n || 0).toFixed(2)}`;
 // balance on the document.
 const pence = (n) => Math.round((Number(n) || 0) * 100) / 100;
 
+// Vercel rejects a request body over 4.5MB at the proxy, before the function
+// runs — so this has to be checked HERE, in the browser. A server-side check
+// never gets the chance to fire, it just comes back as a bare 413.
+const MAX_ATTACH_BASE64 = 3_000_000;
+
 /**
  * Invoice builder — opened from the Quotes tab ("Generate Invoice").
  *
@@ -156,9 +161,16 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
     // attachment. If it can't be built, the email still goes — the HTML body
     // is a complete invoice on its own.
     let pdf = null;
+    let oversized = '';
     try {
       await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       if (invoiceRef.current?.getBase64) pdf = await invoiceRef.current.getBase64(invoiceNumber);
+      if (pdf && pdf.base64.length > MAX_ATTACH_BASE64) {
+        // Report the actual size — if this ever fires we want to know by how
+        // much, not just that it happened.
+        oversized = `${((pdf.base64.length * 3) / 4 / 1024 / 1024).toFixed(1)}MB`;
+        pdf = null;
+      }
     } catch (_) {
       pdf = null;
     }
@@ -222,15 +234,29 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
         data = null;
       }
 
+      if (res.status === 413) {
+        setSendError(
+          'The invoice PDF was too large to send. Untick the Google review button to shorten the document, or download the PDF and attach it by hand.'
+        );
+        setSendState('error');
+        return;
+      }
+
       if (!data || data.error) {
         setSendError(data?.error || `The email service returned an unexpected response (HTTP ${res.status}).`);
         setSendState('error');
         return;
       }
       setSendState('sent');
-      // Sent, but Zoho wouldn't take the PDF — say so rather than let the
-      // admin assume the customer got an attachment.
-      if (data.attachWarning) setSendError(data.attachWarning);
+      // Sent, but without the PDF — say so rather than let the admin assume
+      // the customer got an attachment.
+      if (oversized) {
+        setSendError(
+          `The invoice was emailed, but the PDF (${oversized}) was too large to attach. The email itself is a full invoice, so nothing is missing — send them the downloaded PDF separately if they need it.`
+        );
+      } else if (data.attachWarning) {
+        setSendError(data.attachWarning);
+      }
 
       // Log it against the lead so the Emails tab shows the invoice was sent.
       try {

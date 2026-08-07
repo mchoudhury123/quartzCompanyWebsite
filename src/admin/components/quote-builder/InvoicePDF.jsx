@@ -86,10 +86,14 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
     data?.customerPostcode,
   ].filter((l) => l && String(l).trim());
 
-  // Render the document to a jsPDF instance. Shared by the download and the
-  // email attachment, so the customer's copy is byte-for-byte what the admin
-  // sees when they hit Download.
-  const buildPdf = async () => {
+  // Render the document to a jsPDF instance — same layout for the download and
+  // the email attachment.
+  //
+  // `format` trades file size against crispness. The download uses PNG
+  // (lossless); the emailed copy uses JPEG, because a PNG render of a full page
+  // runs to several MB and Vercel rejects a request body over 4.5MB outright,
+  // before any of our code gets to run.
+  const buildPdf = async ({ format = 'PNG', quality = 0.92 } = {}) => {
       const el = containerRef.current;
       if (!el) return null;
 
@@ -123,7 +127,10 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
           width: 794,
         });
 
-        const imgData = canvas.toDataURL('image/png');
+        const imgData =
+          format === 'JPEG'
+            ? canvas.toDataURL('image/jpeg', quality)
+            : canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
@@ -142,14 +149,14 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
         if (singlePage) {
           drawWidth = pdfWidth * fitScale;
           offsetX = (pdfWidth - drawWidth) / 2;
-          pdf.addImage(imgData, 'PNG', offsetX, 0, drawWidth, fullHeight * fitScale);
+          pdf.addImage(imgData, format, offsetX, 0, drawWidth, fullHeight * fitScale);
         } else {
           // Genuinely huge item list — slice it across pages instead of
           // shrinking it into illegibility.
           pageCount = Math.max(1, Math.ceil(fullHeight / pageHeight - 0.001));
           for (let page = 0; page < pageCount; page += 1) {
             if (page > 0) pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, -page * pageHeight, pdfWidth, fullHeight);
+            pdf.addImage(imgData, format, 0, -page * pageHeight, pdfWidth, fullHeight);
           }
         }
 
@@ -201,9 +208,11 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
       if (pdf) pdf.save(fileName(filenameBase));
     },
 
-    // Base64 PDF (no data: prefix) for emailing as an attachment.
+    // Base64 PDF (no data: prefix) for emailing as an attachment. JPEG-backed
+    // to keep it inside the request body limit — visually the same document,
+    // roughly an order of magnitude smaller than the PNG version.
     getBase64: async (filenameBase) => {
-      const pdf = await buildPdf();
+      const pdf = await buildPdf({ format: 'JPEG', quality: 0.92 });
       if (!pdf) return null;
       const uri = pdf.output('datauristring');
       const marker = 'base64,';
