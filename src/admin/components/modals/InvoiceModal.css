@@ -1,0 +1,254 @@
+/* Two-column builder: controls on the left, live document preview on the right. */
+.modal-shell.inv-modal-shell {
+  max-width: 1120px;
+  max-height: 92vh;
+}
+
+.inv-modal {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.inv-modal__controls {
+  flex: 0 0 370px;
+  min-width: 0;
+}
+
+.inv-modal__intro {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text-light, #777);
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+
+.inv-modal__intro strong {
+  color: var(--admin-text, #2b2b2b);
+}
+
+.inv-modal__modes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inv-modal__mode {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.6rem 0.5rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  border: 1.5px solid var(--admin-border, #e6ddcf);
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.inv-modal__mode:hover {
+  border-color: var(--admin-text-light, #999);
+}
+
+.inv-modal__mode--active {
+  border-color: var(--color-gold, #c5a47e);
+  background: #fefce8;
+}
+
+.inv-modal__mode-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-text, #2b2b2b);
+}
+
+.inv-modal__mode-hint {
+  font-size: 0.75rem;
+  color: var(--admin-text-light, #888);
+}
+
+/* Deposit-already-paid block */
+.inv-modal__deposit {
+  padding: 0.85rem 1rem 0.5rem;
+  margin-bottom: 1rem;
+  background: #f9fafb;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 6px;
+}
+
+.inv-modal__deposit .inv-modal__check {
+  margin: 0 0 0.75rem;
+}
+
+.inv-modal__deposit .inv-modal__hint {
+  margin-bottom: 0.5rem;
+}
+
+.inv-modal__money {
+  position: relative;
+}
+
+.inv-modal__money-sign {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  color: var(--admin-text-light, #888);
+  pointer-events: none;
+}
+
+.inv-modal__money .modal-field__input {
+  padding-left: 1.6rem;
+}
+
+.inv-modal__link-btn {
+  padding: 0;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-gold, #b08d57);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.inv-modal__row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.inv-modal__row .modal-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.inv-modal__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0.25rem 0 1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: var(--admin-text, #2b2b2b);
+  cursor: pointer;
+}
+
+.inv-modal__check input {
+  margin-top: 0.15rem;
+  accent-color: var(--color-gold, #c5a47e);
+}
+
+.inv-modal__check-note {
+  color: var(--admin-text-light, #999);
+  font-style: italic;
+}
+
+.inv-modal__hint {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--admin-text-light, #999);
+  word-break: break-word;
+}
+
+.inv-modal__warn {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #a0432f;
+  background: #fbf1ee;
+  border: 1px solid #e3c4bb;
+  border-radius: 5px;
+}
+
+.inv-modal__summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  margin-top: 0.5rem;
+  background: #f7f3ec;
+  border: 1px solid #e7ddcb;
+  border-left: 4px solid #b08d57;
+  border-radius: 4px;
+}
+
+.inv-modal__summary-label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a6c3e;
+}
+
+.inv-modal__summary-amount {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #b08d57;
+}
+
+.inv-modal .modal-actions__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Live document preview */
+.inv-modal__preview {
+  flex: 1;
+  min-width: 0;
+}
+
+.inv-modal__preview-label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--admin-text-light, #999);
+  margin-bottom: 0.5rem;
+}
+
+.inv-modal__preview-scroll {
+  max-height: 68vh;
+  overflow: auto;
+  padding: 14px;
+  background: #ece7de;
+  border: 1px solid var(--admin-border, #e6ddcf);
+  border-radius: 8px;
+}
+
+/* `zoom` (rather than `transform: scale`) so the shrunken page still takes up
+   its real layout box — no dead whitespace under the preview. */
+.inv-modal__preview-page {
+  zoom: 0.62;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+  width: 794px;
+}
+
+@media (max-width: 1080px) {
+  .inv-modal {
+    flex-direction: column;
+  }
+
+  .inv-modal__controls {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .inv-modal__preview {
+    width: 100%;
+  }
+
+  .inv-modal__preview-page {
+    zoom: 0.5;
+  }
+}

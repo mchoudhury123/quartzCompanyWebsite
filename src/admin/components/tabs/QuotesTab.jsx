@@ -9,7 +9,8 @@ import {
 } from '../../../utils/depositConfirmationEmail';
 import StatusBadge from '../StatusBadge';
 import ModalShell from '../modals/ModalShell';
-import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle, FiCopy, FiClock } from 'react-icons/fi';
+import InvoiceModal from '../modals/InvoiceModal';
+import { FiPlus, FiEdit2, FiEye, FiSend, FiCheckCircle, FiCopy, FiClock, FiFileText } from 'react-icons/fi';
 import './QuotesTab.css';
 
 const QUOTE_STATUS_MAP = {
@@ -29,6 +30,7 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
   const [pendingQuote, setPendingQuote] = useState(null); // quote being flagged as pending
   const [expectedDate, setExpectedDate] = useState('');
   const [savingPending, setSavingPending] = useState(false);
+  const [invoiceQuote, setInvoiceQuote] = useState(null); // quote being invoiced
 
   // Copy a quote into a new draft (same sizes), then open it for editing so the
   // admin can change the material/price.
@@ -237,6 +239,14 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
                     <button className="quotes-tab__action quotes-tab__action--reject" onClick={() => updateQuoteStatus(q.id, 'rejected')}>Reject</button>
                   </>
                 )}
+                {q.status !== 'draft' && q.status !== 'rejected' && (
+                  <button
+                    className="quotes-tab__action quotes-tab__action--invoice"
+                    onClick={() => setInvoiceQuote(q)}
+                  >
+                    <FiFileText /> Generate Invoice
+                  </button>
+                )}
                 {q.status !== 'draft' && q.status !== 'rejected' && !q.deposit_paid && (
                   <>
                     <button
@@ -314,6 +324,14 @@ export default function QuotesTab({ leadId, onCreateQuote }) {
             </button>
           </div>
         </ModalShell>
+      )}
+
+      {invoiceQuote && (
+        <InvoiceModal
+          quote={invoiceQuote}
+          leadId={leadId}
+          onClose={() => setInvoiceQuote(null)}
+        />
       )}
     </div>
   );

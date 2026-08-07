@@ -196,6 +196,7 @@
 
 .quotes-tab__card-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -268,4 +269,17 @@
 .quotes-tab__action--copy:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.quotes-tab__action--invoice {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #8a6c3e;
+  border-color: #b08d57;
+  background: #fdfaf4;
+}
+
+.quotes-tab__action--invoice:hover {
+  background: #f7f3ec;
 }

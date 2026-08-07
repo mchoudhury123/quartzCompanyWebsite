@@ -2,6 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { BANK_DETAILS } from '../../../utils/bankDetails';
+import { GOOGLE_REVIEW_URL } from '../../../utils/reviewRequestEmail';
 import './InvoicePDF.css';
 
 // Static company letterhead (matches the quote documents).
@@ -14,12 +15,17 @@ const SUPPLIER = {
 };
 
 // Derive a distinct invoice number from the quote number (QC-… -> INV-…).
-function toInvoiceNumber(quoteNumber) {
+// A balance invoice gets a "-B" suffix so the deposit invoice and the final
+// invoice for the same order never share a number.
+export function toInvoiceNumber(quoteNumber, mode) {
   if (!quoteNumber || quoteNumber === 'Draft') return '';
-  return quoteNumber.replace(/^QC[-_]?/i, 'INV-');
+  const base = quoteNumber.replace(/^QC[-_]?/i, 'INV-');
+  return mode === 'balance' ? `${base}-B` : base;
 }
 
-const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
+// `preview` renders the document in-flow (for the on-screen preview in the
+// invoice builder) instead of parked offscreen ready for capture.
+const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref) {
   const containerRef = useRef(null);
 
   const fmt = (n) => `£${Number(n || 0).toFixed(2)}`;
@@ -29,16 +35,42 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
   const processes = items.filter((i) => i.category === 'processes');
   const products = items.filter((i) => i.category !== 'stones' && i.category !== 'processes');
 
-  const subtotal = items.reduce((s, i) => s + (i.line_total || 0), 0);
-  const vat = subtotal * 0.2;
-  const grandTotal = subtotal + vat;
-  // Invoices always require 50% of the full amount up front.
-  const duePct = 50;
-  const amountDue = grandTotal * (duePct / 100);
-  const balance = grandTotal - amountDue;
+  // Prefer the totals stored on the quote so the invoice can never drift from
+  // what the customer was quoted; fall back to recomputing from the line items.
+  const computedSubtotal = items.reduce((s, i) => s + (i.line_total || 0), 0);
+  const subtotal = data?.subtotal != null ? Number(data.subtotal) : computedSubtotal;
+  const vat = data?.vat != null ? Number(data.vat) : subtotal * 0.2;
+  const grandTotal = data?.total != null ? Number(data.total) : subtotal + vat;
 
-  const invoiceNumber = toInvoiceNumber(data?.quoteNumber);
+  // 'deposit'  — the up-front payment that starts the order
+  // 'balance'  — what's left after a deposit has already been received
+  // 'full'     — the whole amount in one go
+  const mode = data?.mode || 'deposit';
+  const depositPct = data?.depositPercent != null ? data.depositPercent : 50;
+  const depositReceived = Number(data?.depositPaidAmount || 0);
+
+  let amountDue;
+  let dueLabel;
+  if (mode === 'balance') {
+    amountDue = Math.max(0, grandTotal - depositReceived);
+    dueLabel = 'Balance Now Due';
+  } else if (mode === 'full') {
+    amountDue = grandTotal;
+    dueLabel = 'Amount Due';
+  } else {
+    amountDue =
+      data?.depositAmount != null ? Number(data.depositAmount) : grandTotal * (depositPct / 100);
+    dueLabel = 'Deposit Due Now';
+  }
+  const remainingAfter = Math.max(0, grandTotal - depositReceived - amountDue);
+
+  const invoiceNumber = data?.invoiceNumber || toInvoiceNumber(data?.quoteNumber, mode);
   const poNumber = data?.poNumber || '';
+  const showReview = data?.showReview !== false && mode !== 'deposit';
+  const reviewUrl = data?.reviewUrl || GOOGLE_REVIEW_URL;
+  const reviewMessage =
+    data?.reviewMessage ||
+    'Thank you for choosing The Quartz Company — it has been a pleasure creating your worktops.';
 
   const customerLines = [
     data?.customerCompany,
@@ -60,6 +92,21 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
       el.style.pointerEvents = 'auto';
 
       try {
+        // Measure any clickable regions (the Google review button) while the
+        // document is laid out — html2canvas flattens them to pixels, so the
+        // links have to be re-added to the PDF as annotations afterwards.
+        const containerRect = el.getBoundingClientRect();
+        const hotspots = Array.from(el.querySelectorAll('[data-pdf-link]')).map((node) => {
+          const r = node.getBoundingClientRect();
+          return {
+            url: node.getAttribute('data-pdf-link'),
+            x: r.left - containerRect.left,
+            y: r.top - containerRect.top,
+            w: r.width,
+            h: r.height,
+          };
+        });
+
         const canvas = await html2canvas(el, {
           scale: 2,
           useCORS: true,
@@ -70,9 +117,28 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        // Slice the render across as many A4 pages as it needs — invoices with
+        // a long item list used to be cropped at the bottom of page one.
+        const pageCount = Math.max(1, Math.ceil(pdfHeight / pageHeight - 0.001));
+        for (let page = 0; page < pageCount; page += 1) {
+          if (page > 0) pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, -page * pageHeight, pdfWidth, pdfHeight);
+        }
+
+        // px -> mm, using the same ratio the image was scaled by.
+        const ratio = pdfWidth / (containerRect.width || 794);
+        hotspots.forEach((h) => {
+          if (!h.url) return;
+          const yMm = h.y * ratio;
+          const page = Math.min(pageCount - 1, Math.floor(yMm / pageHeight));
+          pdf.setPage(page + 1);
+          pdf.link(h.x * ratio, yMm - page * pageHeight, h.w * ratio, h.h * ratio, { url: h.url });
+        });
+        pdf.setPage(1);
+
         pdf.save(`${filenameBase || invoiceNumber || 'invoice'}.pdf`);
       } finally {
         el.style.position = 'absolute';
@@ -105,7 +171,11 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
     <div
       ref={containerRef}
       className="inv"
-      style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none', zIndex: -1 }}
+      style={
+        preview
+          ? undefined
+          : { position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none', zIndex: -1 }
+      }
     >
       {/* Header band: logo + INVOICE wordmark */}
       <div className="inv__head">
@@ -118,6 +188,8 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
             <tbody>
               <tr><td>Invoice No.</td><td>{invoiceNumber || '—'}</td></tr>
               <tr><td>Invoice Date</td><td>{data?.date || ''}</td></tr>
+              {data?.dueDate && <tr><td>Payment Due</td><td>{data.dueDate}</td></tr>}
+              <tr><td>Order Ref.</td><td>{data?.quoteNumber && data.quoteNumber !== 'Draft' ? data.quoteNumber : '—'}</td></tr>
               <tr><td>PO Number</td><td>{poNumber || '—'}</td></tr>
             </tbody>
           </table>
@@ -194,17 +266,45 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
         <div className="inv__total-row inv__total-row--grand">
           <span>Total</span><span>{fmt(grandTotal)}</span>
         </div>
+        {depositReceived > 0 && (
+          <>
+            <div className="inv__total-row inv__total-row--paid">
+              <span>Deposit received{data?.depositPaidDate ? ` — ${data.depositPaidDate}` : ''}</span>
+              <span>−{fmt(depositReceived)}</span>
+            </div>
+            <div className="inv__total-row inv__total-row--outstanding">
+              <span>Outstanding</span><span>{fmt(Math.max(0, grandTotal - depositReceived))}</span>
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Amount due now (50%) */}
+      {/* Amount due on this invoice */}
       <div className="inv__due">
         <div className="inv__due-head">
-          <span className="inv__due-label">Amount Due Now ({duePct}%)</span>
+          <span className="inv__due-label">{dueLabel}</span>
           <span className="inv__due-amount">{fmt(amountDue)}</span>
         </div>
         <p className="inv__due-note">
-          A {duePct}% payment of {fmt(amountDue)} is due now to commence your order. The remaining
-          balance of {fmt(balance)} is due on completion. Please pay by bank transfer:
+          {mode === 'balance' ? (
+            <>
+              Thank you for your deposit of {fmt(depositReceived)}. The remaining balance of{' '}
+              {fmt(amountDue)}
+              {data?.dueDate ? ` is due by ${data.dueDate}` : ' is now due'}. Please pay by bank
+              transfer:
+            </>
+          ) : mode === 'full' ? (
+            <>
+              The full amount of {fmt(amountDue)}
+              {data?.dueDate ? ` is due by ${data.dueDate}` : ' is now due'}. Please pay by bank
+              transfer:
+            </>
+          ) : (
+            <>
+              A payment of {fmt(amountDue)} is due now to commence your order. The remaining balance
+              of {fmt(remainingAfter)} is due on completion. Please pay by bank transfer:
+            </>
+          )}
         </p>
         <table className="inv__bank">
           <tbody>
@@ -217,10 +317,32 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data }, ref) {
         </table>
       </div>
 
+      {/* Google review invitation — the button is a real clickable link in the
+          exported PDF (added back as a link annotation after rasterising). */}
+      {showReview && (
+        <div className="inv__review">
+          <div className="inv__review-stars">★ ★ ★ ★ ★</div>
+          <div className="inv__review-title">How did we do?</div>
+          <p className="inv__review-text">{reviewMessage}</p>
+          <p className="inv__review-text">
+            If you have a moment, we would be hugely grateful if you would share your experience.
+            It takes less than a minute and helps other homeowners find us.
+          </p>
+          <div className="inv__review-btn" data-pdf-link={reviewUrl}>
+            Leave us a Google review
+          </div>
+          <p className="inv__review-url" data-pdf-link={reviewUrl}>{reviewUrl}</p>
+        </div>
+      )}
+
       {/* Footer */}
       <div className="inv__footer">
         <p>{SUPPLIER.name} &nbsp;·&nbsp; {SUPPLIER.email} &nbsp;·&nbsp; {SUPPLIER.phone}</p>
-        <p>Payment terms: 50% due on order, balance due on completion. Thank you for your business.</p>
+        <p>
+          {mode === 'deposit'
+            ? 'Payment terms: deposit due on order, balance due on completion. Thank you for your business.'
+            : 'Thank you for your business.'}
+        </p>
       </div>
     </div>
   );
