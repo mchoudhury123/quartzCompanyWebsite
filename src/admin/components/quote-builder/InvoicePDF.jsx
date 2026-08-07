@@ -14,6 +14,14 @@ const SUPPLIER = {
   phone: '07375 303 416',
 };
 
+// A4 portrait is 1:√2 — at the 794px render width, one page is this tall.
+const A4_RATIO = 297 / 210;
+const RENDER_WIDTH = 794;
+
+// Below this, squeezing the document onto one page makes it unreadable, so it
+// paginates instead.
+const MIN_FIT_SCALE = 0.5;
+
 // Derive a distinct invoice number from the quote number (QC-… -> INV-…).
 // A balance invoice gets a "-B" suffix so the deposit invoice and the final
 // invoice for the same order never share a number.
@@ -80,6 +88,23 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
   ].filter((l) => l && String(l).trim());
 
   useImperativeHandle(ref, () => ({
+    // How the document will land on A4, so the builder can show the fit before
+    // anyone downloads. Works while the element is parked offscreen — it's
+    // still laid out, just invisible.
+    measure: () => {
+      const el = containerRef.current;
+      if (!el) return null;
+      const heightPx = el.offsetHeight;
+      const onePagePx = (el.offsetWidth || RENDER_WIDTH) * A4_RATIO;
+      if (!heightPx || !onePagePx) return null;
+      const scale = heightPx > onePagePx ? onePagePx / heightPx : 1;
+      return {
+        scale,
+        singlePage: scale >= MIN_FIT_SCALE,
+        pages: Math.max(1, Math.ceil(heightPx / onePagePx - 0.001)),
+      };
+    },
+
     generate: async (filenameBase) => {
       const el = containerRef.current;
       if (!el) return;
@@ -118,24 +143,42 @@ const InvoicePDF = forwardRef(function InvoicePDF({ data, preview = false }, ref
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const fullHeight = (canvas.height * pdfWidth) / canvas.width;
 
-        // Slice the render across as many A4 pages as it needs — invoices with
-        // a long item list used to be cropped at the bottom of page one.
-        const pageCount = Math.max(1, Math.ceil(pdfHeight / pageHeight - 0.001));
-        for (let page = 0; page < pageCount; page += 1) {
-          if (page > 0) pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, -page * pageHeight, pdfWidth, pdfHeight);
+        // An invoice belongs on one sheet. If the document runs over, shrink
+        // it to fit rather than spilling the bank details onto page two —
+        // but not past MIN_FIT_SCALE, where the type stops being readable.
+        const fitScale = fullHeight > pageHeight ? pageHeight / fullHeight : 1;
+        const singlePage = fitScale >= MIN_FIT_SCALE;
+
+        let drawWidth = pdfWidth;
+        let offsetX = 0;
+        let pageCount = 1;
+
+        if (singlePage) {
+          drawWidth = pdfWidth * fitScale;
+          offsetX = (pdfWidth - drawWidth) / 2;
+          pdf.addImage(imgData, 'PNG', offsetX, 0, drawWidth, fullHeight * fitScale);
+        } else {
+          // Genuinely huge item list — slice it across pages instead of
+          // shrinking it into illegibility.
+          pageCount = Math.max(1, Math.ceil(fullHeight / pageHeight - 0.001));
+          for (let page = 0; page < pageCount; page += 1) {
+            if (page > 0) pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, -page * pageHeight, pdfWidth, fullHeight);
+          }
         }
 
-        // px -> mm, using the same ratio the image was scaled by.
-        const ratio = pdfWidth / (containerRect.width || 794);
+        // px -> mm, using the same ratio the image was drawn at.
+        const ratio = drawWidth / (containerRect.width || 794);
         hotspots.forEach((h) => {
           if (!h.url) return;
           const yMm = h.y * ratio;
-          const page = Math.min(pageCount - 1, Math.floor(yMm / pageHeight));
+          const page = singlePage ? 0 : Math.min(pageCount - 1, Math.floor(yMm / pageHeight));
           pdf.setPage(page + 1);
-          pdf.link(h.x * ratio, yMm - page * pageHeight, h.w * ratio, h.h * ratio, { url: h.url });
+          pdf.link(offsetX + h.x * ratio, yMm - page * pageHeight, h.w * ratio, h.h * ratio, {
+            url: h.url,
+          });
         });
         pdf.setPage(1);
 

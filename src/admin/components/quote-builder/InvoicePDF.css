@@ -1,6 +1,6 @@
 .inv {
   width: 794px;
-  padding: 44px 48px 36px;
+  padding: 34px 46px 26px;
   background: #fff;
   font-family: 'Inter', Arial, sans-serif;
   color: #1a1a1a;
@@ -27,11 +27,11 @@
 
 .inv__title {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 40px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: #1C1712;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .inv__meta {
@@ -63,7 +63,7 @@
 .inv__band {
   height: 3px;
   background: #b08d57;
-  margin: 22px 0 26px;
+  margin: 15px 0 18px;
 }
 
 /* Parties */
@@ -71,7 +71,7 @@
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .inv__party {
@@ -120,7 +120,7 @@
   letter-spacing: 0.08em;
   color: #fff;
   background: #1C1712;
-  padding: 11px 12px;
+  padding: 8px 12px;
   text-align: left;
 }
 
@@ -133,13 +133,13 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #b08d57;
-  padding: 10px 12px 4px;
+  padding: 7px 12px 3px;
   background: #faf7f2;
 }
 
 .inv__cell {
   font-size: 12px;
-  padding: 9px 12px;
+  padding: 6px 12px;
   border-bottom: 1px solid #eee;
   color: #333;
 }
@@ -160,9 +160,9 @@
 .inv__totals {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   max-width: 300px;
-  margin: 18px 0 0 auto;
+  margin: 13px 0 0 auto;
 }
 
 .inv__total-row {
@@ -176,9 +176,9 @@
   font-size: 17px;
   font-weight: 800;
   color: #1C1712;
-  padding-top: 8px;
+  padding-top: 6px;
   border-top: 2px solid #1C1712;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .inv__total-row--paid {
@@ -196,8 +196,8 @@
 
 /* Amount due now */
 .inv__due {
-  margin-top: 30px;
-  padding: 24px 26px;
+  margin-top: 20px;
+  padding: 17px 24px;
   background: #f7f3ec;
   border: 1px solid #e7ddcb;
   border-left: 4px solid #b08d57;
@@ -218,13 +218,13 @@
 }
 
 .inv__due-amount {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 800;
   color: #b08d57;
 }
 
 .inv__due-note {
-  margin: 12px 0 18px;
+  margin: 9px 0 13px;
   font-family: Georgia, serif;
   font-size: 13px;
   line-height: 1.6;
@@ -237,7 +237,7 @@
 }
 
 .inv__bank td {
-  padding: 8px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #e7ddcb;
   font-size: 13px;
 }
@@ -258,30 +258,30 @@
 
 /* Google review invitation */
 .inv__review {
-  margin-top: 26px;
-  padding: 26px 30px 28px;
+  margin-top: 18px;
+  padding: 19px 28px 21px;
   border: 1px solid #e7ddcb;
   background: #fff;
   text-align: center;
 }
 
 .inv__review-stars {
-  font-size: 22px;
+  font-size: 19px;
   letter-spacing: 5px;
   color: #b08d57;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .inv__review-title {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 700;
   color: #1C1712;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 
 .inv__review-text {
-  margin: 0 auto 8px;
+  margin: 0 auto 5px;
   max-width: 520px;
   font-family: Georgia, serif;
   font-size: 12.5px;
@@ -291,8 +291,8 @@
 
 .inv__review-btn {
   display: inline-block;
-  margin: 14px 0 10px;
-  padding: 13px 34px;
+  margin: 11px 0 7px;
+  padding: 11px 32px;
   background: #1C1712;
   color: #fff;
   font-size: 11px;
@@ -311,8 +311,8 @@
 
 /* Footer */
 .inv__footer {
-  margin-top: 30px;
-  padding-top: 18px;
+  margin-top: 20px;
+  padding-top: 13px;
   border-top: 1px solid #eee;
   text-align: center;
   font-size: 11px;

@@ -216,6 +216,40 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
 
   const depositOverTotal = depositTaken && pence(depositInput) > total;
 
+  // Re-measure the hidden document whenever something that affects its height
+  // changes, so the preview can report how it will land on A4.
+  const [fit, setFit] = useState(null);
+  const layoutKey = [
+    items.length,
+    mode,
+    showReview,
+    reviewMessage,
+    depositPaidAmount,
+    depositDate,
+    invoiceDate,
+    dueDate,
+    poNumber,
+    lead?.full_name,
+    lead?.company,
+    lead?.address,
+    lead?.city,
+    lead?.postcode,
+  ].join('|');
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      if (invoiceRef.current?.measure) setFit(invoiceRef.current.measure());
+    });
+    return () => cancelAnimationFrame(id);
+  }, [layoutKey]);
+
+  const fitLabel = () => {
+    if (!fit) return '';
+    if (!fit.singlePage) return `${fit.pages} pages`;
+    if (fit.scale >= 0.999) return 'Fits on one page';
+    return `One page — scaled to ${Math.round(fit.scale * 100)}%`;
+  };
+
   return (
     <>
       <ModalShell
@@ -427,7 +461,16 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
 
           {/* Live preview — the same template that gets exported, scaled down. */}
           <div className="inv-modal__preview">
-            <div className="inv-modal__preview-label">Preview — {invoiceNumber || 'invoice'}</div>
+            <div className="inv-modal__preview-label">
+              <span>Preview — {invoiceNumber || 'invoice'}</span>
+              {fit && (
+                <span
+                  className={`inv-modal__fit${fit.singlePage ? '' : ' inv-modal__fit--over'}`}
+                >
+                  {fitLabel()}
+                </span>
+              )}
+            </div>
             <div className="inv-modal__preview-scroll">
               <div className="inv-modal__preview-page">
                 <InvoicePDF data={invoiceData} preview />
