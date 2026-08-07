@@ -55,6 +55,7 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
   const [reviewMessage, setReviewMessage] = useState(DEFAULT_REVIEW_MESSAGE);
   const [busy, setBusy] = useState(false);
   const [sendState, setSendState] = useState(null); // 'sending' | 'sent' | 'error'
+  const [sendError, setSendError] = useState('');
 
   // Deposit already received. Pre-filled from the quote, but editable — the
   // customer may have paid a different figure to the one quoted.
@@ -149,6 +150,7 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
     if (!window.confirm(`Email invoice ${invoiceNumber} to ${lead.email}?`)) return;
 
     setSendState('sending');
+    setSendError('');
     const firstName = (lead.full_name || '').split(' ')[0] || 'there';
     const { subject, html } = buildInvoiceEmail({
       firstName,
@@ -173,8 +175,25 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to: lead.email, subject, body: subject, html, transactional: true }),
       });
-      const data = await res.json();
-      if (data.error) {
+      // The /api routes are Vercel serverless functions — they don't exist
+      // under `vite dev`, which is by far the most common reason this fails.
+      if (res.status === 404) {
+        setSendError(
+          "Sending email only works on the live site — the /api functions aren't running on localhost. Download the PDF instead, or try again on thequartzcompany.co.uk."
+        );
+        setSendState('error');
+        return;
+      }
+
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (_) {
+        data = null;
+      }
+
+      if (!data || data.error) {
+        setSendError(data?.error || `The email service returned an unexpected response (HTTP ${res.status}).`);
         setSendState('error');
         return;
       }
@@ -196,7 +215,8 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
       } catch (_) {
         /* activity logging is best-effort */
       }
-    } catch (_) {
+    } catch (err) {
+      setSendError(err?.message || 'Could not reach the email service.');
       setSendState('error');
     }
   };
@@ -438,6 +458,10 @@ export default function InvoiceModal({ quote, leadId, onClose }) {
               </span>
               <span className="inv-modal__summary-amount">{money(amountDue)}</span>
             </div>
+
+            {sendState === 'error' && sendError && (
+              <p className="inv-modal__warn inv-modal__warn--send">{sendError}</p>
+            )}
 
             <div className="modal-actions">
               <button

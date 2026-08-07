@@ -167,6 +167,10 @@
   border-radius: 5px;
 }
 
+.inv-modal__warn--send {
+  margin: 1rem 0 0;
+}
+
 .inv-modal__summary {
   display: flex;
   align-items: baseline;
